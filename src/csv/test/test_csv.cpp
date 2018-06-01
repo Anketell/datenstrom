@@ -1,0 +1,206 @@
+//-----------------------------------------------------------------------------
+
+#include <gtest/gtest.h>
+#include <sstream>
+#include <test_model/object.h>
+#include <test_model/object_serialise.h>
+#include <csv/csv.h>
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_read_comma_separated_values )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,\"Hello\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   in >> o >> ds::endr;
+
+   EXPECT_EQ(      -8, o.m_i8     );
+   EXPECT_EQ(     -16, o.m_i16    );
+   EXPECT_EQ(     -32, o.m_i32    );
+   EXPECT_EQ(     -64, o.m_i64    );
+   EXPECT_EQ(       8, o.m_u8     );
+   EXPECT_EQ(      16, o.m_u16    );
+   EXPECT_EQ(      32, o.m_u32    );
+   EXPECT_EQ(      64, o.m_u64    );
+   EXPECT_EQ(   12.34, o.m_f      );
+   EXPECT_EQ(   56.78, o.m_d      );
+   EXPECT_EQ( "Hello", o.m_hello  );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_skip_ens_of_record )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,\"Hello\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   EXPECT_NO_THROW( in >> ds::endr );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_read_unquoted_strings )
+{
+  std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   in >> o >> ds::endr;
+
+   EXPECT_EQ(      -8, o.m_i8     );
+   EXPECT_EQ(     -16, o.m_i16    );
+   EXPECT_EQ(     -32, o.m_i32    );
+   EXPECT_EQ(     -64, o.m_i64    );
+   EXPECT_EQ(       8, o.m_u8     );
+   EXPECT_EQ(      16, o.m_u16    );
+   EXPECT_EQ(      32, o.m_u32    );
+   EXPECT_EQ(      64, o.m_u64    );
+   EXPECT_EQ(   12.34, o.m_f      );
+   EXPECT_EQ(   56.78, o.m_d      );
+   EXPECT_EQ( "Hello", o.m_hello  );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_ignore_whitespace )
+{
+     std::stringstream ss( " -8 , -16 , -32 , -64, 8, 16 , 32 ,"
+                           " 64 , 12.34 , 56.78 ,  \"Hello\"  \n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   in >> o >> ds::endr;
+
+   EXPECT_EQ(      -8, o.m_i8     );
+   EXPECT_EQ(     -16, o.m_i16    );
+   EXPECT_EQ(     -32, o.m_i32    );
+   EXPECT_EQ(     -64, o.m_i64    );
+   EXPECT_EQ(       8, o.m_u8     );
+   EXPECT_EQ(      16, o.m_u16    );
+   EXPECT_EQ(      32, o.m_u32    );
+   EXPECT_EQ(      64, o.m_u64    );
+   EXPECT_EQ(   12.34, o.m_f      );
+   EXPECT_EQ(   56.78, o.m_d      );
+   EXPECT_EQ( "Hello", o.m_hello  );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_support_embeded_quotes )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,"
+                         "56.78,\"Hello \"\"you\"\"\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   in >> o >> ds::endr;
+
+   EXPECT_EQ(      -8, o.m_i8     );
+   EXPECT_EQ(     -16, o.m_i16    );
+   EXPECT_EQ(     -32, o.m_i32    );
+   EXPECT_EQ(     -64, o.m_i64    );
+   EXPECT_EQ(       8, o.m_u8     );
+   EXPECT_EQ(      16, o.m_u16    );
+   EXPECT_EQ(      32, o.m_u32    );
+   EXPECT_EQ(      64, o.m_u64    );
+   EXPECT_EQ(   12.34, o.m_f      );
+   EXPECT_EQ(   56.78, o.m_d      );
+   EXPECT_EQ( "Hello \"you\"", o.m_hello  );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_ignore_extra_fields )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,"
+                         "56.78,\"Hello\",\"ignored\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   in >> o >> ds::endr;
+
+   EXPECT_EQ(      -8, o.m_i8     );
+   EXPECT_EQ(     -16, o.m_i16    );
+   EXPECT_EQ(     -32, o.m_i32    );
+   EXPECT_EQ(     -64, o.m_i64    );
+   EXPECT_EQ(       8, o.m_u8     );
+   EXPECT_EQ(      16, o.m_u16    );
+   EXPECT_EQ(      32, o.m_u32    );
+   EXPECT_EQ(      64, o.m_u64    );
+   EXPECT_EQ(   12.34, o.m_f      );
+   EXPECT_EQ(   56.78, o.m_d      );
+   EXPECT_EQ( "Hello", o.m_hello  );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_fail_missing_separator )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32 64,12.34,56.78,\"Hello\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   EXPECT_THROW( in >> o >> ds::endr, ds::csv::Field_separator_expected );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_fail_unterminated_quotes )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,\"Hello\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   EXPECT_THROW( in >> o >> ds::endr, ds::csv::Unterminated_quotes );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_istream, should_fail_quotes_in_unquoted_strings )
+{
+   std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello\"\n" );
+
+   Object o;
+
+   ds::csv::istream in( ss );
+
+   EXPECT_THROW( in >> o >> ds::endr, ds::csv::Quotes_not_allowed );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( csv_ostream, should_write_comma_separated_values )
+{
+   std::stringstream ss;
+
+   Object o = { -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78, "Hello" };
+
+   ds::csv::ostream out( ss );
+
+   out << "Hello \"you\"" << o << ds::endr;
+
+   EXPECT_EQ(
+   "\"Hello \"\"you\"\"\",-8,-16,-32,-64,8,16,32,64,12.34,56.78,\"Hello\"\n",
+   ss.str() );
+}
+
+//-----------------------------------------------------------------------------
