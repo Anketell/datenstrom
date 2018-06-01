@@ -3,6 +3,8 @@ project( datenstrom )
 
 enable_testing()
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
+
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
    include("cmake/coverage.cmake")
 endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")

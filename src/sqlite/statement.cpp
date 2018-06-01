@@ -22,13 +22,15 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 {
    m_db = db;
 
-   int rc = sqlite3_prepare_v2( m_db, sql.c_str(), -1, &m_stmt, nullptr );
+   m_stmt = std::make_shared< stmt_t >();
+
+   int rc = sqlite3_prepare_v2( m_db, sql.c_str(), -1, &m_stmt->stmt, nullptr );
    if ( rc )
       throw_error( "sqlite3_prepare_v2 failed", rc );
 
    m_state = Preparing;
 
-   m_count = sqlite3_bind_parameter_count( m_stmt );
+   m_count = sqlite3_bind_parameter_count( m_stmt->stmt );
 
    if ( parameters.size() )
    {
@@ -38,7 +40,7 @@ statement::statement( sqlite3 * db, const std::string     & sql,
       m_parameters.reserve( m_count );
       for ( auto & name : parameters )
       {
-         int index = sqlite3_bind_parameter_index( m_stmt, name.c_str() );
+         int index = sqlite3_bind_parameter_index( m_stmt->stmt, name.c_str() );
          if ( index == 0 )
             throw std::runtime_error( "Unmatched named parameter" );
 
@@ -51,7 +53,7 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 
 statement::~statement( void )
 {
-   sqlite3_finalize( m_stmt );
+   sqlite3_finalize( m_stmt->stmt );
 }
 
 //-----------------------------------------------------------------------------
@@ -77,7 +79,7 @@ int statement::check_parameter( int index )
 
 void statement::set_parameter( int index, int8_t i )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), i );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), i );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -86,7 +88,7 @@ void statement::set_parameter( int index, int8_t i )
 
 void statement::set_parameter( int index, int16_t i )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), i );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), i );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -95,7 +97,7 @@ void statement::set_parameter( int index, int16_t i )
 
 void statement::set_parameter( int index, int32_t i )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), i );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), i );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -104,7 +106,7 @@ void statement::set_parameter( int index, int32_t i )
 
 void statement::set_parameter( int index, int64_t i )
 {
-   int rc = sqlite3_bind_int64( m_stmt, check_parameter( index ), i );
+   int rc = sqlite3_bind_int64( m_stmt->stmt, check_parameter( index ), i );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -113,7 +115,7 @@ void statement::set_parameter( int index, int64_t i )
 
 void statement::set_parameter( int index, uint8_t u )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), u );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), u );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -122,7 +124,7 @@ void statement::set_parameter( int index, uint8_t u )
 
 void statement::set_parameter( int index, uint16_t u )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), u );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), u );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -131,7 +133,7 @@ void statement::set_parameter( int index, uint16_t u )
 
 void statement::set_parameter( int index, uint32_t u )
 {
-   int rc = sqlite3_bind_int( m_stmt, check_parameter( index ), u );
+   int rc = sqlite3_bind_int( m_stmt->stmt, check_parameter( index ), u );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -140,7 +142,7 @@ void statement::set_parameter( int index, uint32_t u )
 
 void statement::set_parameter( int index, uint64_t u )
 {
-   int rc = sqlite3_bind_int64( m_stmt, check_parameter( index ), u );
+   int rc = sqlite3_bind_int64( m_stmt->stmt, check_parameter( index ), u );
    if ( rc )
       throw_error( "sqlite3_bind_int failed", rc );
 }
@@ -149,7 +151,7 @@ void statement::set_parameter( int index, uint64_t u )
 
 void statement::set_parameter( int index, double d )
 {
-   int rc = sqlite3_bind_double( m_stmt, check_parameter( index ), d );
+   int rc = sqlite3_bind_double( m_stmt->stmt, check_parameter( index ), d );
    if ( rc )
       throw_error( "sqlite3_bind_double failed", rc );
 }
@@ -158,7 +160,7 @@ void statement::set_parameter( int index, double d )
 
 void statement::set_parameter( int index, const std::string & s )
 {
-   int rc = sqlite3_bind_text( m_stmt, check_parameter( index ), s.c_str(), -1, SQLITE_STATIC );
+   int rc = sqlite3_bind_text( m_stmt->stmt, check_parameter( index ), s.c_str(), -1, SQLITE_STATIC );
    if ( rc )
       throw_error( "sqlite3_bind_text failed", rc );
 }
@@ -167,7 +169,7 @@ void statement::set_parameter( int index, const std::string & s )
 
 void statement::set_parameter( int index, const char * s )
 {
-   int rc = sqlite3_bind_text( m_stmt, check_parameter( index ), s, -1, SQLITE_STATIC );
+   int rc = sqlite3_bind_text( m_stmt->stmt, check_parameter( index ), s, -1, SQLITE_STATIC );
    if ( rc )
       throw_error( "sqlite3_bind_text failed", rc );
 }
@@ -183,11 +185,11 @@ int statement::parameter_count( void )
 
 void statement::reset( void )
 {
-   int rc = sqlite3_reset( m_stmt );
+   int rc = sqlite3_reset( m_stmt->stmt );
    if ( rc != SQLITE_OK )
       throw_error( "sqlite3_reset failed", rc );
 
-   rc = sqlite3_clear_bindings( m_stmt );
+   rc = sqlite3_clear_bindings( m_stmt->stmt );
    assert( rc == SQLITE_OK );
 
    m_state = Preparing;
@@ -197,21 +199,21 @@ void statement::reset( void )
 
 uint32_t statement::execute( void )
 {
-   int rc = sqlite3_step( m_stmt );
+   int rc = sqlite3_step( m_stmt->stmt );
    if ( rc != SQLITE_DONE )
       throw_error( "sqlite3_step failed", rc );
 
    m_state = Executed;
 
-   int count = sqlite3_column_count( m_stmt );
+   int count = sqlite3_column_count( m_stmt->stmt );
    if ( count > 1 )
       throw std::runtime_error( "Too many result columns" );
 
    uint32_t res = 0;
-   if ( sqlite3_column_count( m_stmt ) > 0 )
+   if ( sqlite3_column_count( m_stmt->stmt ) > 0 )
    {
-      if ( sqlite3_column_type( m_stmt, 1 ) == SQLITE_INTEGER )
-         res = sqlite3_column_int( m_stmt, 1 );
+      if ( sqlite3_column_type( m_stmt->stmt, 1 ) == SQLITE_INTEGER )
+         res = sqlite3_column_int( m_stmt->stmt, 1 );
    }
    else
       res = sqlite3_last_insert_rowid( m_db );
@@ -225,7 +227,7 @@ uint32_t statement::execute( void )
 
 db::row statement::result( void )
 {
-   int rc = sqlite3_step( m_stmt );
+   int rc = sqlite3_step( m_stmt->stmt );
 
    m_state = Executed;
 

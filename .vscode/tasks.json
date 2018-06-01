@@ -1,0 +1,47 @@
+{
+   // See https://go.microsoft.com/fwlink/?LinkId=733558
+   // for the documentation about the tasks.json format
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "group": {
+            "kind": "build",
+            "isDefault": false
+         },
+         "type": "shell",
+         "label": "bootstrap",
+         "command": "time ./scripts/bootstrap.sh",
+         "problemMatcher": []
+      },
+      {
+         "group": {
+            "kind": "build",
+            "isDefault": true
+         },
+         "type": "shell",
+         "label": "make debug",
+         "command": "time make -j8 -C debug",
+         "problemMatcher": {
+            "owner": "cpp",
+            "fileLocation": [
+               "absolute"
+            ],
+            "pattern": {
+               "regexp": "^(.*):(\\d+):(\\d+):\\s+(info|warning|error|fatal error):\\s+(.*)$",
+               "file": 1,
+               "line": 2,
+               "column": 3,
+               "severity": 4,
+               "message": 5
+            }
+         }
+      },
+      {
+         "group": "build",
+         "type": "shell",
+         "label": "clean debug",
+         "command": "make -C debug clean",
+         "problemMatcher": []
+      }
+   ]
+}

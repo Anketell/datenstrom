@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/statement.h>
-#include <sqlite3.h>
+#include <sqlite/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -24,11 +24,11 @@ class statement : public db::statement::impl
 {
    enum state_t { Preparing, Executed };
 
-   sqlite3            * m_db;
-   sqlite3_stmt       * m_stmt;
-   std::vector< int >   m_parameters;
-   int                  m_count;
-   state_t              m_state;
+   sqlite3                 * m_db;
+   std::shared_ptr< stmt_t > m_stmt;
+   std::vector< int >        m_parameters;
+   int                       m_count;
+   state_t                   m_state;
 
    int check_parameter( int index );
 

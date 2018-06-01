@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/row.h>
-#include <sqlite3.h>
+#include <sqlite/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -22,14 +22,14 @@ namespace sqlite
 
 class row : public db::row::impl
 {
-   sqlite3_stmt * m_stmt;
-   int            m_count;
+   std::shared_ptr< stmt_t > m_stmt;
+   int                       m_count;
 
    void check_column( int index, int type );
 
 public:
 
-   row( sqlite3_stmt * stmt );
+   row( std::shared_ptr< stmt_t > stmt );
 
    virtual void get_column( int index, int8_t & ) override;
    virtual void get_column( int index, int16_t & ) override;
