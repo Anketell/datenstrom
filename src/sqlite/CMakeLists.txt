@@ -1,4 +1,3 @@
-
 set( TARGET ds_sqlite )
 
 add_library( ${TARGET} SHARED
