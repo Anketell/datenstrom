@@ -20,7 +20,7 @@
          },
          "type": "shell",
          "label": "make debug",
-         "command": "time make -j8 -C debug",
+         "command": "time make -C debug",
          "problemMatcher": {
             "owner": "cpp",
             "fileLocation": [
