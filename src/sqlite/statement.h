@@ -35,7 +35,6 @@ class statement : public db::statement::impl
 public:
 
    statement( sqlite3 * db, const std::string & sql, const db::name_list_t & parameters );
-   virtual ~statement( void );
 
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;

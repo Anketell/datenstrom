@@ -51,13 +51,6 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 
 //-----------------------------------------------------------------------------
 
-statement::~statement( void )
-{
-   sqlite3_finalize( m_stmt->stmt );
-}
-
-//-----------------------------------------------------------------------------
-
 int statement::check_parameter( int index )
 {
    if ( m_state == Executed )
