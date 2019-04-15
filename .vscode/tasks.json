@@ -1,59 +1,61 @@
 {
   "version": "2.0.0",
   "tasks": [
-    {
-      "group": {
-        "kind": "build",
-        "isDefault": false
-      },
+   {
+      "group": "build",
       "type": "shell",
       "label": "bootstrap",
       "command": "time ./scripts/bootstrap.sh",
       "problemMatcher": []
-    },
-    {
+   },
+   {
       "group": {
-        "kind": "build",
-        "isDefault": true
+         "kind": "build",
+         "isDefault": true
       },
       "type": "shell",
       "label": "make debug",
       "command": "time make -C debug",
       "problemMatcher": {
-        "owner": "cpp",
-        "fileLocation": [
-          "absolute"
-        ],
-        "pattern": {
-          "regexp": "^(.*):(\\d+):(\\d+):\\s+(info|warning|error|fatal error):\\s+(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "severity": 4,
-          "message": 5
-        }
+         "owner": "cpp",
+         "fileLocation": [
+            "absolute"
+         ],
+         "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(info|warning|error|fatal error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+         }
       }
-    },
-    {
-      "group": "build",
+   },
+   {
+      "group": "test",
       "type": "shell",
-      "label": "clean debug",
-      "command": "make -C debug clean",
+      "label": "coverage",
+      "command": "time ( make -C coverage; ./scripts/coverage.sh ); google-chrome --new-window ${workspaceRoot}/coverage/html/index.html",
+      "problemMatcher": {
+         "owner": "cpp",
+         "fileLocation": [
+            "absolute"
+         ],
+         "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(info|warning|error|fatal error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+         }
+      }
+   },
+   {
+      "type": "shell",
+      "label": "clean",
+      "command": "make -C debug clean; make -C coverage clean",
       "problemMatcher": []
-    },
-    {
-      "type": "shell",
-      "label": "g++ build active file",
-      "command": "/usr/bin/g++",
-      "args": [
-        "-g",
-        "${file}",
-        "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
-      ],
-      "options": {
-        "cwd": "/usr/bin"
-      }
-    }
-  ]
+   }
+]
 }
