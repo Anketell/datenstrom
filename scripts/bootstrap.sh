@@ -12,9 +12,8 @@ pushd ${root}/debug >/dev/null
 cmake -DCMAKE_BUILD_TYPE=Debug ..
 popd
 
-# mkdir -p coverage
+mkdir -p coverage
 
-# pushd ${root}/coverage >/dev/null
-# cmake -DCMAKE_BUILD_TYPE=Coverage ..
-# popd >/dev/null
-
+pushd ${root}/coverage >/dev/null
+cmake -DCMAKE_BUILD_TYPE=Coverage ..
+popd >/dev/null
