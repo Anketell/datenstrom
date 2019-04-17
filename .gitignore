@@ -2,4 +2,4 @@ debug
 coverage
 *.db
 *.csv
-*.vscode/ipch
+.vscode/ipch
