@@ -32,7 +32,10 @@
       }
    },
    {
-      "group": "test",
+      "group": {
+         "kind": "test",
+         "isDefault": true
+      },
       "type": "shell",
       "label": "coverage",
       "command": "time ( make -C coverage; ./scripts/coverage.sh ); google-chrome --new-window ${workspaceRoot}/coverage/html/index.html",
