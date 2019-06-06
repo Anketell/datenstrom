@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <sqlite/database.h>
-#include <sqlite/test/sqlite_test_data.h>
+#include <mysql/database.h>
+#include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
 #include <string>
 
@@ -25,13 +25,13 @@ const ds::db::name_list_t named_parameters =
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_parameter, should_insert_named )
+TEST( mysql_parameter, should_insert_named )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -56,18 +56,18 @@ TEST( sqlite_parameter, should_insert_named )
       EXPECT_NO_THROW( insert_test.execute() );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
-
-TEST( sqlite_parameter, should_retrieve_named )
+/*
+TEST( mysql_parameter, should_retrieve_named )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -114,7 +114,7 @@ TEST( sqlite_parameter, should_retrieve_named )
    EXPECT_EQ( o.m_d, 10 );
    EXPECT_EQ( o.m_hello, "hello2" );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-
+*/
 //-----------------------------------------------------------------------------

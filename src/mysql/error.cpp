@@ -1,7 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/error.h>
-#include <sqlite3.h>
+#include <mysql/error.h>
 #include <stdexcept>
 
 //-----------------------------------------------------------------------------
@@ -11,21 +10,17 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
+namespace mysql
 {
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error )
+void throw_error( std::string msg, const std::string & error )
 {
-   throw std::runtime_error(  operation + " failed: " + error );
-}
+   msg +=  " failed: ";
+   msg += error;
 
-//-----------------------------------------------------------------------------
-
-void throw_error( const std::string & operation, int rc )
-{
-   throw_error( operation, sqlite3_errstr( rc ) );
+   throw std::runtime_error( msg );
 }
 
 //-----------------------------------------------------------------------------

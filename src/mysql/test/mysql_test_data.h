@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef TEST_DATA_H
-#define TEST_DATA_H
+#ifndef MYSQL_TEST_DATA_H
+#define MYSQL_TEST_DATA_H
 
 //-----------------------------------------------------------------------------
 
@@ -13,8 +13,11 @@ extern const char * create;
 
 //-----------------------------------------------------------------------------
 
-extern const char * tmp_file;
-extern const char * bad_file;
+extern const char * test_db_name;
+extern const char * test_server;
+extern const char * username;
+extern const char * password;
+extern const char * bad_db_name;
 extern const char * bad_sql;
 extern const char * insert;
 extern const char * result;

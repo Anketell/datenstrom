@@ -1,37 +1,32 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/error.h>
-#include <sqlite3.h>
-#include <stdexcept>
+#ifndef SQLITE_TEST_DATA_H
+#define SQLITE_TEST_DATA_H
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
+#include <test_model/object.h>
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
-{
+extern const char * create;
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error )
-{
-   throw std::runtime_error(  operation + " failed: " + error );
-}
+extern const char * tmp_db;
+extern const char * tmp_path;
+extern const char * bad_path;
+extern const char * bad_sql;
+extern const char * insert;
+extern const char * result;
+extern const char * results;
+extern const char * num_rows;
+extern const char * named;
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, int rc )
-{
-   throw_error( operation, sqlite3_errstr( rc ) );
-}
+extern Object data[ 2 ];
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-}
+#endif

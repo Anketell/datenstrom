@@ -21,16 +21,16 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-typedef std::vector< std::string > name_list_t;
-
-//-----------------------------------------------------------------------------
-
 class row : public ds::istream
 {
 public:
 
    class impl
    {
+   protected:
+
+      virtual ~impl( void ) {}
+
    public:
 
       virtual void get_column( int index, int8_t & );

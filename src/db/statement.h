@@ -19,12 +19,20 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
+typedef std::vector< std::string > name_list_t;
+
+//-----------------------------------------------------------------------------
+
 class statement : public ds::ostream
 {
 public:
 
    class impl
    {
+   protected:
+
+      virtual ~impl( void ) {}
+
    public:
 
       virtual void set_parameter( int index, int8_t );

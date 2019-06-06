@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_DATABASE_H
-#define DS_SQLITE_DATABASE_H
+#ifndef DS_MYSQL_DATABASE_H
+#define DS_MYSQL_DATABASE_H
 
 //-----------------------------------------------------------------------------
 
 #include <db/database.h>
-#include <sqlite3.h>
+#include <mysql/mysql.h>
 
 //-----------------------------------------------------------------------------
 
@@ -15,25 +15,27 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
+namespace mysql
 {
 
 //-----------------------------------------------------------------------------
 
 class database : public db::database
 {
-   const std::string m_path;
-   sqlite3         * m_db = nullptr;
-
-   std::string get_full_path( const std::string & name ) const;
-
-   void close( void );
+  MYSQL m_mysql;
 
 public:
 
-   static constexpr char name[] = "sqlite";
+   database( const std::string & name,
+             const std::string & server,
+             const std::string & username,
+             const std::string & password,
+             uint16_t            port = 3306 );
 
-   database( const std::string & path );
+   database( const std::string & server,
+             const std::string & username,
+             const std::string & password,
+             uint16_t            port = 3306 );
 
    virtual ~database( void );
 

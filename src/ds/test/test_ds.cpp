@@ -51,7 +51,7 @@ ds::ostream & manip( ds::ostream & out )
 
 //-----------------------------------------------------------------------------
 
-TEST( serial_istream, should_fail_input )
+TEST( ds_serial_istream, should_fail_input )
 {
    ds::istream in;
 
@@ -74,7 +74,7 @@ TEST( serial_istream, should_fail_input )
 
 //-----------------------------------------------------------------------------
 
-TEST( serial_istream, should_run_serial_manip )
+TEST( ds_serial_istream, should_run_serial_manip )
 {
    test_istream in;
 
@@ -87,7 +87,7 @@ TEST( serial_istream, should_run_serial_manip )
 
 //-----------------------------------------------------------------------------
 
-TEST( serial_ostream, should_fail_output )
+TEST( ds_serial_ostream, should_fail_output )
 {
    ds::ostream out;
 
@@ -111,7 +111,7 @@ TEST( serial_ostream, should_fail_output )
 
 //-----------------------------------------------------------------------------
 
-TEST( serial_ostream, should_run_serial_manip )
+TEST( ds_serial_ostream, should_run_serial_manip )
 {
    test_ostream out;
 

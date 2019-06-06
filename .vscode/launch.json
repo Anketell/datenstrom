@@ -5,10 +5,48 @@
    "version": "0.2.0",
    "configurations": [
       {
+         "name": "test_ds_db",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/debug/src/db/test/test_ds_db",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}",
+         "environment": [],
+         "externalConsole": true,
+         "MIMode": "gdb",
+         "setupCommands": [
+             {
+                 "description": "Enable pretty-printing for gdb",
+                 "text": "-enable-pretty-printing",
+                 "ignoreFailures": true
+             }
+         ]
+      },
+      {
          "name": "test_ds_sqlite",
          "type": "cppdbg",
          "request": "launch",
          "program": "${workspaceFolder}/debug/src/sqlite/test/test_ds_sqlite",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}",
+         "environment": [],
+         "externalConsole": true,
+         "MIMode": "gdb",
+         "setupCommands": [
+             {
+                 "description": "Enable pretty-printing for gdb",
+                 "text": "-enable-pretty-printing",
+                 "ignoreFailures": true
+             }
+         ]
+      },
+      {
+         "name": "test_ds_mysql",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/debug/src/mysql/test/test_ds_mysql",
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",

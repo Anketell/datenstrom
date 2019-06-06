@@ -9,6 +9,7 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
+                "/usr/include/mysql",
                 "${workspaceFolder}",
                 "${workspaceFolder}/src"
             ],

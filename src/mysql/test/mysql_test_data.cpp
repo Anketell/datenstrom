@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/test/test_data.h>
+#include <mysql/test/mysql_test_data.h>
 
 //-----------------------------------------------------------------------------
 
@@ -13,23 +13,26 @@ const char * create = "CREATE TABLE Object ("
                       "u16 INTEGER,"
                       "u32 INTEGER,"
                       "u64 INTEGER,"
-                      "f FLOAT,"
-                      "d FLOAT,"
-                      "hello VARCHAR( 10 ) PRIMARY KEY );";
+                      "f DOUBLE,"
+                      "d DOUBLE,"
+                      "hello VARCHAR( 10 ) PRIMARY KEY )";
 
 //-----------------------------------------------------------------------------
 
-const char * tmp_file = "/tmp/test.db";
-const char * bad_file = "/blah/test.db";
-const char * bad_sql  = "THIS IS BAD SQL";
-const char * insert   = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
-                                                    "?, ?, ?, ?, ? )";
+const char * test_db_name = "test_db";
+const char * test_server  = "192.168.0.2";
+const char * username     = "root";
+const char * password     = "";
+const char * bad_db_name  = "/blah/test.db";
+const char * bad_sql      = "THIS IS BAD SQL";
+const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
+                                                        "?, ?, ?, ?, ? )";
 const char * result   = "SELECT * FROM Object WHERE hello = ?";
 const char * results  = "SELECT * FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
-const char * named    = "INSERT INTO Object VALUES ( :i8, :i16, :i32, :i64, "
-                                                    ":u8, :u16, :u32, :u64, "
-                                                    ":float, :double, :string )";
+const char * named    = "INSERT INTO Object VALUES ( @i8, @i16, @i32, @i64, "
+                                                "@u8, @u16, @u32, @u64, "
+                                                "@float, @double, @string )";
 
 //-----------------------------------------------------------------------------
 

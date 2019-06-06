@@ -26,6 +26,19 @@
       "tuple": "cpp",
       "type_traits": "cpp",
       "typeinfo": "cpp",
-      "utility": "cpp"
+      "utility": "cpp",
+      "hash_map": "cpp",
+      "cmath": "cpp",
+      "cstdarg": "cpp",
+      "deque": "cpp",
+      "list": "cpp",
+      "unordered_map": "cpp",
+      "vector": "cpp",
+      "slist": "cpp",
+      "fstream": "cpp",
+      "memory": "cpp",
+      "optional": "cpp",
+      "string_view": "cpp",
+      "system_error": "cpp"
    }
 }

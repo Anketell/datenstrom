@@ -1,70 +1,70 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <sqlite/database.h>
-#include <sqlite/test/sqlite_test_data.h>
+#include <mysql/database.h>
+#include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_create_good_path )
+TEST( mysql_db, should_create_good_path )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_fail_create_bad_path )
+TEST( mysql_db, should_fail_create_bad_db_name )
 {
-   ds::sqlite::database test_db( bad_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_THROW( test_db.create( tmp_db ), std::runtime_error );
+   EXPECT_THROW( test_db.create( bad_db_name ), std::runtime_error );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_execute_simple )
+TEST( mysql_db_statement, should_execute_simple )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    ds::db::statement create_test = test_db( create );
    EXPECT_NO_THROW( create_test.execute() );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_create_bad_sql )
+TEST( mysql_db_statement, should_fail_create_bad_sql )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    EXPECT_THROW( test_db( bad_sql ), std::runtime_error );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_execute_query_parameters )
+TEST( mysql_db_statement, should_execute_query_parameters )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -82,18 +82,18 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
       EXPECT_NO_THROW( insert_test.execute() );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
+TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -121,18 +121,18 @@ TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
       EXPECT_THROW( insert_test << "hello", std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
+TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -145,18 +145,18 @@ TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
       EXPECT_THROW( insert_test.execute(), std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_provide_query_result_row )
+TEST( mysql_db_statement, should_provide_query_result_row )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -189,18 +189,18 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
       }
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_bad_query_reset )
+TEST( mysql_db_statement, should_fail_bad_query )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test1 = test_db( create );
@@ -209,21 +209,20 @@ TEST( sqlite_db_statement, should_fail_bad_query_reset )
       EXPECT_NO_THROW( create_test1.execute() );
 
       EXPECT_THROW( create_test2.execute(), std::runtime_error );
-      EXPECT_THROW( create_test2.reset(), std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_row, should_provide_query_data )
+TEST( mysql_db_row, should_provide_query_data )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -265,35 +264,35 @@ TEST( sqlite_db_row, should_provide_query_data )
       }
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_row, should_return_query_data_not_available )
+TEST( mysql_db_row, should_return_query_data_not_available )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    ds::db::statement create_test = test_db( create );
 
    EXPECT_EQ( ds::db::row(), create_test.result() );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_row, should_fail_query_wrong_column_count )
+TEST( mysql_db_row, should_fail_query_wrong_column_count )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::mysql::database test_db( test_server, username, password );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -336,47 +335,7 @@ TEST( sqlite_db_row, should_fail_query_wrong_column_count )
       }
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-}
-
-//-----------------------------------------------------------------------------
-
-TEST( sqlite_db_row, should_fail_query_wrong_column_type )
-{
-   ds::sqlite::database test_db( tmp_path );
-
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
-
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
-
-   {
-      ds::db::statement insert_test = test_db( insert );
-
-      for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
-   }
-
-   {
-      ds::db::statement results_test = test_db( results );
-
-      ds::db::row row;
-
-      EXPECT_NO_THROW( row = results_test.result() );
-
-      std::string hello;
-
-      EXPECT_THROW( row >> hello, std::runtime_error );
-   }
-
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------

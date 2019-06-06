@@ -21,11 +21,13 @@ namespace db
 
 class database
 {
-protected:
+public:
 
    virtual ~database( void ) {}
 
-public:
+   virtual void create( const std::string & name ) = 0;
+   virtual void use( const std::string & name ) = 0;
+   virtual bool drop( const std::string & name ) = 0;
 
    virtual statement operator()( const std::string & query,
                                  const name_list_t & parameters = {} ) = 0;

@@ -1,8 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/error.h>
-#include <sqlite3.h>
-#include <stdexcept>
+#ifndef DS_MYSQL_TYPES_H
+#define DS_MYSQL_TYPES_H
+
+//-----------------------------------------------------------------------------
+
+#include <mysql/mysql.h>
 
 //-----------------------------------------------------------------------------
 
@@ -11,27 +14,32 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
+namespace mysql
 {
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error )
+struct stmt_t
 {
-   throw std::runtime_error(  operation + " failed: " + error );
+   MYSQL_STMT * stmt = nullptr;
+
+   ~stmt_t( void )
+   {
+      if ( stmt )
+         mysql_stmt_close( stmt );
+
+      stmt = nullptr;
+   }
+};
+
+//-----------------------------------------------------------------------------
+
 }
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, int rc )
-{
-   throw_error( operation, sqlite3_errstr( rc ) );
 }
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-}
+#endif

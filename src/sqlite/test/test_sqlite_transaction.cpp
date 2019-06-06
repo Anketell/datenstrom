@@ -3,16 +3,18 @@
 #include <gtest/gtest.h>
 #include <sqlite/database.h>
 #include <db/transaction.h>
-#include <sqlite/test/test_data.h>
+#include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_commit_on_destruction )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -40,16 +42,18 @@ TEST( sqlite_transaction, should_commit_on_destruction )
       EXPECT_EQ( 2, count );
    }
 
-   unlink( tmp_file );
-}
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+ }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_rollback_on_exception )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -83,16 +87,18 @@ TEST( sqlite_transaction, should_rollback_on_exception )
       EXPECT_EQ( 0, count );
    }
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_nested )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -108,16 +114,18 @@ TEST( sqlite_transaction, should_fail_nested )
                     std::runtime_error );
    }
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_lone_commit )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -126,16 +134,18 @@ TEST( sqlite_transaction, should_fail_lone_commit )
 
    EXPECT_THROW( test_db.commit_transaction(), std::runtime_error );
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_lone_rollback )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -144,16 +154,18 @@ TEST( sqlite_transaction, should_fail_lone_rollback )
 
    EXPECT_THROW( test_db.rollback_transaction(), std::runtime_error );
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_release_on_destruction )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -183,16 +195,18 @@ TEST( sqlite_savepoint, should_release_on_destruction )
       EXPECT_EQ( 2, count );
    }
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_rollback_on_exception )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -230,50 +244,56 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
       EXPECT_EQ( 0, count );
    }
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_no_name  )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    EXPECT_THROW( test_db.savepoint( "" ) ,  std::runtime_error );
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_bad_release_name  )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    ds::db::savepoint save( test_db, "save" );
 
    EXPECT_THROW( test_db.release_savepoint( "bad" ) ,  std::runtime_error );
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
 {
-   unlink( tmp_file );
+   ds::sqlite::database test_db( tmp_path );
 
-   ds::sqlite::database test_db( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
    ds::db::savepoint save( test_db, "save" );
 
    EXPECT_THROW( test_db.rollback_to_savepoint( "bad" ) ,  std::runtime_error );
 
-   unlink( tmp_file );
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
 
 //-----------------------------------------------------------------------------

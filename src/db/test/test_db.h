@@ -94,6 +94,19 @@ struct Test_db : public ds::db::database
       m_rollback_to_savepoint_calls = 0;
    }
 
+   void create( const std::string & name )
+   {
+   }
+
+   void use( const std::string & name )
+   {
+   }
+
+   bool drop( const std::string & name )
+   {
+      return true;
+   }
+
    virtual ds::db::statement operator()( const std::string & query, const ds::db::name_list_t & parameters )
    {
        return ds::db::statement( std::make_shared< Test_statement >( atoi( query.c_str() ) ) );
