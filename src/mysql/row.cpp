@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mysql/row.h>
+#include <mysql/error.h>
 #include <assert.h>
 
 //-----------------------------------------------------------------------------
@@ -15,131 +16,149 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-row::row( MYSQL & mysql ) :
-m_mysql( mysql )
+row::row( std::shared_ptr< stmt_t > stmt ) :
+m_stmt( stmt )
 {
-   m_count       = mysql_field_count( &m_mysql );
-   m_mysql_res   = mysql_use_result( &m_mysql );
-   m_mysql_field = mysql_fetch_field( m_mysql_res );
-   m_mysql_row   = mysql_fetch_row( m_mysql_res );
+   if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
+      m_stmt->stmt = nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
-row::~row( void )
+void row::get_column( int              index,
+                               enum_field_types type,
+                               void           * p,
+                               size_t           length,
+                               int              is_unsigned )
 {
-   mysql_free_result( m_mysql_res );
-}
+   static constexpr char operation[] = "MySQL get result column";
 
-//-----------------------------------------------------------------------------
+   if ( !m_stmt->stmt )
+      throw_error( operation, "Bad row" );
 
-void row::check_column( int index, int type )
-{
-   if ( !m_mysql_res || !m_mysql_row )
-      throw std::runtime_error( "Bad row" );
+   MYSQL_BIND column = {};
 
-   if ( index >= m_count )
-      throw std::runtime_error( "No column available" );
+   column.buffer_type   = type;
+   column.buffer_length = length;
+   column.buffer        = p;
+   column.is_unsigned   = is_unsigned;
+   column.is_null       = 0;
 
-   MYSQL_FIELD * mysql_field = mysql_fetch_field( m_mysql_res );
-
-   if ( mysql_field[ index - 1 ].type != type )
-      throw std::runtime_error( "Incorrect column type" );
+   int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+   if ( rc )
+      throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, int8_t & i )
 {
-   check_column( index, MYSQL_TYPE_TINY );
-   i = *reinterpret_cast< int8_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_TINY, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, int16_t & i )
 {
-   check_column( index, MYSQL_TYPE_SHORT );
-   i = *reinterpret_cast< int16_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_SHORT, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, int32_t & i )
 {
-   check_column( index, MYSQL_TYPE_LONG );
-   i = *reinterpret_cast< int32_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_LONG, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, int64_t & i )
 {
-   check_column( index, MYSQL_TYPE_LONGLONG );
-   i = *reinterpret_cast< int64_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_LONGLONG, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, uint8_t & u )
 {
-   check_column( index, MYSQL_TYPE_TINY );
-   u = *reinterpret_cast< uint8_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_TINY, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, uint16_t & u )
 {
-   check_column( index, MYSQL_TYPE_SHORT );
-   u = *reinterpret_cast< uint16_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_SHORT, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, uint32_t & u )
 {
-   check_column( index, MYSQL_TYPE_LONG );
-   u = *reinterpret_cast< uint32_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_LONG , &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, uint64_t & u )
 {
-   check_column( index, MYSQL_TYPE_LONGLONG );
-   u = *reinterpret_cast< uint64_t * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_LONGLONG, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, double & d )
 {
-   check_column( index, MYSQL_TYPE_DOUBLE );
-   d = *reinterpret_cast< double * >( m_mysql_row[ index ] );
+   get_column( index, MYSQL_TYPE_DOUBLE, &d, sizeof( d ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int index, std::string & s )
 {
-   check_column( index, MYSQL_TYPE_VAR_STRING );
-   s = m_mysql_row[ index ];
+   static constexpr char operation[] = "MySQL get result column";
+
+   if ( !m_stmt->stmt )
+      throw_error( operation, "Bad row" );
+
+   unsigned long length = 0;
+
+   MYSQL_BIND column = { 0 };
+
+   column.buffer_type   = MYSQL_TYPE_VAR_STRING;
+   column.buffer_length = 0;
+   column.length        = &length;
+
+   int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+   if ( rc == 0 )
+   {
+      s.resize( length );
+
+      column.buffer_length = s.length();
+      column.buffer        = const_cast< char * >( s.data() );
+
+      rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+   }
+
+   if ( rc )
+      throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
 }
 
 //-----------------------------------------------------------------------------
 
 bool row::step( void )
 {
-   m_mysql_row = mysql_fetch_row( m_mysql_res );
-   return m_mysql_row;
+   if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
+      m_stmt->stmt = nullptr;
+
+   return m_stmt->stmt;
 }
 
 //-----------------------------------------------------------------------------
 
 row::operator bool ( void ) const
 {
-   return m_mysql_row;
+   return m_stmt->stmt;
 }
 
 //-----------------------------------------------------------------------------

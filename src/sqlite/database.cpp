@@ -57,7 +57,7 @@ std::string database::get_full_path( const std::string & name ) const
 
 void database::create( const std::string & name )
 {
-   static const char * operation = "SQLite create database";
+   static constexpr char operation[] = "SQLite create database";
 
    std::string path = get_full_path( name );
 
@@ -173,7 +173,7 @@ void database::rollback_to_savepoint( const std::string & name )
    std::string command( "ROLLBACK TO SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-      throw_error( "SQLite rollback savepoint " + name + " failed", rc );
+      throw_error( "SQLite rollback to savepoint " + name + " failed", rc );
 }
 
 //-----------------------------------------------------------------------------

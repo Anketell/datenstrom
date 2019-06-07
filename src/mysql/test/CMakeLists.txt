@@ -3,7 +3,7 @@ set( TARGET test_ds_mysql )
 add_executable( ${TARGET}
    test_mysql_db.cpp
    test_mysql_parameter.cpp
-#   test_mysql_transaction.cpp
+   test_mysql_transaction.cpp
    mysql_test_data.cpp
 )
 

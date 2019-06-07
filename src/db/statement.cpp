@@ -214,6 +214,9 @@ uint32_t statement::execute( void )
 
 row statement::result( void )
 {
+   if ( m_parameter > 0 && m_parameter != m_impl->parameter_count() + 1 )
+      throw std::runtime_error( "Wrong number of parameters" );
+
    m_parameter = 1;
    return m_impl->result();
 }

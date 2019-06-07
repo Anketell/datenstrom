@@ -42,16 +42,16 @@ TEST( mysql_parameter, should_insert_named )
       ds::db::statement insert_test = test_db( named, named_parameters );
 
       EXPECT_NO_THROW( insert_test << "hello2"
-                                   << 10
-                                   <<  9
-                                   <<  8
-                                   <<  7
-                                   <<  6
-                                   <<  5
-                                   <<  4
-                                   <<  3
-                                   <<  2
-                                   <<  1 );
+                                   << double( 10.0 )
+                                   << float( 9 )
+                                   << uint64_t( 8 )
+                                   << uint32_t( 7 )
+                                   << uint16_t( 6 )
+                                   << uint8_t( 5 )
+                                   << int64_t( 4 )
+                                   << int32_t( 3 )
+                                   << int16_t( 2 )
+                                   << int8_t( 1 ) );
 
       EXPECT_NO_THROW( insert_test.execute() );
    }
@@ -60,7 +60,7 @@ TEST( mysql_parameter, should_insert_named )
 }
 
 //-----------------------------------------------------------------------------
-/*
+
 TEST( mysql_parameter, should_retrieve_named )
 {
    ds::mysql::database test_db( test_server, username, password );
@@ -116,5 +116,5 @@ TEST( mysql_parameter, should_retrieve_named )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-*/
+
 //-----------------------------------------------------------------------------

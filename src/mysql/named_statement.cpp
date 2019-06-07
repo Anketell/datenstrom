@@ -1,13 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#include <mysql/statement.h>
+#include <mysql/named_statement.h>
 #include <mysql/row.h>
 #include <mysql/error.h>
 #include <sstream>
 #include <string.h>
 #include <assert.h>
-
-#include <iostream>
 
 //-----------------------------------------------------------------------------
 
@@ -21,24 +19,24 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-statement::statement( MYSQL                 & mysql,
-                      const std::string     & sql,
-                      const db::name_list_t & parameters ) :
+named_statement::named_statement( MYSQL                 & mysql,
+                                  const std::string     & sql,
+                                  const db::name_list_t & parameters ) :
+statement_base( mysql, sql ),
 m_mysql( mysql ),
-m_query( sql ),
 m_names( parameters )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-statement::~statement( void )
+named_statement::~named_statement( void )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-const char * statement::check_parameter( int index )
+const char * named_statement::check_parameter( int index )
 {
    if ( m_state == Executed )
       reset();
@@ -54,7 +52,7 @@ const char * statement::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, int8_t i )
+void named_statement::set_parameter( int index, int8_t i )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << static_cast< int >( i ) << ";" << std::endl;
@@ -62,7 +60,7 @@ void statement::set_parameter( int index, int8_t i )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, int16_t i )
+void named_statement::set_parameter( int index, int16_t i )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << i << ";" << std::endl;
@@ -70,7 +68,7 @@ void statement::set_parameter( int index, int16_t i )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, int32_t i )
+void named_statement::set_parameter( int index, int32_t i )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << i << ";" << std::endl;
@@ -78,7 +76,7 @@ void statement::set_parameter( int index, int32_t i )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, int64_t i )
+void named_statement::set_parameter( int index, int64_t i )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << i << ";" << std::endl;
@@ -87,7 +85,7 @@ void statement::set_parameter( int index, int64_t i )
 //-----------------------------------------------------------------------------
 
 
-void statement::set_parameter( int index, uint8_t u )
+void named_statement::set_parameter( int index, uint8_t u )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << static_cast< uint32_t > ( u  )<< ";" << std::endl;
@@ -95,7 +93,7 @@ void statement::set_parameter( int index, uint8_t u )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, uint16_t u )
+void named_statement::set_parameter( int index, uint16_t u )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << u << ";" << std::endl;
@@ -103,14 +101,14 @@ void statement::set_parameter( int index, uint16_t u )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, uint32_t u )
+void named_statement::set_parameter( int index, uint32_t u )
 {
    m_values << "SET " << check_parameter( index ) << " = " << u << ";" << std::endl;
 }
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, uint64_t u )
+void named_statement::set_parameter( int index, uint64_t u )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << u << ";" << std::endl;
@@ -118,7 +116,7 @@ void statement::set_parameter( int index, uint64_t u )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, double d )
+void named_statement::set_parameter( int index, double d )
 {
    m_values << "SET " << check_parameter( index )
             << " = " << d << ";" << std::endl;
@@ -126,7 +124,7 @@ void statement::set_parameter( int index, double d )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, const char * s, size_t length )
+void named_statement::set_parameter( int index, const char * s, size_t length )
 {
    std::string escaped;
 
@@ -140,111 +138,55 @@ void statement::set_parameter( int index, const char * s, size_t length )
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, const char * s )
+void named_statement::set_parameter( int index, const char * s )
 {
    set_parameter( index, s, strlen( s ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void statement::set_parameter( int index, const std::string & s )
+void named_statement::set_parameter( int index, const std::string & s )
 {
    set_parameter( index, s.data(), s.length() );
 }
 
 //-----------------------------------------------------------------------------
 
-int statement::parameter_count( void )
+int named_statement::parameter_count( void )
 {
    return m_names.size();
 }
 
 //-----------------------------------------------------------------------------
 
-void statement::reset( void )
+void named_statement::reset( void )
 {
+   statement_base::reset();
+
    m_values.str().clear();
-
-   m_state = Preparing;
 }
 
 //-----------------------------------------------------------------------------
 
-void statement::internal_execute( void )
+void named_statement::internal_execute( void )
 {
-   std::stringstream full_query;
+   static constexpr char operation[] = "MySQL named statement parameter binding";
 
-   full_query << m_values.str() << m_query;
+   std::string values = m_values.str();
 
-   for ( auto name : m_names )
-      full_query << ";" << std::endl << "SET " << name << " = NULL";
-
-   std::string query = full_query.str();
-
-//   std::cout << query << std::endl << std::endl;
-
-   int rc = mysql_real_query( &m_mysql, query.c_str(), query.length() );
-
+   int rc = mysql_real_query( &m_mysql, values.c_str(), values.length() );
    if ( rc )
-      throw_error( "mysql_real_query failed", mysql_error( &m_mysql ) );
+      throw_error( operation, mysql_error( &m_mysql ) );
 
-   m_state = Executed;
-}
-
-//-----------------------------------------------------------------------------
-
-uint32_t statement::execute( void )
-{
-   internal_execute();
-
-   uint32_t res = 0;
-
-   MYSQL_RES * mysql_res = mysql_use_result( &m_mysql );
-   if ( mysql_res )
+   do
    {
-      for ( ;; )
-      {
-         MYSQL_FIELD * mysql_field = mysql_fetch_field( mysql_res );
-         MYSQL_ROW     mysql_row   = mysql_fetch_row( mysql_res );
-
-         switch ( mysql_field->type )
-         {
-            case MYSQL_TYPE_TINY :
-               res = *reinterpret_cast< int8_t * >( *mysql_row );
-               break;
-
-            case MYSQL_TYPE_SHORT :
-               res = *reinterpret_cast< int16_t * >( *mysql_row );
-               break;
-
-            case MYSQL_TYPE_LONG :
-               res = *reinterpret_cast< int32_t * >( *mysql_row );
-               break;
-         }
-
-         mysql_free_result( mysql_res );
-
-         if ( mysql_next_result( &m_mysql ) )
-            break;
-
-         mysql_res = mysql_use_result( &m_mysql );
-      }
+      rc = mysql_next_result( &m_mysql );
+      if ( rc > 0 )
+         throw_error( operation, mysql_error( &m_mysql ) );
    }
-   else
-      res = mysql_insert_id( &m_mysql );
+   while ( rc == 0 );
 
-   reset();
-
-   return res;
-}
-
-//-----------------------------------------------------------------------------
-
-db::row statement::result( void )
-{
-   internal_execute();
-
-   return db::row( std::make_shared< row >( m_mysql ) );
+   statement_base::internal_execute();
 }
 
 //-----------------------------------------------------------------------------

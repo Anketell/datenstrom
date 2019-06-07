@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_ROW_H
-#define DS_MYSQL_ROW_H
+#ifndef DS_MYSQL_PREPARED_ROW_H
+#define DS_MYSQL_PREPARED_ROW_H
 
 //-----------------------------------------------------------------------------
 
@@ -22,18 +22,17 @@ namespace mysql
 
 class row : public db::row::impl
 {
-   MYSQL       & m_mysql;
-   MYSQL_RES   * m_mysql_res;
-   MYSQL_FIELD * m_mysql_field;
-   MYSQL_ROW     m_mysql_row;
-   int           m_count;
+   std::shared_ptr< stmt_t > m_stmt;
 
-   void check_column( int index, int type );
+   void get_column( int              index,
+                    enum_field_types type,
+                    void           * p,
+                    size_t           length,
+                    int              is_unsigned = 0 );
 
 public:
 
-   row( MYSQL & mysql );
-   virtual ~row( void );
+   row( std::shared_ptr< stmt_t > stmt );
 
    virtual void get_column( int index, int8_t & ) override;
    virtual void get_column( int index, int16_t & ) override;

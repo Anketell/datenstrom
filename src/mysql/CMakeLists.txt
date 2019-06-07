@@ -4,10 +4,10 @@ include_directories( BEFORE, "/usr/include/mysql" )
 
 add_library( ${TARGET} SHARED
    database.cpp
-   statement.cpp
-   prepared_statement.cpp
+   statement_base.cpp
+   positional_statement.cpp
+   named_statement.cpp
    row.cpp
-   prepared_row.cpp
    error.cpp
 )
 

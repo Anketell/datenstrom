@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#include <mysql/prepared_statement.h>
-#include <mysql/prepared_row.h>
+#include <mysql/positional_statement.h>
+#include <mysql/row.h>
 #include <mysql/error.h>
 #include <sstream>
 #include <string.h>
@@ -21,26 +21,16 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-prepared_statement::prepared_statement( MYSQL             & mysql,
-                                        const std::string & sql )
+positional_statement::positional_statement( MYSQL             & mysql,
+                                        const std::string & sql ) :
+statement_base( mysql, sql )
 {
-   m_stmt = std::make_shared< stmt_t >();
-
-   m_stmt->stmt = mysql_stmt_init( &mysql );
-
-   int rc = mysql_stmt_prepare( m_stmt->stmt, sql.data(), sql.length() );
-   if ( rc )
-   {
-      throw_error( "MySQL statement preparation",
-                   mysql_stmt_error( m_stmt->stmt ) );
-   }
-
    prepare_parameter_binding();
 }
 
 //-----------------------------------------------------------------------------
 
-prepared_statement::~prepared_statement( void )
+positional_statement::~positional_statement( void )
 {
    cleanup_parameters();
    delete m_mysql_bind;
@@ -48,7 +38,7 @@ prepared_statement::~prepared_statement( void )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::prepare_parameter_binding( void )
+void positional_statement::prepare_parameter_binding( void )
 {
    m_bind_count = mysql_stmt_param_count( m_stmt->stmt );
    if ( m_bind_count )
@@ -60,7 +50,7 @@ void prepared_statement::prepare_parameter_binding( void )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::cleanup_parameters( void )
+void positional_statement::cleanup_parameters( void )
 {
    for ( int i = 0; i < m_bind_count; i++ )
       free( m_mysql_bind[ i ].buffer );
@@ -68,9 +58,9 @@ void prepared_statement::cleanup_parameters( void )
 
 //-----------------------------------------------------------------------------
 
-int prepared_statement::check_parameter( int index )
+int positional_statement::check_parameter( int index )
 {
-   static const char * operation = "SQLite prepared statement parameter check";
+   static constexpr char operation[] = "SQLite prepared statement parameter check";
 
    if ( m_state == Executed )
       reset();
@@ -86,7 +76,7 @@ int prepared_statement::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, int8_t i )
+void positional_statement::set_parameter( int index, int8_t i )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -100,7 +90,7 @@ void prepared_statement::set_parameter( int index, int8_t i )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, int16_t i )
+void positional_statement::set_parameter( int index, int16_t i )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -114,7 +104,7 @@ void prepared_statement::set_parameter( int index, int16_t i )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, int32_t i )
+void positional_statement::set_parameter( int index, int32_t i )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -128,7 +118,7 @@ void prepared_statement::set_parameter( int index, int32_t i )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, int64_t i )
+void positional_statement::set_parameter( int index, int64_t i )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -143,7 +133,7 @@ void prepared_statement::set_parameter( int index, int64_t i )
 //-----------------------------------------------------------------------------
 
 
-void prepared_statement::set_parameter( int index, uint8_t u )
+void positional_statement::set_parameter( int index, uint8_t u )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -157,7 +147,7 @@ void prepared_statement::set_parameter( int index, uint8_t u )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, uint16_t u )
+void positional_statement::set_parameter( int index, uint16_t u )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -171,7 +161,7 @@ void prepared_statement::set_parameter( int index, uint16_t u )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, uint32_t u )
+void positional_statement::set_parameter( int index, uint32_t u )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -185,7 +175,7 @@ void prepared_statement::set_parameter( int index, uint32_t u )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, uint64_t u )
+void positional_statement::set_parameter( int index, uint64_t u )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -199,7 +189,7 @@ void prepared_statement::set_parameter( int index, uint64_t u )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, double d )
+void positional_statement::set_parameter( int index, double d )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -213,7 +203,7 @@ void prepared_statement::set_parameter( int index, double d )
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, const char * s, size_t length )
+void positional_statement::set_parameter( int index, const char * s, size_t length )
 {
    MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
 
@@ -226,44 +216,40 @@ void prepared_statement::set_parameter( int index, const char * s, size_t length
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, const char * s )
+void positional_statement::set_parameter( int index, const char * s )
 {
    set_parameter( index, s, strlen( s ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::set_parameter( int index, const std::string & s )
+void positional_statement::set_parameter( int index, const std::string & s )
 {
    set_parameter( index, s.data(), s.length() );
 }
 
 //-----------------------------------------------------------------------------
 
-int prepared_statement::parameter_count( void )
+int positional_statement::parameter_count( void )
 {
    return m_bind_count;
 }
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::reset( void )
+void positional_statement::reset( void )
 {
-   int rc = mysql_stmt_reset( m_stmt->stmt );
-   if ( rc )
-      throw_error( "MySQL statement reset", mysql_stmt_error( m_stmt->stmt ) );
+   statement_base::reset();
 
    cleanup_parameters();
    memset( m_mysql_bind, 0, sizeof( MYSQL_BIND ) * m_bind_count );
-
-   m_state = Preparing;
 }
 
 //-----------------------------------------------------------------------------
 
-void prepared_statement::internal_execute( void )
+void positional_statement::internal_execute( void )
 {
-   static const char * operation = "MySQL prepared statement execution";
+   static constexpr char operation[] = "MySQL poitional statement parameter binding";
 
    if ( m_bind_count )
    {
@@ -272,50 +258,7 @@ void prepared_statement::internal_execute( void )
          throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
    }
 
-   int rc = mysql_stmt_execute( m_stmt->stmt );
-   if ( rc )
-      throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
-
-   m_state = Executed;
-}
-
-//-----------------------------------------------------------------------------
-
-uint32_t prepared_statement::execute( void )
-{
-   internal_execute();
-
-   uint32_t res = 0;
-
-   if ( mysql_stmt_num_rows( m_stmt->stmt ) )
-   {
-      try
-      {
-         prepared_row( m_stmt ).get_column( 0, res );
-      }
-      catch ( ... )
-      {
-         res = mysql_stmt_insert_id( m_stmt->stmt );
-      }
-   }
-   else
-      res = mysql_stmt_insert_id( m_stmt->stmt );
-
-   reset();
-
-   return res;
-}
-
-//-----------------------------------------------------------------------------
-
-db::row prepared_statement::result( void )
-{
-   internal_execute();
-
-   if ( mysql_stmt_affected_rows( m_stmt->stmt ) == 0 )
-      return db::row();
-
-   return db::row( std::make_shared< prepared_row >( m_stmt ) );
+   statement_base::internal_execute();
 }
 
 //-----------------------------------------------------------------------------

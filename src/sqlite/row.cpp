@@ -26,7 +26,7 @@ row::row( std::shared_ptr< stmt_t > stmt )
 
 void row::check_column( int index, int type )
 {
-   static const char * operation = "SQLite result column check";
+   static constexpr char operation[] = "SQLite result column check";
 
    if ( !m_stmt )
       throw_error( operation, "Bad row" );

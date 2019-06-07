@@ -1,13 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_PREPARED_STATEMENT_H
-#define DS_MYSQL_PREPARED_STATEMENT_H
+#ifndef DS_MYSQL_NAMED_STATEMENT_H
+#define DS_MYSQL_NAMED_STATEMENT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/statement.h>
-#include <mysql/mysql.h>
-#include <mysql/types.h>
+#include <mysql/statement_base.h>
 #include <sstream>
 
 //-----------------------------------------------------------------------------
@@ -22,27 +20,23 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-class prepared_statement : public db::statement::impl
+class named_statement : public statement_base
 {
-   enum state_t { Preparing, Executed };
+   MYSQL               & m_mysql;
+   const db::name_list_t m_names;
+   std::stringstream     m_values;
 
-   std::shared_ptr< stmt_t > m_stmt;
-   MYSQL_BIND              * m_mysql_bind  = nullptr;
-   int                       m_bind_count  = 0;
-   state_t                   m_state;
-
-   void prepare_parameter_binding( void );
-   void prepare_result_fields( void );
-
-   void cleanup_parameters( void );
-   int  check_parameter( int index );
+   const char * check_parameter( int index );
    void set_parameter( int index, const char * s, size_t length );
    void internal_execute( void );
 
 public:
 
-   prepared_statement( MYSQL & mysql, const std::string & sql );
-   ~prepared_statement( void );
+   named_statement( MYSQL                 & mysql,
+                    const std::string     & sql,
+                    const db::name_list_t & parameters );
+
+   ~named_statement( void );
 
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;
@@ -62,8 +56,6 @@ public:
    virtual int parameter_count( void ) override;
 
    virtual void     reset( void ) override;
-   virtual uint32_t execute( void ) override;
-   virtual db::row  result( void ) override;
 };
 
 //-----------------------------------------------------------------------------

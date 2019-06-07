@@ -1,10 +1,9 @@
 //-----------------------------------------------------------------------------
 
 #include <mysql/database.h>
-#include <mysql/statement.h>
-#include <mysql/prepared_statement.h>
+#include <mysql/positional_statement.h>
+#include <mysql/named_statement.h>
 #include <mysql/error.h>
-#include <iostream>
 
 //-----------------------------------------------------------------------------
 
@@ -105,46 +104,75 @@ db::statement database::operator()( const std::string     & query,
                                     const db::name_list_t & parameters )
 {
    if ( parameters.empty() )
-      return db::statement( std::make_shared< prepared_statement >( m_mysql, query ) );
+      return db::statement( std::make_shared< positional_statement >( m_mysql, query ) );
 
-   return db::statement( std::make_shared< statement >( m_mysql, query, parameters ) );
+   return db::statement( std::make_shared< named_statement >( m_mysql, query, parameters ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void database::begin_transaction( void )
 {
+   std::string sql = "BEGIN";
+
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL begin transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void database::commit_transaction( void )
 {
+   std::string sql = "COMMIT";
+
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL commit transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void database::rollback_transaction( void )
 {
+   std::string sql = "ROLLBACK";
 
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL rollback transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::savepoint( const std::string & )
+void database::savepoint( const std::string & name )
 {
+   std::string sql = "SAVEPOINT " + name;
+
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL create savepoint " + name + " transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::release_savepoint( const std::string & )
+void database::release_savepoint( const std::string & name )
 {
+   std::string sql = "RELEASE SAVEPOINT " + name;
+
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL release savepoint " + name + " transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::rollback_to_savepoint( const std::string & )
+void database::rollback_to_savepoint( const std::string & name )
 {
+   std::string sql = "ROLLBACK TO SAVEPOINT " + name;
+
+   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+   if ( rc )
+      throw_error( "MySQL rollback to savepoint " + name + " transaction", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------

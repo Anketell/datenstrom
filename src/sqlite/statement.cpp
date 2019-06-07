@@ -20,7 +20,7 @@ namespace sqlite
 statement::statement( sqlite3 * db, const std::string     & sql,
                                     const db::name_list_t & parameters )
 {
-   static const char * operation = "SQLite statement prepare";
+   static constexpr char operation[] = "SQLite statement prepare";
 
    m_db = db;
 
@@ -55,7 +55,7 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 
 int statement::check_parameter( int index )
 {
-   static const char * operation = "SQLite statement parameter check";
+   static constexpr char operation[] = "SQLite statement parameter check";
 
    if ( m_state == Executed )
       reset();
