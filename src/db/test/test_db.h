@@ -76,6 +76,8 @@ struct Test_statement : public ds::db::statement::impl
 
 struct Test_db : public ds::db::database
 {
+   static constexpr char TYPE[] = "Test_db";
+
    int m_begin_txn_calls;
    int m_commit_txn_calls;
    int m_rollback_txn_calls;
@@ -94,15 +96,20 @@ struct Test_db : public ds::db::database
       m_rollback_to_savepoint_calls = 0;
    }
 
-   void create( const std::string & name )
+   virtual const char * type( void ) const
+   {
+      return TYPE;
+   }
+
+   virtual void create( const std::string & name ) override
    {
    }
 
-   void use( const std::string & name )
+   virtual void use( const std::string & name ) override
    {
    }
 
-   bool drop( const std::string & name )
+   virtual bool drop( const std::string & name ) override
    {
       return true;
    }

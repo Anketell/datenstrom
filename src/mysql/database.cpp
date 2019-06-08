@@ -17,6 +17,10 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
+constexpr char database::TYPE[];
+
+//-----------------------------------------------------------------------------
+
 database::database( const std::string & name,
                     const std::string & server,
                     const std::string & username,
@@ -56,6 +60,13 @@ database( "", server, username, password, port )
 database::~database( void )
 {
    mysql_close( &m_mysql );
+}
+
+//-----------------------------------------------------------------------------
+
+const char * database::type( void ) const
+{
+   return TYPE;
 }
 
 //-----------------------------------------------------------------------------

@@ -26,6 +26,8 @@ class database : public db::database
 
 public:
 
+   static constexpr char TYPE[] = "mysql";
+
    database( const std::string & name,
              const std::string & server,
              const std::string & username,
@@ -38,6 +40,8 @@ public:
              uint16_t            port = 3306 );
 
    virtual ~database( void );
+
+   virtual const char * type( void ) const override;
 
    virtual void create( const std::string & name );
    virtual void use( const std::string & name );

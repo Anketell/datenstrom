@@ -5,6 +5,10 @@
 
 //-----------------------------------------------------------------------------
 
+constexpr char Test_db::TYPE[];
+
+//-----------------------------------------------------------------------------
+
 TEST( db_endr, should_call_db_row_step )
 {
    auto test_stmt = std::make_shared< Test_statement >();

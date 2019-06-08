@@ -31,15 +31,17 @@ class database : public db::database
 
 public:
 
-   static constexpr char name[] = "sqlite";
+   static constexpr char TYPE[] = "sqlite";
 
    database( const std::string & path );
 
    virtual ~database( void );
 
-   virtual void create( const std::string & name );
-   virtual void use( const std::string & name );
-   virtual bool drop( const std::string & name );
+   virtual const char * type( void ) const override;
+
+   virtual void create( const std::string & name ) override;
+   virtual void use( const std::string & name ) override;
+   virtual bool drop( const std::string & name ) override;
 
    virtual db::statement operator()( const std::string     & query,
                                      const db::name_list_t & parameters = {} ) override;

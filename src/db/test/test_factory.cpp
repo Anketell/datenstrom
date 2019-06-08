@@ -12,32 +12,37 @@ class derived_db_1 : public ds::db::database
 
 public:
 
-   static constexpr char name[] = "derived_db_1";
+   static constexpr char TYPE[] = "derived_db_1";
 
    derived_db_1( std::string param ) : m_param( param ) {}
 
    std::string param( void ) const { return m_param; }
 
-   virtual void create( const std::string & name ) {}
-   virtual void use( const std::string & name ) {}
-   virtual bool drop( const std::string & name ) { return true; }
+   virtual const char * type( void ) const override
+   {
+      return TYPE;
+   }
+
+   virtual void create( const std::string & name ) override {}
+   virtual void use( const std::string & name ) override {}
+   virtual bool drop( const std::string & name ) override { return true; }
 
    virtual ds::db::statement operator()( const std::string         & query,
-                                         const ds::db::name_list_t & parameters = {} )
+                                         const ds::db::name_list_t & parameters = {} ) override
    {
       return std::shared_ptr< ds::db::statement::impl >();
    }
 
-   virtual void begin_transaction( void ) {}
-   virtual void commit_transaction( void ) {}
-   virtual void rollback_transaction( void ) {}
+   virtual void begin_transaction( void ) override {}
+   virtual void commit_transaction( void ) override {}
+   virtual void rollback_transaction( void ) override {}
 
-   virtual void savepoint( const std::string & name ) {}
-   virtual void release_savepoint( const std::string & name ) {}
-   virtual void rollback_to_savepoint( const std::string & name ) {}
+   virtual void savepoint( const std::string & name ) override {}
+   virtual void release_savepoint( const std::string & name ) override {}
+   virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
 
-constexpr char derived_db_1::name[];
+constexpr char derived_db_1::TYPE[];
 
 //-----------------------------------------------------------------------------
 
@@ -47,33 +52,38 @@ class derived_db_2 : public ds::db::database
 
 public:
 
-   static constexpr char name[] = "derived_db_2";
+   static constexpr char TYPE[] = "derived_db_2";
 
    derived_db_2( std::string param ) : m_param( param ) {}
 
    std::string param( void ) const { return m_param; }
 
-   virtual void create( const std::string & name ) {}
-   virtual void use( const std::string & name ) {}
-   virtual bool drop( const std::string & name ) { return true; }
+   virtual const char * type( void ) const override
+   {
+      return TYPE;
+   }
+
+   virtual void create( const std::string & name ) override {}
+   virtual void use( const std::string & name ) override {}
+   virtual bool drop( const std::string & name ) override { return true; }
 
    virtual ds::db::statement operator()( const std::string         & query,
-                                         const ds::db::name_list_t & parameters = {} )
+                                         const ds::db::name_list_t & parameters = {} ) override
    {
       return std::shared_ptr< ds::db::statement::impl >();
    }
 
-   virtual void begin_transaction( void ) {}
-   virtual void commit_transaction( void ) {}
-   virtual void rollback_transaction( void ) {}
+   virtual void begin_transaction( void ) override {}
+   virtual void commit_transaction( void ) override {}
+   virtual void rollback_transaction( void ) override {}
 
-   virtual void savepoint( const std::string & name ) {}
-   virtual void release_savepoint( const std::string & name ) {}
-   virtual void rollback_to_savepoint( const std::string & name ) {}
+   virtual void savepoint( const std::string & name ) override {}
+   virtual void release_savepoint( const std::string & name ) override {}
+   virtual void rollback_to_savepoint( const std::string & name ) override {}
 
 };
 
-constexpr char derived_db_2::name[];
+constexpr char derived_db_2::TYPE[];
 
 //-----------------------------------------------------------------------------
 

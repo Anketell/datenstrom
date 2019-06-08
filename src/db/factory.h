@@ -33,7 +33,7 @@ public:
 
    template< typename D > void register_db( void )
    {
-      m_ds_factory.register_type< D >( D::name );
+      m_ds_factory.register_type< D >( D::TYPE );
    }
 
    database * operator()( std::string connection ) const
