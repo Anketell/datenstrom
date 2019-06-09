@@ -64,19 +64,14 @@ uint32_t statement_base::execute( void )
 
    uint32_t res = 0;
 
-   if ( mysql_stmt_num_rows( m_stmt->stmt ) )
+   try
    {
-      try
-      {
-         row( m_stmt ).get_column( 0, res );
-      }
-      catch ( ... )
-      {
-         res = mysql_stmt_insert_id( m_stmt->stmt );
-      }
+      row( m_stmt ).get_column( 0, res );
    }
-   else
+   catch ( ... )
+   {
       res = mysql_stmt_insert_id( m_stmt->stmt );
+   }
 
    reset();
 

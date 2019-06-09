@@ -20,20 +20,20 @@ row::row( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
-      m_stmt->stmt = nullptr;
+      m_stmt = nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
 void row::get_column( int              index,
-                               enum_field_types type,
-                               void           * p,
-                               size_t           length,
-                               int              is_unsigned )
+                      enum_field_types type,
+                      void           * p,
+                      size_t           length,
+                      int              is_unsigned )
 {
    static constexpr char operation[] = "MySQL get result column";
 
-   if ( !m_stmt->stmt )
+   if ( !m_stmt )
       throw_error( operation, "Bad row" );
 
    MYSQL_BIND column = {};
@@ -118,7 +118,7 @@ void row::get_column( int index, std::string & s )
 {
    static constexpr char operation[] = "MySQL get result column";
 
-   if ( !m_stmt->stmt )
+   if ( !m_stmt )
       throw_error( operation, "Bad row" );
 
    unsigned long length = 0;
@@ -149,16 +149,16 @@ void row::get_column( int index, std::string & s )
 bool row::step( void )
 {
    if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
-      m_stmt->stmt = nullptr;
+      m_stmt = nullptr;
 
-   return m_stmt->stmt;
+   return m_stmt != nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
 row::operator bool ( void ) const
 {
-   return m_stmt->stmt;
+   return m_stmt != nullptr;
 }
 
 //-----------------------------------------------------------------------------
