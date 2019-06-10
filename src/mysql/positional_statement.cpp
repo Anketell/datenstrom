@@ -3,11 +3,12 @@
 #include <mysql/positional_statement.h>
 #include <mysql/row.h>
 #include <mysql/error.h>
+
 #include <sstream>
+#include <iostream>
+
 #include <string.h>
 #include <assert.h>
-
-#include <iostream>
 
 //-----------------------------------------------------------------------------
 
@@ -21,8 +22,12 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
+static my_bool not_null = 0;
+
+//-----------------------------------------------------------------------------
+
 positional_statement::positional_statement( MYSQL             & mysql,
-                                        const std::string & sql ) :
+                                            const std::string & sql ) :
 statement_base( mysql, sql )
 {
    prepare_parameter_binding();
@@ -34,6 +39,7 @@ positional_statement::~positional_statement( void )
 {
    cleanup_parameters();
    delete m_mysql_bind;
+   delete m_bind_info;
 }
 
 //-----------------------------------------------------------------------------
@@ -45,6 +51,16 @@ void positional_statement::prepare_parameter_binding( void )
    {
       m_mysql_bind = new MYSQL_BIND[ m_bind_count ];
       memset( m_mysql_bind, 0, sizeof( MYSQL_BIND ) * m_bind_count );
+
+      m_bind_info = new bind_info_t[ m_bind_count ];
+      memset( m_bind_info, 0, sizeof( bind_info_t ) * m_bind_count );
+
+      for ( int i = 0; i < m_bind_count; i++ )
+      {
+         m_mysql_bind[ i ].length  = &m_bind_info[ i ].length;
+         m_mysql_bind[ i ].is_null = &m_bind_info[ i ].is_null;
+         m_mysql_bind[ i ].error   = &m_bind_info[ i ].error;
+      }
    }
 }
 
@@ -52,15 +68,13 @@ void positional_statement::prepare_parameter_binding( void )
 
 void positional_statement::cleanup_parameters( void )
 {
-   for ( int i = 0; i < m_bind_count; i++ )
-      free( m_mysql_bind[ i ].buffer );
 }
 
 //-----------------------------------------------------------------------------
 
 int positional_statement::check_parameter( int index )
 {
-   static constexpr char operation[] = "SQLite prepared statement parameter check";
+   static constexpr char operation[] = "MySQL positional statement parameter check";
 
    if ( m_state == Executed )
       reset();
@@ -78,140 +92,209 @@ int positional_statement::check_parameter( int index )
 
 void positional_statement::set_parameter( int index, int8_t i )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_TINY;
    param.buffer_length = sizeof( i );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, int16_t i )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_SHORT;
    param.buffer_length = sizeof( i );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, int32_t i )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONG;
    param.buffer_length = sizeof( i );
    param.buffer        = malloc( param.buffer_length );
    memcpy(  param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, int64_t i )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONGLONG;
    param.buffer_length = sizeof( i );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
-
 void positional_statement::set_parameter( int index, uint8_t u )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_TINY;
    param.buffer_length = sizeof( u );
    param.buffer        = malloc( param.buffer_length );
    memcpy(  param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, uint16_t u )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_SHORT;
    param.buffer_length = sizeof( u );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, uint32_t u )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONG;
    param.buffer_length = sizeof( u );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, uint64_t u )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONGLONG;
    param.buffer_length = sizeof( u );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, double d )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_DOUBLE;
    param.buffer_length = sizeof( d );
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, &d, param.buffer_length );
    param.is_unsigned   = 0;
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, const char * s, size_t length )
 {
-   MYSQL_BIND & param( m_mysql_bind[ check_parameter( index ) ] );
+   index = check_parameter( index );
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_STRING;
    param.buffer_length = length;
    param.buffer        = malloc( param.buffer_length );
    memcpy( param.buffer, s, param.buffer_length );
-   param.is_null       = 0;
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = param.buffer_length;
+   info.is_null = 0;
+   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------

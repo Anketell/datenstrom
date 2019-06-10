@@ -21,8 +21,16 @@ namespace mysql
 
 class positional_statement : public statement_base
 {
-   MYSQL_BIND * m_mysql_bind = nullptr;
-   int          m_bind_count = 0;
+   struct bind_info_t
+   {
+      unsigned long length;
+      my_bool       is_null;
+      my_bool       error;
+   };
+
+   MYSQL_BIND  * m_mysql_bind = nullptr;
+   bind_info_t * m_bind_info  = nullptr;
+   int           m_bind_count = 0;
 
    void prepare_parameter_binding( void );
 
