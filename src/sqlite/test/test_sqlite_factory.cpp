@@ -15,7 +15,7 @@ TEST( sqlite_factory, should_register_and_create )
    ds::db::database * db;
 
    EXPECT_NO_THROW( db = factory( "sqlite:" ) );
-   EXPECT_NE( dynamic_cast< ds::db::database * >( db ), nullptr );
+   EXPECT_NE( dynamic_cast< ds::sqlite::database * >( db ), nullptr );
    EXPECT_NO_THROW( delete db );
 }
 
