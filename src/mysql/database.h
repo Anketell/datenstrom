@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <db/database.h>
+#include <db/impl.h>
 #include <mysql/mysql.h>
 
 //-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-class database : public db::database
+class database : public db::impl
 {
   MYSQL m_mysql;
 

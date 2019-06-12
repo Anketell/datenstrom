@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <ds/factory.h>
-#include <db/database.h>
+#include <db/impl.h>
 #include <stdexcept>
 
 //-----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace db
 
 class factory
 {
-   typedef ds::factory< database, std::string, const std::string & > db_factory_t;
+   typedef ds::factory< impl, std::string, const std::string & > db_factory_t;
 
    db_factory_t m_ds_factory;
 
@@ -36,7 +36,7 @@ public:
       m_ds_factory.register_type< D >( D::TYPE );
    }
 
-   database * operator()( std::string connection ) const
+   impl * operator()( std::string connection ) const
    {
       std::string::size_type pos = connection.find( ":" );
 

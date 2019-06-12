@@ -19,17 +19,17 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class database;
+class impl;
 
 //-----------------------------------------------------------------------------
 
 class transaction
 {
-   database & m_db;
+   impl & m_db;
 
 public:
 
-   transaction( database & db );
+   transaction( impl & db );
    ~transaction( void );
 };
 
@@ -37,12 +37,12 @@ public:
 
 class savepoint
 {
-   database  & m_db;
+   impl      & m_db;
    std::string m_name;
 
 public:
 
-   savepoint( database & db, const std::string & name );
+   savepoint( impl & db, const std::string & name );
    ~savepoint( void );
 };
 

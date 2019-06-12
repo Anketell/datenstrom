@@ -12,7 +12,7 @@ TEST( sqlite_factory, should_register_and_create )
 
    factory.register_db< ds::sqlite::database >();
 
-   ds::db::database * db;
+   ds::db::impl * db;
 
    EXPECT_NO_THROW( db = factory( "sqlite:" ) );
    EXPECT_NE( dynamic_cast< ds::sqlite::database * >( db ), nullptr );

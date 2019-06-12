@@ -6,7 +6,7 @@
 
 //-----------------------------------------------------------------------------
 
-class derived_db_1 : public ds::db::database
+class derived_db_1 : public ds::db::impl
 {
    std::string m_param;
 
@@ -46,7 +46,7 @@ constexpr char derived_db_1::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-class derived_db_2 : public ds::db::database
+class derived_db_2 : public ds::db::impl
 {
    std::string m_param;
 
@@ -94,7 +94,7 @@ TEST( db_factory, should_register_and_create )
    factory.register_db< derived_db_1 >();
    factory.register_db< derived_db_2 >();
 
-   ds::db::database * db;
+   ds::db::impl * db;
 
    EXPECT_NO_THROW( db = factory( "derived_db_1:parameters" ) );
 

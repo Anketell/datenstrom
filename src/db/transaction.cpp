@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/transaction.h>
-#include <db/database.h>
+#include <db/impl.h>
 
 //-----------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-transaction::transaction( database & db ) :
+transaction::transaction( impl & db ) :
 m_db( db )
 {
    m_db.begin_transaction();
@@ -33,7 +33,7 @@ transaction::~transaction( void )
 
 //-----------------------------------------------------------------------------
 
-savepoint::savepoint( database & db, const std::string & name ) :
+savepoint::savepoint( impl & db, const std::string & name ) :
 m_db( db )
 {
    m_name = name;

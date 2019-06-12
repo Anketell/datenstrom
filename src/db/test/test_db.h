@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <db/database.h>
+#include <db/impl.h>
 
 //-----------------------------------------------------------------------------
 
@@ -74,7 +74,7 @@ struct Test_statement : public ds::db::statement::impl
 
 //-----------------------------------------------------------------------------
 
-struct Test_db : public ds::db::database
+struct Test_db : public ds::db::impl
 {
    static constexpr char TYPE[] = "Test_db";
 

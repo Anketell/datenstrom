@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <db/database.h>
+#include <db/impl.h>
 #include <sqlite3.h>
 
 //-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-class database : public db::database
+class database : public db::impl
 {
    const std::string m_path;
    sqlite3         * m_db = nullptr;
