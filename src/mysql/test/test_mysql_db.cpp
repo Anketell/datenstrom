@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <mysql/database.h>
+#include <mysql/connection.h>
 #include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
 
@@ -9,7 +9,7 @@
 
 TEST( mysql_db, should_create_good_path )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -20,7 +20,7 @@ TEST( mysql_db, should_create_good_path )
 
 TEST( mysql_db, should_fail_create_bad_db_name )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_THROW( test_db.create( bad_db_name ), std::runtime_error );
 }
@@ -29,7 +29,7 @@ TEST( mysql_db, should_fail_create_bad_db_name )
 
 TEST( mysql_db_statement, should_execute_simple )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -45,7 +45,7 @@ TEST( mysql_db_statement, should_execute_simple )
 
 TEST( mysql_db_statement, should_fail_create_bad_sql )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -60,7 +60,7 @@ TEST( mysql_db_statement, should_fail_create_bad_sql )
 
 TEST( mysql_db_statement, should_execute_query_parameters )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -89,7 +89,7 @@ TEST( mysql_db_statement, should_execute_query_parameters )
 
 TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -128,7 +128,7 @@ TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 
 TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -152,7 +152,7 @@ TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 
 TEST( mysql_db_statement, should_provide_query_result_row )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -196,7 +196,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
 
 TEST( mysql_db_statement, should_fail_bad_query )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -218,7 +218,7 @@ TEST( mysql_db_statement, should_fail_bad_query )
 
 TEST( mysql_db_row, should_provide_query_data )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -271,7 +271,7 @@ TEST( mysql_db_row, should_provide_query_data )
 
 TEST( mysql_db_row, should_return_query_data_not_available )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -288,7 +288,7 @@ TEST( mysql_db_row, should_return_query_data_not_available )
 
 TEST( mysql_db_row, should_fail_query_wrong_column_count )
 {
-   ds::mysql::database test_db( test_server, username, password );
+   ds::mysql::connection test_db( test_server, username, password );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

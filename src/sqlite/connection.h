@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_DATABASE_H
-#define DS_MYSQL_DATABASE_H
+#ifndef DS_SQLITE_CONNECTION_H
+#define DS_SQLITE_CONNECTION_H
 
 //-----------------------------------------------------------------------------
 
 #include <db/impl.h>
-#include <mysql/mysql.h>
+#include <sqlite3.h>
 
 //-----------------------------------------------------------------------------
 
@@ -15,37 +15,33 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace mysql
+namespace sqlite
 {
 
 //-----------------------------------------------------------------------------
 
-class database : public db::impl
+class connection : public db::impl
 {
-  MYSQL m_mysql;
+   const std::string m_path;
+   sqlite3         * m_db = nullptr;
+
+   std::string get_full_path( const std::string & name ) const;
+
+   void close( void );
 
 public:
 
-   static constexpr char TYPE[] = "mysql";
+   static constexpr char TYPE[] = "sqlite";
 
-   database( const std::string & name,
-             const std::string & server,
-             const std::string & username,
-             const std::string & password,
-             uint16_t            port = 3306 );
+   connection( const std::string & path );
 
-   database( const std::string & server,
-             const std::string & username,
-             const std::string & password,
-             uint16_t            port = 3306 );
-
-   virtual ~database( void );
+   virtual ~connection( void );
 
    virtual const char * type( void ) const override;
 
-   virtual void create( const std::string & name );
-   virtual void use( const std::string & name );
-   virtual bool drop( const std::string & name );
+   virtual void create( const std::string & name ) override;
+   virtual void use( const std::string & name ) override;
+   virtual bool drop( const std::string & name ) override;
 
    virtual db::statement operator()( const std::string     & query,
                                      const db::name_list_t & parameters = {} ) override;

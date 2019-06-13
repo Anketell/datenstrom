@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_DATABASE_H
-#define DS_DB_DATABASE_H
+#ifndef DS_DB_CONNECTION_H
+#define DS_DB_CONNECTION_H
 
 //-----------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class database : public impl
+class connection : public impl
 {
 private:
 
@@ -27,9 +27,9 @@ private:
 
 public:
 
-   database( std::shared_ptr< impl > impl = nullptr );
+   connection( std::shared_ptr< impl > impl = nullptr );
 
-   database & operator = ( impl * impl );
+   connection & operator = ( impl * impl );
    operator impl * ( void ) const;
 
    virtual const char * type( void ) const override;

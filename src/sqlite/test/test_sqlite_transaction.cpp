@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <sqlite/database.h>
+#include <sqlite/connection.h>
 #include <db/transaction.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
@@ -10,7 +10,7 @@
 
 TEST( sqlite_transaction, should_commit_on_destruction )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -49,7 +49,7 @@ TEST( sqlite_transaction, should_commit_on_destruction )
 
 TEST( sqlite_transaction, should_rollback_on_exception )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -94,7 +94,7 @@ TEST( sqlite_transaction, should_rollback_on_exception )
 
 TEST( sqlite_transaction, should_fail_nested )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -121,7 +121,7 @@ TEST( sqlite_transaction, should_fail_nested )
 
 TEST( sqlite_transaction, should_fail_lone_commit )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -141,7 +141,7 @@ TEST( sqlite_transaction, should_fail_lone_commit )
 
 TEST( sqlite_transaction, should_fail_lone_rollback )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -161,7 +161,7 @@ TEST( sqlite_transaction, should_fail_lone_rollback )
 
 TEST( sqlite_savepoint, should_release_on_destruction )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -202,7 +202,7 @@ TEST( sqlite_savepoint, should_release_on_destruction )
 
 TEST( sqlite_savepoint, should_rollback_on_exception )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -251,7 +251,7 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
 
 TEST( sqlite_savepoint, should_fail_no_name  )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -266,7 +266,7 @@ TEST( sqlite_savepoint, should_fail_no_name  )
 
 TEST( sqlite_savepoint, should_fail_bad_release_name  )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -283,7 +283,7 @@ TEST( sqlite_savepoint, should_fail_bad_release_name  )
 
 TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
 {
-   ds::sqlite::database test_db( tmp_path );
+   ds::sqlite::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );

@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <db/database.h>
+#include <db/connection.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,14 +14,14 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-database::database( std::shared_ptr< impl > impl ) :
+connection::connection( std::shared_ptr< impl > impl ) :
 m_impl( impl )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-database & database::operator = ( impl * impl )
+connection & connection::operator = ( impl * impl )
 {
    m_impl.reset( impl );
    return *this;
@@ -29,42 +29,42 @@ database & database::operator = ( impl * impl )
 
 //-----------------------------------------------------------------------------
 
-database::operator impl * ( void ) const
+connection::operator impl * ( void ) const
 {
    return m_impl.get();
 }
 
 //-----------------------------------------------------------------------------
 
-const char * database::type( void ) const
+const char * connection::type( void ) const
 {
    return m_impl->type();
 }
 
 //-----------------------------------------------------------------------------
 
-void database::create( const std::string & name )
+void connection::create( const std::string & name )
 {
    m_impl->create( name );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::use( const std::string & name )
+void connection::use( const std::string & name )
 {
    m_impl->use( name );
 }
 
 //-----------------------------------------------------------------------------
 
-bool database::drop( const std::string & name )
+bool connection::drop( const std::string & name )
 {
    return m_impl->drop( name );
 }
 
 //-----------------------------------------------------------------------------
 
-statement database::operator()( const std::string & query,
+statement connection::operator()( const std::string & query,
                                 const name_list_t & parameters )
 {
    return ( *m_impl )( query, parameters );
@@ -72,42 +72,42 @@ statement database::operator()( const std::string & query,
 
 //-----------------------------------------------------------------------------
 
-void database::begin_transaction( void )
+void connection::begin_transaction( void )
 {
    m_impl->begin_transaction();
 }
 
 //-----------------------------------------------------------------------------
 
-void database::commit_transaction( void )
+void connection::commit_transaction( void )
 {
    m_impl->commit_transaction();
 }
 
 //-----------------------------------------------------------------------------
 
-void database::rollback_transaction( void )
+void connection::rollback_transaction( void )
 {
    m_impl->rollback_transaction();
 }
 
 //-----------------------------------------------------------------------------
 
-void database::savepoint( const std::string & name )
+void connection::savepoint( const std::string & name )
 {
    m_impl->savepoint( name );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::release_savepoint( const std::string & name )
+void connection::release_savepoint( const std::string & name )
 {
    m_impl->release_savepoint( name );
 }
 
 //-----------------------------------------------------------------------------
 
-void database::rollback_to_savepoint( const std::string & name )
+void connection::rollback_to_savepoint( const std::string & name )
 {
    m_impl->rollback_to_savepoint( name );
 }

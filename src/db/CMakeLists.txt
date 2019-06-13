@@ -1,5 +1,5 @@
 add_library( ds_db SHARED
-   database.cpp
+   connection.cpp
    statement.cpp
    row.cpp
    transaction.cpp

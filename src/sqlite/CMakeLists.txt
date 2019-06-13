@@ -1,7 +1,7 @@
 set( TARGET ds_sqlite )
 
 add_library( ${TARGET} SHARED
-   database.cpp
+   connection.cpp
    statement.cpp
    row.cpp
    error.cpp

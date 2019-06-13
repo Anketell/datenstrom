@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/database.h>
+#include <sqlite/connection.h>
 #include <sqlite/statement.h>
 #include <sqlite/error.h>
 #include <unistd.h>
@@ -19,32 +19,32 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-constexpr char database::TYPE[];
+constexpr char connection::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-database::database( const std::string & path ) :
+connection::connection( const std::string & path ) :
 m_path( path )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-database::~database( void )
+connection::~connection( void )
 {
    sqlite3_close( m_db );
 }
 
 //-----------------------------------------------------------------------------
 
-const char * database::type( void ) const
+const char * connection::type( void ) const
 {
    return TYPE;
 }
 
 //-----------------------------------------------------------------------------
 
-void database::close( void )
+void connection::close( void )
 {
    if ( m_db )
    {
@@ -55,16 +55,16 @@ void database::close( void )
 
 //-----------------------------------------------------------------------------
 
-std::string database::get_full_path( const std::string & name ) const
+std::string connection::get_full_path( const std::string & name ) const
 {
    return m_path + "/" + name + ".db";
 }
 
 //-----------------------------------------------------------------------------
 
-void database::create( const std::string & name )
+void connection::create( const std::string & name )
 {
-   static constexpr char operation[] = "SQLite create database";
+   static constexpr char operation[] = "SQLite create connection";
 
    std::string path = get_full_path( name );
 
@@ -88,7 +88,7 @@ void database::create( const std::string & name )
 
 //-----------------------------------------------------------------------------
 
-void database::use( const std::string & name )
+void connection::use( const std::string & name )
 {
    close();
 
@@ -99,20 +99,20 @@ void database::use( const std::string & name )
    if ( rc )
    {
       close();
-      throw_error( "SQLite use database", rc );
+      throw_error( "SQLite use connection", rc );
    }
 }
 
 //-----------------------------------------------------------------------------
 
-bool database::drop( const std::string & name )
+bool connection::drop( const std::string & name )
 {
    if ( unlink( get_full_path( name ).c_str() ) != 0 )
    {
       if ( errno == ENOENT )
          return false;
 
-      throw_error( "SQLite drop database", strerror( errno ) );
+      throw_error( "SQLite drop connection", strerror( errno ) );
    }
 
    return true;
@@ -120,7 +120,7 @@ bool database::drop( const std::string & name )
 
 //-----------------------------------------------------------------------------
 
-db::statement database::operator()( const std::string     & query,
+db::statement connection::operator()( const std::string     & query,
                                     const db::name_list_t & parameters )
 {
    return db::statement( std::make_shared< statement >( m_db, query, parameters ) );
@@ -128,7 +128,7 @@ db::statement database::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
-void database::begin_transaction( void )
+void connection::begin_transaction( void )
 {
    int rc = sqlite3_exec( m_db, "BEGIN TRANSACTION", NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
@@ -137,7 +137,7 @@ void database::begin_transaction( void )
 
 //-----------------------------------------------------------------------------
 
-void database::commit_transaction( void )
+void connection::commit_transaction( void )
 {
    int rc = sqlite3_exec( m_db, "COMMIT TRANSACTION", NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
@@ -146,7 +146,7 @@ void database::commit_transaction( void )
 
 //-----------------------------------------------------------------------------
 
-void database::rollback_transaction( void )
+void connection::rollback_transaction( void )
 {
    int rc = sqlite3_exec( m_db, "ROLLBACK TRANSACTION", NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
@@ -155,7 +155,7 @@ void database::rollback_transaction( void )
 
 //-----------------------------------------------------------------------------
 
-void database::savepoint( const std::string & name )
+void connection::savepoint( const std::string & name )
 {
    std::string command( "SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
@@ -165,7 +165,7 @@ void database::savepoint( const std::string & name )
 
 //-----------------------------------------------------------------------------
 
-void database::release_savepoint( const std::string & name )
+void connection::release_savepoint( const std::string & name )
 {
    std::string command( "RELEASE SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
@@ -175,7 +175,7 @@ void database::release_savepoint( const std::string & name )
 
 //-----------------------------------------------------------------------------
 
-void database::rollback_to_savepoint( const std::string & name )
+void connection::rollback_to_savepoint( const std::string & name )
 {
    std::string command( "ROLLBACK TO SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
