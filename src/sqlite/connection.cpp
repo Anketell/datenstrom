@@ -32,7 +32,7 @@ m_path( path )
 
 connection::~connection( void )
 {
-   sqlite3_close( m_db );
+   close();
 }
 
 //-----------------------------------------------------------------------------
@@ -107,6 +107,8 @@ void connection::use( const std::string & name )
 
 bool connection::drop( const std::string & name )
 {
+   close();
+
    if ( unlink( get_full_path( name ).c_str() ) != 0 )
    {
       if ( errno == ENOENT )

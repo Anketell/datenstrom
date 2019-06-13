@@ -257,7 +257,10 @@ TEST( sqlite_savepoint, should_fail_no_name  )
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
    EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
-   EXPECT_THROW( test_db.savepoint( "" ) ,  std::runtime_error );
+   {
+      ds::db::transaction txn( test_db );
+      EXPECT_THROW( test_db.savepoint( "" ) ,  std::runtime_error );
+   }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
@@ -272,9 +275,12 @@ TEST( sqlite_savepoint, should_fail_bad_release_name  )
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
    EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
-   ds::db::savepoint save( test_db, "save" );
+   {
+      ds::db::transaction txn( test_db );
+      ds::db::savepoint save( test_db, "save" );
 
-   EXPECT_THROW( test_db.release_savepoint( "bad" ) ,  std::runtime_error );
+      EXPECT_THROW( test_db.release_savepoint( "bad" ) ,  std::runtime_error );
+   }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
@@ -289,9 +295,12 @@ TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
    EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
-   ds::db::savepoint save( test_db, "save" );
+   {
+      ds::db::transaction txn( test_db );
+      ds::db::savepoint save( test_db, "save" );
 
-   EXPECT_THROW( test_db.rollback_to_savepoint( "bad" ) ,  std::runtime_error );
+      EXPECT_THROW( test_db.rollback_to_savepoint( "bad" ) ,  std::runtime_error );
+   }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }

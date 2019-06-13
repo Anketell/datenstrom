@@ -124,15 +124,16 @@ void row::get_column( int index, std::string & s )
 bool row::step( void )
 {
    int rc = sqlite3_step( m_stmt->stmt );
-   m_stmt->stmt = rc == SQLITE_ROW ? m_stmt->stmt : nullptr;
-   return m_stmt->stmt;
+   if ( rc != SQLITE_ROW )
+      m_stmt =  nullptr;
+   return m_stmt.get();
 }
 
 //-----------------------------------------------------------------------------
 
 row::operator bool ( void ) const
 {
-   return m_stmt->stmt;
+   return m_stmt.get();
 }
 
 //-----------------------------------------------------------------------------

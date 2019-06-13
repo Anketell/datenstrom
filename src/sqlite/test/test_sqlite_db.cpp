@@ -35,8 +35,10 @@ TEST( sqlite_db_statement, should_execute_simple )
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
    EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
-   ds::db::statement create_test = test_db( create );
-   EXPECT_NO_THROW( create_test.execute() );
+   {
+      ds::db::statement create_test = test_db( create );
+      EXPECT_NO_THROW( create_test.execute() );
+   }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
@@ -278,9 +280,11 @@ TEST( sqlite_db_row, should_return_query_data_not_available )
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
    EXPECT_NO_THROW( test_db.use( tmp_db ) );
 
-   ds::db::statement create_test = test_db( create );
+   {
+      ds::db::statement create_test = test_db( create );
 
-   EXPECT_EQ( ds::db::row(), create_test.result() );
+      EXPECT_EQ( ds::db::row(), create_test.result() );
+   }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
 }
