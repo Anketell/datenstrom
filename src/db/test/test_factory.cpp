@@ -14,7 +14,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_1";
 
-   derived_db_1( std::string param ) : m_param( param ) {}
+   derived_db_1( ds::db::connect_params_t params ) : m_param( params[ "path" ] ) {}
 
    std::string param( void ) const { return m_param; }
 
@@ -54,7 +54,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_2";
 
-   derived_db_2( std::string param ) : m_param( param ) {}
+   derived_db_2( ds::db::connect_params_t params ) : m_param( params[ "path" ] ) {}
 
    std::string param( void ) const { return m_param; }
 

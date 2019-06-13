@@ -23,7 +23,9 @@ namespace db
 
 class factory
 {
-   typedef ds::factory< impl, std::string, const std::string & > db_factory_t;
+   typedef ds::factory< impl, std::string, db::connect_params_t > db_factory_t;
+
+   static db::connect_params_t parse_connection( const std::string & connection );
 
    db_factory_t m_ds_factory;
 
@@ -36,15 +38,7 @@ public:
       m_ds_factory.register_type< D >( D::TYPE );
    }
 
-   impl * operator()( std::string connection ) const
-   {
-      std::string::size_type pos = connection.find( ":" );
-
-      if ( pos == std::string::npos )
-         throw std::runtime_error( "Poorly formed connection string: " + connection );
-
-      return m_ds_factory( connection.substr( 0, pos ), connection.substr( pos + 1 ) );
-   }
+   impl * operator()( std::string connection ) const;
 };
 
 //-----------------------------------------------------------------------------

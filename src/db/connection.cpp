@@ -20,7 +20,7 @@ m_impl( impl )
 }
 
 //-----------------------------------------------------------------------------
-
+/*
 connection & connection::operator = ( impl * impl )
 {
    m_impl.reset( impl );
@@ -33,7 +33,7 @@ connection::operator impl * ( void ) const
 {
    return m_impl.get();
 }
-
+*/
 //-----------------------------------------------------------------------------
 
 const char * connection::type( void ) const

@@ -57,6 +57,12 @@ connection( "", server, username, password, port )
 
 //-----------------------------------------------------------------------------
 
+connection::connection( db::connect_params_t params )
+{
+}
+
+//-----------------------------------------------------------------------------
+
 connection::~connection( void )
 {
    mysql_close( &m_mysql );
