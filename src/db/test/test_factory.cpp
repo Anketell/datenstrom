@@ -134,5 +134,4 @@ TEST( ds_factory, should_fail_bad_connection_string )
    EXPECT_THROW( factory( "derived_db_1" ), std::runtime_error );
 }
 
-
 //-----------------------------------------------------------------------------

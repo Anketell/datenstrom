@@ -38,8 +38,8 @@ statement_base( mysql, sql )
 positional_statement::~positional_statement( void )
 {
    cleanup_parameters();
-   delete m_mysql_bind;
-   delete m_bind_info;
+   delete [] m_mysql_bind;
+   delete [] m_bind_info;
 }
 
 //-----------------------------------------------------------------------------
@@ -68,6 +68,16 @@ void positional_statement::prepare_parameter_binding( void )
 
 void positional_statement::cleanup_parameters( void )
 {
+   for ( int i = 0; i < m_bind_count; i++ )
+   {
+      MYSQL_BIND & param( m_mysql_bind[ i ] );
+
+      if ( param.buffer )
+      {
+         free( param.buffer );
+         param.buffer = nullptr;
+      }
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -323,9 +333,7 @@ int positional_statement::parameter_count( void )
 void positional_statement::reset( void )
 {
    statement_base::reset();
-
    cleanup_parameters();
-   memset( m_mysql_bind, 0, sizeof( MYSQL_BIND ) * m_bind_count );
 }
 
 //-----------------------------------------------------------------------------
