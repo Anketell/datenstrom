@@ -14,26 +14,11 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-connection::connection( std::shared_ptr< impl > impl ) :
+connection::connection( impl * impl ) :
 m_impl( impl )
 {
 }
 
-//-----------------------------------------------------------------------------
-/*
-connection & connection::operator = ( impl * impl )
-{
-   m_impl.reset( impl );
-   return *this;
-}
-
-//-----------------------------------------------------------------------------
-
-connection::operator impl * ( void ) const
-{
-   return m_impl.get();
-}
-*/
 //-----------------------------------------------------------------------------
 
 const char * connection::type( void ) const

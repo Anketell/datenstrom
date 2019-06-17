@@ -27,10 +27,7 @@ private:
 
 public:
 
-   connection( std::shared_ptr< impl > impl = nullptr );
-
-//   connection & operator = ( impl * impl );
-//   operator impl * ( void ) const;
+   connection( impl * impl = nullptr );
 
    virtual const char * type( void ) const override;
 

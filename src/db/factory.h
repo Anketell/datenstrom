@@ -7,7 +7,7 @@
 
 #include <ds/factory.h>
 #include <db/impl.h>
-#include <stdexcept>
+#include <db/connect_string.h>
 
 //-----------------------------------------------------------------------------
 
@@ -23,22 +23,37 @@ namespace db
 
 class factory
 {
-   typedef ds::factory< impl, std::string, db::connect_params_t > db_factory_t;
+   typedef impl * ( * constructor_t )( const connect_params_t & );
+   typedef std::map< std::string, constructor_t > constructor_map_t;
 
-   static db::connect_params_t parse_connection( const std::string & connection );
-
-   db_factory_t m_ds_factory;
+   constructor_map_t m_constructor_map;
 
 public:
 
-   typedef db_factory_t::Not_found_exception Not_found_exception;
+   class Not_found_exception : public std::invalid_argument
+   {
+   public :
+
+      Not_found_exception( void ) :
+      std::invalid_argument( "Unknown database type" )
+      {
+      }
+   };
 
    template< typename D > void register_db( void )
    {
-      m_ds_factory.register_type< D >( D::TYPE );
+      m_constructor_map[ D::TYPE ] = constructor< D >;
    }
 
-   impl * operator()( std::string connection ) const;
+   impl * operator()( const std::string & connect_string ) const
+   {
+      connect_params_t params = parse_connect_string( connect_string );
+      auto it = m_constructor_map.find( params[ "type" ] );
+      if ( it == m_constructor_map.end() )
+         throw Not_found_exception();
+
+      return it->second( params );
+   }
 };
 
 //-----------------------------------------------------------------------------

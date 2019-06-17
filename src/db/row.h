@@ -33,18 +33,18 @@ public:
 
    public:
 
-      virtual void get_column( int index, int8_t & );
-      virtual void get_column( int index, int16_t & );
-      virtual void get_column( int index, int32_t & );
-      virtual void get_column( int index, int64_t & );
+      virtual void get_column( int index, int8_t & ) = 0;
+      virtual void get_column( int index, int16_t & ) = 0;
+      virtual void get_column( int index, int32_t & ) = 0;
+      virtual void get_column( int index, int64_t & ) = 0;
 
-      virtual void get_column( int index, uint8_t & );
-      virtual void get_column( int index, uint16_t & );
-      virtual void get_column( int index, uint32_t & );
-      virtual void get_column( int index, uint64_t & );
+      virtual void get_column( int index, uint8_t & ) = 0;
+      virtual void get_column( int index, uint16_t & ) = 0;
+      virtual void get_column( int index, uint32_t & ) = 0;
+      virtual void get_column( int index, uint64_t & ) = 0;
 
-      virtual void get_column( int index, double & );
-      virtual void get_column( int index, std::string & );
+      virtual void get_column( int index, double & ) = 0;
+      virtual void get_column( int index, std::string & ) = 0;
 
       virtual bool step( void ) = 0;
       virtual operator bool ( void ) const = 0;

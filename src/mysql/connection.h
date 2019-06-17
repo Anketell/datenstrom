@@ -39,8 +39,6 @@ public:
                const std::string & password,
                uint16_t            port = 3306 );
 
-   connection( db::connect_params_t params );
-
    virtual ~connection( void );
 
    virtual const char * type( void ) const override;

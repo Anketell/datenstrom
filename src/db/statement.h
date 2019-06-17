@@ -35,20 +35,20 @@ public:
 
    public:
 
-      virtual void set_parameter( int index, int8_t );
-      virtual void set_parameter( int index, int16_t );
-      virtual void set_parameter( int index, int32_t );
-      virtual void set_parameter( int index, int64_t );
+      virtual void set_parameter( int index, int8_t ) = 0;
+      virtual void set_parameter( int index, int16_t ) = 0;
+      virtual void set_parameter( int index, int32_t ) = 0;
+      virtual void set_parameter( int index, int64_t ) = 0;
 
-      virtual void set_parameter( int index, uint8_t );
-      virtual void set_parameter( int index, uint16_t );
-      virtual void set_parameter( int index, uint32_t );
-      virtual void set_parameter( int index, uint64_t );
+      virtual void set_parameter( int index, uint8_t ) = 0;
+      virtual void set_parameter( int index, uint16_t ) = 0;
+      virtual void set_parameter( int index, uint32_t ) = 0;
+      virtual void set_parameter( int index, uint64_t ) = 0;
 
-      virtual void set_parameter( int index, double );
+      virtual void set_parameter( int index, double ) = 0;
 
-      virtual void set_parameter( int index, const char * );
-      virtual void set_parameter( int index, const std::string & );
+      virtual void set_parameter( int index, const char * ) = 0;
+      virtual void set_parameter( int index, const std::string & ) = 0;
 
       virtual int parameter_count( void ) = 0;
 

@@ -2,6 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <db/factory.h>
+#include <db/connection.h>
 #include <stdexcept>
 
 //-----------------------------------------------------------------------------
@@ -14,7 +15,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_1";
 
-   derived_db_1( ds::db::connect_params_t params ) : m_param( params[ "path" ] ) {}
+   derived_db_1( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
 
@@ -54,7 +55,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_2";
 
-   derived_db_2( ds::db::connect_params_t params ) : m_param( params[ "path" ] ) {}
+   derived_db_2( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
 
@@ -87,6 +88,30 @@ constexpr char derived_db_2::TYPE[];
 
 //-----------------------------------------------------------------------------
 
+namespace ds
+{
+
+namespace db
+{
+
+template<> impl * constructor< derived_db_1 >( const connect_params_t & params )
+{
+   auto location = params[ "location" ];
+   return new derived_db_1( location );
+}
+
+template<> impl * constructor< derived_db_2 >( const connect_params_t & params )
+{
+   auto location = params[ "location" ];
+   return new derived_db_2( location );
+}
+
+}
+
+}
+
+//-----------------------------------------------------------------------------
+
 TEST( db_factory, should_register_and_create )
 {
    ds::db::factory factory;
@@ -96,7 +121,8 @@ TEST( db_factory, should_register_and_create )
 
    ds::db::impl * db;
 
-   EXPECT_NO_THROW( db = factory( "derived_db_1:parameters" ) );
+   EXPECT_NO_THROW( db = factory( "derived_db_1://parameters" ) );
+   EXPECT_STREQ( db->type(), derived_db_1::TYPE );
 
    derived_db_1 * ddb1;
 
@@ -105,7 +131,8 @@ TEST( db_factory, should_register_and_create )
 
    EXPECT_NO_THROW( delete db );
 
-   EXPECT_NO_THROW( db = factory( "derived_db_2:other_parameters" ) );
+   EXPECT_NO_THROW( db = factory( "derived_db_2://other_parameters" ) );
+   EXPECT_STREQ( db->type(), derived_db_2::TYPE );
 
    derived_db_2 * ddb2;
 
@@ -131,7 +158,21 @@ TEST( ds_factory, should_fail_bad_connection_string )
 {
    ds::db::factory factory;
 
-   EXPECT_THROW( factory( "derived_db_1" ), std::runtime_error );
+   EXPECT_THROW( factory( "derived_db_1" ), std::invalid_argument );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( db_factory, should_assign_connection )
+{
+   ds::db::factory factory;
+
+   factory.register_db< derived_db_1 >();
+   factory.register_db< derived_db_2 >();
+
+   ds::db::connection db = factory( "derived_db_1://parameters" );
+
+   EXPECT_STREQ( db.type(), derived_db_1::TYPE );
 }
 
 //-----------------------------------------------------------------------------

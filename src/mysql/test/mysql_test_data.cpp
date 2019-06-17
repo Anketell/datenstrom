@@ -20,7 +20,7 @@ const char * create = "CREATE TABLE Object ("
 //-----------------------------------------------------------------------------
 
 const char * test_db_name = "test_db";
-const char * test_server  = "192.168.0.2";
+const char * test_server  = "127.0.0.1";
 const char * username     = "root";
 const char * password     = "";
 const char * bad_db_name  = "/blah/test.db";

@@ -20,6 +20,47 @@ struct Test_row : public ds::db::row::impl
       m_step_calls = 0;
    }
 
+   void get_column( int index, int8_t & i )
+   {
+   }
+
+
+   void get_column( int index, int16_t & i )
+   {
+   }
+
+   void get_column( int index, int32_t & i )
+   {
+   }
+
+   void get_column( int index, int64_t & i )
+   {
+   }
+
+   void get_column( int index, uint8_t & u )
+   {
+   }
+
+   void get_column( int index, uint16_t & u )
+   {
+   }
+
+   void get_column( int index, uint32_t & u )
+   {
+   }
+
+   void get_column( int index, uint64_t & u )
+   {
+   }
+
+   void get_column( int index, double & d )
+   {
+   }
+
+   void get_column( int index, std::string & s )
+   {
+   }
+
    virtual bool step( void ) override
    {
        ++m_step_calls;
@@ -47,6 +88,50 @@ struct Test_statement : public ds::db::statement::impl
       m_reset_calls   = 0;
       m_execute_calls = 0;
       m_result_calls  = 0;
+   }
+
+   void set_parameter( int index, int8_t )
+   {
+   }
+
+   void set_parameter( int index, int16_t )
+   {
+   }
+
+   void set_parameter( int index, int32_t )
+   {
+   }
+
+   void set_parameter( int index, int64_t )
+   {
+   }
+
+   void set_parameter( int index, uint8_t )
+   {
+   }
+
+   void set_parameter( int index, uint16_t )
+   {
+   }
+
+   void set_parameter( int index, uint32_t )
+   {
+   }
+
+   void set_parameter( int index, uint64_t )
+   {
+   }
+
+   void set_parameter( int index, double )
+   {
+   }
+
+   void set_parameter( int index, const char * )
+   {
+   }
+
+   void set_parameter( int index, const std::string & )
+   {
    }
 
    virtual int parameter_count( void ) override
