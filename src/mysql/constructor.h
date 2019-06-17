@@ -25,7 +25,7 @@ namespace db
 template<> impl * constructor< mysql::connection > ( const db::connect_params_t & params )
 {
    auto location = params[ "location" ];
-   auto port     = params[ "port" ];
+   auto port_str = params[ "port" ];
    auto username = params[ "username" ];
    auto password = params[ "password" ];
    auto database = params[ "database" ];
@@ -36,10 +36,11 @@ template<> impl * constructor< mysql::connection > ( const db::connect_params_t 
    if ( username.empty() )
       throw std::invalid_argument( "Unspecified username" );
 
-   if ( port.empty() )
-      port = "3306";
+   int port = 3306;
+   if ( !port_str.empty() )
+      port = atoi( port_str.c_str() );
 
-   return new mysql::connection( database, location, username, password, atoi( port.c_str() ) );
+   return new mysql::connection( database, location, username, password, port );
 }
 
 //-----------------------------------------------------------------------------
