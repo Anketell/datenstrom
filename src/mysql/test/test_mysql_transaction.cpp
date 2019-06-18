@@ -72,6 +72,13 @@ TEST( mysql_transaction, should_rollback_on_exception )
          EXPECT_NO_THROW( insert_test.execute() );
       }
 
+      ds::db::statement results_test = test_db( num_rows );
+
+      int count;
+      *results_test.begin() >> count;
+
+      EXPECT_EQ( 2, count );
+
       throw 0;
    }
    catch ( ... )
@@ -159,6 +166,13 @@ TEST( mysql_savepoint, should_rollback_on_exception )
 
             EXPECT_NO_THROW( insert_test << o );
             EXPECT_NO_THROW( insert_test.execute() );
+
+            ds::db::statement results_test = test_db( num_rows );
+
+            int count;
+            *results_test.begin() >> count;
+
+            EXPECT_EQ( 1, count );
 
             throw 0;
          }
