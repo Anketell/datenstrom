@@ -7,7 +7,9 @@
 
 //-----------------------------------------------------------------------------
 
-class derived_db_1 : public ds::db::impl
+namespace derived_db_1
+{
+class connection : public ds::db::impl
 {
    std::string m_param;
 
@@ -15,7 +17,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_1";
 
-   derived_db_1( const std::string & path ) : m_param( path ) {}
+   connection( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
 
@@ -43,11 +45,16 @@ public:
    virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
 
-constexpr char derived_db_1::TYPE[];
+constexpr char connection::TYPE[];
+
+}
 
 //-----------------------------------------------------------------------------
 
-class derived_db_2 : public ds::db::impl
+namespace derived_db_2
+{
+
+class connection : public ds::db::impl
 {
    std::string m_param;
 
@@ -55,7 +62,7 @@ public:
 
    static constexpr char TYPE[] = "derived_db_2";
 
-   derived_db_2( const std::string & path ) : m_param( path ) {}
+   connection( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
 
@@ -84,7 +91,9 @@ public:
 
 };
 
-constexpr char derived_db_2::TYPE[];
+constexpr char connection::TYPE[];
+
+}
 
 //-----------------------------------------------------------------------------
 
@@ -94,16 +103,16 @@ namespace ds
 namespace db
 {
 
-template<> impl * constructor< derived_db_1 >( const connect_params_t & params )
+template<> impl * constructor< derived_db_1::connection >( const connect_params_t & params )
 {
    auto location = params[ "location" ];
-   return new derived_db_1( location );
+   return new derived_db_1::connection( location );
 }
 
-template<> impl * constructor< derived_db_2 >( const connect_params_t & params )
+template<> impl * constructor< derived_db_2::connection >( const connect_params_t & params )
 {
    auto location = params[ "location" ];
-   return new derived_db_2( location );
+   return new derived_db_2::connection( location );
 }
 
 }
@@ -116,27 +125,27 @@ TEST( db_factory, should_register_and_create )
 {
    ds::db::factory factory;
 
-   factory.register_db< derived_db_1 >();
-   factory.register_db< derived_db_2 >();
+   factory.register_db< derived_db_1::connection >();
+   factory.register_db< derived_db_2::connection >();
 
    ds::db::impl * db;
 
    EXPECT_NO_THROW( db = factory( "derived_db_1://parameters" ) );
-   EXPECT_STREQ( db->type(), derived_db_1::TYPE );
+   EXPECT_STREQ( db->type(), derived_db_1::connection::TYPE );
 
-   derived_db_1 * ddb1;
+   derived_db_1::connection * ddb1;
 
-   EXPECT_NE( ddb1 = dynamic_cast< derived_db_1 * >( db ), nullptr );
+   EXPECT_NE( ddb1 = dynamic_cast< derived_db_1::connection * >( db ), nullptr );
    EXPECT_STREQ( ddb1->param().c_str(), "parameters" );
 
    EXPECT_NO_THROW( delete db );
 
    EXPECT_NO_THROW( db = factory( "derived_db_2://other_parameters" ) );
-   EXPECT_STREQ( db->type(), derived_db_2::TYPE );
+   EXPECT_STREQ( db->type(), derived_db_2::connection::TYPE );
 
-   derived_db_2 * ddb2;
+   derived_db_2::connection * ddb2;
 
-   EXPECT_NE( ddb2 = dynamic_cast< derived_db_2 * >( db ), nullptr );
+   EXPECT_NE( ddb2 = dynamic_cast< derived_db_2::connection * >( db ), nullptr );
    EXPECT_STREQ( ddb2->param().c_str(), "other_parameters" );
 
    EXPECT_NO_THROW( delete db );
@@ -167,12 +176,12 @@ TEST( db_factory, should_assign_connection )
 {
    ds::db::factory factory;
 
-   factory.register_db< derived_db_1 >();
-   factory.register_db< derived_db_2 >();
+   factory.register_db< derived_db_1::connection >();
+   factory.register_db< derived_db_2::connection >();
 
    ds::db::connection db = factory( "derived_db_1://parameters" );
 
-   EXPECT_STREQ( db.type(), derived_db_1::TYPE );
+   EXPECT_STREQ( db.type(), derived_db_1::connection::TYPE );
 }
 
 //-----------------------------------------------------------------------------
