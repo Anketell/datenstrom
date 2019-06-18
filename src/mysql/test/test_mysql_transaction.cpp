@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <mysql/connection.h>
+#include <db/connection.h>
 #include <db/transaction.h>
 #include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
@@ -10,7 +10,7 @@
 
 TEST( mysql_transaction, should_commit_on_destruction )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -49,7 +49,7 @@ TEST( mysql_transaction, should_commit_on_destruction )
 
 TEST( mysql_transaction, should_rollback_on_exception )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -94,7 +94,7 @@ TEST( mysql_transaction, should_rollback_on_exception )
 
 TEST( mysql_savepoint, should_release_on_destruction )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -135,7 +135,7 @@ TEST( mysql_savepoint, should_release_on_destruction )
 
 TEST( mysql_savepoint, should_rollback_on_exception )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -184,7 +184,7 @@ TEST( mysql_savepoint, should_rollback_on_exception )
 
 TEST( mysql_savepoint, should_fail_no_name )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -203,7 +203,7 @@ TEST( mysql_savepoint, should_fail_no_name )
 
 TEST( mysql_savepoint, should_fail_bad_release_name )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -221,10 +221,9 @@ TEST( mysql_savepoint, should_fail_bad_release_name )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_fail_bad_rollback_name
- )
+TEST( mysql_savepoint, should_fail_bad_rollback_name )
 {
-   ds::mysql::connection test_db( test_server, username, password );
+   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

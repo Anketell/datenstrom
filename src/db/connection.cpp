@@ -48,13 +48,6 @@ void connection::init( void )
 
 //-----------------------------------------------------------------------------
 
-void connection::enroll_module( const std::string & path )
-{
-   db::enroll_module( m_factory, path );
-}
-
-//-----------------------------------------------------------------------------
-
 void connection::enroll_directory( const std::string & path )
 {
    db::enroll_directory( m_factory, path );

@@ -47,7 +47,7 @@ void enroll_directory( factory & factory, const std::string & path )
    int n = scandir( path.c_str(), &files, nullptr, versionsort );
 
    if ( n == -1 )
-      throw std::runtime_error( "Directory scan filed" );
+      throw std::runtime_error( "Directory scan failed" );
 
    for ( int i = 0; i < n; i++ )
    {

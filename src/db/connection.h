@@ -33,7 +33,6 @@ private:
 
 public:
 
-   static void enroll_module( const std::string & path );
    static void enroll_directory( const std::string & path );
 
    connection( const std::string & connect_string );

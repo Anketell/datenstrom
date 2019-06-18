@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <sqlite/connection.h>
+#include <db/connection.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 
@@ -9,7 +9,7 @@
 
 TEST( sqlite_db, should_create_good_path )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -20,7 +20,7 @@ TEST( sqlite_db, should_create_good_path )
 
 TEST( sqlite_db, should_fail_create_bad_path )
 {
-   ds::sqlite::connection test_db( bad_path );
+   ds::db::connection test_db( bad_path );
 
    EXPECT_THROW( test_db.create( tmp_db ), std::runtime_error );
 }
@@ -29,7 +29,7 @@ TEST( sqlite_db, should_fail_create_bad_path )
 
 TEST( sqlite_db_statement, should_execute_simple )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -47,7 +47,7 @@ TEST( sqlite_db_statement, should_execute_simple )
 
 TEST( sqlite_db_statement, should_fail_create_bad_sql )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -62,7 +62,7 @@ TEST( sqlite_db_statement, should_fail_create_bad_sql )
 
 TEST( sqlite_db_statement, should_execute_query_parameters )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -91,7 +91,7 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
 
 TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -130,7 +130,7 @@ TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
 
 TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -154,7 +154,7 @@ TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
 
 TEST( sqlite_db_statement, should_provide_query_result_row )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -198,7 +198,7 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
 
 TEST( sqlite_db_statement, should_fail_bad_query_reset )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -221,7 +221,7 @@ TEST( sqlite_db_statement, should_fail_bad_query_reset )
 
 TEST( sqlite_db_row, should_provide_query_data )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -274,7 +274,7 @@ TEST( sqlite_db_row, should_provide_query_data )
 
 TEST( sqlite_db_row, should_return_query_data_not_available )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -293,7 +293,7 @@ TEST( sqlite_db_row, should_return_query_data_not_available )
 
 TEST( sqlite_db_row, should_fail_query_wrong_column_count )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -347,7 +347,7 @@ TEST( sqlite_db_row, should_fail_query_wrong_column_count )
 
 TEST( sqlite_db_row, should_fail_query_wrong_column_type )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );

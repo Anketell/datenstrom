@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
-#include <sqlite/connection.h>
+#include <db/connection.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 #include <string>
@@ -27,7 +27,7 @@ const ds::db::name_list_t named_parameters =
 
 TEST( sqlite_parameter, should_insert_named )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );
@@ -63,7 +63,7 @@ TEST( sqlite_parameter, should_insert_named )
 
 TEST( sqlite_parameter, should_retrieve_named )
 {
-   ds::sqlite::connection test_db( tmp_path );
+   ds::db::connection test_db( tmp_path );
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
    EXPECT_NO_THROW( test_db.create( tmp_db ) );

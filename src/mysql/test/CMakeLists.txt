@@ -4,7 +4,6 @@ add_executable( ${TARGET}
    test_mysql_db.cpp
    test_mysql_parameter.cpp
    test_mysql_transaction.cpp
-   test_mysql_factory.cpp
    mysql_test_data.cpp
 )
 
