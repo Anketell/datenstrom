@@ -5,6 +5,7 @@ add_executable( ${TARGET}
    test_transaction.cpp
    test_list.cpp
    test_factory.cpp
+   test_connect_string.cpp
 )
 
 target_link_libraries( ${TARGET}

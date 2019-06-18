@@ -37,7 +37,7 @@ void parse_param( connect_params_t & params, const std::string & value )
    if ( std::regex_match( value, match_result, regex ) )
       params[ match_result[ 2 ] ] = match_result[ 3 ];
    else
-      throw std::invalid_argument( "Null parameter" );
+      throw std::invalid_argument( "Bad parameter" );
 }
 
 //-----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ part_parser_fn part_parser( const std::string & part )
 part_parser_fn params_parser = []( connect_params_t & params, const std::string & value )
 {
   static std::regex regex (
-      R"(([^:\/?&#=]+=[^:\/?&#=]+&?))",
+      R"(([^:\/?&#]+&?))",
       std::regex::extended
    );
    std::smatch match_result;

@@ -13,7 +13,7 @@ target_link_libraries( ${TARGET}
    sqlite3
 )
 
-add_library( ${MODULE} SHARED
+add_library( ${MODULE} MODULE
    enroll.cpp
    constructor.cpp
 )
