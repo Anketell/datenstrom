@@ -10,6 +10,7 @@ add_library( ${TARGET} SHARED
 )
 
 target_link_libraries( ${TARGET}
+   ds
    dl
 )
 

@@ -2,6 +2,7 @@
 
 #include <db/enroll.h>
 #include <dlfcn.h>
+#include <dirent.h>
 
 //-----------------------------------------------------------------------------
 
@@ -41,6 +42,21 @@ void enroll_module( factory & factory, const std::string & path )
 
 void enroll_directory( factory & factory, const std::string & path )
 {
+   dirent ** files;
+
+   int n = scandir( path.c_str(), &files, nullptr, versionsort );
+
+   if ( n == -1 )
+      throw std::runtime_error( "Directory scan filed" );
+
+   for ( int i = 0; i < n; i++ )
+   {
+      dirent * file = files[ i ];
+      enroll_module( factory, path + "/" + file->d_name );
+      free( file );
+   }
+
+   free( files );
 }
 
 //-----------------------------------------------------------------------------

@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/impl.h>
+#include <db/factory.h>
 
 //-----------------------------------------------------------------------------
 
@@ -21,12 +22,21 @@ namespace db
 
 class connection : public impl
 {
+   static factory m_factory;
+   static bool    m_initialized;
+
+   static void init( void );
+
 private:
 
    std::shared_ptr< impl > m_impl;
 
 public:
 
+   static void enroll_module( const std::string & path );
+   static void enroll_directory( const std::string & path );
+
+   connection( const std::string & connect_string );
    connection( impl * impl = nullptr );
 
    virtual const char * type( void ) const override;

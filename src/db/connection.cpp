@@ -1,6 +1,9 @@
 //-----------------------------------------------------------------------------
 
 #include <db/connection.h>
+#include <db/enroll.h>
+
+#include <string.h>
 
 //-----------------------------------------------------------------------------
 
@@ -11,6 +14,59 @@ namespace ds
 
 namespace db
 {
+
+//-----------------------------------------------------------------------------
+
+factory connection::m_factory;
+bool    connection::m_initialized = false;
+
+//-----------------------------------------------------------------------------
+
+void connection::init( void )
+{
+   if ( !m_initialized )
+   {
+      char * ds_module_path = getenv( "DS_MODULE_PATH" );
+
+      if ( ds_module_path )
+      {
+         char * path = strdup( ds_module_path );
+         char * save;
+
+         char * token = strtok_r( path, ":", &save );
+         while ( token )
+         {
+            enroll_directory( token );
+            token = strtok_r( nullptr, ":", &save );
+         }
+         free( path );
+      }
+
+      m_initialized = true;
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::enroll_module( const std::string & path )
+{
+   db::enroll_module( m_factory, path );
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::enroll_directory( const std::string & path )
+{
+   db::enroll_directory( m_factory, path );
+}
+
+//-----------------------------------------------------------------------------
+
+connection::connection( const std::string & connect_string )
+{
+   init();
+   m_impl.reset( m_factory( connect_string ) );
+}
 
 //-----------------------------------------------------------------------------
 
