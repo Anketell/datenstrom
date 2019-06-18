@@ -99,7 +99,7 @@ bool connection::drop( const std::string & name )
 //-----------------------------------------------------------------------------
 
 statement connection::operator()( const std::string & query,
-                                const name_list_t & parameters )
+                                  const name_list_t & parameters )
 {
    return ( *m_impl )( query, parameters );
 }
