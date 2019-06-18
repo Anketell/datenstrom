@@ -9,7 +9,7 @@
 
 TEST( mysql_db, should_create_good_path )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -20,7 +20,7 @@ TEST( mysql_db, should_create_good_path )
 
 TEST( mysql_db, should_fail_create_bad_db_name )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_THROW( test_db.create( bad_db_name ), std::runtime_error );
 }
@@ -29,7 +29,7 @@ TEST( mysql_db, should_fail_create_bad_db_name )
 
 TEST( mysql_db_statement, should_execute_simple )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -45,7 +45,7 @@ TEST( mysql_db_statement, should_execute_simple )
 
 TEST( mysql_db_statement, should_fail_create_bad_sql )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -60,7 +60,7 @@ TEST( mysql_db_statement, should_fail_create_bad_sql )
 
 TEST( mysql_db_statement, should_execute_query_parameters )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -89,7 +89,7 @@ TEST( mysql_db_statement, should_execute_query_parameters )
 
 TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -128,7 +128,7 @@ TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 
 TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -152,7 +152,7 @@ TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 
 TEST( mysql_db_statement, should_provide_query_result_row )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -196,7 +196,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
 
 TEST( mysql_db_statement, should_fail_bad_query )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -218,7 +218,7 @@ TEST( mysql_db_statement, should_fail_bad_query )
 
 TEST( mysql_db_row, should_provide_query_data )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -271,7 +271,7 @@ TEST( mysql_db_row, should_provide_query_data )
 
 TEST( mysql_db_row, should_return_query_data_not_available )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -288,7 +288,7 @@ TEST( mysql_db_row, should_return_query_data_not_available )
 
 TEST( mysql_db_row, should_fail_query_wrong_column_count )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

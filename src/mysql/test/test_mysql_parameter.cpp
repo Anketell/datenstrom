@@ -26,7 +26,7 @@ const ds::db::name_list_t named_parameters =
 
 TEST( mysql_parameter, should_insert_named )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -62,7 +62,7 @@ TEST( mysql_parameter, should_insert_named )
 
 TEST( mysql_parameter, should_retrieve_named )
 {
-   ds::db::connection test_db( "mysql://127.0.0.1?username=root" );
+   ds::db::connection test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
