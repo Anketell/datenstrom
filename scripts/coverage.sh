@@ -13,6 +13,6 @@ lcov --directory . --zerocounters
 ctest
 
 lcov --directory . --capture --output-file /tmp/coverage.info
-lcov --remove /tmp/coverage.info '*/test/*' '/usr/*' --output-file /tmp/coverage.cleaned
+lcov --remove /tmp/coverage.info '*/test*/*' '/usr/*' --output-file /tmp/coverage.cleaned
 genhtml -o html /tmp/coverage.cleaned
 rm /tmp/coverage.info /tmp/coverage.cleaned
