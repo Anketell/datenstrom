@@ -8,8 +8,7 @@ add_executable( ${TARGET}
 )
 
 target_link_libraries( ${TARGET}
-   ds_sqlite
-   ds
+   ds_db
    test_model
    gtest
    gtest_main

@@ -10,7 +10,7 @@ rm -rf html
 
 lcov --directory . --zerocounters
 
-ctest
+DS_MODULE_PATH=/home/matth/devel/datenstrom/coverage/src/sqlite:/home/matth/devel/datenstrom/coverage/src/mysql ctest
 
 lcov --directory . --capture --output-file /tmp/coverage.info
 lcov --remove /tmp/coverage.info '*/test*/*' '/usr/*' --output-file /tmp/coverage.cleaned

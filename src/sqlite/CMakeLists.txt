@@ -2,7 +2,6 @@ set( TARGET ds_sqlite )
 set( MODULE ds_sqlite_module )
 
 add_library( ${TARGET} SHARED
-   constructor.cpp
    connection.cpp
    statement.cpp
    row.cpp
@@ -14,8 +13,9 @@ target_link_libraries( ${TARGET}
    sqlite3
 )
 
-add_library( ${MODULE} MODULE
+add_library( ${MODULE} SHARED
    enroll.cpp
+   constructor.cpp
 )
 
 target_link_libraries( ${MODULE}

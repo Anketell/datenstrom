@@ -4,7 +4,6 @@ set( MODULE ds_mysql_module )
 include_directories( BEFORE, "/usr/include/mysql" )
 
 add_library( ${TARGET} SHARED
-   constructor.cpp
    connection.cpp
    statement_base.cpp
    positional_statement.cpp
@@ -20,6 +19,7 @@ target_link_libraries( ${TARGET}
 
 add_library( ${MODULE} MODULE
    enroll.cpp
+   constructor.cpp
 )
 
 target_link_libraries( ${MODULE}
