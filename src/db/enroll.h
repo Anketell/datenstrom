@@ -1,12 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_CONSTRUCTOR_H
-#define DS_SQLITE_CONSTRUCTOR_H
+#ifndef DS_DB_ENROLL_H
+#define DS_DB_ENROLL_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/connect_params.h>
-#include <sqlite/connection.h>
+#include <db/factory.h>
 
 //-----------------------------------------------------------------------------
 
@@ -20,7 +19,8 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * constructor< sqlite::connection >( const connect_params_t & params );
+void enroll_module( factory & factory, const std::string & path );
+void enroll_directory( factory & factory, const std::string & path );
 
 //-----------------------------------------------------------------------------
 

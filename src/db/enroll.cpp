@@ -1,12 +1,14 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_CONSTRUCTOR_H
-#define DS_SQLITE_CONSTRUCTOR_H
+#include <db/enroll.h>
+#include <dlfcn.h>
 
 //-----------------------------------------------------------------------------
 
-#include <db/connect_params.h>
-#include <sqlite/connection.h>
+extern "C"
+{
+   typedef void ( * enroll_t )( ds::db::factory & factory );
+}
 
 //-----------------------------------------------------------------------------
 
@@ -20,10 +22,25 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * constructor< sqlite::connection >( const connect_params_t & params );
+void enroll_module( factory & factory, const std::string & path )
+{
+   void * handle = dlopen( path.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_NODELETE );
+
+   if ( !handle )
+      return;
+
+   enroll_t enroll_fn = reinterpret_cast< enroll_t >( dlsym( handle, "enroll" ) );
+
+   if ( enroll_fn )
+      enroll_fn( factory );
+
+   dlclose( handle );
+}
 
 //-----------------------------------------------------------------------------
 
+void enroll_directory( factory & factory, const std::string & path )
+{
 }
 
 //-----------------------------------------------------------------------------
@@ -32,4 +49,4 @@ template<> impl * constructor< sqlite::connection >( const connect_params_t & pa
 
 //-----------------------------------------------------------------------------
 
-#endif
+}

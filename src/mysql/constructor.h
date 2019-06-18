@@ -5,9 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <mysql/constructor.h>
-#include <db/impl.h>
-#include <db/connect_string.h>
+#include <db/connect_params.h>
 #include <mysql/connection.h>
 
 //-----------------------------------------------------------------------------
@@ -22,26 +20,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * constructor< mysql::connection > ( const db::connect_params_t & params )
-{
-   auto location = params[ "location" ];
-   auto port_str = params[ "port" ];
-   auto username = params[ "username" ];
-   auto password = params[ "password" ];
-   auto database = params[ "database" ];
-
-   if ( location.empty() )
-      throw std::invalid_argument( "Unspecified location" );
-
-   if ( username.empty() )
-      throw std::invalid_argument( "Unspecified username" );
-
-   int port = 3306;
-   if ( !port_str.empty() )
-      port = atoi( port_str.c_str() );
-
-   return new mysql::connection( database, location, username, password, port );
-}
+template<> impl * constructor< mysql::connection > ( const db::connect_params_t & params );
 
 //-----------------------------------------------------------------------------
 
