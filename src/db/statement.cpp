@@ -22,6 +22,13 @@ statement::statement( std::shared_ptr< impl > impl )
 
 //-----------------------------------------------------------------------------
 
+int statement::parameter_count( void ) const
+{
+   return m_impl->parameter_count();
+}
+
+//-----------------------------------------------------------------------------
+
 ds::ostream & statement::operator << ( int8_t i )
 {
    m_impl->set_parameter( m_parameter++, i );

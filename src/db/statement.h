@@ -86,6 +86,8 @@ public:
 
    statement( std::shared_ptr< impl > impl );
 
+   int parameter_count( void ) const;
+
    virtual ds::ostream & operator << ( int8_t ) override;
    virtual ds::ostream & operator << ( int16_t ) override;
    virtual ds::ostream & operator << ( int32_t ) override;
