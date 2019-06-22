@@ -77,7 +77,7 @@ void connection::create( const std::string & name )
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL create connection", mysql_error( &m_mysql ) );
+      throw_error( "MySQL create database", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ void connection::use( const std::string & name )
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL use connection", mysql_error( &m_mysql ) );
+      throw_error( "MySQL use database", mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ bool connection::drop( const std::string & name )
       if ( mysql_errno( &m_mysql ) == 1008 )
          return false;
 
-      throw_error( "MySQL drop connection", mysql_error( &m_mysql ) );
+      throw_error( "MySQL drop database", mysql_error( &m_mysql ) );
    }
 
    return true;
