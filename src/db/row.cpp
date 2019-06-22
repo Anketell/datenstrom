@@ -28,6 +28,13 @@ row::row( std::shared_ptr< impl > impl ) : row()
 
 //-----------------------------------------------------------------------------
 
+int row::column_count( void ) const
+{
+   return m_impl->column_count();
+}
+
+//-----------------------------------------------------------------------------
+
 ds::istream & row::operator >> ( int8_t & i )
 {
    m_impl->get_column( m_column++, i );

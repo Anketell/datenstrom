@@ -23,6 +23,7 @@ namespace mysql
 class row : public db::row::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
+   int                       m_count;
 
    void get_column( int              index,
                     enum_field_types type,
@@ -33,6 +34,8 @@ class row : public db::row::impl
 public:
 
    row( std::shared_ptr< stmt_t > stmt );
+
+   virtual int column_count( void ) const override;
 
    virtual void get_column( int index, int8_t & ) override;
    virtual void get_column( int index, int16_t & ) override;

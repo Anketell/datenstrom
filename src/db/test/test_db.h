@@ -20,6 +20,11 @@ struct Test_row : public ds::db::row::impl
       m_step_calls = 0;
    }
 
+   int column_count( void ) const
+   {
+      return m_count;
+   }
+
    void get_column( int index, int8_t & i )
    {
    }

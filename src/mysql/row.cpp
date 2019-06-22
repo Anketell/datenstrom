@@ -20,7 +20,19 @@ row::row( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
-      m_stmt = nullptr;
+   {
+      m_stmt  = nullptr;
+      m_count = 0;
+   }
+   else
+      m_count = mysql_stmt_field_count( m_stmt->stmt );
+}
+
+//-----------------------------------------------------------------------------
+
+int row::column_count( void ) const
+{
+   return m_count;
 }
 
 //-----------------------------------------------------------------------------

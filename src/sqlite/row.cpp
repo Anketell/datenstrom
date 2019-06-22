@@ -24,6 +24,13 @@ row::row( std::shared_ptr< stmt_t > stmt )
 
 //-----------------------------------------------------------------------------
 
+int row::column_count( void ) const
+{
+   return m_count;
+}
+
+//-----------------------------------------------------------------------------
+
 void row::check_column( int index, int type )
 {
    static constexpr char operation[] = "SQLite result column check";

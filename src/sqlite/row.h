@@ -31,6 +31,8 @@ public:
 
    row( std::shared_ptr< stmt_t > stmt );
 
+   virtual int column_count( void ) const override;
+
    virtual void get_column( int index, int8_t & ) override;
    virtual void get_column( int index, int16_t & ) override;
    virtual void get_column( int index, int32_t & ) override;

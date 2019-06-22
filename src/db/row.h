@@ -33,6 +33,8 @@ public:
 
    public:
 
+      virtual int column_count( void ) const = 0;
+
       virtual void get_column( int index, int8_t & ) = 0;
       virtual void get_column( int index, int16_t & ) = 0;
       virtual void get_column( int index, int32_t & ) = 0;
@@ -59,6 +61,8 @@ public:
 
    row( void );
    row( std::shared_ptr< impl > impl );
+
+   int column_count( void ) const;
 
    virtual ds::istream & operator >> ( int8_t & ) override;
    virtual ds::istream & operator >> ( int16_t & ) override;
