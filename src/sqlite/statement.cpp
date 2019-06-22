@@ -74,7 +74,7 @@ int statement::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
-static const char * bind_parameter = "SQLite statement parameter bind";
+static constexpr char bind_parameter[] = "SQLite statement parameter bind";
 
 //-----------------------------------------------------------------------------
 
@@ -206,21 +206,23 @@ void statement::reset( void )
 
 uint32_t statement::execute( void )
 {
+   static constexpr char operation[] = "SQLite statement execute";
+
    int rc = sqlite3_step( m_stmt->stmt );
    if ( rc != SQLITE_DONE )
-      throw_error( "SQLite statement execute", rc );
+      throw_error( operation, rc );
 
    m_state = Executed;
 
    int count = sqlite3_column_count( m_stmt->stmt );
    if ( count > 1 )
-      throw_error( "SQLite statement execute", "Too many result columns" );
+      throw_error( operation, "Too many result columns" );
 
    uint32_t res = 0;
-   if ( sqlite3_column_count( m_stmt->stmt ) > 0 )
+   if ( count > 0 )
    {
-      if ( sqlite3_column_type( m_stmt->stmt, 1 ) == SQLITE_INTEGER )
-         res = sqlite3_column_int( m_stmt->stmt, 1 );
+      if ( sqlite3_column_type( m_stmt->stmt, 0 ) == SQLITE_INTEGER )
+         res = sqlite3_column_int( m_stmt->stmt, 0 );
    }
    else
       res = sqlite3_last_insert_rowid( m_db );
