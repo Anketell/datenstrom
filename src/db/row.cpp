@@ -124,10 +124,13 @@ void row::endr( void )
 
 bool row::step( void )
 {
-   if ( !m_impl->step() )
-      return false;
-
    m_column = 0;
+
+   if ( !m_impl->step() )
+   {
+      m_impl = nullptr;
+      return false;
+   }
 
    return true;
 }
