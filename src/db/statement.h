@@ -107,8 +107,8 @@ public:
    uint32_t execute( void );
    row result( void );
 
-   iterator begin( void );
-   iterator end( void );
+   statement::iterator begin( void );
+   statement::iterator end( void );
 
    template< typename T > statement operator()( T & t )
    {

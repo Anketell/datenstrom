@@ -134,20 +134,6 @@ bool row::step( void )
 
 //-----------------------------------------------------------------------------
 
-bool row::operator == ( const row & r ) const
-{
-   return m_impl == r.m_impl;
-}
-
-//-----------------------------------------------------------------------------
-
-bool row::operator != ( const row & r ) const
-{
-   return !( *this == r );
-}
-
-//-----------------------------------------------------------------------------
-
 row::operator bool ( void ) const
 {
    return m_impl != nullptr && *m_impl;

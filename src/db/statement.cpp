@@ -175,7 +175,7 @@ statement::iterator::iterator( row row )
 
 row statement::iterator::operator*( void )
 {
-   if ( m_row == row() )
+   if ( !m_row )
       throw std::runtime_error( "No row available" );
 
    return m_row;

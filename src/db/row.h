@@ -81,9 +81,6 @@ public:
 
    bool step( void );
 
-   bool operator == ( const row & r ) const;
-   bool operator != ( const row & r ) const;
-
    operator bool ( void ) const;
    operator bool ( void );
 
