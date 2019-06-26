@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_ROW_H
-#define DS_DB_ROW_H
+#ifndef DS_DB_RESULT_H
+#define DS_DB_RESULT_H
 
 //-----------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class row : public ds::istream
+class result : public ds::istream
 {
 public:
 
@@ -59,8 +59,8 @@ private:
 
 public:
 
-   row( void );
-   row( std::shared_ptr< impl > impl );
+   result( void );
+   result( std::shared_ptr< impl > impl );
 
    int column_count( void ) const;
 

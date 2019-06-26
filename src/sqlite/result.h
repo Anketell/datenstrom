@@ -1,11 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_ROW_H
-#define DS_SQLITE_ROW_H
+#ifndef DS_SQLITE_RESULT_H
+#define DS_SQLITE_RESULT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/row.h>
+#include <db/result.h>
 #include <sqlite/types.h>
 
 //-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-class row : public db::row::impl
+class result : public db::result::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
    int                       m_count;
@@ -29,7 +29,7 @@ class row : public db::row::impl
 
 public:
 
-   row( std::shared_ptr< stmt_t > stmt );
+   result( std::shared_ptr< stmt_t > stmt );
 
    virtual int column_count( void ) const override;
 

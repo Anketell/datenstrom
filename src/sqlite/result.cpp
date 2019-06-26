@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/row.h>
+#include <sqlite/result.h>
 #include <sqlite/error.h>
 #include <assert.h>
 
@@ -16,7 +16,7 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-row::row( std::shared_ptr< stmt_t > stmt )
+result::result( std::shared_ptr< stmt_t > stmt )
 {
    m_stmt  = stmt;
    m_count = sqlite3_column_count( m_stmt->stmt );
@@ -24,19 +24,19 @@ row::row( std::shared_ptr< stmt_t > stmt )
 
 //-----------------------------------------------------------------------------
 
-int row::column_count( void ) const
+int result::column_count( void ) const
 {
    return m_count;
 }
 
 //-----------------------------------------------------------------------------
 
-void row::check_column( int index, int type )
+void result::check_column( int index, int type )
 {
    static constexpr char operation[] = "SQLite result column check";
 
    if ( !m_stmt )
-      throw_error( operation, "Bad row" );
+      throw_error( operation, "Bad result" );
 
    if ( index >= m_count )
       throw_error( operation, "No column available" );
@@ -48,7 +48,7 @@ void row::check_column( int index, int type )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int8_t & i )
+void result::get_column( int index, int8_t & i )
 {
    check_column( index, SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
@@ -56,7 +56,7 @@ void row::get_column( int index, int8_t & i )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int16_t & i )
+void result::get_column( int index, int16_t & i )
 {
    check_column( index, SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
@@ -64,7 +64,7 @@ void row::get_column( int index, int16_t & i )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int32_t & i )
+void result::get_column( int index, int32_t & i )
 {
    check_column( index, SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
@@ -72,7 +72,7 @@ void row::get_column( int index, int32_t & i )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int64_t & i )
+void result::get_column( int index, int64_t & i )
 {
    check_column( index, SQLITE_INTEGER );
    i = sqlite3_column_int64( m_stmt->stmt, index );
@@ -80,7 +80,7 @@ void row::get_column( int index, int64_t & i )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint8_t & u )
+void result::get_column( int index, uint8_t & u )
 {
    check_column( index, SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
@@ -88,7 +88,7 @@ void row::get_column( int index, uint8_t & u )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint16_t & u )
+void result::get_column( int index, uint16_t & u )
 {
    check_column( index, SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
@@ -96,7 +96,7 @@ void row::get_column( int index, uint16_t & u )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint32_t & u )
+void result::get_column( int index, uint32_t & u )
 {
    check_column( index, SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
@@ -104,7 +104,7 @@ void row::get_column( int index, uint32_t & u )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint64_t & u )
+void result::get_column( int index, uint64_t & u )
 {
    check_column( index, SQLITE_INTEGER );
    u = sqlite3_column_int64( m_stmt->stmt, index );
@@ -112,7 +112,7 @@ void row::get_column( int index, uint64_t & u )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, double & d )
+void result::get_column( int index, double & d )
 {
    check_column( index, SQLITE_FLOAT );
    d = sqlite3_column_double( m_stmt->stmt, index );
@@ -120,7 +120,7 @@ void row::get_column( int index, double & d )
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, std::string & s )
+void result::get_column( int index, std::string & s )
 {
    check_column( index, SQLITE_TEXT );
    s = ( const char * )sqlite3_column_text( m_stmt->stmt, index );
@@ -128,7 +128,7 @@ void row::get_column( int index, std::string & s )
 
 //-----------------------------------------------------------------------------
 
-bool row::step( void )
+bool result::step( void )
 {
    int rc = sqlite3_step( m_stmt->stmt );
    if ( rc != SQLITE_ROW )
@@ -138,7 +138,7 @@ bool row::step( void )
 
 //-----------------------------------------------------------------------------
 
-row::operator bool ( void ) const
+result::operator bool ( void ) const
 {
    return m_stmt.get();
 }

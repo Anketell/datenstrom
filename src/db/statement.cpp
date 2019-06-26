@@ -142,7 +142,7 @@ uint32_t statement::execute( void )
 
 //-----------------------------------------------------------------------------
 
-row statement::result( void )
+result statement::result( void )
 {
    if ( m_parameter > 0 && m_parameter != m_impl->parameter_count() + 1 )
       throw std::runtime_error( "Wrong number of parameters" );
@@ -173,28 +173,28 @@ statement::iterator::iterator( void )
 
 //-----------------------------------------------------------------------------
 
-statement::iterator::iterator( row row )
+statement::iterator::iterator( db::result result )
 {
-   m_row = row;
+   m_result = result;
 }
 
 //-----------------------------------------------------------------------------
 
-row statement::iterator::operator*( void )
+result statement::iterator::operator*( void )
 {
-   if ( !m_row )
-      throw std::runtime_error( "No row available" );
+   if ( !m_result )
+      throw std::runtime_error( "No result available" );
 
-   return m_row;
+   return m_result;
 }
 
 //-----------------------------------------------------------------------------
 
 statement::iterator & statement::iterator::operator++( void )
 {
-   if ( !m_row.step() )
+   if ( !m_result.step() )
    {
-      m_row = row();
+      m_result = db::result();
    }
 
    return *this;
@@ -211,7 +211,7 @@ statement::iterator & statement::iterator::operator++( int )
 
 bool statement::iterator::operator==( const iterator &it ) const
 {
-   return m_row == it.m_row;
+   return m_result == it.m_result;
 }
 
 //-----------------------------------------------------------------------------

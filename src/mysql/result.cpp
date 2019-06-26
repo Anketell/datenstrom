@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <mysql/row.h>
+#include <mysql/result.h>
 #include <mysql/error.h>
 #include <assert.h>
 
@@ -16,7 +16,7 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-row::row( std::shared_ptr< stmt_t > stmt ) :
+result::result( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
@@ -30,14 +30,14 @@ m_stmt( stmt )
 
 //-----------------------------------------------------------------------------
 
-int row::column_count( void ) const
+int result::column_count( void ) const
 {
    return m_count;
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int              index,
+void result::get_column( int              index,
                       enum_field_types type,
                       void           * p,
                       size_t           length,
@@ -46,7 +46,7 @@ void row::get_column( int              index,
    static constexpr char operation[] = "MySQL get result column";
 
    if ( !m_stmt )
-      throw_error( operation, "Bad row" );
+      throw_error( operation, "Bad result" );
 
    MYSQL_BIND column = {};
 
@@ -63,75 +63,75 @@ void row::get_column( int              index,
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int8_t & i )
+void result::get_column( int index, int8_t & i )
 {
    get_column( index, MYSQL_TYPE_TINY, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int16_t & i )
+void result::get_column( int index, int16_t & i )
 {
    get_column( index, MYSQL_TYPE_SHORT, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int32_t & i )
+void result::get_column( int index, int32_t & i )
 {
    get_column( index, MYSQL_TYPE_LONG, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, int64_t & i )
+void result::get_column( int index, int64_t & i )
 {
    get_column( index, MYSQL_TYPE_LONGLONG, &i, sizeof( i ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint8_t & u )
+void result::get_column( int index, uint8_t & u )
 {
    get_column( index, MYSQL_TYPE_TINY, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint16_t & u )
+void result::get_column( int index, uint16_t & u )
 {
    get_column( index, MYSQL_TYPE_SHORT, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint32_t & u )
+void result::get_column( int index, uint32_t & u )
 {
    get_column( index, MYSQL_TYPE_LONG , &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, uint64_t & u )
+void result::get_column( int index, uint64_t & u )
 {
    get_column( index, MYSQL_TYPE_LONGLONG, &u, sizeof( u ), 1 );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, double & d )
+void result::get_column( int index, double & d )
 {
    get_column( index, MYSQL_TYPE_DOUBLE, &d, sizeof( d ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void row::get_column( int index, std::string & s )
+void result::get_column( int index, std::string & s )
 {
    static constexpr char operation[] = "MySQL get result column";
 
    if ( !m_stmt )
-      throw_error( operation, "Bad row" );
+      throw_error( operation, "Bad result" );
 
    unsigned long length = 0;
 
@@ -158,7 +158,7 @@ void row::get_column( int index, std::string & s )
 
 //-----------------------------------------------------------------------------
 
-bool row::step( void )
+bool result::step( void )
 {
    if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
       m_stmt = nullptr;
@@ -168,7 +168,7 @@ bool row::step( void )
 
 //-----------------------------------------------------------------------------
 
-row::operator bool ( void ) const
+result::operator bool ( void ) const
 {
    return m_stmt != nullptr;
 }

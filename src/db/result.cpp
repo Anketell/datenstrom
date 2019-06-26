@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <db/row.h>
+#include <db/result.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,28 +14,28 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-row::row( void )
+result::result( void )
 {
    m_column = 0;
 }
 
 //-----------------------------------------------------------------------------
 
-row::row( std::shared_ptr< impl > impl ) : row()
+result::result( std::shared_ptr< impl > impl ) : result()
 {
    m_impl = impl;
 }
 
 //-----------------------------------------------------------------------------
 
-int row::column_count( void ) const
+int result::column_count( void ) const
 {
    return m_impl->column_count();
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( int8_t & i )
+ds::istream & result::operator >> ( int8_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -43,7 +43,7 @@ ds::istream & row::operator >> ( int8_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( int16_t & i )
+ds::istream & result::operator >> ( int16_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -51,7 +51,7 @@ ds::istream & row::operator >> ( int16_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( int32_t & i )
+ds::istream & result::operator >> ( int32_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -59,7 +59,7 @@ ds::istream & row::operator >> ( int32_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( int64_t & i )
+ds::istream & result::operator >> ( int64_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -67,7 +67,7 @@ ds::istream & row::operator >> ( int64_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( uint8_t & u )
+ds::istream & result::operator >> ( uint8_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -75,7 +75,7 @@ ds::istream & row::operator >> ( uint8_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( uint16_t & u )
+ds::istream & result::operator >> ( uint16_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -83,7 +83,7 @@ ds::istream & row::operator >> ( uint16_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( uint32_t & u )
+ds::istream & result::operator >> ( uint32_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -91,7 +91,7 @@ ds::istream & row::operator >> ( uint32_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( uint64_t & u )
+ds::istream & result::operator >> ( uint64_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -99,7 +99,7 @@ ds::istream & row::operator >> ( uint64_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( double & d )
+ds::istream & result::operator >> ( double & d )
 {
    m_impl->get_column( m_column++, d );
    return *this;
@@ -107,7 +107,7 @@ ds::istream & row::operator >> ( double & d )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & row::operator >> ( std::string & s )
+ds::istream & result::operator >> ( std::string & s )
 {
    m_impl->get_column( m_column++, s );
    return *this;
@@ -115,14 +115,14 @@ ds::istream & row::operator >> ( std::string & s )
 
 //-----------------------------------------------------------------------------
 
-void row::endr( void )
+void result::endr( void )
 {
    step();
 }
 
 //-----------------------------------------------------------------------------
 
-bool row::step( void )
+bool result::step( void )
 {
    m_column = 0;
 
@@ -137,16 +137,16 @@ bool row::step( void )
 
 //-----------------------------------------------------------------------------
 
-row::operator bool ( void ) const
+result::operator bool ( void ) const
 {
    return m_impl != nullptr && *m_impl;
 }
 
 //-----------------------------------------------------------------------------
 
-row::operator bool ( void )
+result::operator bool ( void )
 {
-   return *const_cast< const row * >( this );
+   return *const_cast< const result * >( this );
 }
 
 //-----------------------------------------------------------------------------

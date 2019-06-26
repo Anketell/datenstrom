@@ -5,7 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <db/row.h>
+#include <db/result.h>
 
 //-----------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ public:
 
       virtual void reset( void ) = 0;
       virtual uint32_t execute( void ) = 0;
-      virtual row result( void ) = 0;
+      virtual db::result result( void ) = 0;
    };
 
 private:
@@ -68,14 +68,14 @@ public:
    {
    protected:
 
-      row m_row;
+      result m_result;
 
    public:
 
       iterator( void );
-      iterator( row row );
+      iterator( db::result result );
 
-      row operator*( void );
+      db::result operator*( void );
 
       iterator & operator++( void );
       iterator & operator++( int );
@@ -107,10 +107,10 @@ public:
 
    void reset( void );
    uint32_t execute( void );
-   row result( void );
+   db::result result( void );
 
-   statement::iterator begin( void );
-   statement::iterator end( void );
+   iterator begin( void );
+   iterator end( void );
 
    template< typename T > statement operator()( T & t )
    {
@@ -134,7 +134,7 @@ template<> class std::iterator_traits< ds::db::statement::iterator >
 public:
 
    typedef int32_t              difference_type;
-   typedef ds::db::row          value_type;
+   typedef ds::db::result       value_type;
    typedef value_type *         pointer;
    typedef value_type &         reference;
    typedef forward_iterator_tag iterator_category;

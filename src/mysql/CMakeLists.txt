@@ -8,7 +8,7 @@ add_library( ${TARGET} SHARED
    statement_base.cpp
    positional_statement.cpp
    named_statement.cpp
-   row.cpp
+   result.cpp
    error.cpp
 )
 

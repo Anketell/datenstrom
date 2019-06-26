@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mysql/statement_base.h>
-#include <mysql/row.h>
+#include <mysql/result.h>
 #include <mysql/error.h>
 
 //-----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ uint32_t statement_base::execute( void )
 
    try
    {
-      row( m_stmt ).get_column( 0, res );
+      mysql::result( m_stmt ).get_column( 0, res );
    }
    catch ( ... )
    {
@@ -80,14 +80,14 @@ uint32_t statement_base::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::row statement_base::result( void )
+db::result statement_base::result( void )
 {
    internal_execute();
 
    if ( mysql_stmt_affected_rows( m_stmt->stmt ) == 0 )
-      return db::row();
+      return db::result();
 
-   return db::row( std::make_shared< row >( m_stmt ) );
+   return db::result( std::make_shared< mysql::result >( m_stmt ) );
 }
 
 //-----------------------------------------------------------------------------

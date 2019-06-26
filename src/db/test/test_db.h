@@ -9,12 +9,12 @@
 
 //-----------------------------------------------------------------------------
 
-struct Test_row : public ds::db::row::impl
+struct Test_result : public ds::db::result::impl
 {
    int m_count;
    int m_step_calls;
 
-   Test_row( int count = 1 )
+   Test_result( int count = 1 )
    {
       m_count      = count;
       m_step_calls = 0;
@@ -82,14 +82,14 @@ struct Test_row : public ds::db::row::impl
 
 struct Test_statement : public ds::db::statement::impl
 {
-   int m_row_count;
+   int m_result_count;
    int m_reset_calls;
    int m_execute_calls;
    int m_result_calls;
 
-   Test_statement( int row_count = 0 )
+   Test_statement( int result_count = 0 )
    {
-      m_row_count     = row_count;
+      m_result_count     = result_count;
       m_reset_calls   = 0;
       m_execute_calls = 0;
       m_result_calls  = 0;
@@ -155,10 +155,10 @@ struct Test_statement : public ds::db::statement::impl
       return 0;
    }
 
-   virtual ds::db::row result( void ) override
+   virtual ds::db::result result( void ) override
    {
       m_result_calls++;
-      return ds::db::row( std::make_shared< Test_row >( m_row_count ) );
+      return ds::db::result( std::make_shared< Test_result >( m_result_count ) );
    }
 };
 

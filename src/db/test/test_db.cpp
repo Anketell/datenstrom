@@ -9,7 +9,7 @@ constexpr char Test_db::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-TEST( db_endr, should_call_db_row_step )
+TEST( db_endr, should_call_db_result_step )
 {
    auto test_stmt = std::make_shared< Test_statement >();
    ds::db::statement stmt( test_stmt );
@@ -25,14 +25,14 @@ TEST( db_endr, should_call_db_row_step )
 
 TEST( db_endr, should_call_db_statement_execute )
 {
-   auto test_row = std::make_shared< Test_row >();
-   ds::db::row row( test_row );
+   auto test_result = std::make_shared< Test_result >();
+   ds::db::result result( test_result );
 
-   EXPECT_EQ( test_row->m_step_calls, 0 );
+   EXPECT_EQ( test_result->m_step_calls, 0 );
 
-   row >> ds::endr;
+   result >> ds::endr;
 
-   EXPECT_EQ( test_row->m_step_calls, 1 );
+   EXPECT_EQ( test_result->m_step_calls, 1 );
 }
 
 //-----------------------------------------------------------------------------

@@ -4,7 +4,7 @@ set( MODULE ds_sqlite_module )
 add_library( ${TARGET} SHARED
    connection.cpp
    statement.cpp
-   row.cpp
+   result.cpp
    error.cpp
 )
 

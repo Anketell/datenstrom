@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <sqlite/statement.h>
-#include <sqlite/row.h>
+#include <sqlite/result.h>
 #include <sqlite/error.h>
 #include <assert.h>
 
@@ -234,16 +234,16 @@ uint32_t statement::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::row statement::result( void )
+db::result statement::result( void )
 {
    int rc = sqlite3_step( m_stmt->stmt );
 
    m_state = Executed;
 
    if ( rc != SQLITE_ROW )
-      return db::row();
+      return db::result();
 
-   return db::row( std::make_shared< row >( m_stmt ) );
+   return db::result( std::make_shared< sqlite::result >( m_stmt ) );
 }
 
 //-----------------------------------------------------------------------------

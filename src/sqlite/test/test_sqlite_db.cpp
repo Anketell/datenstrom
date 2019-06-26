@@ -178,15 +178,15 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::row row;
+      ds::db::result result;
 
-      EXPECT_NO_THROW( row = results_test.result() );
+      EXPECT_NO_THROW( result = results_test.result() );
 
       for ( auto o : data )
       {
-         if ( row )
+         if ( result )
          {
-            row.step();
+            result.step();
          }
       }
    }
@@ -245,7 +245,7 @@ TEST( sqlite_db_row, should_provide_query_data )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::row row;
+      ds::db::result row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -283,7 +283,7 @@ TEST( sqlite_db_row, should_return_query_data_not_available )
    {
       ds::db::statement create_test = test_db( create );
 
-      EXPECT_EQ( ds::db::row(), create_test.result() );
+      EXPECT_EQ( ds::db::result(), create_test.result() );
    }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
@@ -317,7 +317,7 @@ TEST( sqlite_db_row, should_fail_query_wrong_column_count )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::row row;
+      ds::db::result row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -371,7 +371,7 @@ TEST( sqlite_db_row, should_fail_query_wrong_column_type )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::row row;
+      ds::db::result row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
