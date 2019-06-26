@@ -9,13 +9,7 @@ TEST( db_list_iterator, should_iterate_over_results )
 {
    ds::db::statement stmt( std::make_shared< Test_statement >( 5 ) );
 
-   int count = 0;
-
-   for ( auto it = stmt.begin(); it != stmt.end(); it++ )
-   {
-      EXPECT_NO_THROW( *it );
-      count++;
-   }
+   int count = std::distance( stmt.begin(), stmt.end() );
 
    EXPECT_EQ( 5, count );
 }
