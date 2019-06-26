@@ -129,4 +129,17 @@ public:
 
 //-----------------------------------------------------------------------------
 
+template<> class std::iterator_traits< ds::db::statement::iterator >
+{
+public:
+
+   typedef int32_t              difference_type;
+   typedef ds::db::row          value_type;
+   typedef value_type *         pointer;
+   typedef value_type &         reference;
+   typedef forward_iterator_tag iterator_category;
+};
+
+//-----------------------------------------------------------------------------
+
 #endif
