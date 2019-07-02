@@ -75,12 +75,10 @@ TEST( mysql_db_statement, should_return_execute_value )
       ds::db::statement insert_test = test_db( insert );
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
-
-      int id;
-      EXPECT_NO_THROW( id = insert_test.execute() );
+      EXPECT_EQ( insert_test.execute(), 1 );
 
       EXPECT_NO_THROW( insert_test << data[ 1 ] );
-      EXPECT_EQ( insert_test.execute(), id + 1 );
+      EXPECT_EQ( insert_test.execute(), 2 );
 
       ds::db::statement value_test = test_db( "SELECT COUNT( * ) FROM Object" );
 
