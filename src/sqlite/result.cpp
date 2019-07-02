@@ -142,7 +142,7 @@ bool result::step( void )
 {
    m_valid = sqlite3_step( m_stmt->stmt ) == SQLITE_ROW;
 
-   return m_valid;
+   return *this;
 }
 
 //-----------------------------------------------------------------------------

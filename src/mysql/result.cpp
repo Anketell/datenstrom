@@ -167,7 +167,7 @@ bool result::step( void )
 {
    m_valid = mysql_stmt_fetch( m_stmt->stmt ) == 0;
 
-   return m_valid;
+   return *this;
 }
 
 //-----------------------------------------------------------------------------
