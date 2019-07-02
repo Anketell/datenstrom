@@ -34,11 +34,6 @@ public:
                const std::string & password,
                uint16_t            port = 3306 );
 
-   connection( const std::string & server,
-               const std::string & username,
-               const std::string & password,
-               uint16_t            port = 3306 );
-
    virtual ~connection( void );
 
    virtual const char * type( void ) const override;

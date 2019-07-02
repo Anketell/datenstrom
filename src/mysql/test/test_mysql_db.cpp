@@ -20,7 +20,9 @@ TEST( mysql_db, should_create_good_path )
 
 TEST( mysql_db, should_fail_create_bad_con_str )
 {
-   EXPECT_THROW( ds::db::connection test_db( bad_con_str ), std::invalid_argument );
+   EXPECT_THROW( ds::db::connection test_db( "mysql://blah?username=root" ), std::runtime_error );
+   EXPECT_THROW( ds::db::connection test_db( "mysql://" ), std::invalid_argument );
+   EXPECT_THROW( ds::db::connection test_db( "mysql://blah" ), std::invalid_argument );
 }
 
 //-----------------------------------------------------------------------------

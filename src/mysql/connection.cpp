@@ -47,16 +47,6 @@ connection::connection( const std::string & name,
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const std::string & server,
-                        const std::string & username,
-                        const std::string & password,
-                        uint16_t            port ) :
-connection( "", server, username, password, port )
-{
-}
-
-//-----------------------------------------------------------------------------
-
 connection::~connection( void )
 {
    mysql_close( &m_mysql );
