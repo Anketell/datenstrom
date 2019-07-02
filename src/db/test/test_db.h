@@ -11,24 +11,30 @@
 
 struct Test_result : public ds::db::result::impl
 {
-   int m_count;
+   int m_column_count;
    int m_step_calls;
+   int m_row_count;
 
-   Test_result( int count = 1 )
+   Test_result( int column_count = 0, int row_count = 0 )
    {
-      m_count      = count;
-      m_step_calls = 0;
+      m_column_count = column_count;
+      m_row_count    = row_count;
+      m_step_calls   = 0;
    }
 
    int column_count( void ) const
    {
-      return m_count;
+      return m_column_count;
+   }
+
+   int rows_affected( void ) const
+   {
+      return m_row_count;
    }
 
    void get_column( int index, int8_t & i )
    {
    }
-
 
    void get_column( int index, int16_t & i )
    {
@@ -74,7 +80,7 @@ struct Test_result : public ds::db::result::impl
 
    virtual operator bool ( void ) const
    {
-       return m_step_calls < m_count;
+       return m_step_calls < m_row_count;
    }
 };
 
@@ -82,14 +88,16 @@ struct Test_result : public ds::db::result::impl
 
 struct Test_statement : public ds::db::statement::impl
 {
-   int m_result_count;
+   int m_column_count;
+   int m_row_count;
    int m_reset_calls;
    int m_execute_calls;
    int m_result_calls;
 
-   Test_statement( int result_count = 0 )
+   Test_statement( int column_count = 1, int row_count = 0 )
    {
-      m_result_count     = result_count;
+      m_column_count  = column_count;
+      m_row_count     = row_count;
       m_reset_calls   = 0;
       m_execute_calls = 0;
       m_result_calls  = 0;
@@ -158,7 +166,7 @@ struct Test_statement : public ds::db::statement::impl
    virtual ds::db::result result( void ) override
    {
       m_result_calls++;
-      return ds::db::result( std::make_shared< Test_result >( m_result_count ) );
+      return ds::db::result( std::make_shared< Test_result >( m_column_count, m_row_count ) );
    }
 };
 

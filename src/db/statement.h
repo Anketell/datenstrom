@@ -76,6 +76,7 @@ public:
       iterator( db::result result );
 
       db::result operator*( void );
+      db::result * operator->( void );
 
       iterator & operator++( void );
       iterator & operator++( int );

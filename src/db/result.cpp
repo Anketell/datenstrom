@@ -35,6 +35,13 @@ int result::column_count( void ) const
 
 //-----------------------------------------------------------------------------
 
+int result::rows_affected( void ) const
+{
+   return m_impl->rows_affected();
+}
+
+//-----------------------------------------------------------------------------
+
 ds::istream & result::operator >> ( int8_t & i )
 {
    m_impl->get_column( m_column++, i );

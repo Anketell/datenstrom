@@ -90,7 +90,7 @@ int positional_statement::check_parameter( int index )
       reset();
 
    if ( index < 1 )
-      throw_error( operation, "bad parameter" );
+      throw_error( operation, "Bad parameter" );
 
    if ( index > m_bind_count )
       throw_error( operation, "Too many parameters" );

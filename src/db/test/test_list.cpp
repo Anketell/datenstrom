@@ -7,11 +7,15 @@
 
 TEST( db_list_iterator, should_iterate_over_results )
 {
-   ds::db::statement stmt( std::make_shared< Test_statement >( 5 ) );
+   ds::db::statement stmt( std::make_shared< Test_statement >( 1, 5 ) );
 
-   int count = std::distance( stmt.begin(), stmt.end() );
+   auto begin = stmt.begin();
+   auto end   = stmt.end();
+
+   int count = std::distance( begin, end );
 
    EXPECT_EQ( 5, count );
+   EXPECT_EQ( begin->rows_affected(), count );
 }
 
 //-----------------------------------------------------------------------------

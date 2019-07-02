@@ -190,12 +190,17 @@ result statement::iterator::operator*( void )
 
 //-----------------------------------------------------------------------------
 
+result * statement::iterator::operator->( void )
+{
+   return &m_result;
+}
+
+//-----------------------------------------------------------------------------
+
 statement::iterator & statement::iterator::operator++( void )
 {
    if ( !m_result.step() )
-   {
       m_result = db::result();
-   }
 
    return *this;
 }

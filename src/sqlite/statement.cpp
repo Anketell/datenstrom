@@ -61,7 +61,7 @@ int statement::check_parameter( int index )
       reset();
 
    if ( index < 1 )
-      throw_error( operation, "bad parameter" );
+      throw_error( operation, "Bad parameter" );
 
    if ( index > m_count )
       throw_error( operation, "Too many parameters" );
@@ -208,21 +208,18 @@ uint32_t statement::execute( void )
 {
    static constexpr char operation[] = "SQLite statement execute";
 
-   int rc = sqlite3_step( m_stmt->stmt );
-   if ( rc != SQLITE_DONE )
-      throw_error( operation, rc );
+   uint32_t res = 0;
+
+   sqlite::result result( m_stmt );
 
    m_state = Executed;
 
-   int count = sqlite3_column_count( m_stmt->stmt );
-   if ( count > 1 )
-      throw_error( operation, "Too many result columns" );
-
-   uint32_t res = 0;
-   if ( count > 0 )
+   if ( result )
    {
-      if ( sqlite3_column_type( m_stmt->stmt, 0 ) == SQLITE_INTEGER )
-         res = sqlite3_column_int( m_stmt->stmt, 0 );
+      if ( sqlite3_column_count( m_stmt->stmt ) != 1 )
+         throw_error( operation, "Too many result columns" );
+
+      result.get_column( 0, res );
    }
    else
       res = sqlite3_last_insert_rowid( m_db );
@@ -236,14 +233,11 @@ uint32_t statement::execute( void )
 
 db::result statement::result( void )
 {
-   int rc = sqlite3_step( m_stmt->stmt );
+   db::result result = db::result( std::make_shared< sqlite::result >( m_stmt ) );
 
    m_state = Executed;
 
-   if ( rc != SQLITE_ROW )
-      return db::result();
-
-   return db::result( std::make_shared< sqlite::result >( m_stmt ) );
+   return result;
 }
 
 //-----------------------------------------------------------------------------

@@ -38,14 +38,16 @@ named_statement::~named_statement( void )
 
 const char * named_statement::check_parameter( int index )
 {
+   static constexpr char operation[] = "MySQL named statement parameter check";
+
    if ( m_state == Executed )
       reset();
 
    if ( index < 1 )
-      throw std::runtime_error( "bad parameter" );
+      throw_error( operation, "Bad parameter" );
 
    if ( index > m_names.size() )
-      throw std::runtime_error( "Too many parameters" );
+      throw_error( operation, "Too many parameters" );
 
    return m_names[ index - 1 ].c_str();
 }

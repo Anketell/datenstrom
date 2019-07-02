@@ -60,18 +60,23 @@ void statement_base::reset( void )
 
 uint32_t statement_base::execute( void )
 {
+   static constexpr char operation[] = "MySQL statement execute";
+
    internal_execute();
 
    uint32_t res = 0;
 
-   try
+   mysql::result result( m_stmt );
+
+   if ( result )
    {
-      mysql::result( m_stmt ).get_column( 0, res );
+      if ( result.column_count() != 1 )
+         throw_error( operation, "Too many result columns" );
+
+      result.get_column( 0, res );
    }
-   catch ( ... )
-   {
+   else
       res = mysql_stmt_insert_id( m_stmt->stmt );
-   }
 
    reset();
 
@@ -83,9 +88,6 @@ uint32_t statement_base::execute( void )
 db::result statement_base::result( void )
 {
    internal_execute();
-
-   if ( mysql_stmt_affected_rows( m_stmt->stmt ) == 0 )
-      return db::result();
 
    return db::result( std::make_shared< mysql::result >( m_stmt ) );
 }

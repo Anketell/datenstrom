@@ -19,13 +19,10 @@ namespace mysql
 result::result( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
-   if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
-   {
-      m_stmt  = nullptr;
-      m_count = 0;
-   }
-   else
+   if ( step() )
       m_count = mysql_stmt_field_count( m_stmt->stmt );
+   else
+      m_count = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -37,12 +34,20 @@ int result::column_count( void ) const
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int              index,
-                      enum_field_types type,
-                      void           * p,
-                      size_t           length,
-                      int              is_unsigned )
+int result::rows_affected( void ) const
 {
+   int rows = mysql_stmt_affected_rows( m_stmt->stmt );
+   return rows > 0 ? rows : 0;
+}
+
+//-----------------------------------------------------------------------------
+
+ void result::get_column( int              index,
+                          enum_field_types type,
+                          void           * p,
+                          size_t           length,
+                          int              is_unsigned )
+ {
    static constexpr char operation[] = "MySQL get result column";
 
    if ( !m_stmt )
@@ -160,17 +165,16 @@ void result::get_column( int index, std::string & s )
 
 bool result::step( void )
 {
-   if ( mysql_stmt_fetch( m_stmt->stmt ) != 0 )
-      m_stmt = nullptr;
+   m_valid = mysql_stmt_fetch( m_stmt->stmt ) == 0;
 
-   return m_stmt != nullptr;
+   return m_valid;
 }
 
 //-----------------------------------------------------------------------------
 
 result::operator bool ( void ) const
 {
-   return m_stmt != nullptr;
+   return m_valid;
 }
 
 //-----------------------------------------------------------------------------

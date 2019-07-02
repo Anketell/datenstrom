@@ -16,10 +16,13 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-result::result( std::shared_ptr< stmt_t > stmt )
+result::result( std::shared_ptr< stmt_t > stmt ) :
+m_stmt( stmt )
 {
-   m_stmt  = stmt;
-   m_count = sqlite3_column_count( m_stmt->stmt );
+   if ( step() )
+      m_count = sqlite3_column_count( m_stmt->stmt );
+   else
+      m_count = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -27,6 +30,13 @@ result::result( std::shared_ptr< stmt_t > stmt )
 int result::column_count( void ) const
 {
    return m_count;
+}
+
+//-----------------------------------------------------------------------------
+
+int result::rows_affected( void ) const
+{
+   return sqlite3_changes( sqlite3_db_handle( m_stmt->stmt ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -130,17 +140,16 @@ void result::get_column( int index, std::string & s )
 
 bool result::step( void )
 {
-   int rc = sqlite3_step( m_stmt->stmt );
-   if ( rc != SQLITE_ROW )
-      m_stmt =  nullptr;
-   return m_stmt.get();
+   m_valid = sqlite3_step( m_stmt->stmt ) == SQLITE_ROW;
+
+   return m_valid;
 }
 
 //-----------------------------------------------------------------------------
 
 result::operator bool ( void ) const
 {
-   return m_stmt.get();
+   return m_valid;
 }
 
 //-----------------------------------------------------------------------------

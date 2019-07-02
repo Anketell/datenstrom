@@ -24,6 +24,7 @@ class result : public db::result::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
    int                       m_count;
+   bool                      m_valid;
 
    void get_column( int              index,
                     enum_field_types type,
@@ -36,6 +37,7 @@ public:
    result( std::shared_ptr< stmt_t > stmt );
 
    virtual int column_count( void ) const override;
+   virtual int rows_affected( void ) const override;
 
    virtual void get_column( int index, int8_t & ) override;
    virtual void get_column( int index, int16_t & ) override;

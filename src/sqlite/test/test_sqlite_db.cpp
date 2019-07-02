@@ -89,6 +89,35 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
 
 //-----------------------------------------------------------------------------
 
+TEST( sqlite_db_statement, should_return_execute_value )
+{
+   ds::db::connection test_db( tmp_path );
+
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.create( tmp_db ) );
+   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+
+   {
+      ds::db::statement create_test = test_db( create );
+      EXPECT_NO_THROW( create_test.execute() );
+   }
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      EXPECT_NO_THROW( insert_test << data[ 0 ] );
+      EXPECT_EQ( insert_test.execute(), 1 );
+
+      ds::db::statement value_test = test_db( "SELECT COUNT( * ) FROM Object" );
+
+      EXPECT_EQ( value_test.execute(), 1 );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+}
+
+//-----------------------------------------------------------------------------
+
 TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
 {
    ds::db::connection test_db( tmp_path );
@@ -189,29 +218,6 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
             result.step();
          }
       }
-   }
-
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-}
-
-//-----------------------------------------------------------------------------
-
-TEST( sqlite_db_statement, should_fail_bad_query_reset )
-{
-   ds::db::connection test_db( tmp_path );
-
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
-
-   {
-      ds::db::statement create_test1 = test_db( create );
-      ds::db::statement create_test2 = test_db( create );
-
-      EXPECT_NO_THROW( create_test1.execute() );
-
-      EXPECT_THROW( create_test2.execute(), std::runtime_error );
-      EXPECT_THROW( create_test2.reset(), std::runtime_error );
    }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
