@@ -108,9 +108,12 @@ TEST( sqlite_db_statement, should_return_execute_value )
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
       EXPECT_EQ( insert_test.execute(), 1 );
 
+      EXPECT_NO_THROW( insert_test << data[ 1 ] );
+      EXPECT_EQ( insert_test.execute(), 2 );
+
       ds::db::statement value_test = test_db( "SELECT COUNT( * ) FROM Object" );
 
-      EXPECT_EQ( value_test.execute(), 1 );
+      EXPECT_EQ( value_test.execute(), 2 );
    }
 
    EXPECT_NO_THROW( test_db.drop( tmp_db ) );
