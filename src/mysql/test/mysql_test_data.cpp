@@ -22,7 +22,7 @@ const char * create = "CREATE TABLE Object ("
 
 const char * test_db_name = "test_db";
 const char * test_con_str = "mysql://127.0.0.1?username=root";
-const char * bad_db_name  = "/blah/test.db";
+const char * bad_con_str  = "mysql://blah";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ?, NULL )";

@@ -10,11 +10,11 @@
 
 TEST( sqlite_transaction, should_commit_on_destruction )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -42,18 +42,18 @@ TEST( sqlite_transaction, should_commit_on_destruction )
       EXPECT_EQ( 2, count );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
  }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_rollback_on_exception )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -87,18 +87,18 @@ TEST( sqlite_transaction, should_rollback_on_exception )
       EXPECT_EQ( 0, count );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_nested )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -114,18 +114,18 @@ TEST( sqlite_transaction, should_fail_nested )
                     std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_lone_commit )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -134,18 +134,18 @@ TEST( sqlite_transaction, should_fail_lone_commit )
 
    EXPECT_THROW( test_db.commit_transaction(), std::runtime_error );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_transaction, should_fail_lone_rollback )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -154,18 +154,18 @@ TEST( sqlite_transaction, should_fail_lone_rollback )
 
    EXPECT_THROW( test_db.rollback_transaction(), std::runtime_error );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_release_on_destruction )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -195,18 +195,18 @@ TEST( sqlite_savepoint, should_release_on_destruction )
       EXPECT_EQ( 2, count );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_rollback_on_exception )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -244,36 +244,36 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
       EXPECT_EQ( 0, count );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_no_name  )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::transaction txn( test_db );
       EXPECT_THROW( test_db.savepoint( "" ) ,  std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_bad_release_name  )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::transaction txn( test_db );
@@ -282,18 +282,18 @@ TEST( sqlite_savepoint, should_fail_bad_release_name  )
       EXPECT_THROW( test_db.release_savepoint( "bad" ) ,  std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::transaction txn( test_db );
@@ -302,7 +302,7 @@ TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
       EXPECT_THROW( test_db.rollback_to_savepoint( "bad" ) ,  std::runtime_error );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------

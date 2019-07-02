@@ -13,9 +13,9 @@ extern const char * create;
 
 //-----------------------------------------------------------------------------
 
-extern const char * tmp_db;
-extern const char * tmp_path;
-extern const char * bad_path;
+extern const char * test_db_name;
+extern const char * test_con_str;
+extern const char * bad_con_str;
 extern const char * bad_sql;
 extern const char * insert;
 extern const char * result;

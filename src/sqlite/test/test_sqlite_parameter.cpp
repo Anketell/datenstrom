@@ -27,11 +27,11 @@ const ds::db::name_list_t named_parameters =
 
 TEST( sqlite_parameter, should_insert_named )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -56,18 +56,18 @@ TEST( sqlite_parameter, should_insert_named )
       EXPECT_NO_THROW( insert_test.execute() );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
 TEST( sqlite_parameter, should_retrieve_named )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -114,7 +114,7 @@ TEST( sqlite_parameter, should_retrieve_named )
    EXPECT_EQ( o.m_d, 10 );
    EXPECT_EQ( o.m_hello, "hello2" );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------

@@ -18,11 +18,9 @@ TEST( mysql_db, should_create_good_path )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db, should_fail_create_bad_db_name )
+TEST( mysql_db, should_fail_create_bad_con_str )
 {
-   ds::db::connection test_db( test_con_str );
-
-   EXPECT_THROW( test_db.create( bad_db_name ), std::runtime_error );
+   EXPECT_THROW( ds::db::connection test_db( bad_con_str ), std::invalid_argument );
 }
 
 //-----------------------------------------------------------------------------

@@ -15,9 +15,9 @@ extern const char * create;
 
 extern const char * test_db_name;
 extern const char * test_con_str;
-extern const char * username;
-extern const char * password;
-extern const char * bad_db_name;
+// extern const char * username;
+// extern const char * password;
+extern const char * bad_con_str;
 extern const char * bad_sql;
 extern const char * insert;
 extern const char * result;

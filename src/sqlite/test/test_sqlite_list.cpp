@@ -9,11 +9,11 @@
 
 TEST( sqlite_db_list, should_provide_iterator )
 {
-   ds::db::connection test_db( tmp_path );
+   ds::db::connection test_db( test_con_str );
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
-   EXPECT_NO_THROW( test_db.create( tmp_db ) );
-   EXPECT_NO_THROW( test_db.use( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
       ds::db::statement create_test = test_db( create );
@@ -36,7 +36,7 @@ TEST( sqlite_db_list, should_provide_iterator )
          EXPECT_EQ( o, data[ i++ ] );
    }
 
-   EXPECT_NO_THROW( test_db.drop( tmp_db ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------

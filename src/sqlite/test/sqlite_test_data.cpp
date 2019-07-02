@@ -16,16 +16,16 @@ const char * create = "CREATE TABLE Object ("
                       "f FLOAT,"
                       "d FLOAT,"
                       "hello VARCHAR( 10 ),"
-                      "id INTEGER PRIMARY KEY );";
+                      "id INTEGER NOT NULL PRIMARY KEY );";
 
 //-----------------------------------------------------------------------------
 
-const char * tmp_db   = "test";
-const char * tmp_path = "sqlite://tmp";
-const char * bad_path = "sqlite://blah";
-const char * bad_sql  = "THIS IS BAD SQL";
-const char * insert   = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
-                                                    "?, ?, ?, ?, ?, NULL )";
+const char * test_db_name = "test_db";
+const char * test_con_str = "sqlite://tmp";
+const char * bad_con_str  = "sqlite://blah";
+const char * bad_sql      = "THIS IS BAD SQL";
+const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
+                                                        "?, ?, ?, ?, ?, NULL )";
 const char * result   = "SELECT * FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello "
                           "FROM Object ORDER BY hello";
