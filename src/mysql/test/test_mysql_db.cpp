@@ -80,7 +80,7 @@ TEST( mysql_db_statement, should_return_execute_value )
       EXPECT_NO_THROW( insert_test << data[ 1 ] );
       EXPECT_EQ( insert_test.execute(), 2 );
 
-      ds::db::statement value_test = test_db( "SELECT COUNT( * ) FROM Object" );
+      ds::db::statement value_test = test_db( num_rows );
 
       EXPECT_EQ( value_test.execute(), 2 );
    }
@@ -248,7 +248,7 @@ TEST( mysql_db_statement, should_fail_bad_query )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_row, should_provide_query_data )
+TEST( mysql_db_result, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -301,7 +301,39 @@ TEST( mysql_db_row, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_row, should_return_query_data_not_available )
+TEST( mysql_db_result, should_provide_rows_affected )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   {
+      ds::db::statement create_test = test_db( create );
+      EXPECT_NO_THROW( create_test.execute() );
+   }
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+      {
+         EXPECT_NO_THROW( insert_test << o );
+         EXPECT_EQ( insert_test.result().rows_affected(), 1 );
+      }
+   }
+
+   ds::db::statement delete_test = test_db( del_rows );
+
+   EXPECT_EQ( delete_test.result().rows_affected(), 2 );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( mysql_db_result, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -318,7 +350,7 @@ TEST( mysql_db_row, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_row, should_fail_query_wrong_column_count )
+TEST( mysql_db_result, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 

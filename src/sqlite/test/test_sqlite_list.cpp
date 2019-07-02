@@ -7,7 +7,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_list, should_provide_query_data )
+TEST( sqlite_db_list, should_provide_iterator )
 {
    ds::db::connection test_db( tmp_path );
 

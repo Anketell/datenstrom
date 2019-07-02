@@ -7,7 +7,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_list, should_provide_query_data )
+TEST( mysql_db_list, should_provide_iterator )
 {
    ds::db::connection test_db( test_con_str );
 

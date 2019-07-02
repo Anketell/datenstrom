@@ -30,6 +30,7 @@ const char * result   = "SELECT * FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello "
                           "FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
+const char * del_rows = "DELETE FROM Object";
 const char * named    = "INSERT INTO Object VALUES ( @i8, @i16, @i32, @i64, "
                                                 "@u8, @u16, @u32, @u64, "
                                                 "@float, @double, @string, NULL )";
