@@ -20,7 +20,7 @@ template<> impl * constructor< sqlite::connection >( const connect_params_t & pa
    auto database = params[ "database" ];
 
    if ( location.empty() )
-      throw std::invalid_argument( "Unspecified location" );
+      throw std::invalid_argument( "Connect string does not specify location" );
 
    impl * db = new sqlite::connection( "/" + location );
 
