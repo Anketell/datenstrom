@@ -216,7 +216,7 @@ uint32_t statement::execute( void )
 
    if ( result )
    {
-      if ( sqlite3_column_count( m_stmt->stmt ) != 1 )
+      if ( result.column_count() != 1 )
          throw_error( operation, "Too many result columns" );
 
       result.get_column( 0, res );
