@@ -43,13 +43,13 @@ const char * named_statement::check_parameter( int index )
    if ( m_state == Executed )
       reset();
 
-   if ( index < 1 )
+   if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
-   if ( index > m_names.size() )
+   if ( index >= m_names.size() )
       throw_error( operation, "Too many parameters" );
 
-   return m_names[ index - 1 ].c_str();
+   return m_names[ index ].c_str();
 }
 
 //-----------------------------------------------------------------------------

@@ -35,7 +35,7 @@ class positional_statement : public statement_base
    void prepare_parameter_binding( void );
 
    void cleanup_parameters( void );
-   int  check_parameter( int index );
+   void check_parameter( int index );
    void set_parameter( int index, const char * s, size_t length );
    void internal_execute( void );
 

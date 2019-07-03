@@ -17,7 +17,7 @@ namespace db
 statement::statement( std::shared_ptr< impl > impl )
 {
    m_impl      = impl;
-   m_parameter = 1;
+   m_parameter = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -133,10 +133,10 @@ void statement::reset( void )
 
 uint32_t statement::execute( void )
 {
-   if ( m_parameter > 0 && m_parameter != m_impl->parameter_count() + 1 )
+   if ( m_parameter != m_impl->parameter_count() )
       throw std::runtime_error( "Wrong number of parameters" );
 
-   m_parameter = 1;
+   m_parameter = 0;
    return m_impl->execute();
 }
 
@@ -144,10 +144,10 @@ uint32_t statement::execute( void )
 
 result statement::result( void )
 {
-   if ( m_parameter > 0 && m_parameter != m_impl->parameter_count() + 1 )
+   if ( m_parameter != m_impl->parameter_count() )
       throw std::runtime_error( "Wrong number of parameters" );
 
-   m_parameter = 1;
+   m_parameter = 0;
    return m_impl->result();
 }
 

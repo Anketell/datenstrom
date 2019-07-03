@@ -60,16 +60,16 @@ int statement::check_parameter( int index )
    if ( m_state == Executed )
       reset();
 
-   if ( index < 1 )
+   if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
-   if ( index > m_count )
+   if ( index >= m_count )
       throw_error( operation, "Too many parameters" );
 
    if ( m_parameters.empty() )
-      return index;
+      return index + 1;
 
-   return m_parameters[ index - 1 ];
+   return m_parameters[ index ];
 }
 
 //-----------------------------------------------------------------------------

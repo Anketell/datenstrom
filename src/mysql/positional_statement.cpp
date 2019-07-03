@@ -82,27 +82,25 @@ void positional_statement::cleanup_parameters( void )
 
 //-----------------------------------------------------------------------------
 
-int positional_statement::check_parameter( int index )
+void positional_statement::check_parameter( int index )
 {
    static constexpr char operation[] = "MySQL positional statement parameter check";
 
    if ( m_state == Executed )
       reset();
 
-   if ( index < 1 )
+   if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
-   if ( index > m_bind_count )
+   if ( index >= m_bind_count )
       throw_error( operation, "Too many parameters" );
-
-   return index - 1;
 }
 
 //-----------------------------------------------------------------------------
 
 void positional_statement::set_parameter( int index, int8_t i )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -123,7 +121,7 @@ void positional_statement::set_parameter( int index, int8_t i )
 
 void positional_statement::set_parameter( int index, int16_t i )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -144,7 +142,7 @@ void positional_statement::set_parameter( int index, int16_t i )
 
 void positional_statement::set_parameter( int index, int32_t i )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -165,7 +163,7 @@ void positional_statement::set_parameter( int index, int32_t i )
 
 void positional_statement::set_parameter( int index, int64_t i )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -186,7 +184,7 @@ void positional_statement::set_parameter( int index, int64_t i )
 
 void positional_statement::set_parameter( int index, uint8_t u )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -207,7 +205,7 @@ void positional_statement::set_parameter( int index, uint8_t u )
 
 void positional_statement::set_parameter( int index, uint16_t u )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -228,7 +226,7 @@ void positional_statement::set_parameter( int index, uint16_t u )
 
 void positional_statement::set_parameter( int index, uint32_t u )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -249,7 +247,7 @@ void positional_statement::set_parameter( int index, uint32_t u )
 
 void positional_statement::set_parameter( int index, uint64_t u )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -270,7 +268,7 @@ void positional_statement::set_parameter( int index, uint64_t u )
 
 void positional_statement::set_parameter( int index, double d )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
@@ -291,7 +289,7 @@ void positional_statement::set_parameter( int index, double d )
 
 void positional_statement::set_parameter( int index, const char * s, size_t length )
 {
-   index = check_parameter( index );
+   check_parameter( index );
 
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
