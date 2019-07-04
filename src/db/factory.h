@@ -34,8 +34,8 @@ public:
    {
    public :
 
-      Not_found_exception( void ) :
-      std::invalid_argument( "Unknown database type" )
+      Not_found_exception( const std::string & type ) :
+      std::invalid_argument( "Unknown database type: " + type )
       {
       }
    };
@@ -50,7 +50,7 @@ public:
       connect_params_t params = parse_connect_string( connect_string );
       auto it = m_constructor_map.find( params[ "type" ] );
       if ( it == m_constructor_map.end() )
-         throw Not_found_exception();
+         throw Not_found_exception( params[ "type" ] );
 
       return it->second( params );
    }
