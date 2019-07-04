@@ -57,7 +57,7 @@ public:
 
    virtual void reset( void ) override;
    virtual uint64_t execute( void ) override;
-   virtual db::result  result( void ) override;
+   virtual db::result result( void ) override;
 };
 
 //-----------------------------------------------------------------------------
