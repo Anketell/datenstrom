@@ -20,7 +20,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * constructor< sqlite::connection >( const connect_params_t & params );
+template<> impl * construct< sqlite::connection >( const connect_params_t & params );
 
 //-----------------------------------------------------------------------------
 

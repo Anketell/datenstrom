@@ -42,7 +42,7 @@ public:
 
    template< typename D > void register_impl( void )
    {
-      m_constructor_map[ D::TYPE ] = constructor< D >;
+      m_constructor_map[ D::TYPE ] = construct< D >;
    }
 
    impl * operator()( const std::string & connect_string ) const

@@ -14,7 +14,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * constructor< mysql::connection > ( const db::connect_params_t & params )
+template<> impl * construct< mysql::connection > ( const db::connect_params_t & params )
 {
    auto location = params[ "location" ];
    auto port_str = params[ "port" ];

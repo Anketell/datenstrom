@@ -45,7 +45,7 @@ public:
 
 //-----------------------------------------------------------------------------
 
-template< typename D > impl * constructor( const connect_params_t & params )
+template< typename D > impl * construct( const connect_params_t & params )
 {
    throw std::runtime_error( params[ "type" ] + " constructor not implemented" );
 }

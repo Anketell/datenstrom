@@ -88,7 +88,6 @@ public:
    virtual void savepoint( const std::string & name ) override {}
    virtual void release_savepoint( const std::string & name ) override {}
    virtual void rollback_to_savepoint( const std::string & name ) override {}
-
 };
 
 constexpr char connection::TYPE[];
@@ -103,13 +102,13 @@ namespace ds
 namespace db
 {
 
-template<> impl * constructor< derived_db_1::connection >( const connect_params_t & params )
+template<> impl * construct< derived_db_1::connection >( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_1::connection( location );
 }
 
-template<> impl * constructor< derived_db_2::connection >( const connect_params_t & params )
+template<> impl * construct< derived_db_2::connection >( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_2::connection( location );
