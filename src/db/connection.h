@@ -38,7 +38,7 @@ public:
    connection( const std::string & connect_string );
    connection( impl * impl = nullptr );
 
-   virtual const char * type( void ) const override;
+   virtual const std::type_info & type( void ) const;
 
    virtual void create( const std::string & name ) override;
    virtual void use( const std::string & name ) override;

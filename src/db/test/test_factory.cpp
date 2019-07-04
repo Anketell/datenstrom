@@ -15,16 +15,9 @@ class connection : public ds::db::impl
 
 public:
 
-   static constexpr char TYPE[] = "derived_db_1";
-
    connection( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
-
-   virtual const char * type( void ) const override
-   {
-      return TYPE;
-   }
 
    virtual void create( const std::string & name ) override {}
    virtual void use( const std::string & name ) override {}
@@ -44,8 +37,6 @@ public:
    virtual void release_savepoint( const std::string & name ) override {}
    virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
-
-constexpr char connection::TYPE[];
 
 }
 
@@ -60,16 +51,9 @@ class connection : public ds::db::impl
 
 public:
 
-   static constexpr char TYPE[] = "derived_db_2";
-
    connection( const std::string & path ) : m_param( path ) {}
 
    std::string param( void ) const { return m_param; }
-
-   virtual const char * type( void ) const override
-   {
-      return TYPE;
-   }
 
    virtual void create( const std::string & name ) override {}
    virtual void use( const std::string & name ) override {}
@@ -90,8 +74,6 @@ public:
    virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
 
-constexpr char connection::TYPE[];
-
 }
 
 //-----------------------------------------------------------------------------
@@ -102,13 +84,34 @@ namespace ds
 namespace db
 {
 
-template<> impl * construct< derived_db_1::connection >( const connect_params_t & params )
+template<> struct impl_traits< derived_db_1::connection >
+{
+   static constexpr char TYPE[] = "derived_db_1";
+   static impl * construct( const connect_params_t & params );
+};
+
+//-----------------------------------------------------------------------------
+
+template<> struct impl_traits< derived_db_2::connection >
+{
+   static constexpr char TYPE[] = "derived_db_2";
+   static impl * construct( const connect_params_t & params );
+};
+
+//-----------------------------------------------------------------------------
+
+constexpr char impl_traits< derived_db_1::connection >::TYPE[];
+constexpr char impl_traits< derived_db_2::connection >::TYPE[];
+
+//-----------------------------------------------------------------------------
+
+impl * impl_traits< derived_db_1::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_1::connection( location );
 }
 
-template<> impl * construct< derived_db_2::connection >( const connect_params_t & params )
+impl * impl_traits< derived_db_2::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_2::connection( location );
@@ -130,7 +133,7 @@ TEST( db_factory, should_register_and_create )
    ds::db::impl * db;
 
    EXPECT_NO_THROW( db = factory( "derived_db_1://parameters" ) );
-   EXPECT_STREQ( db->type(), derived_db_1::connection::TYPE );
+   EXPECT_EQ( db->type(), typeid( derived_db_1::connection ) );
 
    derived_db_1::connection * ddb1;
 
@@ -140,7 +143,7 @@ TEST( db_factory, should_register_and_create )
    EXPECT_NO_THROW( delete db );
 
    EXPECT_NO_THROW( db = factory( "derived_db_2://other_parameters" ) );
-   EXPECT_STREQ( db->type(), derived_db_2::connection::TYPE );
+   EXPECT_EQ( db->type(), typeid( derived_db_2::connection ) );
 
    derived_db_2::connection * ddb2;
 
@@ -180,7 +183,7 @@ TEST( db_factory, should_assign_connection )
 
    ds::db::connection db = factory( "derived_db_1://parameters" );
 
-   EXPECT_STREQ( db.type(), derived_db_1::connection::TYPE );
+   EXPECT_EQ( db.type(), typeid( derived_db_1::connection ) );
 }
 
 //-----------------------------------------------------------------------------

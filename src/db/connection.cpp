@@ -70,7 +70,7 @@ m_impl( impl )
 
 //-----------------------------------------------------------------------------
 
-const char * connection::type( void ) const
+const std::type_info & connection::type( void ) const
 {
    return m_impl->type();
 }

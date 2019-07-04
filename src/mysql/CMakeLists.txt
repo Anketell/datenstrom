@@ -19,7 +19,7 @@ target_link_libraries( ${TARGET}
 
 add_library( ${MODULE} MODULE
    enroll.cpp
-   constructor.cpp
+   impl_traits.cpp
 )
 
 target_link_libraries( ${MODULE}

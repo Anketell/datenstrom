@@ -27,7 +27,7 @@ public:
 
    virtual ~impl( void ) {}
 
-   virtual const char * type( void ) const = 0;
+   virtual const std::type_info & type( void ) const { return typeid( *this ); }
 
    virtual void create( const std::string & name ) = 0;
    virtual void use( const std::string & name ) = 0;

@@ -1,12 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_CONSTRUCTOR_H
-#define DS_SQLITE_CONSTRUCTOR_H
-
-//-----------------------------------------------------------------------------
-
+#include <sqlite/impl_traits.h>
 #include <db/connect_params.h>
-#include <sqlite/connection.h>
 
 //-----------------------------------------------------------------------------
 
@@ -20,10 +15,24 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * construct< sqlite::connection >( const connect_params_t & params );
+constexpr char impl_traits< sqlite::connection >::TYPE[];
 
 //-----------------------------------------------------------------------------
 
+impl * impl_traits< sqlite::connection >::construct( const db::connect_params_t & params )
+{
+   auto location = params[ "location" ];
+   auto database = params[ "database" ];
+
+   if ( location.empty() )
+      throw std::invalid_argument( "Connect string does not specify location" );
+
+   impl * db = new sqlite::connection( "/" + location );
+
+   if ( !database.empty() )
+      db->use( database );
+
+   return db;
 }
 
 //-----------------------------------------------------------------------------
@@ -32,4 +41,4 @@ template<> impl * construct< sqlite::connection >( const connect_params_t & para
 
 //-----------------------------------------------------------------------------
 
-#endif
+}

@@ -1,12 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_CONSTRUCTOR_H
-#define DS_MYSQL_CONSTRUCTOR_H
+#ifndef DS_DB_IMPL_TRAITS_H
+#define DS_DB_IMPL_TRAITS_H
 
 //-----------------------------------------------------------------------------
 
 #include <db/connect_params.h>
-#include <mysql/connection.h>
 
 //-----------------------------------------------------------------------------
 
@@ -20,7 +19,18 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-template<> impl * construct< mysql::connection > ( const db::connect_params_t & params );
+class impl;
+
+//-----------------------------------------------------------------------------
+
+template< class T > struct impl_traits
+{
+   static constexpr char TYPE[] = "";
+   static impl * construct( const connect_params_t & params )
+   {
+      throw std::runtime_error( params[ "type" ] + " constructor not implemented" );
+   }
+};
 
 //-----------------------------------------------------------------------------
 

@@ -17,10 +17,6 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-constexpr char connection::TYPE[];
-
-//-----------------------------------------------------------------------------
-
 connection::connection( const std::string & name,
                         const std::string & server,
                         const std::string & username,
@@ -50,13 +46,6 @@ connection::connection( const std::string & name,
 connection::~connection( void )
 {
    mysql_close( &m_mysql );
-}
-
-//-----------------------------------------------------------------------------
-
-const char * connection::type( void ) const
-{
-   return TYPE;
 }
 
 //-----------------------------------------------------------------------------
