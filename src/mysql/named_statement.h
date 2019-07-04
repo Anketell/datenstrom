@@ -55,7 +55,7 @@ public:
 
    virtual int parameter_count( void ) override;
 
-   virtual void     reset( void ) override;
+   virtual void reset( void ) override;
 };
 
 //-----------------------------------------------------------------------------

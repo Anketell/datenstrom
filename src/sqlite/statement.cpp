@@ -204,11 +204,11 @@ void statement::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint32_t statement::execute( void )
+uint64_t statement::execute( void )
 {
    static constexpr char operation[] = "SQLite statement execute";
 
-   uint32_t res = 0;
+   uint64_t res = 0;
 
    sqlite::result result( m_stmt );
 

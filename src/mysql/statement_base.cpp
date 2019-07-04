@@ -58,13 +58,13 @@ void statement_base::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint32_t statement_base::execute( void )
+uint64_t statement_base::execute( void )
 {
    static constexpr char operation[] = "MySQL statement execute";
 
    internal_execute();
 
-   uint32_t res = 0;
+   uint64_t res = 0;
 
    mysql::result result( m_stmt );
 

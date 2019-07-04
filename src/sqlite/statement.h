@@ -55,8 +55,8 @@ public:
 
    virtual int parameter_count( void ) override;
 
-   virtual void     reset( void ) override;
-   virtual uint32_t execute( void ) override;
+   virtual void reset( void ) override;
+   virtual uint64_t execute( void ) override;
    virtual db::result  result( void ) override;
 };
 

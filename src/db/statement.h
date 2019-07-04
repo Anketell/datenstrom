@@ -53,7 +53,7 @@ public:
       virtual int parameter_count( void ) = 0;
 
       virtual void reset( void ) = 0;
-      virtual uint32_t execute( void ) = 0;
+      virtual uint64_t execute( void ) = 0;
       virtual db::result result( void ) = 0;
    };
 
@@ -107,7 +107,7 @@ public:
    virtual void endr( void ) override;
 
    void reset( void );
-   uint32_t execute( void );
+   uint64_t execute( void );
    db::result result( void );
 
    iterator begin( void );
