@@ -151,7 +151,7 @@ void connection::savepoint( const std::string & name )
    std::string command( "SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-      throw_error( "SQLite create savepoint " + name + " failed", rc );
+      throw_error( "SQLite create savepoint " + name, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -161,7 +161,7 @@ void connection::release_savepoint( const std::string & name )
    std::string command( "RELEASE SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-       throw_error( "SQLite release savepoint " + name + " failed", rc );
+       throw_error( "SQLite release savepoint " + name, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -171,7 +171,7 @@ void connection::rollback_to_savepoint( const std::string & name )
    std::string command( "ROLLBACK TO SAVEPOINT " );
    int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-      throw_error( "SQLite rollback to savepoint " + name + " failed", rc );
+      throw_error( "SQLite rollback to savepoint " + name, rc );
 }
 
 //-----------------------------------------------------------------------------

@@ -140,7 +140,7 @@ void connection::savepoint( const std::string & name )
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL create savepoint " + name + " transaction", mysql_error( &m_mysql ) );
+      throw_error( "MySQL create savepoint " + name, mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ void connection::release_savepoint( const std::string & name )
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL release savepoint " + name + " transaction", mysql_error( &m_mysql ) );
+      throw_error( "MySQL release savepoint " + name, mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -162,7 +162,7 @@ void connection::rollback_to_savepoint( const std::string & name )
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL rollback to savepoint " + name + " transaction", mysql_error( &m_mysql ) );
+      throw_error( "MySQL rollback to savepoint " + name, mysql_error( &m_mysql ) );
 }
 
 //-----------------------------------------------------------------------------
