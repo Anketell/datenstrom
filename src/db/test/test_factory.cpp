@@ -125,8 +125,8 @@ TEST( db_factory, should_register_and_create )
 {
    ds::db::factory factory;
 
-   factory.register_db< derived_db_1::connection >();
-   factory.register_db< derived_db_2::connection >();
+   factory.register_impl< derived_db_1::connection >();
+   factory.register_impl< derived_db_2::connection >();
 
    ds::db::impl * db;
 
@@ -176,8 +176,8 @@ TEST( db_factory, should_assign_connection )
 {
    ds::db::factory factory;
 
-   factory.register_db< derived_db_1::connection >();
-   factory.register_db< derived_db_2::connection >();
+   factory.register_impl< derived_db_1::connection >();
+   factory.register_impl< derived_db_2::connection >();
 
    ds::db::connection db = factory( "derived_db_1://parameters" );
 

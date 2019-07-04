@@ -40,7 +40,7 @@ public:
       }
    };
 
-   template< typename D > void register_db( void )
+   template< typename D > void register_impl( void )
    {
       m_constructor_map[ D::TYPE ] = constructor< D >;
    }

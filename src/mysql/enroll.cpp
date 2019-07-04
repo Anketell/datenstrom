@@ -7,7 +7,7 @@
 
 extern "C" void enroll( ds::db::factory & factory )
 {
-   factory.register_db< ds::mysql::connection >();
+   factory.register_impl< ds::mysql::connection >();
 }
 
 //-----------------------------------------------------------------------------
