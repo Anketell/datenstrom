@@ -6,7 +6,6 @@
 //-----------------------------------------------------------------------------
 
 #include <db/factory_helper.h>
-#include <db/connect_string.h>
 
 //-----------------------------------------------------------------------------
 
@@ -44,9 +43,8 @@ public:
       m_constructor_map[ factory_helper< D >::TYPE ] = factory_helper< D >::construct;
    }
 
-   impl * operator()( const std::string & connect_string ) const
+   impl * operator()( const connect_params_t & params ) const
    {
-      connect_params_t params = parse_connect_string( connect_string );
       auto it = m_constructor_map.find( params[ "type" ] );
       if ( it == m_constructor_map.end() )
          throw Not_found_exception( params[ "type" ] );

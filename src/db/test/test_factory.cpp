@@ -132,23 +132,39 @@ TEST( db_factory, should_register_and_create )
 
    ds::db::impl * db;
 
-   EXPECT_NO_THROW( db = factory( "derived_db_1://parameters" ) );
-   EXPECT_EQ( db->type(), typeid( derived_db_1::connection ) );
+   {
+      ds::db::connect_params_t params =
+      {
+         { "type",     "derived_db_1" },
+         { "location", "parameters" }
+      };
 
-   derived_db_1::connection * ddb1;
+      EXPECT_NO_THROW( db = factory( params ) );
+      EXPECT_EQ( typeid( *db ), typeid( derived_db_1::connection ) );
 
-   EXPECT_NE( ddb1 = dynamic_cast< derived_db_1::connection * >( db ), nullptr );
-   EXPECT_STREQ( ddb1->param().c_str(), "parameters" );
+      derived_db_1::connection * ddb1;
+
+      EXPECT_NE( ddb1 = dynamic_cast< derived_db_1::connection * >( db ), nullptr );
+      EXPECT_STREQ( ddb1->param().c_str(), "parameters" );
+   }
 
    EXPECT_NO_THROW( delete db );
 
-   EXPECT_NO_THROW( db = factory( "derived_db_2://other_parameters" ) );
-   EXPECT_EQ( db->type(), typeid( derived_db_2::connection ) );
+   {
+      ds::db::connect_params_t params =
+      {
+         { "type",     "derived_db_2" },
+         { "location", "other_parameters" }
+      };
 
-   derived_db_2::connection * ddb2;
+      EXPECT_NO_THROW( db = factory( params ) );
+      EXPECT_EQ( typeid( *db ), typeid( derived_db_2::connection ) );
 
-   EXPECT_NE( ddb2 = dynamic_cast< derived_db_2::connection * >( db ), nullptr );
-   EXPECT_STREQ( ddb2->param().c_str(), "other_parameters" );
+      derived_db_2::connection * ddb2;
+
+      EXPECT_NE( ddb2 = dynamic_cast< derived_db_2::connection * >( db ), nullptr );
+      EXPECT_STREQ( ddb2->param().c_str(), "other_parameters" );
+   }
 
    EXPECT_NO_THROW( delete db );
 }
@@ -159,31 +175,11 @@ TEST( db_factory, should_fail_unknown )
 {
    ds::db::factory factory;
 
-   EXPECT_THROW( factory( "derived_db_1:parameters" ), ds::db::factory::Not_found_exception );
-   EXPECT_THROW( factory( "derived_db_2:other_parameters" ), ds::db::factory::Not_found_exception );
-}
+   EXPECT_THROW( factory( { { "type", "derived_db_1" }, { "location", "parameters" } } ),
+                 ds::db::factory::Not_found_exception );
 
-//-----------------------------------------------------------------------------
-
-TEST( ds_factory, should_fail_bad_connection_string )
-{
-   ds::db::factory factory;
-
-   EXPECT_THROW( factory( "derived_db_1" ), std::invalid_argument );
-}
-
-//-----------------------------------------------------------------------------
-
-TEST( db_factory, should_assign_connection )
-{
-   ds::db::factory factory;
-
-   factory.register_impl< derived_db_1::connection >();
-   factory.register_impl< derived_db_2::connection >();
-
-   ds::db::connection db = factory( "derived_db_1://parameters" );
-
-   EXPECT_EQ( db.type(), typeid( derived_db_1::connection ) );
+   EXPECT_THROW( factory( { { "type", "derived_db_2" }, { "location", "other_parameters" } } ),
+                 ds::db::factory::Not_found_exception );
 }
 
 //-----------------------------------------------------------------------------

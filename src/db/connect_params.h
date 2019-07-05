@@ -28,6 +28,12 @@ class connect_params_t : public std::map< std::string, std::string >
 {
 public:
 
+   connect_params_t( void ) = default;
+
+   connect_params_t( std::initializer_list< value_type > __l ) :
+   std::map< std::string, std::string >( __l )
+   {}
+
    std::string & operator[]( const std::string & key )
    {
       return std::map< std::string, std::string >::operator[]( key );

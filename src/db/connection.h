@@ -27,18 +27,16 @@ class connection : public impl
 
    static void init( void );
 
-private:
-
    std::shared_ptr< impl > m_impl;
+   std::string             m_type;
 
 public:
 
    static void enroll_directory( const std::string & path );
 
    connection( const std::string & connect_string );
-   connection( impl * impl = nullptr );
 
-   virtual const std::type_info & type( void ) const;
+   const std::string & type( void ) const;
 
    virtual void create( const std::string & name ) override;
    virtual void use( const std::string & name ) override;

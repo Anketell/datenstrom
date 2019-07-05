@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/connection.h>
+#include <db/connect_string.h>
 #include <db/enroll.h>
 
 #include <string.h>
@@ -57,22 +58,20 @@ void connection::enroll_directory( const std::string & path )
 
 connection::connection( const std::string & connect_string )
 {
+   connect_params_t params = parse_connect_string( connect_string );
+
    init();
-   m_impl.reset( m_factory( connect_string ) );
+
+   m_impl.reset( m_factory( params ) );
+
+   m_type = params[ "type" ];
 }
 
 //-----------------------------------------------------------------------------
 
-connection::connection( impl * impl ) :
-m_impl( impl )
+const std::string & connection::type( void ) const
 {
-}
-
-//-----------------------------------------------------------------------------
-
-const std::type_info & connection::type( void ) const
-{
-   return m_impl->type();
+   return m_type;
 }
 
 //-----------------------------------------------------------------------------

@@ -16,6 +16,8 @@ namespace ds
 namespace db
 {
 
+//-----------------------------------------------------------------------------
+
 typedef std::function< void( connect_params_t & params, const std::string & ) > part_parser_fn;
 
 struct part_def_t
