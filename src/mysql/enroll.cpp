@@ -1,7 +1,64 @@
 //-----------------------------------------------------------------------------
 
 #include <db/factory.h>
-#include <mysql/impl_traits.h>
+#include <mysql/connection.h>
+
+//-----------------------------------------------------------------------------
+
+namespace ds
+{
+
+//-----------------------------------------------------------------------------
+
+namespace db
+{
+
+//-----------------------------------------------------------------------------
+
+class connect_params_t;
+
+//-----------------------------------------------------------------------------
+
+template<> struct factory_helper< mysql::connection >
+{
+   static constexpr char TYPE[] = "mysql";
+   static impl * construct( const db::connect_params_t & params );
+};
+
+//-----------------------------------------------------------------------------
+
+constexpr char factory_helper< mysql::connection >::TYPE[];
+
+//-----------------------------------------------------------------------------
+
+impl * factory_helper< mysql::connection >::construct( const db::connect_params_t & params )
+{
+   auto location = params[ "location" ];
+   auto port_str = params[ "port" ];
+   auto username = params[ "username" ];
+   auto password = params[ "password" ];
+   auto database = params[ "database" ];
+
+   if ( location.empty() )
+      throw std::invalid_argument( "Connect string does not specify location" );
+
+   if ( username.empty() )
+      throw std::invalid_argument( "Connect string does not specify username" );
+
+   int port = 3306;
+   if ( !port_str.empty() )
+      port = atoi( port_str.c_str() );
+
+   return new mysql::connection( database, location, username, password, port );
+}
+
+//-----------------------------------------------------------------------------
+
+}
+
+//-----------------------------------------------------------------------------
+
+}
 
 //-----------------------------------------------------------------------------
 

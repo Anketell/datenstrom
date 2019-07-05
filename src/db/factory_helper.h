@@ -1,6 +1,10 @@
 //-----------------------------------------------------------------------------
 
-#include <sqlite/impl_traits.h>
+#ifndef DS_DB_FACTORY_HELPER_H
+#define DS_DB_FACTORY_HELPER_H
+
+//-----------------------------------------------------------------------------
+
 #include <db/connect_params.h>
 
 //-----------------------------------------------------------------------------
@@ -15,25 +19,18 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-constexpr char impl_traits< sqlite::connection >::TYPE[];
+class impl;
 
 //-----------------------------------------------------------------------------
 
-impl * impl_traits< sqlite::connection >::construct( const db::connect_params_t & params )
+template< class T > struct factory_helper
 {
-   auto location = params[ "location" ];
-   auto database = params[ "database" ];
-
-   if ( location.empty() )
-      throw std::invalid_argument( "Connect string does not specify location" );
-
-   impl * db = new sqlite::connection( "/" + location );
-
-   if ( !database.empty() )
-      db->use( database );
-
-   return db;
-}
+   static constexpr char TYPE[] = "";
+   static impl * construct( const connect_params_t & params )
+   {
+      throw std::runtime_error( params[ "type" ] + " constructor not implemented" );
+   }
+};
 
 //-----------------------------------------------------------------------------
 
@@ -42,3 +39,7 @@ impl * impl_traits< sqlite::connection >::construct( const db::connect_params_t 
 //-----------------------------------------------------------------------------
 
 }
+
+//-----------------------------------------------------------------------------
+
+#endif

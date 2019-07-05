@@ -5,8 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <ds/factory.h>
-#include <db/impl_traits.h>
+#include <db/factory_helper.h>
 #include <db/connect_string.h>
 
 //-----------------------------------------------------------------------------
@@ -42,7 +41,7 @@ public:
 
    template< typename D > void register_impl( void )
    {
-      m_constructor_map[ impl_traits< D >::TYPE ] = impl_traits< D >::construct;
+      m_constructor_map[ factory_helper< D >::TYPE ] = factory_helper< D >::construct;
    }
 
    impl * operator()( const std::string & connect_string ) const

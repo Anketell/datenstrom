@@ -84,7 +84,7 @@ namespace ds
 namespace db
 {
 
-template<> struct impl_traits< derived_db_1::connection >
+template<> struct factory_helper< derived_db_1::connection >
 {
    static constexpr char TYPE[] = "derived_db_1";
    static impl * construct( const connect_params_t & params );
@@ -92,7 +92,7 @@ template<> struct impl_traits< derived_db_1::connection >
 
 //-----------------------------------------------------------------------------
 
-template<> struct impl_traits< derived_db_2::connection >
+template<> struct factory_helper< derived_db_2::connection >
 {
    static constexpr char TYPE[] = "derived_db_2";
    static impl * construct( const connect_params_t & params );
@@ -100,18 +100,18 @@ template<> struct impl_traits< derived_db_2::connection >
 
 //-----------------------------------------------------------------------------
 
-constexpr char impl_traits< derived_db_1::connection >::TYPE[];
-constexpr char impl_traits< derived_db_2::connection >::TYPE[];
+constexpr char factory_helper< derived_db_1::connection >::TYPE[];
+constexpr char factory_helper< derived_db_2::connection >::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-impl * impl_traits< derived_db_1::connection >::construct( const connect_params_t & params )
+impl * factory_helper< derived_db_1::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_1::connection( location );
 }
 
-impl * impl_traits< derived_db_2::connection >::construct( const connect_params_t & params )
+impl * factory_helper< derived_db_2::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    return new derived_db_2::connection( location );
