@@ -25,7 +25,6 @@ class impl;
 
 template< class T > struct factory_helper
 {
-   static constexpr char TYPE[] = "";
    static impl * construct( const connect_params_t & params )
    {
       throw std::runtime_error( params[ "type" ] + " constructor not implemented" );

@@ -63,15 +63,13 @@ connection::connection( const std::string & connect_string )
    init();
 
    m_impl.reset( m_factory( params ) );
-
-   m_type = params[ "type" ];
 }
 
 //-----------------------------------------------------------------------------
 
-const std::string & connection::type( void ) const
+const char * connection::type( void ) const
 {
-   return m_type;
+   return m_impl->type();
 }
 
 //-----------------------------------------------------------------------------

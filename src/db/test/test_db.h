@@ -194,6 +194,11 @@ struct Test_db : public ds::db::impl
       m_rollback_to_savepoint_calls = 0;
    }
 
+   virtual const char * type( void ) const override
+   {
+      return TYPE;
+   }
+
    virtual void create( const std::string & name ) override
    {
    }

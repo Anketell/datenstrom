@@ -26,6 +26,8 @@ class connection : public db::impl
 
 public:
 
+   static constexpr char TYPE[] = "mysql";
+
    connection( const std::string & name,
                const std::string & server,
                const std::string & username,
@@ -33,6 +35,8 @@ public:
                uint16_t            port = 3306 );
 
    virtual ~connection( void );
+
+   virtual const char * type( void ) const override;
 
    virtual void create( const std::string & name );
    virtual void use( const std::string & name );

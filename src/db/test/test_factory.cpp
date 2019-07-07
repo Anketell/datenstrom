@@ -15,7 +15,11 @@ class connection : public ds::db::impl
 
 public:
 
+   static constexpr char TYPE[] = "derived_db_1";
+
    connection( const std::string & path ) : m_param( path ) {}
+
+   virtual const char * type( void ) const override { return TYPE; }
 
    std::string param( void ) const { return m_param; }
 
@@ -37,6 +41,8 @@ public:
    virtual void release_savepoint( const std::string & name ) override {}
    virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
+
+constexpr char connection::TYPE[];
 
 }
 
@@ -51,7 +57,11 @@ class connection : public ds::db::impl
 
 public:
 
+   static constexpr char TYPE[] = "derived_db_2";
+
    connection( const std::string & path ) : m_param( path ) {}
+
+   virtual const char * type( void ) const override { return TYPE; }
 
    std::string param( void ) const { return m_param; }
 
@@ -74,6 +84,8 @@ public:
    virtual void rollback_to_savepoint( const std::string & name ) override {}
 };
 
+constexpr char connection::TYPE[];
+
 }
 
 //-----------------------------------------------------------------------------
@@ -86,7 +98,6 @@ namespace db
 
 template<> struct factory_helper< derived_db_1::connection >
 {
-   static constexpr char TYPE[] = "derived_db_1";
    static impl * construct( const connect_params_t & params );
 };
 
@@ -94,14 +105,8 @@ template<> struct factory_helper< derived_db_1::connection >
 
 template<> struct factory_helper< derived_db_2::connection >
 {
-   static constexpr char TYPE[] = "derived_db_2";
    static impl * construct( const connect_params_t & params );
 };
-
-//-----------------------------------------------------------------------------
-
-constexpr char factory_helper< derived_db_1::connection >::TYPE[];
-constexpr char factory_helper< derived_db_2::connection >::TYPE[];
 
 //-----------------------------------------------------------------------------
 

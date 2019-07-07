@@ -31,9 +31,13 @@ class connection : public db::impl
 
 public:
 
+   static constexpr char TYPE[] = "sqlite";
+
    connection( const std::string & path );
 
    virtual ~connection( void );
+
+   virtual const char * type( void ) const override;
 
    virtual void create( const std::string & name ) override;
    virtual void use( const std::string & name ) override;

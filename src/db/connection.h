@@ -28,7 +28,6 @@ class connection : public impl
    static void init( void );
 
    std::shared_ptr< impl > m_impl;
-   std::string             m_type;
 
 public:
 
@@ -36,7 +35,7 @@ public:
 
    connection( const std::string & connect_string );
 
-   const std::string & type( void ) const;
+   virtual const char * type( void ) const override;
 
    virtual void create( const std::string & name ) override;
    virtual void use( const std::string & name ) override;
