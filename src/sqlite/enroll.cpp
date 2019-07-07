@@ -19,15 +19,7 @@ class connect_params_t;
 
 //-----------------------------------------------------------------------------
 
-template<> struct factory_helper< sqlite::connection >
-{
-   static const char * type( void ) { return sqlite::connection::TYPE; }
-   static impl * construct( const db::connect_params_t & params );
-};
-
-//-----------------------------------------------------------------------------
-
-impl * factory_helper< sqlite::connection >::construct( const db::connect_params_t & params )
+template<> impl * factory_helper< sqlite::connection >::construct( const db::connect_params_t & params )
 {
    auto location = params[ "location" ];
    auto database = params[ "database" ];

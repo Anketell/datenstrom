@@ -19,15 +19,7 @@ class connect_params_t;
 
 //-----------------------------------------------------------------------------
 
-template<> struct factory_helper< mysql::connection >
-{
-   static const char * type( void ) { return mysql::connection::TYPE; }
-   static impl * construct( const db::connect_params_t & params );
-};
-
-//-----------------------------------------------------------------------------
-
-impl * factory_helper< mysql::connection >::construct( const db::connect_params_t & params )
+template<> impl * factory_helper< mysql::connection >::construct( const db::connect_params_t & params )
 {
    auto location = params[ "location" ];
    auto port_str = params[ "port" ];

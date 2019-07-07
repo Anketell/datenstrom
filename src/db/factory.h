@@ -40,7 +40,7 @@ public:
 
    template< typename D > void register_impl( void )
    {
-      m_constructor_map[ factory_helper< D >::type() ] = factory_helper< D >::construct;
+      m_constructor_map[ factory_helper< D >::TYPE ] = factory_helper< D >::construct;
    }
 
    impl * operator()( const connect_params_t & params ) const
