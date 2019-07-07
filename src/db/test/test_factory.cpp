@@ -98,6 +98,7 @@ namespace db
 
 template<> struct factory_helper< derived_db_1::connection >
 {
+   static const char * type( void ) { return derived_db_1::connection::TYPE; }
    static impl * construct( const connect_params_t & params );
 };
 
@@ -105,6 +106,7 @@ template<> struct factory_helper< derived_db_1::connection >
 
 template<> struct factory_helper< derived_db_2::connection >
 {
+   static const char * type( void ) { return derived_db_2::connection::TYPE; }
    static impl * construct( const connect_params_t & params );
 };
 

@@ -21,6 +21,7 @@ class connect_params_t;
 
 template<> struct factory_helper< sqlite::connection >
 {
+   static const char * type( void ) { return sqlite::connection::TYPE; }
    static impl * construct( const db::connect_params_t & params );
 };
 

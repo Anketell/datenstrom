@@ -21,6 +21,7 @@ class connect_params_t;
 
 template<> struct factory_helper< mysql::connection >
 {
+   static const char * type( void ) { return mysql::connection::TYPE; }
    static impl * construct( const db::connect_params_t & params );
 };
 
