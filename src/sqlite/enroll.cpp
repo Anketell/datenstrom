@@ -27,7 +27,7 @@ template<> impl * factory_helper< sqlite::connection >::construct( const connect
    if ( location.empty() )
       throw std::invalid_argument( "Connect string does not specify location" );
 
-   impl * db = new sqlite::connection( "/" + location );
+   impl * db = new sqlite::connection( location );
 
    if ( !database.empty() )
       db->use( database );

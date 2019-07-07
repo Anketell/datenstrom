@@ -22,7 +22,7 @@ TEST( sqlite_db, should_create_good_path )
 
 TEST( sqlite_db, should_fail_create_bad_path )
 {
-   EXPECT_THROW( ds::db::connection test_db( "sqlite://blah#test_db" ), std::runtime_error );
+   EXPECT_THROW( ds::db::connection test_db( "sqlite:///blah#test_db" ), std::runtime_error );
    EXPECT_THROW( ds::db::connection test_db( "sqlite://" ), std::invalid_argument );
 }
 
