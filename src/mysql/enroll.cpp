@@ -19,7 +19,7 @@ class connect_params_t;
 
 //-----------------------------------------------------------------------------
 
-template<> impl * factory_helper< mysql::connection >::construct( const db::connect_params_t & params )
+template<> impl * factory_helper< mysql::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
    auto port_str = params[ "port" ];
