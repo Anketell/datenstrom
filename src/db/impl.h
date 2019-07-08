@@ -36,6 +36,8 @@ public:
    virtual statement operator()( const std::string & query,
                                  const name_list_t & parameters = {} ) = 0;
 
+   virtual void execute_batch( const std::string & query ) = 0;
+
    virtual void begin_transaction( void ) = 0;
    virtual void commit_transaction( void ) = 0;
    virtual void rollback_transaction( void ) = 0;

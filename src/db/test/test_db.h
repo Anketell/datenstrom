@@ -217,6 +217,8 @@ struct Test_db : public ds::db::impl
        return ds::db::statement( std::make_shared< Test_statement >( atoi( query.c_str() ) ) );
    }
 
+   virtual void execute_batch( const std::string & sql ) override {}
+
    virtual void begin_transaction( void ) override
    {
       m_begin_txn_calls++;

@@ -129,6 +129,29 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
+void connection::execute_batch( const std::string & query )
+{
+   static constexpr char operation[] = "SQLite execute batch";
+
+   const char * sql = query.c_str();
+
+   do
+   {
+      std::shared_ptr< stmt_t > stmt = std::make_shared< stmt_t >();
+
+      int rc = sqlite3_prepare_v2( m_db, sql, -1, &stmt->stmt, &sql );
+      if ( rc )
+         throw_error( operation, rc );
+
+      rc = sqlite3_step( stmt->stmt );
+      if ( rc != SQLITE_DONE )
+         throw_error( operation, rc );
+   }
+   while ( sql );
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::begin_transaction( void )
 {
    int rc = sqlite3_exec( m_db, "BEGIN TRANSACTION", NULL, NULL, NULL );

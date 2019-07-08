@@ -26,7 +26,7 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 
    m_stmt = std::make_shared< stmt_t >();
 
-   int rc = sqlite3_prepare_v2( m_db, sql.c_str(), -1, &m_stmt->stmt, nullptr );
+   int rc = sqlite3_prepare_v2( m_db, sql.c_str(), sql.length(), &m_stmt->stmt, nullptr );
    if ( rc )
       throw_error( operation, rc );
 

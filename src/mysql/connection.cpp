@@ -112,6 +112,25 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
+void connection::execute_batch( const std::string & query )
+{
+   static constexpr char operation[] = "MySQL execute batch";
+
+   int rc = mysql_real_query( &m_mysql, query.c_str(), query.length() );
+   if ( rc )
+      throw_error( operation, mysql_error( &m_mysql ) );
+
+   do
+   {
+      rc = mysql_next_result( &m_mysql );
+      if ( rc > 0 )
+         throw_error( operation, mysql_error( &m_mysql ) );
+   }
+   while ( rc == 0 );
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::begin_transaction( void )
 {
    std::string sql = "BEGIN";

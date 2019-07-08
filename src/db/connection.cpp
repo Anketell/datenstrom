@@ -103,6 +103,13 @@ statement connection::operator()( const std::string & query,
 
 //-----------------------------------------------------------------------------
 
+void connection::execute_batch( const std::string & query )
+{
+   m_impl->execute_batch( query );
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::begin_transaction( void )
 {
    m_impl->begin_transaction();

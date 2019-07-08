@@ -45,6 +45,8 @@ public:
    virtual db::statement operator()( const std::string     & query,
                                      const db::name_list_t & parameters = {} ) override;
 
+   virtual void execute_batch( const std::string & query ) override;
+
    virtual void begin_transaction( void ) override;
    virtual void commit_transaction( void ) override;
    virtual void rollback_transaction( void ) override;

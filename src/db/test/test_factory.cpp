@@ -33,6 +33,8 @@ public:
       return std::shared_ptr< ds::db::statement::impl >();
    }
 
+   virtual void execute_batch( const std::string & sql ) override {}
+
    virtual void begin_transaction( void ) override {}
    virtual void commit_transaction( void ) override {}
    virtual void rollback_transaction( void ) override {}
@@ -74,6 +76,8 @@ public:
    {
       return std::shared_ptr< ds::db::statement::impl >();
    }
+
+   virtual void execute_batch( const std::string & sql ) override {}
 
    virtual void begin_transaction( void ) override {}
    virtual void commit_transaction( void ) override {}
