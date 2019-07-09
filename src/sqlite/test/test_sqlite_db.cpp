@@ -7,6 +7,15 @@
 
 //-----------------------------------------------------------------------------
 
+TEST( sqlite_db, should_return_type )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_STREQ( test_db.type(), "sqlite" );
+}
+
+//-----------------------------------------------------------------------------
+
 TEST( sqlite_db, should_create_good_path )
 {
    ds::db::connection test_db( test_con_str );
@@ -14,8 +23,6 @@ TEST( sqlite_db, should_create_good_path )
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-
-   EXPECT_STREQ( test_db.type(), "sqlite" );
 }
 
 //-----------------------------------------------------------------------------
