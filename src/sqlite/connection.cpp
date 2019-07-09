@@ -129,13 +129,23 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
+static const char * skipws( const char *& sql )
+{
+   while ( isspace( *sql ) )
+      sql++;
+
+   return sql;
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::execute_batch( const std::string & query )
 {
    static constexpr char operation[] = "SQLite execute batch";
 
    const char * sql = query.c_str();
 
-   do
+   while ( *skipws( sql ) )
    {
       std::shared_ptr< stmt_t > stmt = std::make_shared< stmt_t >();
 
@@ -147,7 +157,6 @@ void connection::execute_batch( const std::string & query )
       if ( rc != SQLITE_DONE )
          throw_error( operation, rc );
    }
-   while ( sql );
 }
 
 //-----------------------------------------------------------------------------
