@@ -42,7 +42,16 @@ statement::statement( sqlite3 * db, const std::string     & sql,
       m_parameters.reserve( m_count );
       for ( auto & name : parameters )
       {
-         int index = sqlite3_bind_parameter_index( m_stmt->stmt, name.c_str() );
+         int index = 0;
+
+         constexpr char prefix[] = ":@$";
+         for ( auto c : prefix )
+         {
+            index = sqlite3_bind_parameter_index( m_stmt->stmt, ( c + name ).c_str() );
+            if ( index )
+               break;
+         }
+
          if ( index == 0 )
             throw_error( operation, "Unmatched named parameter" );
 

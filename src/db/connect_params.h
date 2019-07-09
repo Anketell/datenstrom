@@ -30,8 +30,8 @@ public:
 
    connect_params_t( void ) = default;
 
-   connect_params_t( std::initializer_list< value_type > __l ) :
-   std::map< std::string, std::string >( __l )
+   connect_params_t( std::initializer_list< value_type > list ) :
+   std::map< std::string, std::string >( list )
    {}
 
    std::string & operator[]( const std::string & key )

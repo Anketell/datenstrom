@@ -54,9 +54,13 @@ const char * named_statement::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
+static constexpr char SET_AT[] = "SET @";
+
+//-----------------------------------------------------------------------------
+
 void named_statement::set_parameter( int index, int8_t i )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << static_cast< int >( i ) << ";" << std::endl;
 }
 
@@ -64,7 +68,7 @@ void named_statement::set_parameter( int index, int8_t i )
 
 void named_statement::set_parameter( int index, int16_t i )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << i << ";" << std::endl;
 }
 
@@ -72,7 +76,7 @@ void named_statement::set_parameter( int index, int16_t i )
 
 void named_statement::set_parameter( int index, int32_t i )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << i << ";" << std::endl;
 }
 
@@ -80,7 +84,7 @@ void named_statement::set_parameter( int index, int32_t i )
 
 void named_statement::set_parameter( int index, int64_t i )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << i << ";" << std::endl;
 }
 
@@ -89,7 +93,7 @@ void named_statement::set_parameter( int index, int64_t i )
 
 void named_statement::set_parameter( int index, uint8_t u )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << static_cast< uint32_t > ( u  )<< ";" << std::endl;
 }
 
@@ -97,7 +101,7 @@ void named_statement::set_parameter( int index, uint8_t u )
 
 void named_statement::set_parameter( int index, uint16_t u )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << u << ";" << std::endl;
 }
 
@@ -105,14 +109,14 @@ void named_statement::set_parameter( int index, uint16_t u )
 
 void named_statement::set_parameter( int index, uint32_t u )
 {
-   m_values << "SET " << check_parameter( index ) << " = " << u << ";" << std::endl;
+   m_values << SET_AT << check_parameter( index ) << " = " << u << ";" << std::endl;
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, uint64_t u )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << u << ";" << std::endl;
 }
 
@@ -120,7 +124,7 @@ void named_statement::set_parameter( int index, uint64_t u )
 
 void named_statement::set_parameter( int index, double d )
 {
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = " << d << ";" << std::endl;
 }
 
@@ -134,7 +138,7 @@ void named_statement::set_parameter( int index, const char * s, size_t length )
    length = mysql_real_escape_string( &m_mysql, const_cast< char * >( escaped.data() ), s, length );
    escaped.resize( length );
 
-   m_values << "SET " << check_parameter( index )
+   m_values << SET_AT << check_parameter( index )
             << " = \"" << escaped << "\";" << std::endl;
 }
 
