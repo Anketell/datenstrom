@@ -305,7 +305,7 @@ TEST( sqlite_db_result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_provide_row_affected )
+TEST( sqlite_db_result, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 

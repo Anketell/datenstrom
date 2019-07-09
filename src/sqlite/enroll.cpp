@@ -26,7 +26,17 @@ template<> impl * factory_helper< sqlite::connection >::construct( const connect
    impl * db = new sqlite::connection( location );
 
    if ( !database.empty() )
-      db->use( database );
+   {
+      try
+      {
+         db->use( database );
+      }
+      catch ( ... )
+      {
+         delete db;
+         throw;
+      }
+   }
 
    return db;
 }
