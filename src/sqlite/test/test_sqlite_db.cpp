@@ -328,9 +328,11 @@ TEST( sqlite_db_result, should_provide_rows_affected )
       }
    }
 
-   ds::db::statement delete_test = test_db( del_rows );
+   {
+      ds::db::statement delete_test = test_db( del_rows );
 
-   EXPECT_EQ( delete_test.result().rows_affected(), 2 );
+      EXPECT_EQ( delete_test.result().rows_affected(), 2 );
+   }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
