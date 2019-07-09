@@ -15,10 +15,6 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class connect_params_t;
-
-//-----------------------------------------------------------------------------
-
 template<> impl * factory_helper< sqlite::connection >::construct( const connect_params_t & params )
 {
    auto location = params[ "location" ];
