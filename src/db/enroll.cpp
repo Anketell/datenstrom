@@ -25,7 +25,7 @@ namespace db
 
 void enroll_module( factory & factory, const std::string & path )
 {
-   void * handle = dlopen( path.c_str(), RTLD_LAZY | RTLD_LOCAL | RTLD_NODELETE );
+   void * handle = dlopen( path.c_str(), RTLD_LAZY | RTLD_LOCAL );
 
    if ( !handle )
       return;
@@ -34,8 +34,8 @@ void enroll_module( factory & factory, const std::string & path )
 
    if ( enroll_fn )
       enroll_fn( factory );
-
-   dlclose( handle );
+   else
+      dlclose( handle );
 }
 
 //-----------------------------------------------------------------------------
