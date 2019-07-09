@@ -34,6 +34,19 @@ const char * named    = "INSERT INTO Object VALUES ( @i8, @i16, @i32, @i64, "
                                                 "@u8, @u16, @u32, @u64, "
                                                 "@float, @double, @string, NULL )";
 
+const char * batch =
+R"(
+
+CREATE TABLE T1 (
+   field INTEGER
+);
+
+CREATE TABLE T2 (
+   field INTEGER
+);
+
+)";
+
 //-----------------------------------------------------------------------------
 
 Object data[] =

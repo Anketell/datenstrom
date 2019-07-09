@@ -22,6 +22,7 @@ extern const char * results;
 extern const char * num_rows;
 extern const char * del_rows;
 extern const char * named;
+extern const char * batch;
 
 //-----------------------------------------------------------------------------
 
