@@ -17,14 +17,18 @@ namespace db
 
 template<> impl * factory_helper< mysql::connection >::construct( const connect_params_t & params )
 {
-   auto location = params[ "location" ];
+   auto server   = params[ "server" ];
+   auto path     = params[ "path" ];
    auto port_str = params[ "port" ];
    auto username = params[ "username" ];
    auto password = params[ "password" ];
    auto database = params[ "database" ];
 
-   if ( location.empty() )
-      throw std::invalid_argument( "Connect string does not specify location" );
+   if ( server.empty() )
+      throw std::invalid_argument( "Connect string does not specify server" );
+
+   if ( !path.empty() )
+      throw std::invalid_argument( "Connect string specifies forbidden path" );
 
    if ( username.empty() )
       throw std::invalid_argument( "Connect string does not specify username" );
@@ -33,7 +37,7 @@ template<> impl * factory_helper< mysql::connection >::construct( const connect_
    if ( !port_str.empty() )
       port = atoi( port_str.c_str() );
 
-   return new mysql::connection( database, location, username, password, port );
+   return new mysql::connection( database, server, username, password, port );
 }
 
 //-----------------------------------------------------------------------------

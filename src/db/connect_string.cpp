@@ -74,7 +74,7 @@ part_parser_fn params_parser = []( connect_params_t & params, const std::string 
 connect_params_t parse_connect_string( const std::string & connect_string )
 {
    static std::regex regex (
-      R"(^(([^:\/?&#]+):)?(//([^:?&#]*)(:([0-9]+))?)?([^?&#]*)(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?)",
+      R"(^(([^:\/?&#]+):)?(//([^:?&#\/]*)([^:?&#]*)(:([0-9]+))?)?([^?&#]*)(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?)",
       std::regex::extended
    );
    std::smatch match_result;
@@ -82,10 +82,11 @@ connect_params_t parse_connect_string( const std::string & connect_string )
    static part_def_t part_def[] =
    {
       {  2, part_parser( "type" ) },
-      {  4, part_parser( "location" ) },
-      {  6, part_parser( "port" ) },
-      {  9, params_parser },
-      { 13, part_parser( "database" ) }
+      {  4, part_parser( "server" ) },
+      {  5, part_parser( "path" ) },
+      {  7, part_parser( "port" ) },
+      { 10, params_parser },
+      { 14, part_parser( "database" ) }
    };
 
    connect_params_t params;

@@ -17,13 +17,17 @@ namespace db
 
 template<> impl * factory_helper< sqlite::connection >::construct( const connect_params_t & params )
 {
-   auto location = params[ "location" ];
+   auto server   = params[ "server" ];
+   auto path     = params[ "path" ];
    auto database = params[ "database" ];
 
-   if ( location.empty() )
-      throw std::invalid_argument( "Connect string does not specify location" );
+   if ( !server.empty() )
+      throw std::invalid_argument( "Connect string specifies forbiden server" );
 
-   impl * db = new sqlite::connection( location );
+   if ( path.empty() )
+      throw std::invalid_argument( "Connect string does not specify path" );
+
+   impl * db = new sqlite::connection( path );
 
    if ( !database.empty() )
    {
