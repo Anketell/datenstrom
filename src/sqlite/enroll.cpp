@@ -22,7 +22,7 @@ template<> impl * factory_helper< sqlite::connection >::construct( const connect
    auto database = params[ "database" ];
 
    if ( !server.empty() )
-      throw std::invalid_argument( "Connect string specifies forbiden server" );
+      throw std::invalid_argument( "Connect string specifies forbidden server" );
 
    if ( path.empty() )
       throw std::invalid_argument( "Connect string does not specify path" );

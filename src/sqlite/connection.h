@@ -52,9 +52,9 @@ public:
    virtual void commit_transaction( void ) override;
    virtual void rollback_transaction( void ) override;
 
-   virtual void savepoint( const std::string & ) override;
-   virtual void release_savepoint( const std::string & ) override;
-   virtual void rollback_to_savepoint( const std::string & ) override;
+   virtual void savepoint( const std::string & name ) override;
+   virtual void release_savepoint( const std::string & name ) override;
+   virtual void rollback_to_savepoint( const std::string & name ) override;
 };
 
 //-----------------------------------------------------------------------------
