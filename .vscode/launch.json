@@ -60,6 +60,26 @@
                  "ignoreFailures": true
              }
          ]
+      },
+      {
+         "name": "test_ds_firebird",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/debug/src/firebird/test/test_ds_firebird",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}",
+         "environment": [],
+         "externalConsole": true,
+         "MIMode": "gdb",
+         "setupCommands": [
+             {
+                 "description": "Enable pretty-printing for gdb",
+                 "text": "-enable-pretty-printing",
+                 "ignoreFailures": true
+             }
+         ]
       }
+
    ]
 }

@@ -1,11 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_TRANSACTION_H
-#define DS_DB_TRANSACTION_H
+#ifndef DS_FIREBIRD_TRANSACTIONAL_H
+#define DS_FIREBIRD_TRANSACTIONAL_H
 
 //-----------------------------------------------------------------------------
 
-#include <string>
+#include <db/transactional.h>
+#include <firebird/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,37 +15,19 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace db
+namespace firebird
 {
 
 //-----------------------------------------------------------------------------
 
-class transactional;
-class impl;
-
-//-----------------------------------------------------------------------------
-
-class transaction
+struct transactional : db::transactional
 {
-   transactional & m_db;
+   isc_db_handle db_handle = 0;
+   isc_tr_handle tr_handle = 0;
 
-public:
-
-   transaction( transactional & db );
-   ~transaction( void );
-};
-
-//-----------------------------------------------------------------------------
-
-class savepoint
-{
-   impl      & m_db;
-   std::string m_name;
-
-public:
-
-   savepoint( impl & db, const std::string & name );
-   ~savepoint( void );
+   virtual void begin_transaction( void ) override;
+   virtual void commit_transaction( void ) override;
+   virtual void rollback_transaction( void ) override;
 };
 
 //-----------------------------------------------------------------------------

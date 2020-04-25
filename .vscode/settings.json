@@ -41,6 +41,11 @@
       "string_view": "cpp",
       "system_error": "cpp",
       "bitset": "cpp",
-      "cstring": "cpp"
+      "cstring": "cpp",
+      "cstddef": "cpp",
+      "forward_list": "cpp",
+      "numeric": "cpp",
+      "cinttypes": "cpp",
+      "valarray": "cpp"
    }
 }

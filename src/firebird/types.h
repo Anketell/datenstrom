@@ -1,11 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_TRANSACTION_H
-#define DS_DB_TRANSACTION_H
+#ifndef DS_FIREBIRD_TYPES_H
+#define DS_FIREBIRD_TYPES_H
 
 //-----------------------------------------------------------------------------
 
-#include <string>
+#include <firebird/ibase.h>
+#include <vector>
 
 //-----------------------------------------------------------------------------
 
@@ -14,37 +15,39 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace db
+namespace firebird
 {
 
 //-----------------------------------------------------------------------------
 
-class transactional;
-class impl;
+constexpr int status_vector_length = 20;
 
 //-----------------------------------------------------------------------------
 
-class transaction
+struct stmt_t
 {
-   transactional & m_db;
+   isc_stmt_handle stmt = 0;
 
-public:
+   ~stmt_t( void )
+   {
+      if ( stmt )
+         isc_dsql_free_statement( nullptr, &stmt, DSQL_drop );
 
-   transaction( transactional & db );
-   ~transaction( void );
+      stmt = 0;
+   }
 };
 
 //-----------------------------------------------------------------------------
 
-class savepoint
+class stmt_vector_t : public std::vector< isc_stmt_handle >
 {
-   impl      & m_db;
-   std::string m_name;
-
 public:
 
-   savepoint( impl & db, const std::string & name );
-   ~savepoint( void );
+   ~stmt_vector_t( void )
+   {
+      for ( auto stmt : *this )
+         isc_dsql_free_statement( nullptr, &stmt, DSQL_drop );
+   }
 };
 
 //-----------------------------------------------------------------------------

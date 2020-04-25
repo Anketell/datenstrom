@@ -2,7 +2,6 @@
 
 #include <mysql/result.h>
 #include <mysql/error.h>
-#include <assert.h>
 
 //-----------------------------------------------------------------------------
 

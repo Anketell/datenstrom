@@ -15,7 +15,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-transaction::transaction( impl & db ) :
+transaction::transaction( transactional & db ) :
 m_db( db )
 {
    m_db.begin_transaction();

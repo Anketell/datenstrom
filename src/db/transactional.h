@@ -1,11 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_TRANSACTION_H
-#define DS_DB_TRANSACTION_H
-
-//-----------------------------------------------------------------------------
-
-#include <string>
+#ifndef DS_DB_TRANSACTIONAL_H
+#define DS_DB_TRANSACTIONAL_H
 
 //-----------------------------------------------------------------------------
 
@@ -19,32 +15,13 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class transactional;
-class impl;
-
-//-----------------------------------------------------------------------------
-
-class transaction
+class transactional
 {
-   transactional & m_db;
-
 public:
 
-   transaction( transactional & db );
-   ~transaction( void );
-};
-
-//-----------------------------------------------------------------------------
-
-class savepoint
-{
-   impl      & m_db;
-   std::string m_name;
-
-public:
-
-   savepoint( impl & db, const std::string & name );
-   ~savepoint( void );
+   virtual void begin_transaction( void ) = 0;
+   virtual void commit_transaction( void ) = 0;
+   virtual void rollback_transaction( void ) = 0;
 };
 
 //-----------------------------------------------------------------------------

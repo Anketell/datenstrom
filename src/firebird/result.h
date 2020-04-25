@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_RESULT_H
-#define DS_MYSQL_RESULT_H
+#ifndef DS_FIREBIRD_RESULT_H
+#define DS_FIREBIRD_RESULT_H
 
 //-----------------------------------------------------------------------------
 
 #include <db/result.h>
-#include <mysql/types.h>
+#include <firebird/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace mysql
+namespace firebird
 {
 
 //-----------------------------------------------------------------------------
@@ -23,18 +23,16 @@ namespace mysql
 class result : public db::result::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
-   int                       m_count;
+   XSQLDA                  * m_xsqlda = nullptr;
    bool                      m_valid;
 
-   void get_column( int              index,
-                    enum_field_types type,
-                    void           * p,
-                    size_t           length,
-                    int              is_unsigned = 0 );
+   template< typename BI > BI get_big_int( int index );
+   template< typename I > I get_integer( int index );
 
 public:
 
    result( std::shared_ptr< stmt_t > stmt );
+   virtual ~result( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

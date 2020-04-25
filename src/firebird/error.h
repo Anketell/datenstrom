@@ -1,10 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_DB_TRANSACTION_H
-#define DS_DB_TRANSACTION_H
+#ifndef DS_FIREBIRD_ERROR_H
+#define DS_FIREBIRD_ERROR_H
 
 //-----------------------------------------------------------------------------
 
+#include <firebird/ibase.h>
 #include <string>
 
 //-----------------------------------------------------------------------------
@@ -14,38 +15,13 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace db
+namespace firebird
 {
 
 //-----------------------------------------------------------------------------
 
-class transactional;
-class impl;
-
-//-----------------------------------------------------------------------------
-
-class transaction
-{
-   transactional & m_db;
-
-public:
-
-   transaction( transactional & db );
-   ~transaction( void );
-};
-
-//-----------------------------------------------------------------------------
-
-class savepoint
-{
-   impl      & m_db;
-   std::string m_name;
-
-public:
-
-   savepoint( impl & db, const std::string & name );
-   ~savepoint( void );
-};
+void throw_error( const std::string & operation, const char * error );
+void check_status( const std::string & operation, const ISC_STATUS * status );
 
 //-----------------------------------------------------------------------------
 

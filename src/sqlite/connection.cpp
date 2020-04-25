@@ -63,7 +63,7 @@ std::string connection::get_full_path( const std::string & name ) const
 
 void connection::create( const std::string & name )
 {
-   static constexpr char operation[] = "SQLite create connection";
+   static constexpr char operation[] = "SQLite create database";
 
    std::string path = get_full_path( name );
 
@@ -98,7 +98,7 @@ void connection::use( const std::string & name )
    if ( rc )
    {
       close();
-      throw_error( "SQLite use connection", rc );
+      throw_error( "SQLite use database", rc );
    }
 }
 
@@ -113,7 +113,7 @@ bool connection::drop( const std::string & name )
       if ( errno == ENOENT )
          return false;
 
-      throw_error( "SQLite drop connection", strerror( errno ) );
+      throw_error( "SQLite drop database", strerror( errno ) );
    }
 
    return true;
@@ -122,7 +122,7 @@ bool connection::drop( const std::string & name )
 //-----------------------------------------------------------------------------
 
 db::statement connection::operator()( const std::string     & query,
-                                    const db::name_list_t & parameters )
+                                      const db::name_list_t & parameters )
 {
    return db::statement( std::make_shared< statement >( m_db, query, parameters ) );
 }
