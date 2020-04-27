@@ -375,7 +375,7 @@ int positional_statement::parameter_count( void )
 
 void positional_statement::reset( void )
 {
-   ISC_STATUS status[ status_vector_length ];
+//   ISC_STATUS status[ status_vector_length ];
 
 //   isc_dsql_free_statement( status, &m_stmt->stmt, DSQL_close );
 

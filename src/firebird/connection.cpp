@@ -297,20 +297,57 @@ void connection::rollback_transaction( void )
 
 void connection::savepoint( const std::string & name )
 {
+   static constexpr char operation[] = "Firebird savepoint";
+
+   ISC_STATUS status[ status_vector_length ];
+
+   std::string statement = "SAVEPOINT " + name;
+
+   isc_dsql_execute_immediate( status,
+                               &m_transactional.db_handle,
+                               &m_transactional.tr_handle,
+                               statement.length(), statement.c_str(),
+                               3, nullptr );
+
+   check_status( operation, status );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::release_savepoint( const std::string & name )
 {
+  static constexpr char operation[] = "Firebird release savepoint";
 
+   ISC_STATUS status[ status_vector_length ];
+
+   std::string statement = "RELEASE SAVEPOINT " + name;
+
+   isc_dsql_execute_immediate( status,
+                               &m_transactional.db_handle,
+                               &m_transactional.tr_handle,
+                               statement.length(), statement.c_str(),
+                               3, nullptr );
+
+   check_status( operation, status );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_to_savepoint( const std::string & name )
 {
+   static constexpr char operation[] = "Firebird rollback savepoint";
 
+   ISC_STATUS status[ status_vector_length ];
+
+   std::string statement = "ROLLBACK TO " + name;
+
+   isc_dsql_execute_immediate( status,
+                               &m_transactional.db_handle,
+                               &m_transactional.tr_handle,
+                               statement.length(), statement.c_str(),
+                               3, nullptr );
+
+   check_status( operation, status );
 }
 
 //-----------------------------------------------------------------------------
