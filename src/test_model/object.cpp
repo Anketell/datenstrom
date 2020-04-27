@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <test_model/object.h>
+#include <cmath>
 
 //-----------------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ bool Object::operator==( const Object & o ) const
           m_u16   == o.m_u16   &&
           m_u32   == o.m_u32   &&
           m_u64   == o.m_u64   &&
-          m_f     == o.m_f     &&
+          fabs( m_f - o.m_f ) < 0.001 &&
           m_d     == o.m_d     &&
           m_hello == o.m_hello;
 }

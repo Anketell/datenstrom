@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <firebird/lines.h>
+#include <firebird/statements.h>
 
 //-----------------------------------------------------------------------------
 
@@ -14,76 +14,80 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-lines::lines( const std::string & lines ) :
-m_lines( lines )
+statements::statements( const std::string & statements ) :
+m_statements( statements )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-lines::iterator lines::begin( void ) const
+statements::iterator statements::begin( void ) const
 {
-   return { m_lines };
+   return { m_statements };
 }
 
 //-----------------------------------------------------------------------------
 
-lines::iterator lines::end( void ) const
+statements::iterator statements::end( void ) const
 {
    return {};
 }
 
 //-----------------------------------------------------------------------------
 
-lines::iterator::iterator( const std::string & lines ) :
-m_lines( lines )
+statements::iterator::iterator( const std::string & statements ) :
+m_statements( statements )
 {
-   m_line.to = m_lines.c_str();
+   m_statement.from = m_statements.c_str();
+   m_statement.len  = 0;
 
    next_line();
 }
 
 //-----------------------------------------------------------------------------
 
-void lines::iterator::next_line( void )
+void statements::iterator::next_line( void )
 {
-   if ( !m_line.to )
+   if ( !m_statement.from )
       return;
 
-   m_line.from = m_line.to;
+   m_statement.from += m_statement.len;
 
-   while ( *m_line.from == '\n' || *m_line.from == '\r' )
-      m_line.from++;
+   while ( *m_statement.from == ';' || std::isspace( *m_statement.from ) )
+      m_statement.from++;
 
-   if ( !*m_line.from )
+   if ( !*m_statement.from )
    {
-      m_line.from = m_line.to = nullptr;
+      m_statement.from = nullptr;
+      m_statement.len  = 0;
       return;
    }
 
-   m_line.to = m_line.from + 1;
+   const char *to = m_statement.from + 1;
 
-   while ( *m_line.to && *m_line.to != '\n' && *m_line.to != '\r' )
-      m_line.to++;
+   while ( *to && *to != ';' )
+      to++;
+
+   m_statement.len = to - m_statement.from;
 }
 
 //-----------------------------------------------------------------------------
 
-const lines::iterator::line_t & lines::iterator::operator*( void ) const
+const statements::iterator::statement_t & statements::iterator::operator*( void ) const
 {
-   return m_line;
+   return m_statement;
 }
 
 //-----------------------------------------------------------------------------
 
-const lines::iterator::line_t * lines::iterator::operator->( void ) const
+const statements::iterator::statement_t * statements::iterator::operator->( void ) const
 {
-   return &m_line;
+   return &m_statement;
 }
 
 //-----------------------------------------------------------------------------
 
-lines::iterator lines::iterator::operator++( void )
+statements::iterator statements::iterator::operator++( void )
 {
    next_line();
    return *this;
@@ -91,7 +95,7 @@ lines::iterator lines::iterator::operator++( void )
 
 //-----------------------------------------------------------------------------
 
-lines::iterator lines::iterator::operator++( int )
+statements::iterator statements::iterator::operator++( int )
 {
    auto it = *this;
    next_line();
@@ -100,14 +104,15 @@ lines::iterator lines::iterator::operator++( int )
 
 //-----------------------------------------------------------------------------
 
-bool lines::iterator::operator==( const iterator & it ) const
+bool statements::iterator::operator==( const iterator & it ) const
 {
-   return m_line.from == it.m_line.from && m_line.to == it.m_line.to;
+   return m_statement.from == it.m_statement.from &&
+          m_statement.len == it.m_statement.len;
 }
 
 //-----------------------------------------------------------------------------
 
-bool lines::iterator::operator!=( const iterator & it ) const
+bool statements::iterator::operator!=( const iterator & it ) const
 {
    return !( *this == it );
 }

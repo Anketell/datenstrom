@@ -46,7 +46,6 @@ void transactional::rollback_transaction( void )
    check_status( "Firebird rollback transaction", status );
 }
 
-
 //-----------------------------------------------------------------------------
 
 }

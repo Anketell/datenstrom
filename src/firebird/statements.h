@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_LINES_H
-#define DS_FIREBIRD_LINES_H
+#ifndef DS_FIREBIRD_STATEMENTS_H
+#define DS_FIREBIRD_STATEMENTS_H
 
 //-----------------------------------------------------------------------------
 
@@ -19,37 +19,37 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-class lines
+class statements
 {
-   const std::string & m_lines;
+   const std::string & m_statements;
 
 public:
 
-   lines( const std::string & lines );
+   statements( const std::string & statements );
 
    class iterator
    {
    public:
 
-      struct line_t
+      struct statement_t
       {
          const char * from = nullptr;
-         const char * to   = nullptr;
+         uint32_t     len  = 0;
       };
 
    private:
 
-      const std::string & m_lines;
-      line_t              m_line;
+      const std::string & m_statements;
+      statement_t         m_statement;
 
       void next_line( void );
 
    public:
 
-      iterator( const std::string & lines = "" );
+      iterator( const std::string & statements = "" );
 
-      const line_t & operator*( void ) const;
-      const line_t * operator->( void ) const;
+      const statement_t & operator*( void ) const;
+      const statement_t * operator->( void ) const;
 
       iterator operator++( void );
       iterator operator++( int );
@@ -72,15 +72,15 @@ public:
 
 //-----------------------------------------------------------------------------
 
-template<> class std::iterator_traits< ds::firebird::lines::iterator >
+template<> class std::iterator_traits< ds::firebird::statements::iterator >
 {
 public:
 
-   typedef int32_t                      difference_type;
-   typedef ds::firebird::lines::iterator value_type;
-   typedef value_type *                 pointer;
-   typedef value_type &                 reference;
-   typedef forward_iterator_tag         iterator_category;
+   typedef int32_t                            difference_type;
+   typedef ds::firebird::statements::iterator value_type;
+   typedef value_type *                       pointer;
+   typedef value_type &                       reference;
+   typedef forward_iterator_tag               iterator_category;
 };
 
 

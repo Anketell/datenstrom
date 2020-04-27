@@ -4,7 +4,8 @@ set( MODULE ds_firebird_module )
 add_library( ${TARGET} SHARED
    transactional.cpp
    connection.cpp
-   lines.cpp
+   statements.cpp
+   guard.cpp
 #    statement_base.cpp
     positional_statement.cpp
 #    named_statement.cpp

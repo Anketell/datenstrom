@@ -35,8 +35,19 @@ class positional_statement : public db::statement::impl
    int                       m_count;
    state_t                   m_state;
 
+   template< typename BI > void set_big_int( int index, BI bi );
+   void set_string( int index, uint32_t len, const char * data );
+
+   void prepare_statement_type( void );
+   void prepare_parameter_buffer( void );
+   void prepare_result_buffer( void );
+
    void check_parameter( int index );
+
+   void execute_statement( void );
+   void execute_procedure( void );
    void internal_execute( void );
+
 
 public:
 

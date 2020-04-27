@@ -1,34 +1,35 @@
 //-----------------------------------------------------------------------------
 
-#ifndef FIREBIRD_TEST_DATA_H
-#define FIREBIRD_TEST_DATA_H
+#include <firebird/guard.h>
+#include <db/transaction.h>
 
 //-----------------------------------------------------------------------------
 
-#include <test_model/object.h>
+namespace ds
+{
 
 //-----------------------------------------------------------------------------
 
-extern const char * create;
-extern const char * simple_create;
+namespace firebird
+{
 
 //-----------------------------------------------------------------------------
 
-extern const char * test_db_name;
-extern const char * test_con_str;
-extern const char * bad_sql;
-extern const char * insert;
-extern const char * result;
-extern const char * results;
-extern const char * num_rows;
-extern const char * del_rows;
-extern const char * named;
-extern const char * batch;
+void guard( transactional & trans, guard_fn fn )
+{
+   if ( !trans.tr_handle )
+   {
+      db::transaction transaction( trans );
+      fn();
+   }
+   else
+      fn();
+}
 
 //-----------------------------------------------------------------------------
 
-extern Object data[ 2 ];
+}
 
 //-----------------------------------------------------------------------------
 
-#endif
+}

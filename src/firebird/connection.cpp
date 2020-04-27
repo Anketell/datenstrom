@@ -2,9 +2,10 @@
 
 #include <firebird/connection.h>
 #include <firebird/positional_statement.h>
-#include <firebird/lines.h>
+#include <firebird/statements.h>
 #include <firebird/types.h>
 #include <firebird/error.h>
+#include <firebird/guard.h>
 
 #include <db/transaction.h>
 
@@ -243,17 +244,32 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
-void connection::execute_batch( const std::string & query )
+void connection::internal_execute_batch( const std::string & query )
 {
    static constexpr char operation[] = "Firebird execute batch";
 
-   db::transaction txn( *this );
-
-   stmt_vector_t stmt_vector;
-
    ISC_STATUS status[ status_vector_length ];
 
-   check_status( operation, status );
+   for ( auto & statement : statements( query ) )
+   {
+      isc_dsql_execute_immediate( status,
+                                  &m_transactional.db_handle,
+                                  &m_transactional.tr_handle,
+                                  statement.len, statement.from,
+                                  3, nullptr );
+
+      check_status( operation, status );
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::execute_batch( const std::string & query )
+{
+   guard( m_transactional, [ & ]( void )
+   {
+      internal_execute_batch( query );
+   } );
 }
 
 //-----------------------------------------------------------------------------

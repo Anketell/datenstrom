@@ -27,7 +27,7 @@ TEST( firebird_db, should_create_good_path )
 }
 
 //-----------------------------------------------------------------------------
-#if 0
+
 TEST( firebird_db, should_execute_batch )
 {
    ds::db::connection test_db( test_con_str );
@@ -41,7 +41,7 @@ TEST( firebird_db, should_execute_batch )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-#endif
+
 //-----------------------------------------------------------------------------
 
 TEST( firebird_db, should_fail_create_bad_con_str )
@@ -62,8 +62,7 @@ TEST( firebird_db_statement, should_execute_simple )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   ds::db::statement create_test = test_db( create );
-   EXPECT_NO_THROW( create_test.execute() );
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -93,18 +92,15 @@ TEST( firebird_db_statement, should_return_execute_value )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
-      EXPECT_NO_THROW( insert_test << data[ 0 ] << 1 );
+      EXPECT_NO_THROW( insert_test << data[ 0 ] );
       EXPECT_EQ( insert_test.execute(), 1 );
 
-      EXPECT_NO_THROW( insert_test << data[ 1 ] << 2 );
+      EXPECT_NO_THROW( insert_test << data[ 1 ] );
       EXPECT_EQ( insert_test.execute(), 2 );
 
       ds::db::statement value_test = test_db( num_rows );
@@ -114,7 +110,7 @@ TEST( firebird_db_statement, should_return_execute_value )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-#if 0
+
 //-----------------------------------------------------------------------------
 
 TEST( firebird_db_statement, should_execute_query_parameters )
@@ -125,10 +121,7 @@ TEST( firebird_db_statement, should_execute_query_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -154,10 +147,7 @@ TEST( firebird_db_statement, should_fail_query_too_many_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -193,14 +183,10 @@ TEST( firebird_db_statement, should_fail_query_not_enough_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
-
       EXPECT_THROW( insert_test.execute(), std::runtime_error );
    }
 
@@ -217,10 +203,7 @@ TEST( firebird_db_statement, should_provide_query_result_row )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -261,14 +244,8 @@ TEST( firebird_db_statement, should_fail_bad_query )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test1 = test_db( create );
-      ds::db::statement create_test2 = test_db( create );
-
-      EXPECT_NO_THROW( create_test1.execute() );
-
-      EXPECT_THROW( create_test2.execute(), std::runtime_error );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_THROW( test_db.execute_batch( create ), std::runtime_error );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -283,10 +260,7 @@ TEST( firebird_db_result, should_provide_query_data )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -336,10 +310,7 @@ TEST( firebird_db_result, should_provide_rows_affected )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -352,7 +323,6 @@ TEST( firebird_db_result, should_provide_rows_affected )
    }
 
    ds::db::statement delete_test = test_db( del_rows );
-
    EXPECT_EQ( delete_test.result().rows_affected(), 2 );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -368,8 +338,7 @@ TEST( firebird_db_result, should_return_query_data_not_available )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   ds::db::statement create_test = test_db( create );
-
+   ds::db::statement create_test = test_db( simple_create );
    EXPECT_EQ( ds::db::result(), create_test.result() );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -385,10 +354,7 @@ TEST( firebird_db_result, should_fail_query_wrong_column_count )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -430,4 +396,40 @@ TEST( firebird_db_result, should_fail_query_wrong_column_count )
 }
 
 //-----------------------------------------------------------------------------
-#endif
+
+TEST( firebird_db_result, should_fail_query_wrong_column_type )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+      {
+         EXPECT_NO_THROW( insert_test << o );
+         EXPECT_NO_THROW( insert_test.execute() );
+      }
+   }
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      ds::db::result row;
+
+      EXPECT_NO_THROW( row = results_test.result() );
+
+      std::string hello;
+
+      EXPECT_THROW( row >> hello, std::runtime_error );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------

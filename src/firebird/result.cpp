@@ -18,72 +18,96 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-result::result( std::shared_ptr< stmt_t > stmt ) :
-m_stmt( stmt )
+result::result( std::shared_ptr< stmt_t >              stmt,
+                std::unique_ptr< ds::db::transaction > transaction ) :
+m_stmt( stmt ),
+m_transaction( std::move( transaction ) )
 {
    static constexpr char operation[] = "Firebird result prepare";
 
-   ISC_STATUS status[ status_vector_length ];
+   m_valid = m_stmt->xsqlda->sqld;
 
-   XSQLDA xsqlda;
-
-   xsqlda.version = SQLDA_VERSION1;
-   xsqlda.sqln    = 1;
-
-   isc_dsql_describe( status, &m_stmt->stmt, 1, &xsqlda );
-
-   check_status( operation, status );
-
-   m_xsqlda = reinterpret_cast< XSQLDA * >( malloc( XSQLDA_LENGTH( xsqlda.sqld ) ) );
-
-   if ( xsqlda.sqld > xsqlda.sqln )
+   if ( m_valid )
    {
-      m_xsqlda->version = SQLDA_VERSION1;
-      m_xsqlda->sqln    = xsqlda.sqld;
-      isc_dsql_describe( status, &m_stmt->stmt, 3, m_xsqlda );
-
-      check_status( operation, status );
+      if ( m_stmt->type == isc_info_sql_stmt_exec_procedure )
+         m_valid = true;
+      else
+         step();
    }
    else
-   {
-      memcpy( m_xsqlda, &xsqlda, XSQLDA_LENGTH( xsqlda.sqld ) );
-      m_xsqlda->sqln = m_xsqlda->sqld;
-   }
-
-   for ( int i = 0; i < m_xsqlda->sqld; i++ )
-   {
-      XSQLVAR & column( m_xsqlda->sqlvar[ i ] );
-      column.sqldata = reinterpret_cast< char * >( malloc( column.sqllen ) );
-   }
-
-   step();
+      m_transaction.reset();
 }
 
 //-----------------------------------------------------------------------------
 
 result::~result( void )
 {
-   if ( m_xsqlda )
-   {
-      for ( int i = 0; i < m_xsqlda->sqld; i++ )
-         free( m_xsqlda->sqlvar[ i ].sqldata );
-
-      free( m_xsqlda );
-   }
+   m_transaction.reset();
 }
 
 //-----------------------------------------------------------------------------
 
 int result::column_count( void ) const
 {
-   return m_xsqlda->sqln;
+   return m_stmt->xsqlda->sqln;
 }
 
 //-----------------------------------------------------------------------------
 
 int result::rows_affected( void ) const
 {
-   return 0;
+   static constexpr char operation[] = "Firebird rows affected";
+
+   ISC_STATUS status[ status_vector_length ];
+
+   char info[] = { isc_info_sql_records, isc_info_end };
+   char res[ 128 ];
+
+   isc_dsql_sql_info( status,
+                      &m_stmt->stmt,
+                      sizeof( info ), info,
+                      sizeof( res ), res );
+
+   check_status( operation, status );
+
+   int count = 0;
+
+   char * p = res;
+
+   int mask;
+
+   switch ( m_stmt->type )
+   {
+      case isc_info_sql_stmt_select:
+      case isc_info_sql_stmt_insert:
+      case isc_info_sql_stmt_update:
+      case isc_info_sql_stmt_delete:
+         mask = 1 << ( m_stmt->type + isc_info_req_select_count
+                                    - isc_info_sql_stmt_select );
+         break;
+
+      default:
+         mask = 0x0f << isc_info_req_select_count;
+         break;
+   }
+
+   if ( *p == isc_info_sql_records )
+   {
+      p += 3;
+      while ( *p != isc_info_end )
+      {
+         if ( mask & ( 1 << *p ) )
+         {
+            p += 3;
+            count += *reinterpret_cast< int * >( p );
+            p += 4;
+         }
+         else
+            p += 7;
+      }
+   }
+
+   return count;
 }
 
 //-----------------------------------------------------------------------------
@@ -101,9 +125,9 @@ template< typename BI > BI result::get_big_int( int index )
 
    BI bi;
 
-   XSQLVAR & column( m_xsqlda->sqlvar[ index ] );
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
 
-   switch ( column.sqltype )
+   switch ( column.sqltype & ~1 )
    {
       case SQL_SHORT:
          bi = static_cast< BI >( *reinterpret_cast< SI * >( column.sqldata ) );
@@ -203,14 +227,54 @@ void result::get_column( int index, uint64_t & u )
 
 void result::get_column( int index, double & d )
 {
-   throw_error( operation, "Not implemeneted" );
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
+
+   switch ( column.sqltype & ~1 )
+   {
+      case SQL_SHORT:
+         d = static_cast< double >( *reinterpret_cast< int16_t * >( column.sqldata ) );
+         break;
+
+      case SQL_LONG:
+         d = static_cast< double >( *reinterpret_cast< int32_t * >( column.sqldata ) );
+         break;
+
+      case SQL_INT64:
+         d = static_cast< double >( *reinterpret_cast< int64_t * >( column.sqldata ) );
+         break;
+
+      case SQL_FLOAT:
+         d = *reinterpret_cast< float * >( column.sqldata );
+         break;
+
+      case SQL_DOUBLE:
+         d = *reinterpret_cast< double * >( column.sqldata );
+         break;
+
+      default:
+         throw_error( operation, "Not numeric type" );
+   }
 }
 
 //-----------------------------------------------------------------------------
 
 void result::get_column( int index, std::string & s )
 {
-   throw_error( operation, "Not implemeneted" );
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
+
+   switch ( column.sqltype & ~1 )
+   {
+      case SQL_TEXT:
+         s.assign( column.sqldata, column.sqllen );
+         break;
+
+      case SQL_VARYING:
+         s.assign( column.sqldata + 2, *reinterpret_cast< uint16_t * >( column.sqldata ) );
+         break;
+
+      default:
+         throw_error( operation, "Not character type" );
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -219,7 +283,12 @@ bool result::step( void )
 {
    ISC_STATUS status[ status_vector_length ];
 
-   m_valid = !isc_dsql_fetch( status, &m_stmt->stmt, 1, m_xsqlda );
+   m_valid = !isc_dsql_fetch( status, &m_stmt->stmt, 1, m_stmt->xsqlda );
+
+   if ( !m_valid )
+      m_transaction.reset();
+
+   check_status( operation, status );
 
    return *this;
 }

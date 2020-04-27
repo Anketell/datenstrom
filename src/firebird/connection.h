@@ -41,6 +41,8 @@ class connection : public db::impl
 
    void set_sql_dialect( int dialect );
 
+   void internal_execute_batch( const std::string & query );
+
 public:
 
    static constexpr char TYPE[] = "firebird";

@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/result.h>
+#include <db/transaction.h>
 #include <firebird/types.h>
 
 //-----------------------------------------------------------------------------
@@ -22,17 +23,17 @@ namespace firebird
 
 class result : public db::result::impl
 {
-   std::shared_ptr< stmt_t > m_stmt;
-   XSQLDA                  * m_xsqlda = nullptr;
-   bool                      m_valid;
+   std::shared_ptr< stmt_t >              m_stmt;
+   std::unique_ptr< ds::db::transaction > m_transaction;
+   bool                                   m_valid;
 
    template< typename BI > BI get_big_int( int index );
    template< typename I > I get_integer( int index );
 
 public:
 
-   result( std::shared_ptr< stmt_t > stmt );
-   virtual ~result( void );
+   result( std::shared_ptr< stmt_t > stmt, std::unique_ptr< ds::db::transaction > = nullptr );
+   ~result( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

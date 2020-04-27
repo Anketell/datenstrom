@@ -1,14 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_TYPES_H
-#define DS_FIREBIRD_TYPES_H
+#ifndef DS_FIREBIRD_GUARD_H
+#define DS_FIREBIRD_GUARD_H
 
 //-----------------------------------------------------------------------------
 
-#include <firebird/ibase.h>
-#include <firebird/error.h>
-#include <vector>
-#include <malloc.h>
+#include <firebird/transactional.h>
+#include <functional>
 
 //-----------------------------------------------------------------------------
 
@@ -22,39 +20,11 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-constexpr int status_vector_length = 20;
+typedef std::function< void ( void ) > guard_fn;
 
 //-----------------------------------------------------------------------------
 
-struct stmt_t
-{
-   isc_stmt_handle stmt   = 0;
-   XSQLDA        * xsqlda = nullptr;
-   char            type;
-
-   ~stmt_t( void )
-   {
-      if ( xsqlda )
-      {
-         for ( int i = 0; i < xsqlda->sqld; i++ )
-         {
-            free( xsqlda->sqlvar[ i ].sqldata );
-            free( xsqlda->sqlvar[ i ].sqlind );
-         }
-
-         free( xsqlda );
-      }
-
-      if ( stmt )
-      {
-         ISC_STATUS status[ status_vector_length ];
-
-//         isc_dsql_free_statement( status, &stmt, DSQL_drop );
-
-//         check_status( "Fierbird drop statement", status );
-      }
-   }
-};
+void guard( transactional & trans, guard_fn fn );
 
 //-----------------------------------------------------------------------------
 
