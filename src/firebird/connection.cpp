@@ -129,7 +129,10 @@ void connection::set_sql_dialect( int dialect )
    spb += isc_spb_password;
    spb += m_dpb.substr( m_password_offset, m_dpb[ m_password_offset ] + 1 );
 
-   isc_service_attach( status, 0, ( m_server + ":service_mgr" ).c_str(), &svc_handle, spb.length(), spb.data() );
+   isc_service_attach( status, 0,
+                       ( m_server + ":service_mgr" ).c_str(),
+                       &svc_handle,
+                       spb.length(), spb.data() );
 
    check_status( "Firebird create database", status );
 
@@ -148,7 +151,12 @@ void connection::set_sql_dialect( int dialect )
    request += ( dialect >> 16 ) & 0xff;
    request += ( dialect >> 24 ) & 0xff;
 
-   isc_service_start( status, &svc_handle, nullptr, request.length(), request.data() );
+   isc_service_start( status,
+                      &svc_handle,
+                      nullptr,
+                      request.length(),
+                      request.data() );
+
    isc_service_detach( status, &svc_handle );
 }
 
