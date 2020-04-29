@@ -34,6 +34,15 @@ struct stmt_t
 
    ~stmt_t( void )
    {
+      if ( stmt && ( xsqlda == nullptr || xsqlda->sqld != 0 ) )
+      {
+         ISC_STATUS status[ status_vector_length ];
+
+         isc_dsql_free_statement( status, &stmt, DSQL_drop );
+
+         check_status( "Fierbird drop statement", status );
+      }
+
       if ( xsqlda )
       {
          for ( int i = 0; i < xsqlda->sqld; i++ )
@@ -43,15 +52,6 @@ struct stmt_t
          }
 
          free( xsqlda );
-      }
-
-      if ( stmt )
-      {
-         ISC_STATUS status[ status_vector_length ];
-
-//         isc_dsql_free_statement( status, &stmt, DSQL_drop );
-
-//         check_status( "Fierbird drop statement", status );
       }
    }
 };

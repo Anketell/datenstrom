@@ -252,31 +252,22 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
-void connection::internal_execute_batch( const std::string & query )
-{
-   static constexpr char operation[] = "Firebird execute batch";
-
-   ISC_STATUS status[ status_vector_length ];
-
-   for ( auto & statement : statements( query ) )
-   {
-      isc_dsql_execute_immediate( status,
-                                  &m_transactional.db_handle,
-                                  &m_transactional.tr_handle,
-                                  statement.len, statement.from,
-                                  3, nullptr );
-
-      check_status( operation, status );
-   }
-}
-
-//-----------------------------------------------------------------------------
-
 void connection::execute_batch( const std::string & query )
 {
    guard( m_transactional, [ & ]( void )
    {
-      internal_execute_batch( query );
+      ISC_STATUS status[ status_vector_length ];
+
+      for ( auto & statement : statements( query ) )
+      {
+         isc_dsql_execute_immediate( status,
+                                     &m_transactional.db_handle,
+                                     &m_transactional.tr_handle,
+                                     statement.len, statement.from,
+                                     3, nullptr );
+
+         check_status( "Firebird execute batch", status );
+      }
    } );
 }
 
@@ -305,8 +296,6 @@ void connection::rollback_transaction( void )
 
 void connection::savepoint( const std::string & name )
 {
-   static constexpr char operation[] = "Firebird savepoint";
-
    ISC_STATUS status[ status_vector_length ];
 
    std::string statement = "SAVEPOINT " + name;
@@ -317,15 +306,13 @@ void connection::savepoint( const std::string & name )
                                statement.length(), statement.c_str(),
                                3, nullptr );
 
-   check_status( operation, status );
+   check_status( "Firebird savepoint", status );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::release_savepoint( const std::string & name )
 {
-  static constexpr char operation[] = "Firebird release savepoint";
-
    ISC_STATUS status[ status_vector_length ];
 
    std::string statement = "RELEASE SAVEPOINT " + name;
@@ -336,15 +323,13 @@ void connection::release_savepoint( const std::string & name )
                                statement.length(), statement.c_str(),
                                3, nullptr );
 
-   check_status( operation, status );
+   check_status( "Firebird release savepoint", status );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_to_savepoint( const std::string & name )
 {
-   static constexpr char operation[] = "Firebird rollback savepoint";
-
    ISC_STATUS status[ status_vector_length ];
 
    std::string statement = "ROLLBACK TO " + name;
@@ -355,7 +340,7 @@ void connection::rollback_to_savepoint( const std::string & name )
                                statement.length(), statement.c_str(),
                                3, nullptr );
 
-   check_status( operation, status );
+   check_status( "Firebird rollback savepoint", status );
 }
 
 //-----------------------------------------------------------------------------
