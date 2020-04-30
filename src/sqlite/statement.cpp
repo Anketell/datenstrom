@@ -66,8 +66,7 @@ int statement::check_parameter( int index )
 {
    static constexpr char operation[] = "SQLite statement parameter check";
 
-   if ( m_state == Executed )
-      reset();
+   reset();
 
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
@@ -201,6 +200,9 @@ int statement::parameter_count( void )
 
 void statement::reset( void )
 {
+   if ( m_state == Preparing )
+      return;
+
    int rc = sqlite3_reset( m_stmt->stmt );
    if ( rc != SQLITE_OK )
       throw_error( "SQLite statement reset", rc );
@@ -218,6 +220,8 @@ uint64_t statement::execute( void )
    static constexpr char operation[] = "SQLite statement execute";
 
    uint64_t res = 0;
+
+   reset();
 
    sqlite::result result( m_stmt );
 
@@ -242,6 +246,8 @@ uint64_t statement::execute( void )
 
 db::result statement::result( void )
 {
+   reset();
+
    db::result result = db::result( std::make_shared< sqlite::result >( m_stmt ) );
 
    m_state = Executed;
