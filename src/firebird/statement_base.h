@@ -1,0 +1,95 @@
+//-----------------------------------------------------------------------------
+
+#ifndef DS_FIREBIRD_STATEMENT_BASE_H
+#define DS_FIREBIRD_STATEMENT_BASE_H
+
+//-----------------------------------------------------------------------------
+
+#include <db/statement.h>
+#include <firebird/types.h>
+#include <functional>
+
+//-----------------------------------------------------------------------------
+
+namespace ds
+{
+
+//-----------------------------------------------------------------------------
+
+namespace firebird
+{
+
+//-----------------------------------------------------------------------------
+
+typedef std::function< void( XSQLDA * ) > describe_fn_t;
+
+//-----------------------------------------------------------------------------
+
+class transactional;
+
+//-----------------------------------------------------------------------------
+
+class statement_base : public db::statement::impl
+{
+   transactional           & m_transactional;
+   std::shared_ptr< stmt_t > m_stmt;
+   XSQLDA                  * m_xsqlda = nullptr;
+
+   template< typename BI > void set_big_int( int index, BI bi );
+   void set_string( int index, uint32_t len, const char * data );
+
+   XSQLDA * prepare_xsqlda( describe_fn_t describe_fn );
+
+   void prepare_statement_type( void );
+   void prepare_parameter_buffer( void );
+   void prepare_result_buffer( void );
+
+   void check_parameter( int index );
+
+   void execute_statement( void );
+   void execute_procedure( void );
+   void internal_execute( void );
+
+protected:
+
+   void prepare( const std::string & sql );
+
+   statement_base( transactional & transactional );
+
+public:
+
+   virtual ~statement_base( void );
+
+   virtual void set_parameter( int index, int8_t ) override;
+   virtual void set_parameter( int index, int16_t ) override;
+   virtual void set_parameter( int index, int32_t ) override;
+   virtual void set_parameter( int index, int64_t ) override;
+
+   virtual void set_parameter( int index, uint8_t ) override;
+   virtual void set_parameter( int index, uint16_t ) override;
+   virtual void set_parameter( int index, uint32_t ) override;
+   virtual void set_parameter( int index, uint64_t ) override;
+
+   virtual void set_parameter( int index, double ) override;
+
+   virtual void set_parameter( int index, const char * ) override;
+   virtual void set_parameter( int index, const std::string & ) override;
+
+   virtual int parameter_count( void ) override;
+
+   virtual void reset( void ) override;
+   virtual uint64_t execute( void ) override;
+   virtual db::result result( void ) override;
+};
+
+//-----------------------------------------------------------------------------
+
+}
+
+//-----------------------------------------------------------------------------
+
+}
+
+//-----------------------------------------------------------------------------
+
+#endif

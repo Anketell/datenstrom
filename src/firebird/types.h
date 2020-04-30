@@ -28,9 +28,12 @@ constexpr int status_vector_length = 20;
 
 struct stmt_t
 {
+   enum state_t { Preparing, Executed };
+
    isc_stmt_handle stmt   = 0;
    XSQLDA        * xsqlda = nullptr;
-   char            type;
+   int32_t         type;
+   state_t         state;
 
    ~stmt_t( void )
    {

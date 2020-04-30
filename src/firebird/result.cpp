@@ -42,14 +42,18 @@ m_transaction( std::move( transaction ) )
 
 result::~result( void )
 {
-   m_transaction.reset();
+   if ( m_transaction )
+   {
+      m_stmt->state = stmt_t::Preparing;
+      m_transaction.reset();
+   }
 }
 
 //-----------------------------------------------------------------------------
 
 int result::column_count( void ) const
 {
-   return m_stmt->xsqlda->sqln;
+   return m_stmt->xsqlda->sqld;
 }
 
 //-----------------------------------------------------------------------------
@@ -98,12 +102,10 @@ int result::rows_affected( void ) const
       {
          if ( mask & ( 1 << *p ) )
          {
-            p += 3;
-            count += *reinterpret_cast< int * >( p );
-            p += 4;
+            int16_t len = isc_vax_integer( p + 1, 2 );
+            count      += isc_vax_integer( p + 3, len );
          }
-         else
-            p += 7;
+         p += 7;
       }
    }
 
@@ -285,8 +287,11 @@ bool result::step( void )
 
    m_valid = !isc_dsql_fetch( status, &m_stmt->stmt, 1, m_stmt->xsqlda );
 
-   if ( !m_valid )
+   if ( !m_valid && m_transaction )
+   {
+      m_stmt->state = stmt_t::Preparing;
       m_transaction.reset();
+   }
 
    check_status( operation, status );
 

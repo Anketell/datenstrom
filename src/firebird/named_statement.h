@@ -1,14 +1,11 @@
 //-----------------------------------------------------------------------------
 
-#include <db/transaction.h>
-#include <firebird/positional_statement.h>
-#include <firebird/result.h>
-#include <firebird/error.h>
-#include <firebird/guard.h>
+#ifndef DS_FIREBIRD_NAMED_STATEMENT_H
+#define DS_FIREBIRD_NAMED_STATEMENT_H
 
-#include <assert.h>
-#include <memory.h>
-#include <limits>
+//-----------------------------------------------------------------------------
+
+#include <firebird/statement_base.h>
 
 //-----------------------------------------------------------------------------
 
@@ -22,12 +19,15 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-positional_statement::positional_statement( transactional     & trans,
-                                            const std::string & sql   ) :
-statement_base( trans )
+class named_statement : public statement_base
 {
-   prepare( sql );
-}
+
+public:
+
+   named_statement( transactional         & transactional,
+                    const std::string     & sql,
+                    const db::name_list_t & parameters );
+};
 
 //-----------------------------------------------------------------------------
 
@@ -36,3 +36,7 @@ statement_base( trans )
 //-----------------------------------------------------------------------------
 
 }
+
+//-----------------------------------------------------------------------------
+
+#endif
