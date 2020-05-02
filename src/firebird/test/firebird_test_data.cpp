@@ -61,7 +61,7 @@ const char * num_rows = "SELECT COUNT( * ) FROM Object";
 const char * del_rows = "DELETE FROM Object";
 const char * named    = "INSERT INTO Object VALUES ( :i8, :i16, :i32, :i64, "
                                                     ":u8, :u16, :u32, :u64, "
-                                                    ":float, :double, :string, "
+                                                    ":float_, :double_, :string, "
                                                     "GEN_ID( ObjectID, 1 ) ) returning id";
 
 const char * batch =

@@ -77,9 +77,9 @@ void statement_base::prepare( const std::string & sql )
 
 //-----------------------------------------------------------------------------
 
-void statement_base::prepare_statement_type( void )
+int statement_base::get_statement_type( isc_stmt_handle stmt )
 {
-   static constexpr char operation[] = "Firebird prepare statement type";
+   static constexpr char operation[] = "Firebird get statement type";
 
    ISC_STATUS status[ status_vector_length ];
 
@@ -87,14 +87,21 @@ void statement_base::prepare_statement_type( void )
    char res[ 10 ];
 
    isc_dsql_sql_info( status,
-                      &m_stmt->stmt,
+                      &stmt,
                       sizeof( info ), info,
                       sizeof( res ), res );
 
    check_status( operation, status );
 
    int32_t len  = isc_vax_integer( res + 1, 2 );
-   m_stmt->type = isc_vax_integer( res + 3, len );
+   return isc_vax_integer( res + 3, len );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::prepare_statement_type( void )
+{
+   m_stmt->type = get_statement_type( m_stmt->stmt );
 }
 
 //-----------------------------------------------------------------------------
@@ -103,30 +110,31 @@ XSQLDA * statement_base::prepare_xsqlda( describe_fn_t describe_fn )
 {
    XSQLDA * xsqlda = reinterpret_cast< XSQLDA * >( malloc( XSQLDA_LENGTH( 1 ) ) );
 
-   xsqlda->version = SQLDA_VERSION1;
-   xsqlda->sqln    = 1;
-
-   describe_fn( xsqlda );
-
-   if ( xsqlda->sqld > xsqlda->sqln )
+   try
    {
-      XSQLDA * x = reinterpret_cast< XSQLDA * >( malloc( XSQLDA_LENGTH( xsqlda->sqld ) ) );
-
-      x->version = SQLDA_VERSION1;
-      x->sqln    = xsqlda->sqld;
-
-      free( xsqlda );
-
-      xsqlda = x;
+      xsqlda->version = SQLDA_VERSION1;
+      xsqlda->sqln    = 1;
 
       describe_fn( xsqlda );
-   }
 
-   for ( int i = 0; i < xsqlda->sqld; i++ )
+      if ( xsqlda->sqld > xsqlda->sqln )
+      {
+         XSQLDA * x = reinterpret_cast< XSQLDA * >( malloc( XSQLDA_LENGTH( xsqlda->sqld ) ) );
+
+         x->version = SQLDA_VERSION1;
+         x->sqln    = xsqlda->sqld;
+
+         free( xsqlda );
+
+         xsqlda = x;
+
+         describe_fn( xsqlda );
+      }
+   }
+   catch ( ... )
    {
-      XSQLVAR & var( xsqlda->sqlvar[ i ] );
-      var.sqldata = reinterpret_cast< char * >( malloc( var.sqllen ) );
-      var.sqlind  = new int16_t( 0 );
+      free( xsqlda );
+      throw;
    }
 
    return xsqlda;
@@ -134,32 +142,60 @@ XSQLDA * statement_base::prepare_xsqlda( describe_fn_t describe_fn )
 
 //-----------------------------------------------------------------------------
 
-void statement_base::prepare_parameter_buffer( void )
+void statement_base::allocate_xsqlvars( XSQLDA * xsqlda )
+{
+   for ( int i = 0; i < xsqlda->sqld; i++ )
+   {
+      XSQLVAR & var( xsqlda->sqlvar[ i ] );
+      var.sqldata = reinterpret_cast< char * >( malloc( var.sqllen ) );
+      var.sqlind  = new int16_t( 0 );
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+XSQLDA *  statement_base::prepare_parameter_xsqlda( isc_stmt_handle stmt )
 {
    static constexpr char operation[] = "Firebird statement prepare";
 
    ISC_STATUS status[ status_vector_length ];
 
-   m_xsqlda = prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
+   return prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
    {
-      isc_dsql_describe_bind( status, &m_stmt->stmt, 3, xsqlda );
+      isc_dsql_describe_bind( status, &stmt, 3, xsqlda );
       check_status( operation, status );
    } );
 }
 
 //-----------------------------------------------------------------------------
 
-void statement_base::prepare_result_buffer( void )
+XSQLDA * statement_base::prepare_result_xqslda( isc_stmt_handle stmt )
 {
    static constexpr char operation[] = "Firebird statement prepare";
 
    ISC_STATUS status[ status_vector_length ];
 
-   m_stmt->xsqlda = prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
+   return prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
    {
-      isc_dsql_describe( status, &m_stmt->stmt, 3, xsqlda );
+      isc_dsql_describe( status, &stmt, 3, xsqlda );
       check_status( operation, status );
    } );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::prepare_parameter_buffer( void )
+{
+   m_xsqlda = prepare_parameter_xsqlda( m_stmt->stmt );
+   allocate_xsqlvars( m_xsqlda );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::prepare_result_buffer( void )
+{
+   m_stmt->xsqlda = prepare_result_xqslda( m_stmt->stmt );
+   allocate_xsqlvars( m_stmt->xsqlda );
 }
 
 //-----------------------------------------------------------------------------

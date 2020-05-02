@@ -2,6 +2,7 @@
 
 #include <firebird/connection.h>
 #include <firebird/positional_statement.h>
+#include <firebird/named_statement.h>
 #include <firebird/statements.h>
 #include <firebird/types.h>
 #include <firebird/error.h>
@@ -247,7 +248,9 @@ db::statement connection::operator()( const std::string     & query,
       return db::statement( std::make_shared< positional_statement >( m_transactional,
                                                                       query            ) );
 
-   return db::statement( nullptr );
+   return db::statement( std::make_shared< named_statement >( m_transactional,
+                                                              query,
+                                                              parameters       ) );
 }
 
 //-----------------------------------------------------------------------------

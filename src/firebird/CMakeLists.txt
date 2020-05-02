@@ -5,10 +5,11 @@ add_library( ${TARGET} SHARED
    transactional.cpp
    connection.cpp
    statements.cpp
+   parameter_enum.cpp
    guard.cpp
    statement_base.cpp
    positional_statement.cpp
-#    named_statement.cpp
+   named_statement.cpp
    result.cpp
    error.cpp
 )

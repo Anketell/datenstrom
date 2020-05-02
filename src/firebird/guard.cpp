@@ -15,7 +15,7 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-void guard( transactional & trans, guard_fn fn )
+void guard( transactional & trans, guarded_fn fn )
 {
    if ( !trans.tr_handle )
    {

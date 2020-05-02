@@ -20,11 +20,11 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-typedef std::function< void ( void ) > guard_fn;
+typedef std::function< void ( void ) > guarded_fn;
 
 //-----------------------------------------------------------------------------
 
-void guard( transactional & trans, guard_fn fn );
+void guard( transactional & trans, guarded_fn fn );
 
 //-----------------------------------------------------------------------------
 

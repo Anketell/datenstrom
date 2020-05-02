@@ -31,14 +31,13 @@ class transactional;
 
 class statement_base : public db::statement::impl
 {
-   transactional           & m_transactional;
-   std::shared_ptr< stmt_t > m_stmt;
-   XSQLDA                  * m_xsqlda = nullptr;
+   XSQLDA * m_xsqlda = nullptr;
 
    template< typename BI > void set_big_int( int index, BI bi );
    void set_string( int index, uint32_t len, const char * data );
 
    XSQLDA * prepare_xsqlda( describe_fn_t describe_fn );
+   void     allocate_xsqlvars( XSQLDA * xsqlda );
 
    void prepare_statement_type( void );
    void prepare_parameter_buffer( void );
@@ -51,6 +50,14 @@ class statement_base : public db::statement::impl
    void internal_execute( void );
 
 protected:
+
+   transactional           & m_transactional;
+   std::shared_ptr< stmt_t > m_stmt;
+
+   XSQLDA * prepare_parameter_xsqlda( isc_stmt_handle stmt );
+   XSQLDA * prepare_result_xqslda( isc_stmt_handle stmt );
+
+   int get_statement_type( isc_stmt_handle stmt );
 
    void prepare( const std::string & sql );
 
