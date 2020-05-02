@@ -27,7 +27,10 @@ named_statement::named_statement( transactional         & transactional,
 statement_base( transactional )
 {
    int32_t type;
-   prepare( wrap_sql( sql, parameters, &type ) );
+
+   std::string wrapped_sql = wrap_sql( sql, parameters, &type );
+   std::cout << wrapped_sql;
+   prepare( wrapped_sql );
 
    m_stmt->type = type;
 }
@@ -217,10 +220,10 @@ std::string named_statement::wrap_sql( const std::string     & sql,
          wrapped_sql << ":" << meta.out->sqlvar[ i ].sqlname;
       }
 
-      wrapped_sql << ";" << std::endl;
-
       if ( meta.type == isc_info_sql_stmt_select )
-         wrapped_sql << "DO ";
+         wrapped_sql << std::endl << "DO ";
+      else
+         wrapped_sql << ";" << std::endl;
 
       wrapped_sql << "SUSPEND;" << std::endl;
    }

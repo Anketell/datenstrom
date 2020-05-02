@@ -70,42 +70,48 @@ TEST( firebird_parameter, should_retrieve_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "hello2"
-                                   << 10
-                                   <<  9
-                                   <<  8
-                                   <<  7
-                                   <<  6
-                                   <<  5
-                                   <<  4
-                                   <<  3
-                                   <<  2
-                                   <<  1 );
+      for ( int i = 0; i < 2; i++ )
+      {
+         EXPECT_NO_THROW( insert_test << "hello2"
+                                    << 10
+                                    <<  9
+                                    <<  8
+                                    <<  7
+                                    <<  6
+                                    <<  5
+                                    <<  4
+                                    <<  3
+                                    <<  2
+                                    <<  1 );
 
-      EXPECT_EQ( insert_test.result().rows_affected(), 1 );
+         EXPECT_EQ( insert_test.result().rows_affected(), 1 );
+      }
    }
 
    Object o;
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello "
+                                                "FROM Object WHERE hello = :helloin", { "helloin" } );
 
-      auto row = results_test.result();
+      for ( auto row : results_test( "hello2" ) )
+      {
+         EXPECT_NO_THROW( row >> o );
+         EXPECT_EQ( row.rows_affected(), 2  );
 
-      EXPECT_NO_THROW( row >> o );
+         EXPECT_EQ( o.m_i8, 1 );
+         EXPECT_EQ( o.m_i16, 2 );
+         EXPECT_EQ( o.m_i32, 3 );
+         EXPECT_EQ( o.m_i64, 4 );
+         EXPECT_EQ( o.m_u8, 5 );
+         EXPECT_EQ( o.m_u16, 6 );
+         EXPECT_EQ( o.m_u32, 7 );
+         EXPECT_EQ( o.m_u64, 8 );
+         EXPECT_EQ( o.m_f, 9 );
+         EXPECT_EQ( o.m_d, 10 );
+         EXPECT_EQ( o.m_hello, "hello2" );
+      }
    }
-
-   EXPECT_EQ( o.m_i8, 1 );
-   EXPECT_EQ( o.m_i16, 2 );
-   EXPECT_EQ( o.m_i32, 3 );
-   EXPECT_EQ( o.m_i64, 4 );
-   EXPECT_EQ( o.m_u8, 5 );
-   EXPECT_EQ( o.m_u16, 6 );
-   EXPECT_EQ( o.m_u32, 7 );
-   EXPECT_EQ( o.m_u64, 8 );
-   EXPECT_EQ( o.m_f, 9 );
-   EXPECT_EQ( o.m_d, 10 );
-   EXPECT_EQ( o.m_hello, "hello2" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
