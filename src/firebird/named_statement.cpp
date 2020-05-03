@@ -161,6 +161,8 @@ std::string named_statement::wrap_sql( const std::string     & sql,
                                        const db::name_list_t & parameters,
                                        int32_t               * type )
 {
+   static constexpr char suffix[] = "_helper";
+
    int32_t index[ parameters.size() ];
 
    stmt_meta_t meta = { index, nullptr, nullptr, 0 };
@@ -195,7 +197,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
          if ( i )
             wrapped_sql << ", ";
 
-         wrapped_sql << meta.out->sqlvar[ i ].sqlname << " "
+         wrapped_sql << meta.out->sqlvar[ i ].sqlname << suffix << " "
                      << data_type( meta.out->sqlvar[ i ] );
       }
       wrapped_sql << " )" << std::endl;
@@ -217,7 +219,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
          if ( i )
             wrapped_sql << ", ";
 
-         wrapped_sql << ":" << meta.out->sqlvar[ i ].sqlname;
+         wrapped_sql << ":" << meta.out->sqlvar[ i ].sqlname << suffix;
       }
 
       if ( meta.type == isc_info_sql_stmt_select )

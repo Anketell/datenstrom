@@ -92,7 +92,7 @@ TEST( firebird_parameter, should_retrieve_named )
 
    {
       ds::db::statement results_test = test_db( "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello "
-                                                "FROM Object WHERE hello = :helloin", { "helloin" } );
+                                                "FROM Object WHERE hello = :hello", { "hello" } );
 
       for ( auto row : results_test( "hello2" ) )
       {
