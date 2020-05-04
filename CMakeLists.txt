@@ -3,6 +3,7 @@ project( datenstrom )
 
 enable_testing()
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Coverage")

@@ -1,7 +1,12 @@
 set( TARGET ds_mysql )
 set( MODULE ds_mysql_module )
 
-include_directories( BEFORE, "/usr/include/mysql" )
+# include_directories( BEFORE, "/usr/include/mysql" )
+
+find_package(MySQL REQUIRED)
+
+include_directories( BEFORE, ${MTSQL_INCLUDE_DIR} )
+
 
 add_library( ${TARGET} SHARED
    connection.cpp
@@ -14,7 +19,7 @@ add_library( ${TARGET} SHARED
 
 target_link_libraries( ${TARGET}
    ds_db
-   mariadb
+   ${MSQL_LIB}
 )
 
 add_library( ${MODULE} MODULE
