@@ -49,16 +49,9 @@ m_sql( sql )
 
 void parameter_enum::iterator::next_parameter( void )
 {
-   if ( m_parameter.from >= m_sql.length() )
-   {
-      m_parameter.from = std::numeric_limits< uint32_t >::max();
-      m_parameter.len  = 0;
-      return;
-   }
-
    m_parameter.from += m_parameter.len;
 
-   while ( m_sql.c_str()[ m_parameter.from ] != ':' )
+   while ( m_parameter.from < m_sql.length() && m_sql[ m_parameter.from ] != ':' )
       m_parameter.from++;
 
    if ( m_parameter.from >= m_sql.length() )
