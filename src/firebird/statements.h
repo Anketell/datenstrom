@@ -72,7 +72,9 @@ public:
 
 //-----------------------------------------------------------------------------
 
-template<> class std::iterator_traits< ds::firebird::statements::iterator >
+namespace std
+{
+template<> class iterator_traits< ds::firebird::statements::iterator >
 {
 public:
 
@@ -82,7 +84,7 @@ public:
    typedef value_type &                       reference;
    typedef forward_iterator_tag               iterator_category;
 };
-
+}
 
 //-----------------------------------------------------------------------------
 

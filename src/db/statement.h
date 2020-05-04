@@ -130,7 +130,9 @@ public:
 
 //-----------------------------------------------------------------------------
 
-template<> class std::iterator_traits< ds::db::statement::iterator >
+namespace std
+{
+template<> class iterator_traits< ds::db::statement::iterator >
 {
 public:
 
@@ -140,6 +142,7 @@ public:
    typedef value_type &         reference;
    typedef forward_iterator_tag iterator_category;
 };
+}
 
 //-----------------------------------------------------------------------------
 
