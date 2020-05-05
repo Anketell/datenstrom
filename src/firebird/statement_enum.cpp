@@ -49,18 +49,23 @@ m_statements( statements )
 
 bool statement_enum::iterator::is_term_statement( void )
 {
-   if ( strncasecmp( "set ", m_statement.from, 4 ) != 0 )
+   static constexpr char set[]    = "set ";
+   static constexpr char term[]   = "term ";
+   static constexpr int  set_len  = sizeof( set )  - 1;
+   static constexpr int  term_len = sizeof( term ) - 1;
+
+   if ( strncasecmp( set, m_statement.from, set_len ) != 0 )
       return false;
 
-   const char * p = m_statement.from + 4;
+   const char * p = m_statement.from + set_len;
 
    while ( std::isspace( *p ) )
       p++;
 
-   if ( strncasecmp( "term ", p, 5 ) != 0 )
+   if ( strncasecmp( term, p, term_len ) != 0 )
       return false;
 
-   p += 5;
+   p += term_len;
 
    while ( std::isspace( *p ) )
       p++;
@@ -73,7 +78,8 @@ bool statement_enum::iterator::is_term_statement( void )
    if ( !len )
       return false;
 
-   m_statement.len += m_separator.length();
+   if ( *( m_statement.from + m_statement.len ) )
+      m_statement.len += m_separator.length();
 
    m_separator.assign( p, len );
 

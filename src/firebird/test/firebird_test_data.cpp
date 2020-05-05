@@ -7,9 +7,7 @@
 const char * create =
  R"(
 
-SET TERM !! ;
-
-CREATE GENERATOR ObjectID!!
+CREATE GENERATOR ObjectID;
 
 CREATE TABLE Object (
    i8 SMALLINT,
@@ -23,9 +21,7 @@ CREATE TABLE Object (
    f FLOAT,
    d DOUBLE PRECISION,
    hello VARCHAR( 10 ),
-   id INTEGER NOT NULL PRIMARY KEY )!!
-
-SET TERM ; !!
+   id INTEGER NOT NULL PRIMARY KEY );
 
 )";
 
@@ -71,13 +67,17 @@ const char * named    = "INSERT INTO Object VALUES ( :i8, :i16, :i32, :i64, "
 const char * batch =
 R"(
 
+SET TERM !! ;
+
 CREATE TABLE T1 (
    field INTEGER
-);
+)!!
 
 CREATE TABLE T2 (
    field INTEGER
-);
+)!!
+
+SET TERM ; !!
 
 )";
 
