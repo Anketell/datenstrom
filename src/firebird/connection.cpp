@@ -3,7 +3,7 @@
 #include <firebird/connection.h>
 #include <firebird/positional_statement.h>
 #include <firebird/named_statement.h>
-#include <firebird/statements.h>
+#include <firebird/statement_enum.h>
 #include <firebird/types.h>
 #include <firebird/error.h>
 #include <firebird/guard.h>
@@ -261,7 +261,7 @@ void connection::execute_batch( const std::string & query )
    {
       ISC_STATUS status[ status_vector_length ];
 
-      for ( auto & statement : statements( query ) )
+      for ( auto & statement : statement_enum( query ) )
       {
          isc_dsql_execute_immediate( status,
                                      &m_transactional.db_handle,

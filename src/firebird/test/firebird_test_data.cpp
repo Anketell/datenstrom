@@ -7,7 +7,9 @@
 const char * create =
  R"(
 
-CREATE GENERATOR ObjectID;
+SET TERM !! ;
+
+CREATE GENERATOR ObjectID!!
 
 CREATE TABLE Object (
    i8 SMALLINT,
@@ -21,7 +23,9 @@ CREATE TABLE Object (
    f FLOAT,
    d DOUBLE PRECISION,
    hello VARCHAR( 10 ),
-   id INTEGER NOT NULL PRIMARY KEY )
+   id INTEGER NOT NULL PRIMARY KEY )!!
+
+SET TERM ; !!
 
 )";
 

@@ -19,13 +19,13 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-class statements
+class statement_enum
 {
    const std::string & m_statements;
 
 public:
 
-   statements( const std::string & statements );
+   statement_enum( const std::string & statements );
 
    class iterator
    {
@@ -41,8 +41,10 @@ public:
 
       const std::string & m_statements;
       statement_t         m_statement;
+      std::string         m_separator = ";";
 
-      void next_line( void );
+      bool is_term_statement( void );
+      void next_statement( void );
 
    public:
 
@@ -74,12 +76,14 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::firebird::statements::iterator >
+template<> class iterator_traits< ds::firebird::statement_enum
+::iterator >
 {
 public:
 
    typedef int32_t                            difference_type;
-   typedef ds::firebird::statements::iterator value_type;
+   typedef ds::firebird::statement_enum
+   ::iterator value_type;
    typedef value_type *                       pointer;
    typedef value_type &                       reference;
    typedef forward_iterator_tag               iterator_category;
