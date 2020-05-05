@@ -1,11 +1,9 @@
 set( TARGET ds_mysql )
 set( MODULE ds_mysql_module )
 
-# include_directories( BEFORE, "/usr/include/mysql" )
-
 find_package(MySQL REQUIRED)
 
-include_directories( BEFORE, ${MTSQL_INCLUDE_DIR} )
+include_directories( BEFORE, ${MYSQL_INCLUDE_DIR} )
 
 
 add_library( ${TARGET} SHARED
@@ -19,7 +17,7 @@ add_library( ${TARGET} SHARED
 
 target_link_libraries( ${TARGET}
    ds_db
-   ${MSQL_LIB}
+   ${MYSQL_LIBRARY}
 )
 
 add_library( ${MODULE} MODULE
