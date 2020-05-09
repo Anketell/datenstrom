@@ -29,7 +29,6 @@ statement_base( transactional )
    int32_t type;
 
    std::string wrapped_sql = wrap_sql( sql, parameters, &type );
-//   std::cout << wrapped_sql;
    prepare( wrapped_sql );
 
    m_stmt->type = type;
@@ -161,7 +160,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
                                        const db::name_list_t & parameters,
                                        int32_t               * type )
 {
-   static constexpr char suffix[] = "_helper";
+   static constexpr char suffix[] = "_ds_helper";
 
    int32_t index[ parameters.size() ];
 
@@ -239,8 +238,6 @@ std::string named_statement::wrap_sql( const std::string     & sql,
 
    return wrapped_sql.str();
 }
-
-//-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
 

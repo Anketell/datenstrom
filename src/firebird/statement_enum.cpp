@@ -93,7 +93,7 @@ void statement_enum::iterator::next_statement( void )
    if ( !m_statement.from )
       return;
 
-   for ( ;; )
+   do
    {
       m_statement.from += m_statement.len;
 
@@ -127,10 +127,8 @@ void statement_enum::iterator::next_statement( void )
          to++;
 
       m_statement.len = to - m_statement.from;
-
-      if ( !is_term_statement() )
-         break;
    }
+   while ( is_term_statement() );
 }
 
 //-----------------------------------------------------------------------------
