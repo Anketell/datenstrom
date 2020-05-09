@@ -18,10 +18,47 @@ namespace mysql
 result::result( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
+   configure_buffer();
+
    if ( step() )
       m_count = mysql_stmt_field_count( m_stmt->stmt );
-   else
-      m_count = 0;
+}
+
+//-----------------------------------------------------------------------------
+
+result::~result( void )
+{
+   if ( m_res )
+      mysql_free_result( m_res );
+}
+
+//-----------------------------------------------------------------------------
+
+void result::configure_buffer( void )
+{
+   m_res = mysql_stmt_result_metadata( m_stmt->stmt );
+
+   if ( !m_res )
+      return;
+
+   m_count      = mysql_num_fields( m_res );
+   m_fields     = mysql_fetch_fields( m_res );
+   m_mysql_bind = new MYSQL_BIND[ m_count ];
+   m_bind_info  = new bind_info_t[ m_count ];
+
+   for ( int i = 0; i < m_count; i++ )
+   {
+      MYSQL_BIND  & bind( m_mysql_bind[ i ] );
+      bind_info_t & info( m_bind_info[ i ] );
+      MYSQL_FIELD & field( m_fields[ i ] );
+
+      bind.length  = &info.length;
+      bind.is_null = &info.is_null;
+      bind.error   = &info.error;
+
+      bind.buffer_type   = field.type;
+      bind.buffer_length = field.length;
+   }
 }
 
 //-----------------------------------------------------------------------------

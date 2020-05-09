@@ -57,9 +57,11 @@ void positional_statement::prepare_parameter_binding( void )
 
       for ( int i = 0; i < m_bind_count; i++ )
       {
-         m_mysql_bind[ i ].length  = &m_bind_info[ i ].length;
-         m_mysql_bind[ i ].is_null = &m_bind_info[ i ].is_null;
-         m_mysql_bind[ i ].error   = &m_bind_info[ i ].error;
+         MYSQL_BIND & param( m_mysql_bind[ i ] );
+
+         param.length  = &m_bind_info[ i ].length;
+         param.is_null = &m_bind_info[ i ].is_null;
+         param.error   = &m_bind_info[ i ].error;
       }
    }
 }

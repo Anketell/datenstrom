@@ -23,8 +23,14 @@ namespace mysql
 class result : public db::result::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
-   int                       m_count;
+   MYSQL_RES               * m_res        = nullptr;
+   MYSQL_FIELD             * m_fields     = nullptr;
+   MYSQL_BIND              * m_mysql_bind = nullptr;
+   bind_info_t             * m_bind_info  = nullptr;
+   int                       m_count      = 0;
    bool                      m_valid;
+
+   void configure_buffer( void );
 
    void get_column( int              index,
                     enum_field_types type,
@@ -35,6 +41,7 @@ class result : public db::result::impl
 public:
 
    result( std::shared_ptr< stmt_t > stmt );
+   virtual ~result( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;
