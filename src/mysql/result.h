@@ -23,11 +23,6 @@ namespace mysql
 class result : public db::result::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
-   MYSQL_RES               * m_res        = nullptr;
-   MYSQL_FIELD             * m_fields     = nullptr;
-   MYSQL_BIND              * m_mysql_bind = nullptr;
-   bind_info_t             * m_bind_info  = nullptr;
-   int                       m_count      = 0;
    bool                      m_valid;
 
    void configure_buffer( void );
@@ -38,10 +33,12 @@ class result : public db::result::impl
                     size_t           length,
                     int              is_unsigned = 0 );
 
+   template< typename BI > BI get_big_int( int index );
+   template< typename I > I get_integer( int index );
+
 public:
 
    result( std::shared_ptr< stmt_t > stmt );
-   virtual ~result( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

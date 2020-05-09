@@ -19,9 +19,21 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
+struct bind_info_t
+{
+   unsigned long length;
+   my_bool       is_null;
+   my_bool       error;
+};
+
+//-----------------------------------------------------------------------------
+
 struct stmt_t
 {
-   MYSQL_STMT * stmt = nullptr;
+   MYSQL_STMT  * stmt       = nullptr;
+   MYSQL_BIND  * mysql_bind = nullptr;
+   bind_info_t * bind_info  = nullptr;
+   int           count      = 0;
 
    ~stmt_t( void )
    {
@@ -30,15 +42,6 @@ struct stmt_t
 
       stmt = nullptr;
    }
-};
-
-//-----------------------------------------------------------------------------
-
-struct bind_info_t
-{
-   unsigned long length;
-   my_bool       is_null;
-   my_bool       error;
 };
 
 //-----------------------------------------------------------------------------

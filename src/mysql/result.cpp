@@ -2,6 +2,7 @@
 
 #include <mysql/result.h>
 #include <mysql/error.h>
+#include <limits>
 
 //-----------------------------------------------------------------------------
 
@@ -19,57 +20,81 @@ result::result( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    configure_buffer();
-
+/*
+   if ( m_stmt->count )
+      step();
+   else
+      m_valid = false;
+*/
    if ( step() )
-      m_count = mysql_stmt_field_count( m_stmt->stmt );
-}
+      m_stmt->count = mysql_stmt_field_count( m_stmt->stmt );
 
-//-----------------------------------------------------------------------------
-
-result::~result( void )
-{
-   if ( m_res )
-      mysql_free_result( m_res );
 }
 
 //-----------------------------------------------------------------------------
 
 void result::configure_buffer( void )
 {
-   m_res = mysql_stmt_result_metadata( m_stmt->stmt );
-
-   if ( !m_res )
+   if ( m_stmt->mysql_bind )
       return;
 
-   m_count      = mysql_num_fields( m_res );
-   m_fields     = mysql_fetch_fields( m_res );
-   m_mysql_bind = new MYSQL_BIND[ m_count ];
-   m_bind_info  = new bind_info_t[ m_count ];
+   MYSQL_RES * res = mysql_stmt_result_metadata( m_stmt->stmt );
 
-   for ( int i = 0; i < m_count; i++ )
+   if ( !res )
+      return;
+
+   MYSQL_FIELD * fields = mysql_fetch_fields( res );
+
+   m_stmt->count      = mysql_num_fields( res );
+   m_stmt->mysql_bind = new MYSQL_BIND[ m_stmt->count ];
+   m_stmt->bind_info  = new bind_info_t[ m_stmt->count ];
+
+   for ( int i = 0; i < m_stmt->count; i++ )
    {
-      MYSQL_BIND  & bind( m_mysql_bind[ i ] );
-      bind_info_t & info( m_bind_info[ i ] );
-      MYSQL_FIELD & field( m_fields[ i ] );
+      MYSQL_BIND  & bind( m_stmt->mysql_bind[ i ] );
+      bind_info_t & info( m_stmt->bind_info[ i ] );
+      MYSQL_FIELD & field( fields[ i ] );
 
-      bind.length  = &info.length;
-      bind.is_null = &info.is_null;
-      bind.error   = &info.error;
+      bind.length      = &info.length;
+      bind.is_null     = &info.is_null;
+      bind.error       = &info.error;
+      bind.is_unsigned = false;
 
-      switch ( field.type )
+      bind.buffer_type = field.type;
+
+      switch ( bind.buffer_type )
       {
          case MYSQL_TYPE_TINY:
+            bind.buffer_length = sizeof( int8_t );
+            bind.buffer        = new int64_t;
+            break;
+
          case MYSQL_TYPE_SHORT:
+            bind.buffer_length = sizeof( int16_t );
+            bind.buffer        = new int64_t;
+            break;
+
+         case MYSQL_TYPE_INT24:
+            bind.buffer_length = sizeof( int16_t ) + sizeof( int8_t );
+            bind.buffer        = new int64_t;
+            break;
+
          case MYSQL_TYPE_LONG:
+            bind.buffer_length = sizeof( int32_t );
+            bind.buffer        = new int64_t;
+            break;
+
          case MYSQL_TYPE_LONGLONG:
-            bind.buffer_type   = MYSQL_TYPE_LONGLONG;
             bind.buffer_length = sizeof( int64_t );
             bind.buffer        = new int64_t;
             break;
 
          case MYSQL_TYPE_FLOAT:
+            bind.buffer_length = sizeof( float );
+            bind.buffer        = new double;
+            break;
+
          case MYSQL_TYPE_DOUBLE:
-            bind.buffer_type   = MYSQL_TYPE_DOUBLE;
             bind.buffer_length = sizeof( double );
             bind.buffer        = new double;
             break;
@@ -77,19 +102,25 @@ void result::configure_buffer( void )
          default:
             bind.buffer_type   = field.type;
             bind.buffer_length = field.length;
-            bind.buffer        = new char[ bind.buffer_length ] ;
+            bind.buffer        = new char[ bind.buffer_length ];
             break;
       }
+
+      info.length  = bind.buffer_length;
+      info.is_null = false;
+      info.error   = false;
    }
 
-   mysql_stmt_bind_result( m_stmt->stmt, m_mysql_bind );
+   mysql_free_result( res );
+
+   mysql_stmt_bind_result( m_stmt->stmt, m_stmt->mysql_bind );
 }
 
 //-----------------------------------------------------------------------------
 
 int result::column_count( void ) const
 {
-   return m_count;
+   return m_stmt->count;
 }
 
 //-----------------------------------------------------------------------------
@@ -113,17 +144,59 @@ int result::rows_affected( void ) const
    if ( !m_stmt )
       throw_error( operation, "Bad result" );
 
-   MYSQL_BIND column = {};
+   MYSQL_BIND  column = {};
+   bind_info_t info   = { length, 0, 0 };
 
    column.buffer_type   = type;
    column.buffer_length = length;
    column.buffer        = p;
    column.is_unsigned   = is_unsigned;
-   column.is_null       = 0;
+   column.length        = &info.length;
+   column.is_null       = &info.is_null;
+   column.error         = &info.error;
 
    int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
    if ( rc )
       throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
+}
+
+//-----------------------------------------------------------------------------
+
+static constexpr char operation[] = "MySQL get result column";
+
+//-----------------------------------------------------------------------------
+
+template< typename BI > BI result::get_big_int( int index )
+{
+   typedef std::numeric_limits< BI > limits;
+
+   MYSQL_BIND & column( m_stmt->mysql_bind[ index ] );
+
+   BI bi;
+
+   get_column( index, MYSQL_TYPE_LONGLONG, &bi, sizeof( bi ), !limits::is_signed );
+
+
+   return bi;
+}
+
+//-----------------------------------------------------------------------------
+
+template< typename I > I result::get_integer( int index )
+{
+   typedef std::numeric_limits< I > limits;
+
+   typedef typename std::conditional< limits::is_signed, int64_t, uint64_t >::type BI;
+
+   BI bi = get_big_int< BI >( index );
+
+   if ( bi < limits::lowest() || bi > limits::max() )
+   {
+      std::string message( "Integer data value beyond " );
+      throw_error( operation, ( message + typeid( I ).name() ).c_str() );
+   }
+
+   return static_cast< I >( bi );
 }
 
 //-----------------------------------------------------------------------------
