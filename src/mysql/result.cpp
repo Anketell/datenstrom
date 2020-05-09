@@ -162,45 +162,6 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
-static constexpr char operation[] = "MySQL get result column";
-
-//-----------------------------------------------------------------------------
-
-template< typename BI > BI result::get_big_int( int index )
-{
-   typedef std::numeric_limits< BI > limits;
-
-   MYSQL_BIND & column( m_stmt->mysql_bind[ index ] );
-
-   BI bi;
-
-   get_column( index, MYSQL_TYPE_LONGLONG, &bi, sizeof( bi ), !limits::is_signed );
-
-
-   return bi;
-}
-
-//-----------------------------------------------------------------------------
-
-template< typename I > I result::get_integer( int index )
-{
-   typedef std::numeric_limits< I > limits;
-
-   typedef typename std::conditional< limits::is_signed, int64_t, uint64_t >::type BI;
-
-   BI bi = get_big_int< BI >( index );
-
-   if ( bi < limits::lowest() || bi > limits::max() )
-   {
-      std::string message( "Integer data value beyond " );
-      throw_error( operation, ( message + typeid( I ).name() ).c_str() );
-   }
-
-   return static_cast< I >( bi );
-}
-
-//-----------------------------------------------------------------------------
-
 void result::get_column( int index, int8_t & i )
 {
    get_column( index, MYSQL_TYPE_TINY, &i, sizeof( i ) );

@@ -33,9 +33,6 @@ class result : public db::result::impl
                     size_t           length,
                     int              is_unsigned = 0 );
 
-   template< typename BI > BI get_big_int( int index );
-   template< typename I > I get_integer( int index );
-
 public:
 
    result( std::shared_ptr< stmt_t > stmt );
