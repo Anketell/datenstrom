@@ -56,9 +56,33 @@ void result::configure_buffer( void )
       bind.is_null = &info.is_null;
       bind.error   = &info.error;
 
-      bind.buffer_type   = field.type;
-      bind.buffer_length = field.length;
+      switch ( field.type )
+      {
+         case MYSQL_TYPE_TINY:
+         case MYSQL_TYPE_SHORT:
+         case MYSQL_TYPE_LONG:
+         case MYSQL_TYPE_LONGLONG:
+            bind.buffer_type   = MYSQL_TYPE_LONGLONG;
+            bind.buffer_length = sizeof( int64_t );
+            bind.buffer        = new int64_t;
+            break;
+
+         case MYSQL_TYPE_FLOAT:
+         case MYSQL_TYPE_DOUBLE:
+            bind.buffer_type   = MYSQL_TYPE_DOUBLE;
+            bind.buffer_length = sizeof( double );
+            bind.buffer        = new double;
+            break;
+
+         default:
+            bind.buffer_type   = field.type;
+            bind.buffer_length = field.length;
+            bind.buffer        = new char[ bind.buffer_length ] ;
+            break;
+      }
    }
+
+   mysql_stmt_bind_result( m_stmt->stmt, m_mysql_bind );
 }
 
 //-----------------------------------------------------------------------------
