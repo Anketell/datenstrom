@@ -40,7 +40,14 @@ struct stmt_t
       if ( stmt )
          mysql_stmt_close( stmt );
 
-      stmt = nullptr;
+      if ( mysql_bind )
+      {
+         for ( int i = 0; i < count; i++ )
+            free( mysql_bind[ i ].buffer );
+
+         delete mysql_bind;
+         delete bind_info;
+      }
    }
 };
 

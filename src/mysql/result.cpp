@@ -20,15 +20,11 @@ result::result( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    configure_buffer();
-/*
+
    if ( m_stmt->count )
       step();
    else
       m_valid = false;
-*/
-   if ( step() )
-      m_stmt->count = mysql_stmt_field_count( m_stmt->stmt );
-
 }
 
 //-----------------------------------------------------------------------------
@@ -66,49 +62,49 @@ void result::configure_buffer( void )
       {
          case MYSQL_TYPE_TINY:
             bind.buffer_length = sizeof( int8_t );
-            bind.buffer        = new int64_t;
+            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_SHORT:
             bind.buffer_length = sizeof( int16_t );
-            bind.buffer        = new int64_t;
+            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_INT24:
             bind.buffer_length = sizeof( int16_t ) + sizeof( int8_t );
-            bind.buffer        = new int64_t;
+            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_LONG:
             bind.buffer_length = sizeof( int32_t );
-            bind.buffer        = new int64_t;
+            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_LONGLONG:
             bind.buffer_length = sizeof( int64_t );
-            bind.buffer        = new int64_t;
+            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_FLOAT:
             bind.buffer_length = sizeof( float );
-            bind.buffer        = new double;
+            bind.buffer        = malloc( sizeof( float ) );
             break;
 
          case MYSQL_TYPE_DOUBLE:
             bind.buffer_length = sizeof( double );
-            bind.buffer        = new double;
+            bind.buffer        = malloc( sizeof( double ) );
             break;
 
          default:
             bind.buffer_type   = field.type;
             bind.buffer_length = field.length;
-            bind.buffer        = new char[ bind.buffer_length ];
+            bind.buffer        = malloc( bind.buffer_length );
             break;
       }
 
       info.length  = bind.buffer_length;
-      info.is_null = false;
-      info.error   = false;
+      info.is_null = 0;
+      info.error   = 0;
    }
 
    mysql_free_result( res );
@@ -232,18 +228,19 @@ void result::get_column( int index, std::string & s )
    if ( !m_stmt )
       throw_error( operation, "Bad result" );
 
-   unsigned long length = 0;
-
-   MYSQL_BIND column = { 0 };
+   MYSQL_BIND  column = { 0 };
+   bind_info_t info   = { 0 };
 
    column.buffer_type   = MYSQL_TYPE_VAR_STRING;
    column.buffer_length = 0;
-   column.length        = &length;
+   column.length        = &info.length;
+   column.is_null       = &info.is_null;
+   column.error         = &info.error;
 
    int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
    if ( rc == 0 )
    {
-      s.resize( length );
+      s.resize( info.length );
 
       column.buffer_length = s.length();
       column.buffer        = const_cast< char * >( s.data() );
