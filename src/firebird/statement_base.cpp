@@ -147,8 +147,12 @@ void statement_base::allocate_xsqlvars( XSQLDA * xsqlda )
    for ( int i = 0; i < xsqlda->sqld; i++ )
    {
       XSQLVAR & var( xsqlda->sqlvar[ i ] );
-      var.sqldata = reinterpret_cast< char * >( malloc( var.sqllen ) );
-      var.sqlind  = new int16_t( 0 );
+
+      uint16_t len = ( var.sqltype & ~1 ) == SQL_VARYING ? var.sqllen + 2 : var.sqllen;
+
+      var.sqldata = reinterpret_cast< char * >( malloc( len ) );
+      var.sqlind  = reinterpret_cast< int16_t * >( malloc( sizeof( int16_t ) ) );
+      *var.sqlind = 0;
    }
 }
 

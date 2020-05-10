@@ -114,6 +114,19 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
+void result::check_column( int index )
+{
+   static constexpr char operation[] = "Firebird result column check";
+
+   if ( !m_stmt )
+      throw_error( operation, "Bad result" );
+
+   if ( index >= column_count() )
+      throw_error( operation, "No column available" );
+}
+
+//-----------------------------------------------------------------------------
+
 static constexpr char operation[] = "Firebird get result column";
 
 //-----------------------------------------------------------------------------
@@ -124,6 +137,8 @@ template< typename BI > BI result::get_big_int( int index )
 
    typedef typename std::conditional< limits::is_signed, int16_t, uint16_t >::type SI;
    typedef typename std::conditional< limits::is_signed, int32_t, uint32_t >::type LI;
+
+   check_column( index );
 
    BI bi;
 
@@ -229,6 +244,8 @@ void result::get_column( int index, uint64_t & u )
 
 void result::get_column( int index, double & d )
 {
+   check_column( index );
+
    XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
 
    switch ( column.sqltype & ~1 )
@@ -262,6 +279,8 @@ void result::get_column( int index, double & d )
 
 void result::get_column( int index, std::string & s )
 {
+   check_column( index );
+
    XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
 
    switch ( column.sqltype & ~1 )

@@ -27,6 +27,8 @@ class result : public db::result::impl
    std::unique_ptr< ds::db::transaction > m_transaction;
    bool                                   m_valid;
 
+   void check_column( int index );
+
    template< typename BI > BI get_big_int( int index );
    template< typename I > I get_integer( int index );
 

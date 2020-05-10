@@ -45,8 +45,8 @@ struct stmt_t
          for ( int i = 0; i < count; i++ )
             free( mysql_bind[ i ].buffer );
 
-         delete mysql_bind;
-         delete bind_info;
+         delete [] mysql_bind;
+         delete [] bind_info;
       }
    }
 };
