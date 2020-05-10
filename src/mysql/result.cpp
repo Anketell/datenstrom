@@ -62,45 +62,38 @@ void result::configure_buffer( void )
       {
          case MYSQL_TYPE_TINY:
             bind.buffer_length = sizeof( int8_t );
-            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_SHORT:
             bind.buffer_length = sizeof( int16_t );
-            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_INT24:
             bind.buffer_length = sizeof( int16_t ) + sizeof( int8_t );
-            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_LONG:
             bind.buffer_length = sizeof( int32_t );
-            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_LONGLONG:
             bind.buffer_length = sizeof( int64_t );
-            bind.buffer        = malloc( sizeof( int64_t ) );
             break;
 
          case MYSQL_TYPE_FLOAT:
             bind.buffer_length = sizeof( float );
-            bind.buffer        = malloc( sizeof( float ) );
             break;
 
          case MYSQL_TYPE_DOUBLE:
             bind.buffer_length = sizeof( double );
-            bind.buffer        = malloc( sizeof( double ) );
             break;
 
          default:
-            bind.buffer_type   = field.type;
             bind.buffer_length = field.length;
-            bind.buffer        = malloc( bind.buffer_length );
             break;
       }
+
+      bind.buffer = malloc( bind.buffer_length );
 
       info.length  = bind.buffer_length;
       info.is_null = 0;
@@ -140,8 +133,8 @@ int result::rows_affected( void ) const
    if ( !m_stmt )
       throw_error( operation, "Bad result" );
 
-   MYSQL_BIND  column = {};
-   bind_info_t info   = { length, 0, 0 };
+   MYSQL_BIND  column = { 0 };
+   bind_info_t info   = { 0 };
 
    column.buffer_type   = type;
    column.buffer_length = length;
