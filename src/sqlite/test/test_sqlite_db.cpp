@@ -104,7 +104,8 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
       EXPECT_NO_THROW( insert_test.execute() );
 
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
-                                   << 1 << 1 << 1 << 1 << 1 << "hello2" );
+                                   << 1 << 1 << 1 << 1 << 1
+                                   << "hello2" << "2020-05-14" );
       EXPECT_NO_THROW( insert_test.execute() );
    }
 
