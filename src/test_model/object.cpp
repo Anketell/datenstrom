@@ -17,7 +17,8 @@ bool Object::operator==( const Object & o ) const
           m_u64   == o.m_u64   &&
           fabs( m_f - o.m_f ) < 0.001 &&
           m_d     == o.m_d     &&
-          m_hello == o.m_hello;
+          m_hello == o.m_hello &&
+          m_date  == o.m_date;
 }
 
 //-----------------------------------------------------------------------------

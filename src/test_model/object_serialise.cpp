@@ -18,7 +18,8 @@ ds::istream & operator >> ( ds::istream & in, Object & o )
              >> o.m_u64
              >> o.m_f
              >> o.m_d
-             >> o.m_hello;
+             >> o.m_hello
+             >> o.m_date;
 }
 
 //-----------------------------------------------------------------------------
@@ -35,7 +36,8 @@ ds::ostream & operator << ( ds::ostream & out, const Object & o )
               << o.m_u64
               << o.m_f
               << o.m_d
-              << o.m_hello;
+              << o.m_hello
+              << o.m_date;
 }
 
 //-----------------------------------------------------------------------------
@@ -52,7 +54,8 @@ std::ostream & operator << ( std::ostream & out, const Object & o )
               << "o.m_u64   = " << o.m_u64            << std::endl
               << "o.m_f     = " << o.m_f              << std::endl
               << "o.m_d     = " << o.m_d              << std::endl
-              << "o.m_hello = " << o.m_hello          << std::endl;
+              << "o.m_hello = " << o.m_hello          << std::endl
+              << "o.m_date  = " << o.m_date           << std::endl;
 }
 
 //-----------------------------------------------------------------------------

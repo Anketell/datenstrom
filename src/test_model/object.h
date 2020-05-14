@@ -22,6 +22,7 @@ struct Object
    double      m_f;
    double      m_d;
    std::string m_hello;
+   std::string m_date;
 
    bool operator==( const Object & o ) const;
 };
