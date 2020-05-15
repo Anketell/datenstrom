@@ -88,6 +88,10 @@ void result::configure_buffer( void )
             bind.buffer_length = sizeof( double );
             break;
 
+         case MYSQL_TYPE_DATE:
+            bind.buffer_length = 40;
+            break;
+
          default:
             bind.buffer_length = field.length;
             break;
