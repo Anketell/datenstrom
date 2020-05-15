@@ -372,6 +372,10 @@ void statement_base::set_string( int index, uint32_t len, const char * data )
          memcpy( param.sqldata + sizeof( int16_t ), data, len );
          break;
 
+      case SQL_TYPE_DATE:
+         *reinterpret_cast< ISC_DATE * >( param.sqldata ) = encode_sql_date( data );
+         break;
+
       default:
          throw_error( bind_parameter, "Not character type" );
    }

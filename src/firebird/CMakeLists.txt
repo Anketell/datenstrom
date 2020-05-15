@@ -12,6 +12,7 @@ add_library( ${TARGET} SHARED
    named_statement.cpp
    result.cpp
    error.cpp
+   types.cpp
 )
 
 target_link_libraries( ${TARGET}

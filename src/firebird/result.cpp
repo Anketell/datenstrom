@@ -293,6 +293,10 @@ void result::get_column( int index, std::string & s )
          s.assign( column.sqldata + 2, *reinterpret_cast< uint16_t * >( column.sqldata ) );
          break;
 
+      case SQL_TYPE_DATE:
+         s = decode_sql_date( *reinterpret_cast< ISC_DATE * >( column.sqldata ) );
+         break;
+
       default:
          throw_error( operation, "Not character type" );
    }

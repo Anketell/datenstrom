@@ -147,6 +147,10 @@ std::string data_type( const XSQLVAR & xsqlvar )
          type = "BIGINT";
          break;
 
+      case SQL_TYPE_DATE:
+         type = "DATE";
+         break;
+
       default:
          throw_error( "Firebird statement preparation", "Unsupported data type" );
    }
