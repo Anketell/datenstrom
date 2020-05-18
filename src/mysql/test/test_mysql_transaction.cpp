@@ -16,10 +16,7 @@ TEST( mysql_transaction, should_commit_on_destruction )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -55,10 +52,7 @@ TEST( mysql_transaction, should_rollback_on_exception )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    try
    {
@@ -107,10 +101,7 @@ TEST( mysql_savepoint, should_release_on_destruction )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -148,10 +139,7 @@ TEST( mysql_savepoint, should_rollback_on_exception )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );

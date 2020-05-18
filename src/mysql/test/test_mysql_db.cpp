@@ -60,8 +60,7 @@ TEST( mysql_db_statement, should_execute_simple )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   ds::db::statement create_test = test_db( create );
-   EXPECT_NO_THROW( create_test.execute() );
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -91,10 +90,7 @@ TEST( mysql_db_statement, should_return_execute_value )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -123,10 +119,7 @@ TEST( mysql_db_statement, should_execute_query_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -136,7 +129,7 @@ TEST( mysql_db_statement, should_execute_query_parameters )
 
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
                                    << 1 << 1 << 1 << 1 << 1
-                                   << "hello2" << "2020-05-14" );
+                                   << "hello2" << "2020-05-14" << 3825 * 86400 );
       EXPECT_NO_THROW( insert_test.execute() );
    }
 
@@ -153,10 +146,7 @@ TEST( mysql_db_statement, should_fail_query_too_many_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -192,10 +182,7 @@ TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -216,10 +203,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -260,14 +244,8 @@ TEST( mysql_db_statement, should_fail_bad_query )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test1 = test_db( create );
-      ds::db::statement create_test2 = test_db( create );
-
-      EXPECT_NO_THROW( create_test1.execute() );
-
-      EXPECT_THROW( create_test2.execute(), std::runtime_error );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_THROW( test_db.execute_batch( create ), std::runtime_error );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -282,10 +260,7 @@ TEST( mysql_db_result, should_provide_query_data )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -335,10 +310,7 @@ TEST( mysql_db_result, should_provide_rows_affected )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -367,7 +339,7 @@ TEST( mysql_db_result, should_return_query_data_not_available )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   ds::db::statement create_test = test_db( create );
+   ds::db::statement create_test = test_db( simple_create );
 
    EXPECT_EQ( ds::db::result(), create_test.result() );
 
@@ -384,10 +356,7 @@ TEST( mysql_db_result, should_fail_query_wrong_column_count )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
