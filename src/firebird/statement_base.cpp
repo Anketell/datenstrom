@@ -267,6 +267,10 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
          set_parameter( index, static_cast< double >( bi ) );
          break;
 
+      case SQL_TYPE_DATE:
+         *reinterpret_cast< ISC_DATE * >( param.sqldata ) = encode_sql_unixdate( bi );
+         break;
+
       default:
          throw_error( bind_parameter, "Not numeric type" );
    }

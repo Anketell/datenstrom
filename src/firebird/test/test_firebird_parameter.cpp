@@ -9,6 +9,7 @@
 
 const ds::db::name_list_t named_parameters =
 {
+   "unix_date",
    "date_",
    "string",
    "double_",
@@ -38,7 +39,8 @@ TEST( firebird_parameter, should_insert_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << 4825 * 86400
+                                   << "2020-05-14"
                                    << "hello2"
                                    << double( 10.0 )
                                    << float( 9 )
@@ -74,7 +76,8 @@ TEST( firebird_parameter, should_retrieve_named )
 
       for ( int i = 0; i < 2; i++ )
       {
-         EXPECT_NO_THROW( insert_test << "2020-05-14"
+         EXPECT_NO_THROW( insert_test << 4825 * 86400
+                                      << "2020-05-14"
                                       << "hello2"
                                       << 10
                                       <<  9
@@ -94,7 +97,7 @@ TEST( firebird_parameter, should_retrieve_named )
    Object o;
 
    {
-      ds::db::statement results_test = test_db( "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt "
+      ds::db::statement results_test = test_db( "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, dt2 "
                                                 "FROM Object WHERE hello = :hello", { "hello" } );
 
       for ( auto row : results_test( "hello2" ) )

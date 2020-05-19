@@ -131,7 +131,7 @@ TEST( firebird_db_statement, should_execute_query_parameters )
 
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
                                    << 1 << 1 << 1 << 1 << 1
-                                   << "hello2" << "2020-05-14" );
+                                   << "hello2" << "2020-05-14" << 4825 * 86400 );
       EXPECT_NO_THROW( insert_test.execute() );
    }
 

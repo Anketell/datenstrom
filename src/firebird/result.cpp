@@ -158,6 +158,10 @@ template< typename BI > BI result::get_big_int( int index )
          bi = *reinterpret_cast< BI * >( column.sqldata );
          break;
 
+      case SQL_TYPE_DATE:
+         bi = decode_sql_unixdate( *reinterpret_cast< ISC_DATE * >( column.sqldata ) );
+         break;
+
       default:
          throw_error( operation, "Not integer type" );
    }
