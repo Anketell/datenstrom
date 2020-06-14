@@ -1,7 +1,7 @@
-set( TARGET ds_sqlite )
-set( MODULE ds_sqlite_module )
+set( TARGET ds_sqlite_module )
 
-add_library( ${TARGET} SHARED
+add_library( ${TARGET} MODULE
+   enroll.cpp
    connection.cpp
    statement.cpp
    result.cpp
@@ -11,14 +11,6 @@ add_library( ${TARGET} SHARED
 target_link_libraries( ${TARGET}
    ds_db
    sqlite3
-)
-
-add_library( ${MODULE} MODULE
-   enroll.cpp
-)
-
-target_link_libraries( ${MODULE}
-   ds_sqlite
 )
 
 add_subdirectory( test )

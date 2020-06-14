@@ -1,7 +1,7 @@
-set( TARGET ds_firebird )
-set( MODULE ds_firebird_module )
+set( TARGET ds_firebird_module )
 
 add_library( ${TARGET} SHARED
+   enroll.cpp
    transactional.cpp
    connection.cpp
    statement_enum.cpp
@@ -18,14 +18,6 @@ add_library( ${TARGET} SHARED
 target_link_libraries( ${TARGET}
    ds_db
    fbclient
-)
-
-add_library( ${MODULE} MODULE
-   enroll.cpp
-)
-
-target_link_libraries( ${MODULE}
-    ds_firebird
 )
 
 add_subdirectory( test )

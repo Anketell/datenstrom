@@ -76,8 +76,7 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::firebird::statement_enum
-::iterator >
+template<> class iterator_traits< ds::firebird::statement_enum::iterator >
 {
 public:
 
