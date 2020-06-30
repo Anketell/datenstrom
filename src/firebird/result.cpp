@@ -58,6 +58,29 @@ int result::column_count( void ) const
 
 //-----------------------------------------------------------------------------
 
+static int isc_info_mask( int32_t type )
+{
+   int mask;
+
+   switch ( type )
+   {
+      case isc_info_sql_stmt_select:
+      case isc_info_sql_stmt_insert:
+      case isc_info_sql_stmt_update:
+      case isc_info_sql_stmt_delete:
+         mask = 1 << ( type + isc_info_req_select_count - isc_info_sql_stmt_select );
+         break;
+
+      default:
+         mask = 0x0f << isc_info_req_select_count;
+         break;
+   }
+
+   return mask;
+}
+
+//-----------------------------------------------------------------------------
+
 int result::rows_affected( void ) const
 {
    static constexpr char operation[] = "Firebird rows affected";
@@ -78,25 +101,10 @@ int result::rows_affected( void ) const
 
    char * p = res;
 
-   int mask;
-
-   switch ( m_stmt->type )
+    if ( *p == isc_info_sql_records )
    {
-      case isc_info_sql_stmt_select:
-      case isc_info_sql_stmt_insert:
-      case isc_info_sql_stmt_update:
-      case isc_info_sql_stmt_delete:
-         mask = 1 << ( m_stmt->type + isc_info_req_select_count
-                                    - isc_info_sql_stmt_select );
-         break;
+      int mask = isc_info_mask( m_stmt->type );
 
-      default:
-         mask = 0x0f << isc_info_req_select_count;
-         break;
-   }
-
-   if ( *p == isc_info_sql_records )
-   {
       p += 3;
       while ( *p != isc_info_end )
       {
