@@ -66,14 +66,7 @@ void connection::construct_dpb( const std::string & username,
 
 connection::~connection( void )
 {
-   if ( m_transactional.db_handle )
-   {
-      ISC_STATUS status[ status_vector_length ];
-
-      isc_detach_database( status, &m_transactional.db_handle );
-
-      check_status( "Firebird detach", status );
-   }
+   detach();
 }
 
 //-----------------------------------------------------------------------------
@@ -234,7 +227,7 @@ bool connection::drop( const std::string & name )
 
    isc_drop_database( status, &m_transactional.db_handle );
 
-   check_status( "Firebird use database", status );
+   check_status( "Firebird drop database", status );
 
    return true;
 }
