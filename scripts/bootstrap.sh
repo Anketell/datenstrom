@@ -9,11 +9,21 @@ echo ${root}
 mkdir -p ${root}/debug
 
 pushd ${root}/debug >/dev/null
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_BUILD_TYPE=Debug \
+      -DDS_CSV=YES \
+      -DDS_DB=YES \
+      -DDS_FIREBIRD=YES \
+      -DDS_MYSQL=YES \
+      -DDS_SQLITE=YES ..
 popd
 
 mkdir -p ${root}/coverage
 
 pushd ${root}/coverage >/dev/null
-cmake -DCMAKE_BUILD_TYPE=Coverage ..
+cmake -DCMAKE_BUILD_TYPE=Coverage \
+      -DDS_CSV=YES \
+      -DDS_DB=YES \
+      -DDS_FIREBIRD=YES \
+      -DDS_MYSQL=YES \
+      -DDS_SQLITE=YES ..
 popd >/dev/null

@@ -1,9 +1,27 @@
 include_directories( BEFORE, ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_subdirectory( ds )
-add_subdirectory( csv )
-add_subdirectory( db )
-add_subdirectory( firebird )
-add_subdirectory( sqlite )
-add_subdirectory( mysql )
+
+if ( DS_CSV )
+   add_subdirectory( csv )
+endif()
+
+if ( DS_DB )
+
+   add_subdirectory( db )
+
+   if ( DS_FIREBIRD )
+      add_subdirectory( firebird )
+   endif()
+
+   if ( DS_MYSQL )
+      add_subdirectory( mysql )
+   endif()
+
+   if(DS_SQLITE)
+      add_subdirectory( sqlite )
+   endif()
+
+endif()
+
 add_subdirectory( test_model )
