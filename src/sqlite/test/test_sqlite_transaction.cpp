@@ -16,10 +16,7 @@ TEST( sqlite_transaction, should_commit_on_destruction )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -27,10 +24,7 @@ TEST( sqlite_transaction, should_commit_on_destruction )
       ds::db::transaction transaction( test_db );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -55,10 +49,7 @@ TEST( sqlite_transaction, should_rollback_on_exception )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    try
    {
@@ -67,10 +58,7 @@ TEST( sqlite_transaction, should_rollback_on_exception )
       ds::db::transaction transaction( test_db );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
 
       throw 0;
    }
@@ -100,10 +88,7 @@ TEST( sqlite_transaction, should_fail_nested )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -127,10 +112,7 @@ TEST( sqlite_transaction, should_fail_lone_commit )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    EXPECT_THROW( test_db.commit_transaction(), std::runtime_error );
 
@@ -147,10 +129,7 @@ TEST( sqlite_transaction, should_fail_lone_rollback )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    EXPECT_THROW( test_db.rollback_transaction(), std::runtime_error );
 
@@ -167,10 +146,7 @@ TEST( sqlite_savepoint, should_release_on_destruction )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -181,8 +157,7 @@ TEST( sqlite_savepoint, should_release_on_destruction )
       {
          ds::db::savepoint save( test_db, "save" );
 
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
       }
    }
 
@@ -208,10 +183,7 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -224,8 +196,7 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
          {
             ds::db::savepoint save( test_db, "save" );
 
-            EXPECT_NO_THROW( insert_test << o );
-            EXPECT_NO_THROW( insert_test.execute() );
+            EXPECT_NO_THROW( insert_test << o << ds::endr );
 
             throw 0;
          }

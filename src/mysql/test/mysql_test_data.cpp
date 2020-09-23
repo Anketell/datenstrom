@@ -22,7 +22,6 @@ CREATE TABLE Object (
                       d DOUBLE,
                       hello VARCHAR( 10 ),
                       dt DATE,
-                      dt2 DATE,
                       id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY )
 )";
 
@@ -44,7 +43,6 @@ CREATE TABLE Object (
                       d DOUBLE,
                       hello VARCHAR( 10 ),
                       dt DATE,
-                      dt2 DATE,
                       id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY )
 )";
 
@@ -55,17 +53,24 @@ const char * test_con_str = "mysql://127.0.0.1:3306?username=root";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ?, ?, "
+                                                        "NULL )";
+const char * insert_alt   = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
+                                                        "?, ?, ?, ?, ?, "
                                                         "FROM_UNIXTIME( ? ), NULL )";
-const char * result   = "SELECT * FROM Object WHERE hello = ?";
-const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, "
-                               "UNIX_TIMESTAMP( dt2 ) "
-                          "FROM Object ORDER BY hello";
+
+const char * result      = "SELECT * FROM Object WHERE hello = ?";
+const char * results     = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt "
+                           "FROM Object ORDER BY hello";
+const char * results_alt = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, "
+                               "UNIX_TIMESTAMP( dt ) "
+                           "FROM Object ORDER BY hello";
+
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
 const char * del_rows = "DELETE FROM Object";
 const char * named    = "INSERT INTO Object VALUES ( @i8, @i16, @i32, @i64, "
-                                                "@u8, @u16, @u32, @u64, "
-                                                "@float, @double, @string, "
-                                                "@date, FROM_UNIXTIME( @unix_date) , NULL )";
+                                                    "@u8, @u16, @u32, @u64, "
+                                                    "@float, @double, @string, "
+                                                    "@date, NULL )";
 
 const char * batch =
 R"(
@@ -84,8 +89,16 @@ CREATE TABLE T2 (
 
 Object data[] =
 {
-   { -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78, "Hello1", "2020-05-13", 3825 * 86400 },
-   { -16, -32, -64, -128, 16, 32, 64, 128, 24.68, 113.56, "Hello2", "2020-05-14", 4825 * 86400 }
+   { -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78, "Hello1", "2020-05-13" },
+   { -16, -32, -64, -128, 16, 32, 64, 128, 24.68, 113.56, "Hello2", "2020-05-14" }
+};
+
+//-----------------------------------------------------------------------------
+
+Object_alt data_alt[] =
+{
+   { -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78, "Hello1", 3825 * 86400 },
+   { -16, -32, -64, -128, 16, 32, 64, 128, 24.68, 113.56, "Hello2", 4825 * 86400 }
 };
 
 //-----------------------------------------------------------------------------

@@ -5,6 +5,25 @@
    "version": "0.2.0",
    "configurations": [
       {
+         "name": "test_ds_csv",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/debug/src/csv/test/test_ds_csv",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}",
+         "environment": [],
+         "externalConsole": true,
+         "MIMode": "gdb",
+         "setupCommands": [
+             {
+                 "description": "Enable pretty-printing for gdb",
+                 "text": "-enable-pretty-printing",
+                 "ignoreFailures": true
+             }
+         ]
+      },
+      {
          "name": "test_ds_db",
          "type": "cppdbg",
          "request": "launch",
@@ -43,25 +62,6 @@
          ]
       },
       {
-         "name": "test_ds_mysql",
-         "type": "cppdbg",
-         "request": "launch",
-         "program": "${workspaceFolder}/debug/src/mysql/test/test_ds_mysql",
-         "args": [],
-         "stopAtEntry": false,
-         "cwd": "${workspaceFolder}",
-         "environment": [],
-         "externalConsole": true,
-         "MIMode": "gdb",
-         "setupCommands": [
-             {
-                 "description": "Enable pretty-printing for gdb",
-                 "text": "-enable-pretty-printing",
-                 "ignoreFailures": true
-             }
-         ]
-      },
-      {
          "name": "test_ds_firebird",
          "type": "cppdbg",
          "request": "launch",
@@ -79,7 +79,25 @@
                  "ignoreFailures": true
              }
          ]
+      },
+      {
+         "name": "test_ds_mysql",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/debug/src/mysql/test/test_ds_mysql",
+         "args": [],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}",
+         "environment": [],
+         "externalConsole": true,
+         "MIMode": "gdb",
+         "setupCommands": [
+             {
+                 "description": "Enable pretty-printing for gdb",
+                 "text": "-enable-pretty-printing",
+                 "ignoreFailures": true
+             }
+         ]
       }
-
    ]
 }

@@ -24,10 +24,7 @@ TEST( mysql_transaction, should_commit_on_destruction )
       ds::db::transaction transaction( test_db );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -61,10 +58,7 @@ TEST( mysql_transaction, should_rollback_on_exception )
       ds::db::transaction transaction( test_db );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
 
       ds::db::statement results_test = test_db( num_rows );
 
@@ -112,8 +106,7 @@ TEST( mysql_savepoint, should_release_on_destruction )
       {
          ds::db::savepoint save( test_db, "save" );
 
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
       }
    }
 
@@ -152,8 +145,7 @@ TEST( mysql_savepoint, should_rollback_on_exception )
          {
             ds::db::savepoint save( test_db, "save" );
 
-            EXPECT_NO_THROW( insert_test << o );
-            EXPECT_NO_THROW( insert_test.execute() );
+            EXPECT_NO_THROW( insert_test << o << ds::endr );
 
             ds::db::statement results_test = test_db( num_rows );
 

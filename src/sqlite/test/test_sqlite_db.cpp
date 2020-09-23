@@ -59,10 +59,7 @@ TEST( sqlite_db_statement, should_execute_simple )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -92,21 +89,17 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
-      EXPECT_NO_THROW( insert_test << data[ 0 ] );
-      EXPECT_NO_THROW( insert_test.execute() );
+      EXPECT_NO_THROW( insert_test << data[ 0 ] << ds::endr );
 
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
                                    << 1 << 1 << 1 << 1 << 1
-                                   << "hello2" << "2020-05-14" << 3825 );
-      EXPECT_NO_THROW( insert_test.execute() );
+                                   << "hello2" << "2020-05-14"
+                                   << ds::endr );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -122,10 +115,7 @@ TEST( sqlite_db_statement, should_return_execute_value )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -154,10 +144,7 @@ TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -193,10 +180,7 @@ TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -217,19 +201,13 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -261,19 +239,13 @@ TEST( sqlite_db_result, should_provide_query_data )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o <<ds::endr );
    }
 
    {
@@ -287,17 +259,48 @@ TEST( sqlite_db_result, should_provide_query_data )
       {
          Object o_db = {};
 
-         if ( row )
-         {
-            EXPECT_NO_THROW( row >> o_db );
-         }
+         row >> o_db >> ds::endr;
 
          EXPECT_EQ( o, o_db );
+      }
+   }
 
-         if ( row )
-         {
-            row.step();
-         }
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( sqlite_db_result, should_support_unixtime )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data_alt )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      ds::db::result row;
+
+      EXPECT_NO_THROW( row = results_test.result() );
+
+      for ( auto o : data_alt )
+      {
+         Object_alt o_db = {};
+
+         row >> o_db >> ds::endr;
+
+         EXPECT_EQ( o, o_db );
       }
    }
 
@@ -314,10 +317,7 @@ TEST( sqlite_db_result, should_provide_rows_affected )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
@@ -367,19 +367,13 @@ TEST( sqlite_db_result, should_fail_query_wrong_column_count )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -421,19 +415,13 @@ TEST( sqlite_db_result, should_fail_query_wrong_column_type )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {

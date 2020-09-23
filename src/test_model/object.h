@@ -23,9 +23,28 @@ struct Object
    double      m_d;
    std::string m_hello;
    std::string m_date;
-   int64_t     m_unix_date;
 
    bool operator==( const Object & o ) const;
+};
+
+//-----------------------------------------------------------------------------
+
+struct Object_alt
+{
+   int8_t      m_i8;
+   int16_t     m_i16;
+   int32_t     m_i32;
+   int64_t     m_i64;
+   uint8_t     m_u8;
+   uint16_t    m_u16;
+   uint32_t    m_u32;
+   uint64_t    m_u64;
+   double      m_f;
+   double      m_d;
+   std::string m_hello;
+   int64_t     m_unix_date;
+
+   bool operator==( const Object_alt & o ) const;
 };
 
 //-----------------------------------------------------------------------------

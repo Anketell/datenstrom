@@ -124,13 +124,12 @@ TEST( mysql_db_statement, should_execute_query_parameters )
    {
       ds::db::statement insert_test = test_db( insert );
 
-      EXPECT_NO_THROW( insert_test << data[ 0 ] );
-      EXPECT_NO_THROW( insert_test.execute() );
+      EXPECT_NO_THROW( insert_test << data[ 0 ] << ds::endr );
 
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
                                    << 1 << 1 << 1 << 1 << 1
-                                   << "hello2" << "2020-05-14" << 3825 * 86400 );
-      EXPECT_NO_THROW( insert_test.execute() );
+                                   << "hello2" << "2020-05-14"
+                                   << ds::endr );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -209,10 +208,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -224,6 +220,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
 
       for ( auto o : data )
       {
+
          if ( result )
          {
             result.step();
@@ -266,10 +263,7 @@ TEST( mysql_db_result, should_provide_query_data )
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -283,17 +277,48 @@ TEST( mysql_db_result, should_provide_query_data )
       {
          Object o_db = {};
 
-         if ( result )
-         {
-            EXPECT_NO_THROW( result >> o_db );
-         }
+         result >> o_db >> ds::endr;
 
          EXPECT_EQ( o, o_db );
+      }
+   }
 
-         if ( result )
-         {
-            result.step();
-         }
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( mysql_db_result, should_support_unixtime )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert_alt );
+
+      for ( auto o : data_alt )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement results_test = test_db( results_alt );
+
+      ds::db::result result;
+
+      EXPECT_NO_THROW( result = results_test.result() );
+
+      for ( auto o : data_alt )
+      {
+         Object_alt o_db = {};
+
+         result >> o_db >> ds::endr;
+
+         EXPECT_EQ( o, o_db );
       }
    }
 
@@ -362,10 +387,7 @@ TEST( mysql_db_result, should_fail_query_wrong_column_count )
       ds::db::statement insert_test = test_db( insert );
 
       for ( auto o : data )
-      {
-         EXPECT_NO_THROW( insert_test << o );
-         EXPECT_NO_THROW( insert_test.execute() );
-      }
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {

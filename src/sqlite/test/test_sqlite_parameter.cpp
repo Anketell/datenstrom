@@ -10,7 +10,6 @@
 
 const ds::db::name_list_t named_parameters =
 {
-   "unix_date",
    "date",
    "string",
    "double",
@@ -35,16 +34,12 @@ TEST( sqlite_parameter, should_insert_named )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << 4825
-                                   << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << "2020-05-14"
                                    << "hello2"
                                    << 10
                                    <<  9
@@ -55,9 +50,8 @@ TEST( sqlite_parameter, should_insert_named )
                                    <<  4
                                    <<  3
                                    <<  2
-                                   <<  1 );
-
-      EXPECT_NO_THROW( insert_test.execute() );
+                                   <<  1
+                                   << ds::endr );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -73,16 +67,12 @@ TEST( sqlite_parameter, should_retrieve_named )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   {
-      ds::db::statement create_test = test_db( create );
-      EXPECT_NO_THROW( create_test.execute() );
-   }
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << 4825
-                                   << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << "2020-05-14"
                                    << "hello2"
                                    << 10
                                    <<  9
@@ -93,9 +83,9 @@ TEST( sqlite_parameter, should_retrieve_named )
                                    <<  4
                                    <<  3
                                    <<  2
-                                   <<  1 );
-
-      EXPECT_NO_THROW( insert_test.execute() );
+                                   <<  1
+                                   << ds::endr );
+;
    }
 
    Object o;
@@ -120,7 +110,6 @@ TEST( sqlite_parameter, should_retrieve_named )
    EXPECT_EQ( o.m_d, 10 );
    EXPECT_EQ( o.m_hello, "hello2" );
    EXPECT_EQ( o.m_date, "2020-05-14" );
-   EXPECT_EQ( o.m_unix_date, 4825 );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
