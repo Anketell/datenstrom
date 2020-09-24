@@ -230,7 +230,7 @@ TEST( sqlite_savepoint, should_fail_no_name  )
 
    {
       ds::db::transaction txn( test_db );
-      EXPECT_THROW( test_db.savepoint( "" ) ,  std::runtime_error );
+      EXPECT_THROW( test_db.savepoint( "" ),  std::runtime_error );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );

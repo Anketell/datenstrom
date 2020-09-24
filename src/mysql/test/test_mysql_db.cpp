@@ -219,13 +219,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
       EXPECT_NO_THROW( result = results_test.result() );
 
       for ( auto o : data )
-      {
-
-         if ( result )
-         {
-            result.step();
-         }
-      }
+         result >> ds::endr;
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -401,18 +395,12 @@ TEST( mysql_db_result, should_fail_query_wrong_column_count )
       {
          Object o_db = {};
 
-         if ( row )
-         {
-            EXPECT_NO_THROW( row >> o_db );
-            EXPECT_THROW( row >> o_db, std::runtime_error );
-         }
+         EXPECT_NO_THROW( row >> o_db );
+         EXPECT_THROW( row >> o_db, std::runtime_error );
 
          EXPECT_EQ( o, o_db );
 
-         if ( row )
-         {
-            row.step();
-         }
+         row >> ds::endr;
       }
    }
 

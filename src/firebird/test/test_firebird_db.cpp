@@ -220,12 +220,7 @@ TEST( firebird_db_statement, should_provide_query_result_row )
       EXPECT_NO_THROW( result = results_test.result() );
 
       for ( auto o : data )
-      {
-         if ( result )
-         {
-            result.step();
-         }
-      }
+         result >> ds::endr;
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -407,10 +402,7 @@ TEST( firebird_db_result, should_fail_query_wrong_column_count )
 
          EXPECT_EQ( o, o_db );
 
-         if ( row )
-         {
-            row.step();
-         }
+         row >> ds::endr;
       }
    }
 
