@@ -30,8 +30,7 @@ TEST( firebird_transaction, should_commit_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 2, count );
    }
@@ -62,8 +61,7 @@ TEST( firebird_transaction, should_rollback_on_exception )
 
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 2, count );
 
@@ -113,8 +111,7 @@ TEST( firebird_savepoint, should_release_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 2, count );
    }
@@ -149,8 +146,7 @@ TEST( firebird_savepoint, should_rollback_on_exception )
 
             ds::db::statement results_test = test_db( num_rows );
 
-            int count;
-            *results_test.begin() >> count;
+            int count = results_test.execute();
 
             EXPECT_EQ( 1, count );
 

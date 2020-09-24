@@ -30,8 +30,7 @@ TEST( sqlite_transaction, should_commit_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 2, count );
    }
@@ -69,8 +68,7 @@ TEST( sqlite_transaction, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 0, count );
    }
@@ -95,8 +93,7 @@ TEST( sqlite_transaction, should_fail_nested )
 
       ds::db::transaction transaction1( test_db );
 
-      EXPECT_THROW( ds::db::transaction transaction2( test_db ),
-                    std::runtime_error );
+      EXPECT_THROW( ds::db::transaction transaction2( test_db ), std::runtime_error );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -164,8 +161,7 @@ TEST( sqlite_savepoint, should_release_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 2, count );
    }
@@ -209,8 +205,7 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 0, count );
    }
