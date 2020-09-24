@@ -74,8 +74,7 @@ TEST( firebird_transaction, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 0, count );
    }
@@ -161,8 +160,7 @@ TEST( firebird_savepoint, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count;
-      *results_test.begin() >> count;
+      int count = results_test.execute();
 
       EXPECT_EQ( 0, count );
    }
