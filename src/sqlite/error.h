@@ -19,8 +19,8 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error );
-void throw_error( const std::string & operation, int rc );
+[[noreturn]] void throw_error( const std::string & operation, const char * error );
+[[noreturn]] void throw_error( const std::string & operation, int rc );
 
 //-----------------------------------------------------------------------------
 

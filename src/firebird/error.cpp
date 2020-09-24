@@ -15,7 +15,7 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error )
+[[noreturn]] void throw_error( const std::string & operation, const char * error )
 {
    throw std::runtime_error( operation + ": " + error );
 }

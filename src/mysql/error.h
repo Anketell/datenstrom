@@ -19,7 +19,7 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-void throw_error( std::string msg, const std::string & error );
+[[noreturn]] void throw_error( std::string msg, const std::string & error );
 
 //-----------------------------------------------------------------------------
 

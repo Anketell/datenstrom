@@ -3,7 +3,7 @@
 #include <sqlite/statement.h>
 #include <sqlite/result.h>
 #include <sqlite/error.h>
-#include <assert.h>
+#include <cassert>
 
 //-----------------------------------------------------------------------------
 

@@ -20,7 +20,7 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error );
+[[noreturn]] void throw_error( const std::string & operation, const char * error );
 void check_status( const std::string & operation, const ISC_STATUS * status );
 
 //-----------------------------------------------------------------------------

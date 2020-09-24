@@ -4,7 +4,7 @@
 #include <sqlite/statement.h>
 #include <sqlite/error.h>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 

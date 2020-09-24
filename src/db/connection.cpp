@@ -4,7 +4,7 @@
 #include <db/connect_string.h>
 #include <db/enroll.h>
 
-#include <string.h>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 

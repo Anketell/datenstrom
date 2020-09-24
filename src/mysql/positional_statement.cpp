@@ -7,8 +7,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <string.h>
-#include <assert.h>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 

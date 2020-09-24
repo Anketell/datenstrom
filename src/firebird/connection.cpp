@@ -10,8 +10,6 @@
 
 #include <db/transaction.h>
 
-#include <string.h>
-
 //-----------------------------------------------------------------------------
 
 namespace ds

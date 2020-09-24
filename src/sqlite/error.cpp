@@ -16,14 +16,14 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, const char * error )
+[[noreturn]] void throw_error( const std::string & operation, const char * error )
 {
    throw std::runtime_error(  operation + " failed: " + error );
 }
 
 //-----------------------------------------------------------------------------
 
-void throw_error( const std::string & operation, int rc )
+[[noreturn]] void throw_error( const std::string & operation, int rc )
 {
    throw_error( operation, sqlite3_errstr( rc ) );
 }

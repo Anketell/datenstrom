@@ -4,8 +4,8 @@
 #include <mysql/result.h>
 #include <mysql/error.h>
 #include <sstream>
-#include <string.h>
-#include <assert.h>
+#include <cstring>
+#include <cassert>
 
 //-----------------------------------------------------------------------------
 

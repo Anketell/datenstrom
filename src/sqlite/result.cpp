@@ -2,7 +2,6 @@
 
 #include <sqlite/result.h>
 #include <sqlite/error.h>
-#include <assert.h>
 
 //-----------------------------------------------------------------------------
 
