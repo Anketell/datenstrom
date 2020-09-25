@@ -1,6 +1,6 @@
 set( TARGET ds_firebird_module )
 
-add_library( ${TARGET} SHARED
+add_library( ${TARGET} MODULE
    enroll.cpp
    transactional.cpp
    connection.cpp

@@ -4,10 +4,9 @@ find_package(MySQL REQUIRED)
 
 include_directories( BEFORE, ${MYSQL_INCLUDE_DIR} )
 
-
-add_library( ${TARGET} SHARED
-enroll.cpp
-connection.cpp
+add_library( ${TARGET} MODULE
+   enroll.cpp
+   connection.cpp
    statement_base.cpp
    positional_statement.cpp
    named_statement.cpp
