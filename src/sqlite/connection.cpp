@@ -127,16 +127,6 @@ db::statement connection::operator()( const std::string     & query,
 
 //-----------------------------------------------------------------------------
 
-static const char * skipws( const char *& sql )
-{
-   while ( isspace( *sql ) )
-      sql++;
-
-   return sql;
-}
-
-//-----------------------------------------------------------------------------
-
 void connection::execute_batch( const std::string & query )
 {
    int rc = sqlite3_exec( m_db, query.c_str(), NULL, NULL, NULL );
