@@ -3,6 +3,7 @@
 #include <db/connection.h>
 #include <db/connect_string.h>
 #include <db/enroll.h>
+#include <util/env.h>
 
 #include <cstring>
 
@@ -27,21 +28,8 @@ void connection::init( void )
 {
    if ( !m_initialized )
    {
-      char * ds_module_path = getenv( "DS_MODULE_PATH" );
-
-      if ( ds_module_path )
-      {
-         char * path = strdup( ds_module_path );
-         char * save;
-
-         char * token = strtok_r( path, ":", &save );
-         while ( token )
-         {
-            enroll_directory( token );
-            token = strtok_r( nullptr, ":", &save );
-         }
-         free( path );
-      }
+      for ( auto path : util::env::dir_list( util::env::get( "DS_MODULE_PATH" ) ) )
+         enroll_directory( path );
 
       m_initialized = true;
    }

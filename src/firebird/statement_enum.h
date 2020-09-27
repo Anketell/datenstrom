@@ -80,12 +80,11 @@ template<> class iterator_traits< ds::firebird::statement_enum::iterator >
 {
 public:
 
-   typedef int32_t                            difference_type;
-   typedef ds::firebird::statement_enum
-   ::iterator value_type;
-   typedef value_type *                       pointer;
-   typedef value_type &                       reference;
-   typedef forward_iterator_tag               iterator_category;
+   typedef int32_t                                difference_type;
+   typedef ds::firebird::statement_enum::iterator value_type;
+   typedef value_type *                           pointer;
+   typedef value_type &                           reference;
+   typedef forward_iterator_tag                   iterator_category;
 };
 }
 

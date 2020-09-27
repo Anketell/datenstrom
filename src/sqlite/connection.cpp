@@ -3,8 +3,7 @@
 #include <sqlite/connection.h>
 #include <sqlite/statement.h>
 #include <sqlite/error.h>
-#include <unistd.h>
-#include <cstring>
+#include <util/filesys.h>
 
 //-----------------------------------------------------------------------------
 
@@ -67,10 +66,8 @@ void connection::create( const std::string & name )
 
    std::string path = get_full_path( name );
 
-   if ( access( path.c_str(), F_OK ) == 0 )
-   {
+   if ( util::filesys::exists( path.c_str() ) )
       throw_error( operation, ( path + " exists" ).c_str() );
-   }
 
    close();
 
@@ -108,12 +105,13 @@ bool connection::drop( const std::string & name )
 {
    close();
 
-   if ( unlink( get_full_path( name ).c_str() ) != 0 )
+   try
    {
-      if ( errno == ENOENT )
-         return false;
-
-      throw_error( "SQLite drop database", strerror( errno ) );
+      util::filesys::remove( get_full_path( name ).c_str() );
+   }
+   catch ( std::exception & e )
+   {
+      throw_error( "SQLite drop database", e.what() );
    }
 
    return true;
@@ -141,22 +139,9 @@ static const char * skipws( const char *& sql )
 
 void connection::execute_batch( const std::string & query )
 {
-   static constexpr char operation[] = "SQLite execute batch";
-
-   const char * sql = query.c_str();
-
-   while ( *skipws( sql ) )
-   {
-      std::shared_ptr< stmt_t > stmt = std::make_shared< stmt_t >();
-
-      int rc = sqlite3_prepare_v2( m_db, sql, -1, &stmt->stmt, &sql );
-      if ( rc )
-         throw_error( operation, rc );
-
-      rc = sqlite3_step( stmt->stmt );
-      if ( rc != SQLITE_DONE )
-         throw_error( operation, rc );
-   }
+   int rc = sqlite3_exec( m_db, query.c_str(), NULL, NULL, NULL );
+   if ( rc != SQLITE_OK )
+      throw_error( "SQLite execute batch", rc );
 }
 
 //-----------------------------------------------------------------------------

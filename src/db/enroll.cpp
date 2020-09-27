@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 
 #include <db/enroll.h>
-#include <dlfcn.h>
-#include <dirent.h>
+#include <util/filesys.h>
+#include <util/module.h>
 
 //-----------------------------------------------------------------------------
 
@@ -25,38 +25,25 @@ namespace db
 
 void enroll_module( factory & factory, const std::string & path )
 {
-   void * handle = dlopen( path.c_str(), RTLD_LAZY | RTLD_LOCAL );
+   util::module module( path );
 
-   if ( !handle )
+   if ( !module )
       return;
 
-   enroll_t enroll_fn = reinterpret_cast< enroll_t >( dlsym( handle, "enroll" ) );
+   enroll_t enroll_module = module.symbol< enroll_t >( "enroll" );
 
-   if ( enroll_fn )
-      enroll_fn( factory );
+   if ( enroll_module )
+      enroll_module( factory );
    else
-      dlclose( handle );
+      module.close();
 }
 
 //-----------------------------------------------------------------------------
 
 void enroll_directory( factory & factory, const std::string & path )
 {
-   dirent ** files;
-
-   int n = scandir( path.c_str(), &files, nullptr, versionsort );
-
-   if ( n == -1 )
-      throw std::runtime_error( "Directory scan failed" );
-
-   for ( int i = 0; i < n; i++ )
-   {
-      dirent * file = files[ i ];
-      enroll_module( factory, path + "/" + file->d_name );
-      free( file );
-   }
-
-   free( files );
+   for ( auto file_path : util::filesys::find( path, { util::module::PATTERN } ) )
+      enroll_module( factory, file_path );
 }
 
 //-----------------------------------------------------------------------------

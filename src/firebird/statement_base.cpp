@@ -6,7 +6,7 @@
 #include <firebird/error.h>
 #include <firebird/guard.h>
 
-#include <memory.h>
+#include <cstring>
 #include <limits>
 
 //-----------------------------------------------------------------------------

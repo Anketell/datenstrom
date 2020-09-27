@@ -2,7 +2,6 @@
 
 #include <firebird/result.h>
 #include <firebird/error.h>
-#include <memory.h>
 #include <limits>
 #include <type_traits>
 

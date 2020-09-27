@@ -18,7 +18,7 @@ if ( DS_DB )
       add_subdirectory( mysql )
    endif()
 
-   if(DS_SQLITE)
+   if ( DS_SQLITE )
       add_subdirectory( sqlite )
    endif()
 
