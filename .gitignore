@@ -1,5 +1,6 @@
 debug
 coverage
+build
 *.db
 *.csv
 .vscode/ipch

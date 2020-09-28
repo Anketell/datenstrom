@@ -4,15 +4,18 @@ project( datenstrom )
 enable_testing()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
-if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
-   include("cmake/coverage.cmake")
-endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+include(googletest)
 
-add_compile_options(-std=c++14)
+IF (UNIX)
+   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
-# include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/third-party" )
+   if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+      include("coverage")
+   endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
+
+   add_compile_options(-std=c++14)
+endif (UNIX)
 
 include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/src" )
 

@@ -1,5 +1,7 @@
 set( TARGET ds_db )
 
+set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
+
 add_library( ${TARGET} SHARED
    enroll.cpp
    connection.cpp

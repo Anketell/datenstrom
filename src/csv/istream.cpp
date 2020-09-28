@@ -171,7 +171,7 @@ ds::istream & istream::operator >> ( int8_t & i )
 
    skip_ws( m_in );
    m_in >> i16;
-   i = i16;
+   i = static_cast< int8_t >( i16 );
    skip_ws( m_in );
    get_field_separator( m_in );
 
@@ -222,7 +222,7 @@ ds::istream & istream::operator >> ( uint8_t & u )
 
    skip_ws( m_in );
    m_in >> u16;
-   u = u16;
+   u = static_cast< uint8_t >( u16 );
    skip_ws( m_in );
    get_field_separator( m_in );
 

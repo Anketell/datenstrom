@@ -7,7 +7,7 @@
 
 template< typename T > void get( ds::istream &in )
 {
-   T t;
+    T t = {};
    in >> t;
 }
 
@@ -15,7 +15,7 @@ template< typename T > void get( ds::istream &in )
 
 template< typename T > void put( ds::ostream &out )
 {
-   T t;
+   T t = {};
    out << t;
 }
 
@@ -23,14 +23,14 @@ template< typename T > void put( ds::ostream &out )
 
 struct test_istream : public ds::istream
 {
-   bool m_flag;
+   bool m_flag = false;
 };
 
 //-----------------------------------------------------------------------------
 
 struct test_ostream : public ds::ostream
 {
-   bool m_flag;
+   bool m_flag = false;
 };
 
 //-----------------------------------------------------------------------------

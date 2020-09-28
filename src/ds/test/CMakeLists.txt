@@ -8,8 +8,8 @@ add_executable( ${TARGET}
 
 target_link_libraries( ${TARGET}
    ds
-   gtest
-   gtest_main
+   gtestd
+   gtest_maind
 )
 
 add_test( ${TARGET} ${TARGET} )
