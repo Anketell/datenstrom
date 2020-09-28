@@ -21,10 +21,6 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-static my_bool not_null = 0;
-
-//-----------------------------------------------------------------------------
-
 positional_statement::positional_statement( MYSQL             & mysql,
                                             const std::string & sql ) :
 statement_base( mysql, sql )

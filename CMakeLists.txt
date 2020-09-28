@@ -5,9 +5,11 @@ enable_testing()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-include(googletest)
+if (WIN32)
+   include(googletest)
+endif (WIN32)
 
-IF (UNIX)
+if (UNIX)
    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")
 
    if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
