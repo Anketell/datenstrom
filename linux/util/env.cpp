@@ -23,7 +23,7 @@ std::string get( const char * name )
 
 //-----------------------------------------------------------------------------
 
-dir_list::dir_list( const stds::string & dirlist ) :
+dir_list::dir_list( const std::string & dirlist ) :
 m_dirlist( dirlist )
 {
 }
