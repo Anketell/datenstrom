@@ -1,13 +1,70 @@
 //-----------------------------------------------------------------------------
 
-#include <utils/filesys_find.h>
-#include <iostream>
-#include <string>
+#include <util/filesys.h>
+#include <stdexcept>
 
 //-----------------------------------------------------------------------------
 
 namespace util
 {
+
+//-----------------------------------------------------------------------------
+
+namespace filesys
+{
+
+//-----------------------------------------------------------------------------
+
+bool exists( const char * path )
+{
+   WIN32_FIND_DATA FindFileData;
+
+   HANDLE handle = FindFirstFile( path, &FindFileData );
+
+   if( handle == INVALID_HANDLE_VALUE )
+      return false;
+
+   FindClose( handle );
+
+   return true;
+}
+
+//-----------------------------------------------------------------------------
+
+static std::string error_message( int32_t error )
+{
+   std::string message;
+
+   char * buffer;
+
+   FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                  FORMAT_MESSAGE_FROM_SYSTEM     |
+                  FORMAT_MESSAGE_IGNORE_INSERTS,
+                  nullptr,
+                  error,
+                  MAKELANGID( LANG_NEUTRAL, SUBLANG_DEFAULT ),
+                  reinterpret_cast< LPTSTR >( & buffer ),
+                  0,
+                  nullptr );
+
+   message = buffer;
+
+   LocalFree( buffer );
+
+   return message;
+}
+
+//-----------------------------------------------------------------------------
+
+void remove( const char * path )
+{
+   if ( !DeleteFileA( path ) )
+   {
+      int32_t error = GetLastError();
+      if ( error != ERROR_FILE_NOT_FOUND )
+         throw std::runtime_error( error_message( error ) );
+   }
+}
 
 //-----------------------------------------------------------------------------
 
@@ -140,7 +197,7 @@ void find::iterator::next_file( void )
          if ( m_pattern_it == m_pattern_list.end() )
             break;
 
-         m_hfile = FindFirstFileA( (f ull_path() + "/" + *m_pattern_it).c_str(), &m_file_data );
+         m_hfile = FindFirstFileA( (full_path() + "/" + *m_pattern_it).c_str(), &m_file_data );
 
          if ( m_hfile != INVALID_HANDLE_VALUE )
             break;

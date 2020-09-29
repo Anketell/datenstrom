@@ -6,6 +6,10 @@ add_executable( ${TARGET}
    test_factory.cpp
 )
 
+if ( WIN32 )
+   add_dependencies( ${TARGET} googletest )
+endif ( WIN32 )
+
 target_link_libraries( ${TARGET}
    ds
    gtest

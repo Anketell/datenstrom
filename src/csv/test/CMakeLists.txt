@@ -4,6 +4,10 @@ add_executable( ${TARGET}
    test_csv.cpp
 )
 
+if ( WIN32 )
+   add_dependencies( ${TARGET} googletest )
+endif ( WIN32 )
+
 target_link_libraries( ${TARGET}
    ds
    ds_csv

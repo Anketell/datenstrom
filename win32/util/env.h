@@ -35,7 +35,7 @@ public:
    {
       std::string   m_dirlist;
       const char  * m_token = nullptr;
-      char        * m_save;
+      char        * m_save  = nullptr;
 
       void next_dir( void );
 
@@ -66,9 +66,7 @@ public:
 
 //-----------------------------------------------------------------------------
 
-namespace std
-{
-template<> class iterator_traits< util::env::dir_list::iterator >
+template<> class std::iterator_traits< util::env::dir_list::iterator >
 {
 public:
 
@@ -78,6 +76,5 @@ public:
    typedef value_type &                  reference;
    typedef forward_iterator_tag          iterator_category;
 };
-}
 
 //-----------------------------------------------------------------------------

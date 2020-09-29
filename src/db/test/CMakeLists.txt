@@ -8,6 +8,10 @@ add_executable( ${TARGET}
    test_connect_string.cpp
 )
 
+if ( WIN32 )
+   add_dependencies( ${TARGET} googletest )
+endif ( WIN32 )
+
 target_link_libraries( ${TARGET}
    ds
    ds_db

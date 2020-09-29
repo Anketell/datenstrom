@@ -6,5 +6,9 @@ add_library( ${TARGET} STATIC
    module.cpp
 )
 
+target_link_libraries( ${TARGET}
+   dl
+)
+
 set_property(TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON)
 

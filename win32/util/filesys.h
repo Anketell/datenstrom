@@ -7,6 +7,7 @@
 #include <vector>
 #include <deque>
 #include <cstdint>
+#include <string>
 #include <windows.h>
 
 //-----------------------------------------------------------------------------

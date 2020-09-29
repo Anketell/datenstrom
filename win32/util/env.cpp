@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 
 #include <util/env.h>
-#include <cstdlib>
 #include <cstring>
+#include <windows.h>
 
 //-----------------------------------------------------------------------------
 
@@ -18,12 +18,23 @@ namespace env
 
 std::string get( const char * name )
 {
-   return getenv( name );
+   char     * buffer = nullptr;
+   int32_t    size   = GetEnvironmentVariableA( name, buffer, 0 );
+
+   buffer = new char[ size ];
+
+   GetEnvironmentVariableA( name, buffer, size );
+
+   std::string message( buffer, size );
+
+   delete[] buffer;
+
+   return message;
 }
 
 //-----------------------------------------------------------------------------
 
-dir_list::dir_list( const stds::string & dirlist ) :
+dir_list::dir_list( const std::string & dirlist ) :
 m_dirlist( dirlist )
 {
 }
@@ -35,7 +46,7 @@ dir_list::iterator::iterator( const char * dirlist )
    if ( dirlist )
    {
       m_dirlist = dirlist;
-      m_token   = strtok_r( const_cast< char * >( m_dirlist.c_str() ), ":", &m_save );
+      m_token   = strtok_s( const_cast< char * >( m_dirlist.c_str() ), ";", &m_save );
    }
 }
 
@@ -43,7 +54,7 @@ dir_list::iterator::iterator( const char * dirlist )
 
 void dir_list::iterator::next_dir( void )
 {
-   m_token = strtok_r( nullptr, ":", &m_save );
+   m_token = strtok_s( nullptr, ";", &m_save );
 }
 
 //-----------------------------------------------------------------------------
