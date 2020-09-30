@@ -1,5 +1,11 @@
 set( TARGET ds_firebird_module )
 
+include( firebird )
+
+if ( WIN32 )
+   set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451 /wd6011 /wd6385 /wd4244 /wd4267" )
+endif ( WIN32 )
+
 add_library( ${TARGET} MODULE
    enroll.cpp
    transactional.cpp
@@ -17,6 +23,7 @@ add_library( ${TARGET} MODULE
 
 target_link_libraries( ${TARGET}
    ds_db
+   util
    fbclient
 )
 

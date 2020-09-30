@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <firebird/statement_enum.h>
-#include <cstring>
+#include <util/string.h>
 
 //-----------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ bool statement_enum::iterator::is_term_statement( void )
    static constexpr int  set_len  = sizeof( set )  - 1;
    static constexpr int  term_len = sizeof( term ) - 1;
 
-   if ( strncasecmp( set, m_statement.from, set_len ) != 0 )
+   if ( util::string::cmpignorecase( set, m_statement.from, set_len ) != 0 )
       return false;
 
    const char * p = m_statement.from + set_len;
@@ -62,7 +62,7 @@ bool statement_enum::iterator::is_term_statement( void )
    while ( std::isspace( *p ) )
       p++;
 
-   if ( strncasecmp( term, p, term_len ) != 0 )
+   if ( util::string::cmpignorecase( term, p, term_len ) != 0 )
       return false;
 
    p += term_len;

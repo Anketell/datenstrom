@@ -1,44 +1,33 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_POSITIONL_STATEMENT_H
-#define DS_FIREBIRD_POSITIONL_STATEMENT_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-#include <firebird/statement_base.h>
+#include <util/time.h>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
+namespace util
 {
 
 //-----------------------------------------------------------------------------
 
-namespace firebird
+namespace string
 {
 
 //-----------------------------------------------------------------------------
 
-struct transactional;
-
-//-----------------------------------------------------------------------------
-
-class positional_statement : public statement_base
+int gmtime( time_t * t,  struct tm * tm )
 {
-public:
-
-   positional_statement( transactional     & transactional,
-                         const std::string & sql );
-};
+    return gmtime_r( t, tm );
+}
 
 //-----------------------------------------------------------------------------
+
 
 }
 
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-#endif

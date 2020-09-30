@@ -7,6 +7,7 @@ set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" )
 
 if ( WIN32 )
    include( googletest )
+   include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 endif ( WIN32 )
 
 if ( UNIX )
@@ -19,15 +20,15 @@ if ( UNIX )
    add_compile_options(-std=c++14)
 endif ( UNIX )
 
-include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/src" )
+include_directories( "${CMAKE_SOURCE_DIR}/src" )
 
 if ( WIN32 )
-   include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/win32" )
+   include_directories( "${CMAKE_SOURCE_DIR}/win32" )
    add_subdirectory( win32 )
 endif ( WIN32 )
 
 if ( UNIX )
-   include_directories( "${CMAKE_CURRENT_SOURCE_DIR}/linux" )
+   include_directories( "${CMAKE_SOURCE_DIR}/linux" )
    add_subdirectory( linux )
 endif ( UNIX )
 

@@ -8,6 +8,10 @@ add_executable( ${TARGET}
    firebird_test_data.cpp
 )
 
+if ( WIN32 )
+   add_dependencies( ${TARGET} googletest )
+endif ( WIN32 )
+
 target_link_libraries( ${TARGET}
    ds_db
    test_model

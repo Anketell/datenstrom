@@ -1,44 +1,30 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_POSITIONL_STATEMENT_H
-#define DS_FIREBIRD_POSITIONL_STATEMENT_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-#include <firebird/statement_base.h>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
+namespace util
 {
 
 //-----------------------------------------------------------------------------
 
-namespace firebird
+namespace string
 {
 
 //-----------------------------------------------------------------------------
 
-struct transactional;
+int cmpignorecase( const char * s1, const char * s2, size_t n );
 
 //-----------------------------------------------------------------------------
 
-class positional_statement : public statement_base
-{
-public:
-
-   positional_statement( transactional     & transactional,
-                         const std::string & sql );
-};
-
-//-----------------------------------------------------------------------------
 
 }
 
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-#endif

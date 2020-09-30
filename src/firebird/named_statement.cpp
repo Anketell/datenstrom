@@ -166,7 +166,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
 {
    static constexpr char suffix[] = "_ds_helper";
 
-   int32_t index[ parameters.size() ];
+   int32_t * index = new int32_t[ parameters.size() ];
 
    stmt_meta_t meta = { index, nullptr, nullptr, 0 };
 
@@ -237,6 +237,8 @@ std::string named_statement::wrap_sql( const std::string     & sql,
 
    free( meta.in );
    free( meta.out );
+
+   delete [] index;
 
    *type = meta.type;
 

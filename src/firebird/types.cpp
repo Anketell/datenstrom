@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <firebird/types.h>
+#include <util/time.h>
 
 //-----------------------------------------------------------------------------
 
@@ -18,7 +19,7 @@ ISC_DATE encode_sql_date( const char * date )
 {
    struct tm tm = { 0 };
 
-   strptime( date, "%F", &tm );
+   util::time::parse_iso_8601( date, &tm );
 
    ISC_DATE isc_date;
 
@@ -33,7 +34,7 @@ ISC_DATE encode_sql_unixdate( time_t t )
 {
    struct tm tm = { 0 };
 
-   gmtime_r( &t, &tm );
+   util::time::gmtime( &t, &tm );
 
    ISC_DATE isc_date;
 
@@ -52,7 +53,7 @@ std::string decode_sql_date( ISC_DATE isc_date )
 
    char date[ 11 ];
 
-   strftime( date, sizeof( date ), "%F", &tm );
+   util::time::format_iso_8601( &tm, date );
 
    return date;
 }
@@ -65,7 +66,7 @@ time_t decode_sql_unixdate( ISC_DATE isc_date )
 
    isc_decode_sql_date( &isc_date, &tm );
 
-   return timegm( &tm );
+   return util::time::timegm( &tm );
 }
 
 //-----------------------------------------------------------------------------

@@ -12,6 +12,6 @@ REM "C:\Program Files\CMake\bin\cmake.exe" ..
 REM popd
 
 cd build
-"C:\Program Files\CMake\bin\cmake.exe" -DDS_CSV=YES -DDS_DB=YES ..
+"C:\Program Files\CMake\bin\cmake.exe" -DDS_CSV=YES -DDS_DB=YES -DDS_FIREBIRD=YES ..
 
 popd

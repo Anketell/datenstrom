@@ -50,13 +50,13 @@ void connection::construct_dpb( const std::string & username,
 
    m_username_offset = m_dpb.length();
 
-   m_dpb += username.length();
+   m_dpb += static_cast< int8_t >( username.length() );
    m_dpb += username;
    m_dpb += isc_dpb_password;
 
    m_password_offset = m_dpb.length();
 
-   m_dpb += password.length();
+   m_dpb += static_cast<int8_t>( password.length() );
    m_dpb += password;
 }
 
@@ -117,14 +117,14 @@ void connection::set_sql_dialect( int dialect )
    spb += isc_spb_version;
    spb += isc_spb_current_version;
    spb += isc_spb_user_name;
-   spb += m_dpb.substr( m_username_offset, m_dpb[ m_username_offset ] + 1 );
+   spb += m_dpb.substr( m_username_offset, static_cast< size_t >( m_dpb[ m_username_offset ] ) + 1 );
    spb += isc_spb_password;
-   spb += m_dpb.substr( m_password_offset, m_dpb[ m_password_offset ] + 1 );
+   spb += m_dpb.substr( m_password_offset, static_cast< size_t >( m_dpb[ m_password_offset ] ) + 1 );
 
    isc_service_attach( status, 0,
                        ( m_server + ":service_mgr" ).c_str(),
                        &svc_handle,
-                       spb.length(), spb.data() );
+                       static_cast< int16_t >( spb.length() ), spb.data() );
 
    check_status( "Firebird create database", status );
 
@@ -135,7 +135,7 @@ void connection::set_sql_dialect( int dialect )
    request += isc_action_svc_properties;
    request += isc_spb_dbname;
    request += local_path.length() & 0xff;
-   request += local_path.length() >> 8;
+   request += static_cast<int8_t>( local_path.length() >> 8 );
    request += local_path;
    request += isc_spb_prp_set_sql_dialect;
    request += dialect & 0xff;

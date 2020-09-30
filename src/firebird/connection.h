@@ -28,8 +28,8 @@ class connection : public db::impl
    std::string             m_attached_db;
    uint16_t                m_port;
    std::string             m_dpb;
-   int                     m_username_offset;
-   int                     m_password_offset;
+   size_t                  m_username_offset;
+   size_t                  m_password_offset;
 
    void construct_dpb( const std::string & username,
                        const std::string & password );
