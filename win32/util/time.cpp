@@ -24,7 +24,7 @@ void gmtime( const time_t * t,  struct tm * tm )
 
 time_t timegm( const struct tm * tm )
 {
-    return mktime( const_cast< struct tm * >( tm ) );
+    return _mkgmtime( const_cast< struct tm * >( tm ) );
 }
 
 //-----------------------------------------------------------------------------
