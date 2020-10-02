@@ -1,7 +1,7 @@
 function( dll_export )
    set( OPTIONS )
    set( ONE_VALUE_ARGS TARGET )
-   set( MULTI_VALUE_ARGS EXPORTS )
+   set( MULTI_VALUE_ARGS DATA FUNCTIONS )
 
    cmake_parse_arguments( ARGS "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN} )
 
@@ -9,19 +9,23 @@ function( dll_export )
       message( FATAL_ERROR "TARGET not defined" )
    endif( NOT DEFINED ARGS_TARGET )
 
-   if( NOT DEFINED ARGS_EXPORTS )
-   message( FATAL_ERROR "EXPORTS not defined" )
-   endif( NOT DEFINED ARGS_EXPORTS )
+   if( NOT DEFINED ARGS_FUNCTIONS AND NOT DEFINED ARGS_DATA )
+      message( FATAL_ERROR "Neither FUNCTIONS nor DATA are defined" )
+   endif( NOT DEFINED ARGS_FUNCTIONS AND NOT DEFINED ARGS_DATA )
 
    set( DEF_FILE "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}.def" )
 
    message( "Creating ${DEF_FILE}" )
 
-   foreach( EXPORT ${ARGS_EXPORTS} )
-      set( EXPORTS "${EXPORTS}   ${EXPORT}\n")
-   endforeach( EXPORT )
+   foreach( DATA ${ARGS_DATA} )
+      set( EXPORTS "${EXPORTS}   ${DATA}   DATA\n")
+   endforeach( DATA )
 
-   FILE( WRITE ${DEF_FILE} "LIBRAY ${TARGET}\nEXPORTS\n${EXPORTS}" )
+   foreach( FUNCTION ${ARGS_FUNCTIONS} )
+      set( EXPORTS "${EXPORTS}   ${FUNCTION}\n")
+   endforeach( FUNCTION )
+
+   FILE( WRITE ${DEF_FILE} "LIBRARY ${TARGET}\nEXPORTS\n${EXPORTS}" )
 
    add_custom_target( "${ARGS_TARGET}_def"
       DEPENDS ${DEF_FILE}

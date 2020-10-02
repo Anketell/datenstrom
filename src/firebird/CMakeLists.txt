@@ -32,7 +32,7 @@ target_link_libraries( ${TARGET}
 if( WIN32 )
 
    include( dll_funcs )
-   dll_export( TARGET "${TARGET}" EXPORTS "enroll" )
+   dll_export( TARGET "${TARGET}" FUNCTIONS "enroll" )
 
 endif( WIN32 )
 

@@ -1,6 +1,6 @@
 set( TARGET ds_db )
 
-set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
+# set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
 
 add_library( ${TARGET} SHARED
    enroll.cpp
@@ -15,5 +15,76 @@ target_link_libraries( ${TARGET}
    ds
    util
 )
+
+if( WIN32 )
+
+   set( DATA
+      ??_R0?AVNot_found_exception@factory@db@ds@@@8
+      ??_R0?AVconnection@db@ds@@@8
+      ??_R0?AVimpl@db@ds@@@8
+      ??_R0?AVresult@db@ds@@@8
+      ??_R0?AVstatement@db@ds@@@8
+      ??_R0?AVtransactional@db@ds@@@8
+   )
+
+   set( FUNCTIONS
+      ??0result@db@ds@@QEAA@V?$shared_ptr@Vimpl@result@db@ds@@@std@@@Z
+      ??0statement@db@ds@@QEAA@V?$shared_ptr@Vimpl@statement@db@ds@@@std@@@Z
+      ??0transaction@db@ds@@QEAA@AEAVtransactional@12@@Z
+      ??1transaction@db@ds@@QEAA@XZ
+      ??0savepoint@db@ds@@QEAA@AEAVimpl@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ??1savepoint@db@ds@@QEAA@XZ
+      ?rows_affected@result@db@ds@@QEBAHXZ
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAC@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAF@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAH@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEA_J@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAE@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAG@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAI@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEA_K@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAN@Z
+      ??5result@db@ds@@UEAAAEAVistream@2@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?endr@result@db@ds@@UEAAXXZ
+      ??Diterator@statement@db@ds@@QEAA?AVresult@23@XZ
+      ??Citerator@statement@db@ds@@QEAAPEAVresult@23@XZ
+      ??Eiterator@statement@db@ds@@QEAAAEAV0123@XZ
+      ??9iterator@statement@db@ds@@QEBA_NAEBV0123@@Z
+      ?begin@statement@db@ds@@QEAA?AViterator@123@XZ
+      ?end@statement@db@ds@@QEAA?AViterator@123@XZ
+      ?parse_connect_string@db@ds@@YA?AVconnect_params_t@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ??0result@db@ds@@QEAA@XZ
+      ??Bresult@db@ds@@QEBA_NXZ
+      ??Bresult@db@ds@@QEAA_NXZ
+      ?execute@statement@db@ds@@QEAA_KXZ
+      ?execute@statement@db@ds@@QEAA_KXZ
+      ?result@statement@db@ds@@QEAA?AV023@XZ
+      ??0connection@db@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?type@connection@db@ds@@UEBAPEBDXZ
+      ?create@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?use@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?drop@connection@db@ds@@UEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?execute_batch@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@C@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@F@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@H@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@_J@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@E@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@G@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@I@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@_K@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@N@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@PEBD@Z
+      ??6statement@db@ds@@UEAAAEAVostream@2@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?endr@statement@db@ds@@UEAAXXZ
+      ?savepoint@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?release_savepoint@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+      ?rollback_to_savepoint@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   )
+
+   include( dll_funcs )
+   dll_export( TARGET "${TARGET}" DATA "${DATA}" FUNCTIONS "${FUNCTIONS}" )
+
+endif( WIN32 )
 
 add_subdirectory( test )

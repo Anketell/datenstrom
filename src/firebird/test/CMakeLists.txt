@@ -19,4 +19,6 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
+add_dependencies( ${TARGET} ds_firebird_module )
+
 add_test( ${TARGET} ${TARGET} )
