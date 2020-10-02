@@ -72,15 +72,15 @@ public:
 
    public:
 
-      iterator(const std::string    & path         = null_path,
-               const pattern_list_t & pattern_list = null_pattern);
+      iterator( const std::string    & path         = null_path,
+                const pattern_list_t & pattern_list = null_pattern );
 
-      std::string operator*(void) const;
+      std::string operator*( void ) const;
 
-      iterator & operator++(void);
+      iterator & operator++( void );
 
-      bool operator == (const iterator & it) const;
-      bool operator != (const iterator & it) const;
+      bool operator == ( const iterator & it ) const;
+      bool operator != ( const iterator & it ) const;
    };
 
    find( const std::string & path, const pattern_list_t & pattern_list );
