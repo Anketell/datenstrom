@@ -22,7 +22,7 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-void check_status( const std::string & operation, const ISC_STATUS * status )
+void check_status( const char * operation, const ISC_STATUS * status )
 {
    if ( status[ 0 ] == 1 && status[ 1 ] )
    {
