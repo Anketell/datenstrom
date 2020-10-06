@@ -32,8 +32,42 @@ function( dll_export )
       COMMENT "DEF file for target ${ARGS_TARGET}"
    )
 
-   add_dependencies( ${ARGS_TARGET} "${ARGS_TARGET}_def" )
+#   add_dependencies( ${ARGS_TARGET} "${ARGS_TARGET}_def" )
 
-   target_link_options( ${TARGET} PRIVATE "/DEF:${DEF_FILE}" )
+   target_link_options( ${ARGS_TARGET} PRIVATE "/DEF:${DEF_FILE}" )
 
 endfunction( dll_export )
+
+
+function( dll_def )
+   set( OPTIONS )
+   set( ONE_VALUE_ARGS TARGET )
+   set( MULTI_VALUE_ARGS )
+
+   cmake_parse_arguments( ARGS "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN} )
+
+   if( NOT DEFINED ARGS_TARGET )
+      message( FATAL_ERROR "TARGET not defined" )
+   endif( NOT DEFINED ARGS_TARGET )
+
+   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/${ARGS_TARGET}.def")
+   target_link_options( ${ARGS_TARGET} PRIVATE "/DEF:${DEF_FILE}" )
+
+endfunction( dll_def )
+
+
+function( module_def )
+   set( OPTIONS )
+   set( ONE_VALUE_ARGS TARGET )
+   set( MULTI_VALUE_ARGS )
+
+   cmake_parse_arguments( ARGS "${OPTIONS}" "${ONE_VALUE_ARGS}" "${MULTI_VALUE_ARGS}" ${ARGN} )
+
+   if( NOT DEFINED ARGS_TARGET )
+      message( FATAL_ERROR "TARGET not defined" )
+   endif( NOT DEFINED ARGS_TARGET )
+
+   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/module.def")
+   target_link_options( ${ARGS_TARGET} PRIVATE "/DEF:${DEF_FILE}" )
+
+endfunction( module_def )

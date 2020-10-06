@@ -29,11 +29,9 @@ target_link_libraries( ${TARGET}
    fbclient
 )
 
-if( WIN32 )
-
+if ( WIN32 )
    include( dll_funcs )
-   dll_export( TARGET "${TARGET}" FUNCTIONS "enroll" )
-
+   module_def( TARGET ${TARGET} )
 endif( WIN32 )
 
 add_subdirectory( test )

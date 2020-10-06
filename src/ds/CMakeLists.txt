@@ -6,50 +6,9 @@ add_library( ds SHARED
    ds.cpp
 )
 
-if( WIN32 )
-
-   set( DATA "??_R0?AVNot_implemented@ds@@@8" )
-   set( FUNCTIONS
-      ??0Not_implemented@ds@@QEAA@AEBV01@@Z
-      ??0Not_implemented@ds@@QEAA@XZ
-      ??1Not_implemented@ds@@UEAA@XZ
-      ??1istream@ds@@UEAA@XZ
-      ??1ostream@ds@@UEAA@XZ
-      ??5@YAAEAVistream@ds@@AEAV01@P6AAEAV01@0@Z@Z
-      ??5istream@ds@@UEAAAEAV01@AEAC@Z
-      ??5istream@ds@@UEAAAEAV01@AEAE@Z
-      ??5istream@ds@@UEAAAEAV01@AEAF@Z
-      ??5istream@ds@@UEAAAEAV01@AEAG@Z
-      ??5istream@ds@@UEAAAEAV01@AEAH@Z
-      ??5istream@ds@@UEAAAEAV01@AEAI@Z
-      ??5istream@ds@@UEAAAEAV01@AEAN@Z
-      ??5istream@ds@@UEAAAEAV01@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-      ??5istream@ds@@UEAAAEAV01@AEA_J@Z
-      ??5istream@ds@@UEAAAEAV01@AEA_K@Z
-      ??6@YAAEAVostream@ds@@AEAV01@P6AAEAV01@0@Z@Z
-      ??6ostream@ds@@UEAAAEAV01@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-      ??6ostream@ds@@UEAAAEAV01@C@Z
-      ??6ostream@ds@@UEAAAEAV01@E@Z
-      ??6ostream@ds@@UEAAAEAV01@F@Z
-      ??6ostream@ds@@UEAAAEAV01@G@Z
-      ??6ostream@ds@@UEAAAEAV01@H@Z
-      ??6ostream@ds@@UEAAAEAV01@I@Z
-      ??6ostream@ds@@UEAAAEAV01@N@Z
-      ??6ostream@ds@@UEAAAEAV01@PEBD@Z
-      ??6ostream@ds@@UEAAAEAV01@_J@Z
-      ??6ostream@ds@@UEAAAEAV01@_K@Z
-      ?endr@ds@@YAAEAVistream@1@AEAV21@@Z
-      ?endr@ds@@YAAEAVostream@1@AEAV21@@Z
-      ?endr@istream@ds@@UEAAXXZ
-      ?endr@ostream@ds@@UEAAXXZ
-      ?read@istream@ds@@UEAAXPEAX_K@Z
-      ?write@ostream@ds@@UEAAXPEBX_K@Z
-   )
-
-   include( dll_funcs )
-   dll_export( TARGET "${TARGET}" DATA "${DATA}" FUNCTIONS "${FUNCTIONS}" )
-
+if ( WIN32 )
+   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/${TARGET}.def")
+   target_link_options( ${TARGET} PRIVATE "/DEF:${DEF_FILE}" )
 endif( WIN32 )
-
 
 add_subdirectory( test )

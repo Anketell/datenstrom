@@ -1,0 +1,7 @@
+LIRARY ds_csv
+
+EXPORTS
+   ??_R0?AVostream@csv@ds@@@8                                                   DATA
+   ??_R0?AVistream@csv@ds@@@8                                                   DATA
+   ??0istream@csv@ds@@QEAA@AEAV?$basic_istream@DU?$char_traits@D@std@@@std@@@Z
+   ??0ostream@csv@ds@@QEAA@AEAV?$basic_ostream@DU?$char_traits@D@std@@@std@@@Z
