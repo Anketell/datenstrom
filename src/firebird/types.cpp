@@ -90,7 +90,7 @@ ISC_TIME encode_sql_unixtime( time_t t )
 
 //-----------------------------------------------------------------------------
 
-ISC_TIMESTAMP encode_sql_unixtimestamp( time_t t )
+ISC_TIMESTAMP encode_unixtimestamp( time_t t )
 {
    struct tm tm = { 0 };
 

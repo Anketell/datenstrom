@@ -275,7 +275,7 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
          break;
 
       case SQL_TIMESTAMP:
-         *reinterpret_cast< ISC_TIMESTAMP * >( param.sqldata ) = encode_sql_unixtimestamp( bi );
+         *reinterpret_cast< ISC_TIMESTAMP * >( param.sqldata ) = encode_unixtimestamp( bi );
          break;
 
       default:

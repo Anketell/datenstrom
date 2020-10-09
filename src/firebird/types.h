@@ -66,7 +66,7 @@ ISC_TIME encode_sql_time( const char * );
 ISC_TIMESTAMP encode_timestamp( const char * );
 ISC_DATE encode_sql_unixdate( time_t );
 ISC_TIME encode_sql_unixtime( time_t );
-ISC_TIMESTAMP encode_sql_unixtimestamp( time_t );
+ISC_TIMESTAMP encode_unixtimestamp( time_t );
 std::string decode_sql_date( ISC_DATE );
 std::string decode_sql_time( ISC_TIME );
 std::string decode_timestamp( ISC_TIMESTAMP );
