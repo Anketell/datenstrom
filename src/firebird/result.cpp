@@ -169,6 +169,14 @@ template< typename BI > BI result::get_big_int( int index )
          bi = decode_sql_unixdate( *reinterpret_cast< ISC_DATE * >( column.sqldata ) );
          break;
 
+      case SQL_TYPE_TIME:
+         bi = decode_sql_unixtime( *reinterpret_cast< ISC_TIME * >( column.sqldata ) );
+         break;
+
+      case SQL_TIMESTAMP:
+         bi = decode_unixtimestamp( *reinterpret_cast< ISC_TIMESTAMP * >( column.sqldata ) );
+         break;
+
       default:
          throw_error( operation, "Not integer type" );
    }
@@ -306,6 +314,14 @@ void result::get_column( int index, std::string & s )
 
       case SQL_TYPE_DATE:
          s = decode_sql_date( *reinterpret_cast< ISC_DATE * >( column.sqldata ) );
+         break;
+
+      case SQL_TYPE_TIME:
+         s = decode_sql_time( *reinterpret_cast< ISC_TIME * >( column.sqldata ) );
+         break;
+
+      case SQL_TIMESTAMP:
+         s = decode_timestamp( *reinterpret_cast< ISC_TIMESTAMP * >( column.sqldata ) );
          break;
 
       default:

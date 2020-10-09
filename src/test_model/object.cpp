@@ -18,7 +18,9 @@ bool Object::operator==( const Object & o ) const
           fabs( m_f - o.m_f ) < 0.001 &&
           m_d         == o.m_d     &&
           m_hello     == o.m_hello &&
-          m_date      == o.m_date;
+          m_date      == o.m_date  &&
+          m_time      == o.m_time  &&
+          m_datetime  == o.m_datetime;
 }
 
 //-----------------------------------------------------------------------------
@@ -36,7 +38,9 @@ bool Object_alt::operator==( const Object_alt & o ) const
           fabs( m_f - o.m_f ) < 0.001 &&
           m_d         == o.m_d     &&
           m_hello     == o.m_hello &&
-          m_unix_date == o.m_unix_date;
+          m_unix_date == o.m_unix_date &&
+          m_unix_time == o.m_unix_time &&
+          m_unix_datetime == o.m_unix_datetime;
 }
 
 //-----------------------------------------------------------------------------

@@ -62,9 +62,17 @@ struct stmt_t
 //-----------------------------------------------------------------------------
 
 ISC_DATE encode_sql_date( const char * );
+ISC_TIME encode_sql_time( const char * );
+ISC_TIMESTAMP encode_timestamp( const char * );
 ISC_DATE encode_sql_unixdate( time_t );
+ISC_TIME encode_sql_unixtime( time_t );
+ISC_TIMESTAMP encode_sql_unixtimestamp( time_t );
 std::string decode_sql_date( ISC_DATE );
+std::string decode_sql_time( ISC_TIME );
+std::string decode_timestamp( ISC_TIMESTAMP );
 time_t decode_sql_unixdate( ISC_DATE );
+time_t decode_sql_unixtime( ISC_TIME );
+time_t decode_unixtimestamp( ISC_TIMESTAMP );
 
 //-----------------------------------------------------------------------------
 

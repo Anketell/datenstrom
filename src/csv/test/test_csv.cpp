@@ -9,31 +9,31 @@
 //-----------------------------------------------------------------------------
 
 static const char line[] =
-R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13"
+R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13","13:05:20","2020-05-13 13:05:20"
 )";
 
 static const char unquoted_strings[] =
-R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello,2020-05-13
+R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello,2020-05-13,13:05:20,2020-05-13 13:05:20
 )";
 
 static const char whitespace[] =
-R"( -8 , -16 , -32 , -64 , 8 , 16 , 32 , 64 , 12.34 , 56.78 , "Hello" , "2020-05-13"
+R"( -8 , -16 , -32 , -64 , 8 , 16 , 32 , 64 , 12.34 , 56.78 , "Hello" , "2020-05-13" , "13:05:20" , "2020-05-13 13:05:20"
 )";
 
 static const char embedded_quotes[] =
-R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello ""you""","2020-05-13"
+R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello ""you""","2020-05-13","13:05:20","2020-05-13 13:05:20"
 )";
 
 static const char extra_field[] =
-R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13","ignored"
+R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13","13:05:20","2020-05-13 13:05:20","ignored"
 )";
 
 static const char missing_separator[] =
-R"(-8,-16,-32,-64,8,16,32 64,12.34,56.78,"Hello","2020-05-13"
+R"(-8,-16,-32,-64,8,16,32 64,12.34,56.78,"Hello","2020-05-13","13:05:20","2020-05-13 13:05:20"
 )";
 
 static const char unterminated_quotes[] =
-R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13
+R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13","13:05:20","2020-05-13 13:05:20
 )";
 
 //-----------------------------------------------------------------------------
@@ -48,18 +48,20 @@ TEST( csv_istream, should_read_comma_separated_values )
 
    in >> o >> ds::endr;
 
-   EXPECT_EQ(      -8,      o.m_i8    );
-   EXPECT_EQ(     -16,      o.m_i16   );
-   EXPECT_EQ(     -32,      o.m_i32   );
-   EXPECT_EQ(     -64,      o.m_i64   );
-   EXPECT_EQ(       8,      o.m_u8    );
-   EXPECT_EQ(      16,      o.m_u16   );
-   EXPECT_EQ(      32,      o.m_u32   );
-   EXPECT_EQ(      64,      o.m_u64   );
-   EXPECT_EQ(   12.34,      o.m_f     );
-   EXPECT_EQ(   56.78,      o.m_d     );
-   EXPECT_EQ( "Hello",      o.m_hello );
-   EXPECT_EQ( "2020-05-13", o.m_date  );
+   EXPECT_EQ(      -8,               o.m_i8    );
+   EXPECT_EQ(     -16,               o.m_i16   );
+   EXPECT_EQ(     -32,               o.m_i32   );
+   EXPECT_EQ(     -64,               o.m_i64   );
+   EXPECT_EQ(       8,               o.m_u8    );
+   EXPECT_EQ(      16,               o.m_u16   );
+   EXPECT_EQ(      32,               o.m_u32   );
+   EXPECT_EQ(      64,               o.m_u64   );
+   EXPECT_EQ(   12.34,               o.m_f     );
+   EXPECT_EQ(   56.78,               o.m_d     );
+   EXPECT_EQ( "Hello",               o.m_hello );
+   EXPECT_EQ( "2020-05-13",          o.m_date  );
+   EXPECT_EQ( "13:05:20",            o.m_time  );
+   EXPECT_EQ( "2020-05-13 13:05:20", o.m_datetime  );
 }
 
 //-----------------------------------------------------------------------------
@@ -87,18 +89,20 @@ TEST( csv_istream, should_read_unquoted_strings )
 
    in >> o >> ds::endr;
 
-   EXPECT_EQ(      -8,      o.m_i8    );
-   EXPECT_EQ(     -16,      o.m_i16   );
-   EXPECT_EQ(     -32,      o.m_i32   );
-   EXPECT_EQ(     -64,      o.m_i64   );
-   EXPECT_EQ(       8,      o.m_u8    );
-   EXPECT_EQ(      16,      o.m_u16   );
-   EXPECT_EQ(      32,      o.m_u32   );
-   EXPECT_EQ(      64,      o.m_u64   );
-   EXPECT_EQ(   12.34,      o.m_f     );
-   EXPECT_EQ(   56.78,      o.m_d     );
-   EXPECT_EQ( "Hello",      o.m_hello );
-   EXPECT_EQ( "2020-05-13", o.m_date  );
+   EXPECT_EQ(      -8,               o.m_i8    );
+   EXPECT_EQ(     -16,               o.m_i16   );
+   EXPECT_EQ(     -32,               o.m_i32   );
+   EXPECT_EQ(     -64,               o.m_i64   );
+   EXPECT_EQ(       8,               o.m_u8    );
+   EXPECT_EQ(      16,               o.m_u16   );
+   EXPECT_EQ(      32,               o.m_u32   );
+   EXPECT_EQ(      64,               o.m_u64   );
+   EXPECT_EQ(   12.34,               o.m_f     );
+   EXPECT_EQ(   56.78,               o.m_d     );
+   EXPECT_EQ( "Hello",               o.m_hello );
+   EXPECT_EQ( "2020-05-13",          o.m_date  );
+   EXPECT_EQ( "13:05:20",            o.m_time  );
+   EXPECT_EQ( "2020-05-13 13:05:20", o.m_datetime  );
 }
 
 //-----------------------------------------------------------------------------
@@ -113,18 +117,20 @@ TEST( csv_istream, should_ignore_whitespace )
 
    in >> o >> ds::endr;
 
-   EXPECT_EQ(      -8,      o.m_i8    );
-   EXPECT_EQ(     -16,      o.m_i16   );
-   EXPECT_EQ(     -32,      o.m_i32   );
-   EXPECT_EQ(     -64,      o.m_i64   );
-   EXPECT_EQ(       8,      o.m_u8    );
-   EXPECT_EQ(      16,      o.m_u16   );
-   EXPECT_EQ(      32,      o.m_u32   );
-   EXPECT_EQ(      64,      o.m_u64   );
-   EXPECT_EQ(   12.34,      o.m_f     );
-   EXPECT_EQ(   56.78,      o.m_d     );
-   EXPECT_EQ( "Hello",      o.m_hello );
-   EXPECT_EQ( "2020-05-13", o.m_date  );
+   EXPECT_EQ(      -8,               o.m_i8    );
+   EXPECT_EQ(     -16,               o.m_i16   );
+   EXPECT_EQ(     -32,               o.m_i32   );
+   EXPECT_EQ(     -64,               o.m_i64   );
+   EXPECT_EQ(       8,               o.m_u8    );
+   EXPECT_EQ(      16,               o.m_u16   );
+   EXPECT_EQ(      32,               o.m_u32   );
+   EXPECT_EQ(      64,               o.m_u64   );
+   EXPECT_EQ(   12.34,               o.m_f     );
+   EXPECT_EQ(   56.78,               o.m_d     );
+   EXPECT_EQ( "Hello",               o.m_hello );
+   EXPECT_EQ( "2020-05-13",          o.m_date  );
+   EXPECT_EQ( "13:05:20",            o.m_time  );
+   EXPECT_EQ( "2020-05-13 13:05:20", o.m_datetime  );
 }
 
 //-----------------------------------------------------------------------------
@@ -139,18 +145,20 @@ TEST( csv_istream, should_support_embeded_quotes )
 
    in >> o >> ds::endr;
 
-   EXPECT_EQ(      -8,         o.m_i8    );
-   EXPECT_EQ(     -16,         o.m_i16   );
-   EXPECT_EQ(     -32,         o.m_i32   );
-   EXPECT_EQ(     -64,         o.m_i64   );
-   EXPECT_EQ(       8,         o.m_u8    );
-   EXPECT_EQ(      16,         o.m_u16   );
-   EXPECT_EQ(      32,         o.m_u32   );
-   EXPECT_EQ(      64,         o.m_u64   );
-   EXPECT_EQ(   12.34,         o.m_f     );
-   EXPECT_EQ(   56.78,         o.m_d     );
-   EXPECT_EQ( "Hello \"you\"", o.m_hello );
-   EXPECT_EQ( "2020-05-13",    o.m_date  );
+   EXPECT_EQ(      -8,               o.m_i8    );
+   EXPECT_EQ(     -16,               o.m_i16   );
+   EXPECT_EQ(     -32,               o.m_i32   );
+   EXPECT_EQ(     -64,               o.m_i64   );
+   EXPECT_EQ(       8,               o.m_u8    );
+   EXPECT_EQ(      16,               o.m_u16   );
+   EXPECT_EQ(      32,               o.m_u32   );
+   EXPECT_EQ(      64,               o.m_u64   );
+   EXPECT_EQ(   12.34,               o.m_f     );
+   EXPECT_EQ(   56.78,               o.m_d     );
+   EXPECT_EQ( "Hello \"you\"",       o.m_hello );
+   EXPECT_EQ( "2020-05-13",          o.m_date  );
+   EXPECT_EQ( "13:05:20",            o.m_time  );
+   EXPECT_EQ( "2020-05-13 13:05:20", o.m_datetime  );
 }
 
 //-----------------------------------------------------------------------------
@@ -165,18 +173,20 @@ TEST( csv_istream, should_ignore_extra_fields )
 
    in >> o >> ds::endr;
 
-   EXPECT_EQ(      -8,      o.m_i8    );
-   EXPECT_EQ(     -16,      o.m_i16   );
-   EXPECT_EQ(     -32,      o.m_i32   );
-   EXPECT_EQ(     -64,      o.m_i64   );
-   EXPECT_EQ(       8,      o.m_u8    );
-   EXPECT_EQ(      16,      o.m_u16   );
-   EXPECT_EQ(      32,      o.m_u32   );
-   EXPECT_EQ(      64,      o.m_u64   );
-   EXPECT_EQ(   12.34,      o.m_f     );
-   EXPECT_EQ(   56.78,      o.m_d     );
-   EXPECT_EQ( "Hello",      o.m_hello );
-   EXPECT_EQ( "2020-05-13", o.m_date  );
+   EXPECT_EQ(      -8,               o.m_i8    );
+   EXPECT_EQ(     -16,               o.m_i16   );
+   EXPECT_EQ(     -32,               o.m_i32   );
+   EXPECT_EQ(     -64,               o.m_i64   );
+   EXPECT_EQ(       8,               o.m_u8    );
+   EXPECT_EQ(      16,               o.m_u16   );
+   EXPECT_EQ(      32,               o.m_u32   );
+   EXPECT_EQ(      64,               o.m_u64   );
+   EXPECT_EQ(   12.34,               o.m_f     );
+   EXPECT_EQ(   56.78,               o.m_d     );
+   EXPECT_EQ( "Hello",               o.m_hello );
+   EXPECT_EQ( "2020-05-13",          o.m_date  );
+   EXPECT_EQ( "13:05:20",            o.m_time  );
+   EXPECT_EQ( "2020-05-13 13:05:20", o.m_datetime  );
 }
 
 //-----------------------------------------------------------------------------
@@ -224,7 +234,11 @@ TEST( csv_ostream, should_write_comma_separated_values )
 {
    std::stringstream ss;
 
-   Object o = { -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78, "Hello \"you\"", "2020-05-13" };
+   Object o =
+   {
+      -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78,
+      "Hello \"you\"", "2020-05-13", "13:05:20", "2020-05-13 13:05:20"
+   };
 
    ds::csv::ostream out( ss );
 

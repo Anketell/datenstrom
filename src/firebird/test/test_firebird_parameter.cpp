@@ -9,6 +9,8 @@
 
 const ds::db::name_list_t named_parameters =
 {
+   "datetime_",
+   "time_",
    "date_",
    "string",
    "double_",
@@ -38,7 +40,9 @@ TEST( firebird_parameter, should_insert_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
+                                   << "14:05:20"
+                                   << "2020-05-14"
                                    << "hello2"
                                    << double( 10.0 )
                                    << float( 9 )
@@ -73,7 +77,9 @@ TEST( firebird_parameter, should_retrieve_named )
 
       for ( int i = 0; i < 2; i++ )
       {
-         EXPECT_NO_THROW( insert_test << "2020-05-14"
+         EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
+                                      << "14:05:20"
+                                      << "2020-05-14"
                                       << "hello2"
                                       << 10
                                       <<  9
@@ -93,8 +99,9 @@ TEST( firebird_parameter, should_retrieve_named )
    Object o;
 
    {
-      ds::db::statement results_test = test_db( "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt "
-                                                "FROM Object WHERE hello = :hello", { "hello" } );
+      ds::db::statement results_test = test_db(
+         "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
+                "FROM Object WHERE hello = :hello", { "hello" } );
 
       for ( auto row : results_test( "hello2" ) )
       {
@@ -113,6 +120,8 @@ TEST( firebird_parameter, should_retrieve_named )
          EXPECT_EQ( o.m_d, 10 );
          EXPECT_EQ( o.m_hello, "hello2" );
          EXPECT_EQ( o.m_date, "2020-05-14" );
+         EXPECT_EQ( o.m_time, "14:05:20" );
+         EXPECT_EQ( o.m_datetime, "2020-05-14 14:05:20" );
       }
    }
 

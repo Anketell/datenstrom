@@ -270,6 +270,14 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
          *reinterpret_cast< ISC_DATE * >( param.sqldata ) = encode_sql_unixdate( bi );
          break;
 
+      case SQL_TYPE_TIME:
+         *reinterpret_cast< ISC_TIME * >( param.sqldata ) = encode_sql_unixtime( bi );
+         break;
+
+      case SQL_TIMESTAMP:
+         *reinterpret_cast< ISC_TIMESTAMP * >( param.sqldata ) = encode_sql_unixtimestamp( bi );
+         break;
+
       default:
          throw_error( bind_parameter, "Not numeric type" );
    }
@@ -377,6 +385,14 @@ void statement_base::set_string( int index, uint32_t len, const char * data )
 
       case SQL_TYPE_DATE:
          *reinterpret_cast< ISC_DATE * >( param.sqldata ) = encode_sql_date( data );
+         break;
+
+      case SQL_TYPE_TIME:
+         *reinterpret_cast< ISC_TIME * >( param.sqldata ) = encode_sql_time( data );
+         break;
+
+      case SQL_TIMESTAMP:
+         *reinterpret_cast< ISC_TIMESTAMP * >( param.sqldata ) = encode_timestamp( data );
          break;
 
       default:
