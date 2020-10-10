@@ -7,8 +7,8 @@ add_library( ds SHARED
 )
 
 if ( WIN32 )
-   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/${TARGET}.def")
-   target_link_options( ${TARGET} PRIVATE "/DEF:${DEF_FILE}" )
+   include( dll_funcs )
+   dll_def( TARGET ${TARGET} )
 endif( WIN32 )
 
 add_subdirectory( test )
