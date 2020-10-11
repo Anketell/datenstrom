@@ -10,6 +10,8 @@
 
 const ds::db::name_list_t named_parameters =
 {
+   "datetime",
+   "time",
    "date",
    "string",
    "double",
@@ -39,7 +41,9 @@ TEST( sqlite_parameter, should_insert_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
+                                   << "14:05:20"
+                                   << "2020-05-14"
                                    << "hello2"
                                    << 10
                                    <<  9
@@ -72,7 +76,9 @@ TEST( sqlite_parameter, should_retrieve_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14"
+      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
+                                   << "14:05:20"
+                                   << "2020-05-14"
                                    << "hello2"
                                    << 10
                                    <<  9
@@ -85,7 +91,6 @@ TEST( sqlite_parameter, should_retrieve_named )
                                    <<  2
                                    <<  1
                                    << ds::endr );
-;
    }
 
    Object o;
@@ -110,6 +115,8 @@ TEST( sqlite_parameter, should_retrieve_named )
    EXPECT_EQ( o.m_d, 10 );
    EXPECT_EQ( o.m_hello, "hello2" );
    EXPECT_EQ( o.m_date, "2020-05-14" );
+   EXPECT_EQ( o.m_time, "14:05:20" );
+   EXPECT_EQ( o.m_datetime, "2020-05-14 14:05:20" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }

@@ -131,6 +131,7 @@ TEST( firebird_db_statement, should_execute_query_parameters )
       EXPECT_NO_THROW( insert_test << 1 << 1 << 1 << 1 << 1
                                    << 1 << 1 << 1 << 1 << 1
                                    << "hello2" << "2020-05-14"
+                                   << "14:05:20" << "2020-05-14 14:05:20"
                                    << ds::endr );
    }
 

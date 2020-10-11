@@ -151,6 +151,14 @@ std::string data_type( const XSQLVAR & xsqlvar )
          type = "DATE";
          break;
 
+      case SQL_TYPE_TIME:
+         type = "TIME";
+         break;
+
+      case SQL_TIMESTAMP:
+         type = "TIMESTAMP";
+         break;
+
       default:
          throw_error( "Firebird statement preparation", "Unsupported data type" );
    }

@@ -89,6 +89,8 @@ void result::configure_buffer( void )
             break;
 
          case MYSQL_TYPE_DATE:
+         case MYSQL_TYPE_TIME:
+         case MYSQL_TYPE_DATETIME:
             bind.buffer_length = 40;
             break;
 

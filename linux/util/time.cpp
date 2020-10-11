@@ -28,16 +28,44 @@ time_t timegm( const struct tm * tm )
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601( const char * s, struct tm * tm )
+void parse_iso_8601_date( const char * s, struct tm * tm )
 {
    strptime( s, "%F", tm );
 }
 
 //-----------------------------------------------------------------------------
 
-void format_iso_8601( const struct tm * tm, char * s )
+void parse_iso_8601_time( const char * s, struct tm * tm )
+{
+   strptime( s, "%T", tm );
+}
+
+//-----------------------------------------------------------------------------
+
+void parse_iso_8601( const char * s, struct tm * tm )
+{
+   strptime( s, "%F %T", tm );
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601_date( const struct tm * tm, char * s )
 {
    strftime( s, 11, "%F", tm );
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601_time( const struct tm * tm, char * s )
+{
+   strftime( s, 9, "%T", tm );
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601( const struct tm * tm, char * s )
+{
+   strftime( s, 20, "%F %T", tm );
 }
 
 //-----------------------------------------------------------------------------

@@ -23,6 +23,8 @@ struct Object
    double      m_d;
    std::string m_hello;
    std::string m_date;
+   std::string m_time;
+   std::string m_datetime;
 
    bool operator==( const Object & o ) const;
 };
@@ -43,9 +45,16 @@ struct Object_alt
    double      m_d;
    std::string m_hello;
    int64_t     m_unix_date;
+   int64_t     m_unix_time;
+   int64_t     m_unix_datetime;
 
    bool operator==( const Object_alt & o ) const;
 };
+
+//-----------------------------------------------------------------------------
+
+extern Object     data[ 2 ];
+extern Object_alt data_alt[ 2 ];
 
 //-----------------------------------------------------------------------------
 
