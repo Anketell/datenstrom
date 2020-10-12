@@ -28,6 +28,10 @@ class transaction
 {
    transactional & m_db;
 
+#if __cplusplus >= 201703L
+   int m_count;
+#endif
+
 public:
 
    transaction( transactional & db );
@@ -40,6 +44,10 @@ class savepoint
 {
    impl      & m_db;
    std::string m_name;
+
+#if __cplusplus >= 201703L
+   int m_count;
+#endif
 
 public:
 

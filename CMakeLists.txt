@@ -17,7 +17,7 @@ if ( UNIX )
       include("coverage")
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
-   add_compile_options(-std=c++14)
+   add_compile_options(-std=c++17)
 endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
