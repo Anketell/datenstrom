@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mssql/connection.h>
-#include <mssql/statement.h>
+#include <mssql/positional_statement.h>
 #include <mssql/error.h>
 #include <sqlext.h>
 #include <sstream>
@@ -22,15 +22,15 @@ constexpr char connection::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-std::string connection::create_connection_string( const std::string & server, 
+std::string connection::create_connection_string( const std::string & server,
                                                   int                 port )
 {
    std::stringstream ss;
-   
+
    ss << "Driver={SQL Server}; "
        << "Server=" << server << "," << port << "; "
        << "Trusted_Connection=yes;";
-   
+
    return ss.str();;
 }
 
@@ -60,25 +60,23 @@ const char * connection::type( void ) const
 
 void connection::init( const std::string& connection_string )
 {
-   static const char operation[] = "mssql initializing connection";
+   static const char operation[] = "MSSQL initializing connection";
 
    try
    {
       RETCODE rc = SQLAllocHandle( SQL_HANDLE_ENV, SQL_NULL_HANDLE, &m_henv );
       check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
 
-      rc = SQLSetEnvAttr(m_henv, SQL_ATTR_ODBC_VERSION, ( SQLPOINTER )SQL_OV_ODBC3, 0);
+      rc = SQLSetEnvAttr( m_henv, SQL_ATTR_ODBC_VERSION, ( SQLPOINTER )SQL_OV_ODBC3, 0 );
       check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
 
       rc = SQLAllocHandle( SQL_HANDLE_DBC, m_henv, &m_hdbc );
       check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
 
-      const SQLCHAR * conn_str = reinterpret_cast< const SQLCHAR * >( connection_string.c_str() );
-
       rc = SQLDriverConnect( m_hdbc,
                              nullptr,
-                             const_cast< SQLCHAR * >( conn_str ),
-                             static_cast< SQLSMALLINT >( connection_string.length() ),
+                             sql_char( connection_string.c_str() ),
+                             sql_smint( connection_string.length() ),
                              nullptr,
                              0,
                              nullptr,
@@ -126,9 +124,8 @@ void connection::create( const std::string & name )
 {
    std::string query = "CREATE DATABASE " + name;
 
-   const SQLCHAR * query_str = reinterpret_cast< const SQLCHAR * >( query.c_str() );
-   RETCODE rc = SQLExecDirect( m_stmt, const_cast< SQLCHAR * >( query_str ), SQL_NTS );
-   check_status( "mssql create database", m_hdbc, SQL_HANDLE_DBC, rc );
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL create database", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -140,9 +137,8 @@ void connection::use( const std::string & name )
 
    std::string query = "USE " + name;
 
-   const SQLCHAR * query_str = reinterpret_cast< const SQLCHAR * >( query.c_str() );
-   RETCODE rc = SQLExecDirect( m_stmt, const_cast< SQLCHAR * >( query_str ), SQL_NTS );
-   check_status( "mssql use database", m_hdbc, SQL_HANDLE_DBC, rc );
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL use database", m_hdbc, SQL_HANDLE_DBC, rc );
 
    m_database = name;
 }
@@ -156,8 +152,7 @@ bool connection::drop( const std::string & name )
 
    std::string query = "DROP DATABASE " + name;
 
-   const SQLCHAR * query_str = reinterpret_cast< const SQLCHAR * >( query.c_str() );
-   RETCODE rc = SQLExecDirect( m_stmt, const_cast< SQLCHAR * >( query_str ), SQL_NTS );
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
 
    return rc == SQL_SUCCESS;
 }
@@ -167,59 +162,78 @@ bool connection::drop( const std::string & name )
 db::statement connection::operator()( const std::string     & query,
                                       const db::name_list_t & parameters )
 {
+   if ( parameters.empty() )
+      return db::statement( std::make_shared< positional_statement >( m_hdbc, query ) );
+
    throw ds::Not_implemented();
-//   return db::statement( std::make_shared< statement >( query, parameters ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::execute_batch( const std::string & query )
 {
-   const SQLCHAR * query_str = reinterpret_cast< const SQLCHAR * >( query.c_str() );
-   RETCODE rc = SQLExecDirect( m_stmt, const_cast< SQLCHAR * >( query_str ), SQL_NTS );
-   check_status( "mssql execute batch", m_hdbc, SQL_HANDLE_DBC, rc );
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL execute batch", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::begin_transaction( void )
 {
-    throw ds::Not_implemented();
+   constexpr char query[] = "BEGIN TRANSACTION";
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+   check_status( "MSSQL begin transaction", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::commit_transaction( void )
 {
-    throw ds::Not_implemented();
+   constexpr char query[] = "COMMIT TRANSACTION";
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+   check_status( "MSSQL commit transaction", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_transaction( void )
 {
-    throw ds::Not_implemented();
+   constexpr char query[] = "ROLLBACK TRANSACTION";
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+   check_status( "MSSQL rollback transaction", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::savepoint( const std::string & name )
 {
-    throw ds::Not_implemented();
+   std::string query = "SAVE TRANSACTION " + name;
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::release_savepoint( const std::string & name )
 {
-    throw ds::Not_implemented();
+   std::string query = "COMMIT TRANSACTION " + name;
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL release savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_to_savepoint( const std::string & name )
 {
-    throw ds::Not_implemented();
+   std::string query = "ROLLBACK TRANSACTION " + name;
+
+   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
+   check_status( "MSSQL rollback savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
 }
 
 //-----------------------------------------------------------------------------

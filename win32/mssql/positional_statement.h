@@ -1,39 +1,39 @@
 //-----------------------------------------------------------------------------
 
-#pragma once
+#ifndef DS_MSSQL_POSITIONL_STATEMENT_H
+#define DS_MSSQL_POSITIONL_STATEMENT_H
 
 //-----------------------------------------------------------------------------
 
-#include <ctime>
+#include <mssql/statement_base.h>
 
 //-----------------------------------------------------------------------------
 
-namespace util
+namespace ds
 {
 
 //-----------------------------------------------------------------------------
 
-namespace time
+namespace mssql
 {
 
 //-----------------------------------------------------------------------------
 
-void   gmtime( const time_t * t,  struct tm * tm );
-time_t timegm( const struct tm * tm );
+class positional_statement : public statement_base
+{
+public:
 
-void parse_iso_8601_date( const char * s, struct tm * tm );
-void parse_iso_8601_time( const char * s, struct tm * tm );
-void parse_iso_8601( const char * s, struct tm * tm );
-void format_iso_8601_date( const struct tm * tm, char * s );
-void format_iso_8601_time( const struct tm * tm, char * s );
-void format_iso_8601( const struct tm * tm, char * s );
-
+   positional_statement( SQLHDBC hdbc, const std::string & sql );
+};
 
 //-----------------------------------------------------------------------------
-
 
 }
 
 //-----------------------------------------------------------------------------
 
 }
+
+//-----------------------------------------------------------------------------
+
+#endif

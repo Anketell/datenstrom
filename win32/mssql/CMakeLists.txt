@@ -3,7 +3,8 @@ set( TARGET ds_mssql_module )
 add_library( ${TARGET} MODULE
    enroll.cpp
    connection.cpp
-#   statement.cpp
+   statement_base.cpp
+   positional_statement.cpp
 #   result.cpp
    error.cpp
 #   types.cpp

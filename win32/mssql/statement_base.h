@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MSSQL_STATEMENT_H
-#define DS_MSSQL_STATEMENT_H
+#ifndef DS_MSSQL_STATEMENT_BASE_H
+#define DS_MSSQL_STATEMENT_BASE_H
 
 //-----------------------------------------------------------------------------
 
@@ -20,21 +20,26 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
-class statement : public db::statement::impl
+class statement_base : public db::statement::impl
 {
    enum state_t { Preparing, Executed };
+   
+   std::shared_ptr< stmt_t >     m_stmt;
+   std::vector< stmt_t::desc_t > m_parameters;
+   state_t                       m_state;
 
-   std::shared_ptr< stmt_t > m_stmt;
-   std::vector< int >        m_parameters;
-   int                       m_count;
-   state_t                   m_state;
+   void check_parameter( int index );
 
-   int check_parameter( int index );
+   void prepare_parameter_buffer( void );
+   void prepare_result_buffer( void );
+
+protected:
+
+   statement_base( SQLHDBC hdbc );
+
+   void prepare( const std::string & sql );
 
 public:
-
-   statement( const std::string     & sql,
-              const db::name_list_t & parameters );
 
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;

@@ -29,6 +29,42 @@ time_t timegm( const struct tm * tm )
 
 //-----------------------------------------------------------------------------
 
+void parse_iso_8601_date( const char * s, struct tm * tm )
+{
+    int year;
+    int month;
+    int day;
+
+    sscanf_s( s, "%d-%d-%d", &year, &month, &day );
+
+    tm->tm_year = year - 1900;
+    tm->tm_mon  = month - 1;
+    tm->tm_mday = day;
+    tm->tm_hour = 0;
+    tm->tm_min  = 0;
+    tm->tm_sec  = 0;
+}
+
+//-----------------------------------------------------------------------------
+
+void parse_iso_8601_time( const char * s, struct tm * tm )
+{
+    int hour;
+    int minute;
+    int second;
+
+    sscanf_s( s, "%d:%d:%dZ", &hour, &minute, &second );
+
+    tm->tm_year = 0;
+    tm->tm_mon  = 0;
+    tm->tm_mday = 0;
+    tm->tm_hour = hour;
+    tm->tm_min  = minute;
+    tm->tm_sec  = second;
+}
+
+//-----------------------------------------------------------------------------
+
 void parse_iso_8601( const char * s, struct tm * tm )
 {
     int year;
@@ -38,7 +74,7 @@ void parse_iso_8601( const char * s, struct tm * tm )
     int minute;
     int second;
 
-    sscanf_s( s, "%d-%d-%dT%d:%d:%dZ", &year, &month, &day, &hour, &minute, &second );
+    sscanf_s( s, "%d-%d-%d %d:%d:%dZ", &year, &month, &day, &hour, &minute, &second );
 
     tm->tm_year = year - 1900;
     tm->tm_mon  = month - 1;
@@ -50,9 +86,23 @@ void parse_iso_8601( const char * s, struct tm * tm )
 
 //-----------------------------------------------------------------------------
 
+void format_iso_8601_date( const struct tm * tm, char * s )
+{
+   strftime( s, 11, "%F", tm );
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601_time( const struct tm * tm, char * s )
+{
+   strftime( s, 9, "%T", tm );
+}
+
+//-----------------------------------------------------------------------------
+
 void format_iso_8601( const struct tm * tm, char * s )
 {
-    strftime( s, 11, "%F", tm );
+   strftime( s, 20, "%F %T", tm );
 }
 
 //-----------------------------------------------------------------------------

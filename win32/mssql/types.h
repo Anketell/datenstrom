@@ -5,6 +5,7 @@
 
 //-----------------------------------------------------------------------------
 
+#include <windows.h>
 #include <sql.h>
 
 //-----------------------------------------------------------------------------
@@ -21,7 +22,16 @@ namespace mssql
 
 struct stmt_t
 {
-   SQLHSTMT hstmt = nullptr;
+    struct desc_t
+    {
+        SQLSMALLINT type;
+        SQLULEN     size;
+        SQLSMALLINT digits;
+        SQLSMALLINT nullable;
+    };
+
+   SQLHSTMT              hstmt = nullptr;
+   std::vector< desc_t > columns;
 
    ~stmt_t( void )
    {
@@ -31,6 +41,27 @@ struct stmt_t
       hstmt = nullptr;
    }
 };
+
+//-----------------------------------------------------------------------------
+
+inline SQLCHAR * sql_char( const char * sql )
+{
+   return const_cast< SQLCHAR * >( reinterpret_cast< const SQLCHAR * >( sql ) );
+}
+
+//-----------------------------------------------------------------------------
+
+inline SQLSMALLINT sql_smint( size_t size )
+{
+    return static_cast< SQLSMALLINT >( size );
+}
+
+//-----------------------------------------------------------------------------
+
+inline SQLINTEGER sql_int( size_t size )
+{
+    return static_cast< SQLINTEGER >( size );
+}
 
 //-----------------------------------------------------------------------------
 
