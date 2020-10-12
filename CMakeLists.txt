@@ -5,11 +5,13 @@ enable_testing()
 
 set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" )
 
+set( CMAKE_CXX_STANDARD 17 )
+
 if ( WIN32 )
    include( googletest )
    include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 
-   add_compile_options( /Zc:__cplusplus /std:c++17 )
+   add_compile_options( /Zc:__cplusplus )
 endif ( WIN32 )
 
 if ( UNIX )
@@ -19,8 +21,9 @@ if ( UNIX )
       include("coverage")
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
-   add_compile_options(-std=c++17)
-endif ( UNIX )
+   add_compile_options( -std=c++14 )
+
+   endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
 
