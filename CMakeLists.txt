@@ -8,6 +8,8 @@ set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" )
 if ( WIN32 )
    include( googletest )
    include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
+
+   add_compile_options( /Zc:__cplusplus /std:c++17 )
 endif ( WIN32 )
 
 if ( UNIX )
