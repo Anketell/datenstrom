@@ -59,14 +59,14 @@ TEST( sqlite_db_statement, should_execute_simple )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db( create ).execute() );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_create_bad_sql )
+TEST( sqlite_db_statement, should_fail_execute_bad_sql )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -74,7 +74,7 @@ TEST( sqlite_db_statement, should_fail_create_bad_sql )
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_THROW( test_db( bad_sql ), std::runtime_error );
+   EXPECT_THROW( test_db( bad_sql ).execute(), std::runtime_error );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
