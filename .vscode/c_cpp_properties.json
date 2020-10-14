@@ -12,7 +12,8 @@
                 "/usr/include/mysql",
                 "${workspaceFolder}",
                 "${workspaceFolder}/src",
-                "${workspaceFolder}/linux"
+                "${workspaceFolder}/linux",
+                "${workspaceFolder}/win32"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
