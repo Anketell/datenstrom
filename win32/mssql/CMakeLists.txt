@@ -5,7 +5,7 @@ add_library( ${TARGET} MODULE
    connection.cpp
    statement_base.cpp
    positional_statement.cpp
-#   result.cpp
+   result.cpp
    error.cpp
 #   types.cpp
 )

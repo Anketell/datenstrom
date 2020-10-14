@@ -7,7 +7,7 @@
 
 #include <windows.h>
 #include <sql.h>
-
+#include <vector>
 //-----------------------------------------------------------------------------
 
 namespace ds

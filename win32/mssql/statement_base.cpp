@@ -1,10 +1,12 @@
 //-----------------------------------------------------------------------------
 
 #include <mssql/statement_base.h>
-// #include <mssql/result.h>
+#include <mssql/result.h>
 #include <mssql/error.h>
-
 #include <sqlext.h>
+
+#undef min
+#undef max
 
 //-----------------------------------------------------------------------------
 
@@ -15,6 +17,41 @@ namespace ds
 
 namespace mssql
 {
+
+//-----------------------------------------------------------------------------
+
+template< typename T > T * statement_base::buffer::data( void )
+{
+   return reinterpret_cast< T * >( m_data );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::buffer::resize( int size )
+{
+   if ( m_length && m_length < size )
+   {
+      free( m_data );
+      m_length = 0;
+   }
+
+   if ( !m_length )
+   {
+      m_length = size;
+      m_data = malloc( m_length );
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+statement_base::buffer::~buffer( void )
+{
+   if ( m_length )
+   {
+      free( m_data );
+      m_length = 0;
+   }
+}
 
 //-----------------------------------------------------------------------------
 
@@ -37,15 +74,14 @@ void statement_base::prepare( const std::string& sql )
     RETCODE rc = SQLPrepare( m_stmt->hstmt, sql_char( sql.c_str() ), sql_int( sql.length() ) );
     check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-    prepare_parameter_buffer();
-//    prepare_result_buffer();
+    prepare_parameter_desc();
 }
 
 //-----------------------------------------------------------------------------
 
-void statement_base::prepare_parameter_buffer( void )
+void statement_base::prepare_parameter_desc( void )
 {
-   static constexpr char operation[] = "MSSQL statement prepare parameter buffer";
+   static constexpr char operation[] = "MSSQL statement prepare parameter descriptions";
 
    SQLSMALLINT count;
 
@@ -53,7 +89,7 @@ void statement_base::prepare_parameter_buffer( void )
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    m_parameters.resize( count );
-   m_buffers.resize( count, { 0, nullptr } );
+   m_buffers.resize( count );
 
    for ( SQLSMALLINT i = 0; i < count; i++ )
    {
@@ -70,16 +106,19 @@ void statement_base::prepare_parameter_buffer( void )
 
 //-----------------------------------------------------------------------------
 
-void statement_base::prepare_result_buffer(void)
+void statement_base::prepare_result_desc( void )
 {
-   static constexpr char operation[] = "MSSQL statement prepare result buffer";
+   static constexpr char operation[] = "MSSQL statement prepare result descriptions";
+
+   if ( m_stmt->columns.size() )
+      return;
 
    SQLSMALLINT count;
 
    RETCODE rc = SQLNumResultCols( m_stmt->hstmt, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   m_parameters.resize( count );
+   m_stmt->columns.resize( count );
 
    for ( SQLSMALLINT i = 0; i < count; i++ )
    {
@@ -99,7 +138,7 @@ void statement_base::prepare_result_buffer(void)
 
 //-----------------------------------------------------------------------------
 
-statement_base::buffer_t & statement_base::check_parameter( int index, int size )
+statement_base::buffer & statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "MSSQL statement parameter check";
 
@@ -111,19 +150,7 @@ statement_base::buffer_t & statement_base::check_parameter( int index, int size 
    if ( index >= m_parameters.size() )
       throw_error( operation, "Too many parameters" );
 
-   buffer_t & buffer = m_buffers[ index ];
-
-   if ( buffer.length && buffer.length < size )
-   {
-      free( buffer.data );
-      buffer.length = 0;
-   }
-
-   if ( !buffer.length )
-   {
-      buffer.length = size;
-      buffer.data   = malloc( buffer.length );
-   }
+   buffer & buffer = m_buffers[ index ];
 
    return buffer;
 }
@@ -134,9 +161,11 @@ template< typename T > void statement_base::bind_parameter( int index, int c_typ
 {
    static constexpr char operation[] = "MSSQL statement parameter bind";
 
+   buffer & buffer = check_parameter( index );
+
    int size = sizeof( T );
 
-   buffer_t & buffer = check_parameter( index, size );
+   buffer.resize( size );
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
@@ -147,13 +176,13 @@ template< typename T > void statement_base::bind_parameter( int index, int c_typ
                                   desc.type,
                                   desc.size,
                                   desc.digits,
-                                  buffer.data,
+                                  buffer.data< void >(),
                                   size,
                                   nullptr         );
 
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   *reinterpret_cast< T * >( buffer.data ) = t;
+   *buffer.data< T >() = t;
 }
 
 //-----------------------------------------------------------------------------
@@ -162,11 +191,13 @@ template<> void statement_base::bind_parameter< std::string >( int index, int c_
 {
    static constexpr char operation[] = "MSSQL statement parameter bind";
 
+   buffer & buffer = check_parameter( index );
+
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
-   int size = min( t.length(), desc.size ) + 1;
+   int size = std::min( t.length(), desc.size ) + 1;
 
-   buffer_t & buffer = check_parameter( index, size );
+   buffer.resize( desc.size + 1 );
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
@@ -175,13 +206,13 @@ template<> void statement_base::bind_parameter< std::string >( int index, int c_
                                   desc.type,
                                   desc.size,
                                   desc.digits,
-                                  buffer.data,
+                                  buffer.data< void >(),
                                   size,
                                   nullptr );
 
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   memcpy( buffer.data, t.c_str(), size );
+   strncpy_s( buffer.data< char >(), size, t.c_str(), size );
 }
 
 //-----------------------------------------------------------------------------
@@ -272,8 +303,16 @@ int statement_base::parameter_count( void )
 
 void statement_base::reset( void )
 {
+   static constexpr char operation[] = "MSSQL statement reset";
+
    if ( m_state == Preparing )
       return;
+
+   RETCODE rc = SQLCancel( m_stmt->hstmt );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   rc = SQLFreeStmt( m_stmt->hstmt, SQL_UNBIND );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    m_state = Preparing;
 }
@@ -284,11 +323,27 @@ uint64_t statement_base::execute( void )
 {
    static constexpr char operation[] = "MSSQL statement execute";
 
+   reset();
+
    RETCODE rc = SQLExecute( m_stmt->hstmt );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
+   m_state = Executed;
+
+   prepare_result_desc();
+
    uint64_t res = 0;
 
+   if ( m_stmt->columns.size() )
+   {
+      if ( m_stmt->columns.size() != 1 )
+         throw_error( operation, "Too many result columns" );
+
+      mssql::result result( m_stmt );
+
+      result.get_column( 0, res );
+   }
+   
    reset();
  
    return res;
@@ -298,13 +353,18 @@ uint64_t statement_base::execute( void )
 
 db::result statement_base::result( void )
 {
+   static constexpr char operation[] = "MSSQL statement result";
+
    reset();
 
-//   db::result result = db::result( std::make_shared< sqlite::result >( m_stmt ) );
+   RETCODE rc = SQLExecute( m_stmt->hstmt );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    m_state = Executed;
 
-   return db::result();
+   prepare_result_desc();
+
+   return std::make_shared< mssql::result >( m_stmt );
 }
 
 //-----------------------------------------------------------------------------

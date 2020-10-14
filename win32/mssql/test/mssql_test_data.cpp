@@ -21,7 +21,7 @@ CREATE TABLE Object(
                       hello VARCHAR( 10 ), 
                       dt DATE, 
                       tm TIME,
-                      dttm DATETIME,
+                      dttm DATETIME2,
                       id INT IDENTITY( 1, 1 ) PRIMARY KEY
 )
 
@@ -33,11 +33,12 @@ const char * test_db_name = "test_db";
 const char * test_con_str = "mssql://127.0.0.1:1433";
 const char * bad_con_str  = "mssql:///blah";
 const char * bad_sql      = "THIS IS BAD SQL";
-const char * insert = "INSERT INTO Object " 
+const char * insert = "INSERT INTO Object ( i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm ) " 
+                                               "OUTPUT INSERTED.ID "
                                                "VALUES ( ?, ?, ?, ?, ?, ?, ?, "
-                                                        "?, ?, ?, ?, ? ,? ,? )"; 
+                                                        "?, ?, ?, ?, ? ,? ,? )";
 const char * result   = "SELECT * FROM Object WHERE hello = ?";
-const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm, "
+const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
 const char * del_rows = "DELETE FROM Object";

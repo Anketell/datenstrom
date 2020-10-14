@@ -24,32 +24,29 @@ class statement_base : public db::statement::impl
 {
    enum state_t { Preparing, Executed };
    
-   struct buffer_t
+   class buffer
    {
-      int    length;
-      void * data;
+      int    m_length = 0;
+      void * m_data   = nullptr;
 
-      ~buffer_t( void )
-      {
-         if ( length )
-         {
-            free( data );
-            length = 0;
-         }
-      }
+   public:
+
+      template< typename T > T * data( void );
+      void resize( int size );
+      ~buffer( void );
    };
 
    std::shared_ptr< stmt_t >     m_stmt;
    std::vector< stmt_t::desc_t > m_parameters;
-   std::vector< buffer_t >       m_buffers;
+   std::vector< buffer >         m_buffers;
    state_t                       m_state;
 
-   buffer_t & check_parameter( int index, int size );
+   buffer & check_parameter( int index );
 
    template< typename T > void bind_parameter( int index, int c_type, const T & t );
 
-   void prepare_parameter_buffer( void );
-   void prepare_result_buffer( void );
+   void prepare_parameter_desc( void );
+   void prepare_result_desc( void );
 
 protected:
 
