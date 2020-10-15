@@ -1,43 +1,45 @@
 //-----------------------------------------------------------------------------
 
-#include <util/parameter_enum.h>
+#include <util/parameter.h>
 #include <limits>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
+namespace util
 {
 
 //-----------------------------------------------------------------------------
 
-namespace firebird
+namespace parameter
 {
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::parameter_enum( const std::string & sql ) :
-m_sql( sql )
+enumerator::enumerator( const std::string & sql, const char * delimiters ) :
+m_sql( sql ),
+m_delimiters( delimiters )
 {
 }
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::iterator parameter_enum::begin( void ) const
+enumerator::iterator enumerator::begin( void ) const
 {
-   return { m_sql };
+   return { m_sql, m_delimiters };
 }
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::iterator parameter_enum::end( void ) const
+enumerator::iterator enumerator::end( void ) const
 {
    return {};
 }
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::iterator::iterator( const std::string & sql ) :
-m_sql( sql )
+enumerator::iterator::iterator( const std::string & sql, const std::string & delimiters ) :
+m_sql( sql ),
+m_delimiters( delimiters )
 {
    m_parameter.from = 0;
    m_parameter.len  = 0;
@@ -47,12 +49,11 @@ m_sql( sql )
 
 //-----------------------------------------------------------------------------
 
-void parameter_enum::iterator::next_parameter( void )
+void enumerator::iterator::next_parameter( void )
 {
    m_parameter.from += m_parameter.len;
 
-   while ( m_parameter.from < m_sql.length() && m_sql[ m_parameter.from ] != ':' )
-      m_parameter.from++;
+   m_parameter.from = static_cast< uint32_t >( m_sql.find_first_of( m_delimiters, m_parameter.from ) );
 
    if ( m_parameter.from >= m_sql.length() )
    {
@@ -71,21 +72,21 @@ void parameter_enum::iterator::next_parameter( void )
 
 //-----------------------------------------------------------------------------
 
-const parameter_enum::iterator::parameter_t & parameter_enum::iterator::operator*( void ) const
+const enumerator::iterator::parameter_t & enumerator::iterator::operator*( void ) const
 {
    return m_parameter;
 }
 
 //-----------------------------------------------------------------------------
 
-const parameter_enum::iterator::parameter_t * parameter_enum::iterator::operator->( void ) const
+const enumerator::iterator::parameter_t * enumerator::iterator::operator->( void ) const
 {
    return &m_parameter;
 }
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::iterator parameter_enum::iterator::operator++( void )
+enumerator::iterator enumerator::iterator::operator++( void )
 {
    next_parameter();
    return *this;
@@ -93,7 +94,7 @@ parameter_enum::iterator parameter_enum::iterator::operator++( void )
 
 //-----------------------------------------------------------------------------
 
-parameter_enum::iterator parameter_enum::iterator::operator++( int )
+enumerator::iterator enumerator::iterator::operator++( int )
 {
    auto it = *this;
    next_parameter();
@@ -102,7 +103,7 @@ parameter_enum::iterator parameter_enum::iterator::operator++( int )
 
 //-----------------------------------------------------------------------------
 
-bool parameter_enum::iterator::operator==( const iterator & it ) const
+bool enumerator::iterator::operator==( const iterator & it ) const
 {
    return m_parameter.from == it.m_parameter.from &&
           m_parameter.len == it.m_parameter.len;
@@ -110,7 +111,7 @@ bool parameter_enum::iterator::operator==( const iterator & it ) const
 
 //-----------------------------------------------------------------------------
 
-bool parameter_enum::iterator::operator!=( const iterator & it ) const
+bool enumerator::iterator::operator!=( const iterator & it ) const
 {
    return !( *this == it );
 }

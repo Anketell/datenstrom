@@ -26,13 +26,13 @@ class statement_base : public db::statement::impl
    
    class buffer
    {
-      int    m_length = 0;
+      size_t m_length = 0;
       void * m_data   = nullptr;
 
    public:
 
       template< typename T > T * data( void );
-      void resize( int size );
+      void resize( size_t size );
       ~buffer( void );
    };
 

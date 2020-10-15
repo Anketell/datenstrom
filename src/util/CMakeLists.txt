@@ -1,7 +1,7 @@
 set( TARGET util )
 
 add_library( ${TARGET} STATIC
-   parameter_enum.cpp
+   parameter.cpp
 )
 
 if ( UNIX )

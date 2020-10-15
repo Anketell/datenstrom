@@ -28,7 +28,7 @@ template< typename T > T * statement_base::buffer::data( void )
 
 //-----------------------------------------------------------------------------
 
-void statement_base::buffer::resize( int size )
+void statement_base::buffer::resize( size_t size )
 {
    if ( m_length && m_length < size )
    {
@@ -166,7 +166,7 @@ template<> void statement_base::bind_parameter< std::string >( int index, int c_
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
-   int size = std::min( t.length(), desc.size ) + 1;
+   size_t size = std::min( t.length(), desc.size ) + 1;
 
    buffer.resize( desc.size + 1 );
 

@@ -3,7 +3,7 @@
 
 #include <firebird/named_statement.h>
 #include <firebird/guard.h>
-#include <util/parameter_enum.h>
+#include <util/parameter.h>
 #include <algorithm>
 #include <sstream>
 #include <iostream>
@@ -48,7 +48,7 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
    int param = 0;
 
    uint32_t from = 0;
-   for ( auto parameter : parameter_enum( sql ) )
+   for ( auto parameter : util::parameter::enumerator( sql, ":" ) )
    {
       std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
 

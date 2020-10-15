@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_PARAMETERS_H
-#define DS_FIREBIRD_PARAMETERS_H
+#ifndef UTIL_PARAMETER_H
+#define UTIL_PARAMETER_H
 
 //-----------------------------------------------------------------------------
 
@@ -9,23 +9,24 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds
+namespace util
 {
 
 //-----------------------------------------------------------------------------
 
-namespace firebird
+namespace parameter
 {
 
 //-----------------------------------------------------------------------------
 
-class parameter_enum
+class enumerator
 {
    const std::string & m_sql;
+   const std::string   m_delimiters;
 
 public:
 
-   parameter_enum( const std::string & sql );
+   enumerator( const std::string & sql, const char * delimiters = ":@$" );
 
    class iterator
    {
@@ -40,13 +41,14 @@ public:
    private:
 
       const std::string & m_sql;
+      const std::string & m_delimiters;
       parameter_t         m_parameter;
 
       void next_parameter( void );
 
    public:
 
-      iterator( const std::string & sql = "" );
+      iterator( const std::string & sql = "", const std::string & delimiters = "");
 
       const parameter_t & operator*( void ) const;
       const parameter_t * operator->( void ) const;
@@ -74,15 +76,15 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::firebird::parameter_enum::iterator >
+template<> class iterator_traits< util::parameter::enumerator::iterator >
 {
 public:
 
-   typedef int32_t                                difference_type;
-   typedef ds::firebird::parameter_enum::iterator value_type;
-   typedef value_type *                           pointer;
-   typedef value_type &                           reference;
-   typedef forward_iterator_tag                   iterator_category;
+   typedef int32_t                               difference_type;
+   typedef util::parameter::enumerator::iterator value_type;
+   typedef value_type *                          pointer;
+   typedef value_type &                          reference;
+   typedef forward_iterator_tag                  iterator_category;
 };
 }
 
