@@ -27,6 +27,8 @@ class result : public db::result::impl
 
    void check_column( int index );
 
+   time_t get_time( int index );
+
    template< typename T > void get_column( int index, int c_type, T & t );
 
 public:

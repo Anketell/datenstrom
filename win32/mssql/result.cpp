@@ -2,6 +2,7 @@
 
 #include <mssql/result.h>
 #include <mssql/error.h>
+#include <util/time.h>
 #include <sqlext.h>
 #include <algorithm>
 
@@ -17,10 +18,6 @@ namespace ds
 
 namespace mssql
 {
-
-//-----------------------------------------------------------------------------
-
-constexpr SQLSMALLINT sql_time_type = -9;
 
 //-----------------------------------------------------------------------------
 
@@ -66,6 +63,39 @@ void result::check_column( int index )
 
 //-----------------------------------------------------------------------------
 
+time_t result::get_time( int index )
+{
+   std::string time;
+
+   get_column( index, time );
+
+   struct tm tm;
+
+   switch ( time.length() )
+   {
+      case 8 :
+         util::time::parse_iso_8601_time( time.c_str(), &tm );
+         tm.tm_year = 70;
+         tm.tm_mday = 1;
+         break;
+
+      case 10 :
+         util::time::parse_iso_8601_date( time.c_str(), &tm );
+         break;
+
+      case 19 :
+         util::time::parse_iso_8601( time.c_str(), &tm );
+         break;
+
+      default:
+         return 0;
+   }
+
+   return util::time::timegm( &tm );
+}
+
+//-----------------------------------------------------------------------------
+
 static constexpr char operation[] = "MSSQL result get column";
 
 //-----------------------------------------------------------------------------
@@ -73,6 +103,14 @@ static constexpr char operation[] = "MSSQL result get column";
 template< typename T > void result::get_column( int index, int c_type, T & t )
 {
    check_column( index );
+
+   stmt_t::desc_t & desc = m_stmt->columns[ index ];
+   if ( desc.type == sql_time_type )
+   {
+      t = static_cast< T >( get_time( index ) );
+      return;
+   }
+
    RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, &t, sizeof( T ), nullptr  );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 }

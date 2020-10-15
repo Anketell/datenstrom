@@ -3,6 +3,7 @@
 #include <mssql/statement_base.h>
 #include <mssql/result.h>
 #include <mssql/error.h>
+#include <util/time.h>
 #include <sqlext.h>
 
 #undef min
@@ -157,36 +158,6 @@ statement_base::buffer & statement_base::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
-template< typename T > void statement_base::bind_parameter( int index, int c_type, const T & t )
-{
-   static constexpr char operation[] = "MSSQL statement parameter bind";
-
-   buffer & buffer = check_parameter( index );
-
-   int size = sizeof( T );
-
-   buffer.resize( size );
-
-   stmt_t::desc_t & desc( m_parameters[ index ] );
-
-   RETCODE rc = SQLBindParameter( m_stmt->hstmt,
-                                  index + 1,
-                                  SQL_PARAM_INPUT, 
-                                  c_type,
-                                  desc.type,
-                                  desc.size,
-                                  desc.digits,
-                                  buffer.data< void >(),
-                                  size,
-                                  nullptr         );
-
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   *buffer.data< T >() = t;
-}
-
-//-----------------------------------------------------------------------------
-
 template<> void statement_base::bind_parameter< std::string >( int index, int c_type, const std::string & t )
 {
    static constexpr char operation[] = "MSSQL statement parameter bind";
@@ -213,6 +184,71 @@ template<> void statement_base::bind_parameter< std::string >( int index, int c_
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    strncpy_s( buffer.data< char >(), size, t.c_str(), size );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::bind_time( int index, time_t t )
+{
+   std::string time;
+
+   struct tm tm;
+
+   util::time::gmtime( &t, &tm );
+
+   if ( t < 60 * 60 * 24 )
+   {
+      time.resize( 9 );
+      util::time::format_iso_8601_time( &tm, const_cast< char * >( time.c_str() ) );
+   }
+   else
+   {
+      if ( t % ( 60 * 60 * 24 ) == 0 )
+      {
+         time.resize( 11 );
+         util::time::format_iso_8601_date( &tm, const_cast< char * >( time.c_str() ) );
+      }
+      else
+      {
+         time.resize( 20 );
+         util::time::format_iso_8601( &tm, const_cast< char * >( time.c_str() ) );
+      }
+   }
+
+   set_parameter( index, time );
+}
+
+//-----------------------------------------------------------------------------
+
+template< typename T > void statement_base::bind_parameter( int index, int c_type, const T & t )
+{
+   static constexpr char operation[] = "MSSQL statement parameter bind";
+
+   buffer & buffer = check_parameter( index );
+
+   stmt_t::desc_t & desc( m_parameters[ index ] );
+
+   if ( desc.type == sql_time_type )
+      return bind_time( index, static_cast< time_t >( t ) );
+
+   int size = sizeof( T );
+
+   buffer.resize( size );
+
+   RETCODE rc = SQLBindParameter( m_stmt->hstmt,
+                                  index + 1,
+                                  SQL_PARAM_INPUT, 
+                                  c_type,
+                                  desc.type,
+                                  desc.size,
+                                  desc.digits,
+                                  buffer.data< void >(),
+                                  size,
+                                  nullptr         );
+
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   *buffer.data< T >() = t;
 }
 
 //-----------------------------------------------------------------------------
