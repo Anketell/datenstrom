@@ -2,9 +2,9 @@ set( TARGET test_ds_mssql )
 
 add_executable( ${TARGET}
    test_mssql_db.cpp
-#   test_mssql_transaction.cpp
+   test_mssql_transaction.cpp
 #   test_mssql_parameter.cpp
-#   test_mssql_list.cpp
+   test_mssql_list.cpp
    mssql_test_data.cpp
 )
 

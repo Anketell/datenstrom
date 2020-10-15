@@ -24,4 +24,5 @@ if ( DS_DB )
 
 endif()
 
+add_subdirectory( util )
 add_subdirectory( test_model )

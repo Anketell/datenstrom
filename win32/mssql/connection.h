@@ -32,6 +32,8 @@ class connection : public db::impl
    SQLHDBC  m_hdbc = SQL_NULL_HDBC;
    SQLHSTMT m_stmt = SQL_NULL_HSTMT;
 
+   int m_transactions = 0;
+
    std::string m_database;
 
    void init(const std::string& connection_string);

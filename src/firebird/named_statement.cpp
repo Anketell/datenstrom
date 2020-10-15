@@ -2,8 +2,8 @@
 //-----------------------------------------------------------------------------
 
 #include <firebird/named_statement.h>
-#include <firebird/parameter_enum.h>
 #include <firebird/guard.h>
+#include <util/parameter_enum.h>
 #include <algorithm>
 #include <sstream>
 #include <iostream>

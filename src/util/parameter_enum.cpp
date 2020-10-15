@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <firebird/parameter_enum.h>
+#include <util/parameter_enum.h>
 #include <limits>
 
 //-----------------------------------------------------------------------------
@@ -66,7 +66,7 @@ void parameter_enum::iterator::next_parameter( void )
    while ( *to && ( std::isalpha( *to ) || std::isdigit( *to ) || *to == '_' ) )
       to++;
 
-   m_parameter.len = to - m_sql.data() - m_parameter.from;
+   m_parameter.len = static_cast< uint32_t >( to - m_sql.data() ) - m_parameter.from;
 }
 
 //-----------------------------------------------------------------------------

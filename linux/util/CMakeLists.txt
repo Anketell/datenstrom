@@ -1,4 +1,4 @@
-set( TARGET util )
+set( TARGET linuxutil )
 
 add_library( ${TARGET} STATIC
    env.cpp
@@ -12,5 +12,5 @@ target_link_libraries( ${TARGET}
    dl
 )
 
-set_property(TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property( TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON )
 

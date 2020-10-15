@@ -60,7 +60,7 @@ const char * connection::type( void ) const
 
 void connection::init( const std::string& connection_string )
 {
-   static const char operation[] = "MSSQL initializing connection";
+   static constexpr char operation[] = "MSSQL initializing connection";
 
    try
    {
@@ -180,30 +180,41 @@ void connection::execute_batch( const std::string & query )
 
 void connection::begin_transaction( void )
 {
-   constexpr char query[] = "BEGIN TRANSACTION";
+   static constexpr char operation[] = "MSSQL begin transaction";
+
+   if ( m_transactions )
+      throw_error( operation, "failed nested transactions" );
+
+   static constexpr char query[] = "BEGIN TRANSACTION";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( "MSSQL begin transaction", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
+
+   m_transactions++;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::commit_transaction( void )
 {
-   constexpr char query[] = "COMMIT TRANSACTION";
+   static constexpr char query[] = "COMMIT";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
    check_status( "MSSQL commit transaction", m_hdbc, SQL_HANDLE_DBC, rc );
+
+   m_transactions--;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_transaction( void )
 {
-   constexpr char query[] = "ROLLBACK TRANSACTION";
+   static constexpr char query[] = "ROLLBACK TRANSACTION";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
    check_status( "MSSQL rollback transaction", m_hdbc, SQL_HANDLE_DBC, rc );
+
+   m_transactions--;
 }
 
 //-----------------------------------------------------------------------------
@@ -220,10 +231,7 @@ void connection::savepoint( const std::string & name )
 
 void connection::release_savepoint( const std::string & name )
 {
-   std::string query = "COMMIT TRANSACTION " + name;
-
-   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL release savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
+   // N/A not supported by MSSQL
 }
 
 //-----------------------------------------------------------------------------

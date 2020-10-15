@@ -302,3 +302,132 @@ TEST( mssql_db_statement, should_support_unixtime )
 }
 
 //-----------------------------------------------------------------------------
+
+TEST( mssql_db_statement, should_provide_rows_affected )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+      {
+         EXPECT_NO_THROW( insert_test << o );
+         EXPECT_EQ( insert_test.result().rows_affected(), 1 );
+      }
+   }
+
+   {
+      ds::db::statement delete_test = test_db( del_rows );
+
+      EXPECT_EQ( delete_test.result().rows_affected(), 2 );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( mssql_db_statement, should_return_query_data_not_available )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   {
+      ds::db::statement create_test = test_db( create );
+
+      EXPECT_EQ( ds::db::result(), create_test.result() );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( mssql_db_statement, should_fail_query_wrong_column_count )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      ds::db::result row;
+
+      EXPECT_NO_THROW( row = results_test.result() );
+
+      for ( auto o : data )
+      {
+         Object o_db = {};
+
+         if ( row )
+         {
+            EXPECT_NO_THROW( row >> o_db );
+            EXPECT_THROW( row >> o_db, std::runtime_error );
+         }
+
+         EXPECT_EQ( o, o_db );
+
+         row >> ds::endr;
+      }
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( mssql_db_statement, should_fail_query_wrong_column_type )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      ds::db::result row;
+
+      EXPECT_NO_THROW( row = results_test.result() );
+
+      std::string hello;
+
+      EXPECT_THROW( row >> hello, std::runtime_error );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------

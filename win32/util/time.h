@@ -18,6 +18,12 @@ namespace time
 
 //-----------------------------------------------------------------------------
 
+constexpr int time_len     = 8;
+constexpr int date_len     = 10;
+constexpr int datetime_len = 19;
+
+//-----------------------------------------------------------------------------
+
 void   gmtime( const time_t * t,  struct tm * tm );
 time_t timegm( const struct tm * tm );
 

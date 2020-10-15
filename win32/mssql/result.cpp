@@ -40,11 +40,11 @@ int result::rows_affected( void ) const
 {
    static constexpr char operation[] = "MSSQL result rows affeected";
 
-   SQLLEN count;
+   SQLLEN count = 0;
    RETCODE rc = SQLRowCount( m_stmt->hstmt, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   return static_cast< int >( count );
+   return static_cast< int >( std::abs( count ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -73,17 +73,17 @@ time_t result::get_time( int index )
 
    switch ( time.length() )
    {
-      case 8 :
+      case util::time::time_len:
          util::time::parse_iso_8601_time( time.c_str(), &tm );
          tm.tm_year = 70;
          tm.tm_mday = 1;
          break;
 
-      case 10 :
+      case util::time::date_len:
          util::time::parse_iso_8601_date( time.c_str(), &tm );
          break;
 
-      case 19 :
+      case util::time::datetime_len:
          util::time::parse_iso_8601( time.c_str(), &tm );
          break;
 
@@ -223,7 +223,7 @@ void result::get_column( int index, std::string & s )
 
 bool result::step( void )
 {
-   m_valid = SQLFetch( m_stmt->hstmt ) != SQL_ERROR;
+   m_valid = SQLFetch( m_stmt->hstmt ) == SQL_SUCCESS;
 
    return *this;
 }

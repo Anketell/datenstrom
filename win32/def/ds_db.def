@@ -10,6 +10,8 @@ EXPORTS
    ??0result@db@ds@@QEAA@V?$shared_ptr@Vimpl@result@db@ds@@@std@@@Z
    ??0statement@db@ds@@QEAA@V?$shared_ptr@Vimpl@statement@db@ds@@@std@@@Z
    ??0transaction@db@ds@@QEAA@AEAVtransactional@12@@Z
+   ?commit_transaction@connection@db@ds@@UEAAXXZ
+   ?rollback_transaction@connection@db@ds@@UEAAXXZ
    ??1transaction@db@ds@@QEAA@XZ
    ??0savepoint@db@ds@@QEAA@AEAVimpl@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??1savepoint@db@ds@@QEAA@XZ

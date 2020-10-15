@@ -1,4 +1,4 @@
-set( TARGET util )
+set( TARGET win32util )
 
 add_library( ${TARGET} STATIC
    env.cpp

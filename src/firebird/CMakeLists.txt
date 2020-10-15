@@ -13,7 +13,6 @@ add_library( ${TARGET} MODULE
    transactional.cpp
    connection.cpp
    statement_enum.cpp
-   parameter_enum.cpp
    guard.cpp
    statement_base.cpp
    positional_statement.cpp
