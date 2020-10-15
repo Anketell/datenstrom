@@ -1,4 +1,11 @@
 {
+    "env": {
+        "DefaultIncludePath": [
+            "${workspaceFolder}/src",
+            "${workspaceFolder}/linux",
+            "${workspaceFolder}/win32"
+        ]
+    },
     "configurations": [
         {
             "name": "Linux",
@@ -9,17 +16,23 @@
                 "limitSymbolsToIncludedHeaders": true
             },
             "includePath": [
-                "/usr/include/mysql",
-                "${workspaceFolder}",
-                "${workspaceFolder}/src",
-                "${workspaceFolder}/linux",
-                "${workspaceFolder}/win32"
+                "${DefaultIncludePath}",
+                "/usr/include/mysql"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "intelliSenseMode": "clang-x64"
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${DefaultIncludePath}",
+                "C:/Program Files (x86)/Microsoft Visual Studio/2019/Professional/VC/Tools/MSVC/14.27.29110/include",
+                "C:/Program Files (x86)/Windows Kits/10/Include/10.0.18362.0/ucrt",
+                "C:/Program Files (x86)/Windows Kits/10/Include"
+            ]
         }
     ],
     "version": 4
