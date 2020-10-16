@@ -1,12 +1,12 @@
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MSSQL_STATEMENT_BASE_H
-#define DS_MSSQL_STATEMENT_BASE_H
+#ifndef DS_MSSQL_NAMED_STATEMENT_H
+#define DS_MSSQL_NAMED_STATEMENT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/statement.h>
-#include <mssql/types.h>
+#include <mssql/statement_base.h>
+#include <map>
 
 //-----------------------------------------------------------------------------
 
@@ -20,43 +20,25 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
-class statement_base : public db::statement::impl
+class named_statement : public statement_base
 {
-   class buffer
-   {
-      size_t m_length = 0;
-      void * m_data   = nullptr;
+   const db::name_list_t     m_names;
+   std::multimap< int, int > m_param_map;
 
-   public:
+   std::string get_pos_sql( const std::string     & sql,
+                            const db::name_list_t & parameters );
 
-      template< typename T > T * data( void );
-      void resize( size_t size );
-      ~buffer( void );
-   };
+   const char * check_parameter( int index );
 
-   std::shared_ptr< stmt_t >     m_stmt;
-   std::vector< stmt_t::desc_t > m_parameters;
-   std::vector< buffer >         m_buffers;
-   buffer & check_parameter( int index );
-
-   void bind_time( int index, time_t t );
-
-   template< typename T > void bind_parameter( int index, int c_type, const T & t );
-
-   void prepare_parameter_desc( void );
-   void prepare_result_desc( void );
-
-protected:
-
-   enum state_t { Preparing, Executed };
-
-   state_t m_state;
-
-   statement_base( SQLHDBC hdbc );
-
-   void prepare( const std::string & sql );
+   template< typename T > void internal_set_parameter( int index, T t );
 
 public:
+
+   named_statement( SQLHDBC hdbc,
+                    const std::string     & sql,
+                    const db::name_list_t & parameters );
+
+   ~named_statement( void );
 
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;
@@ -74,10 +56,6 @@ public:
    virtual void set_parameter( int index, const std::string & ) override;
 
    virtual int parameter_count( void ) override;
-
-   virtual void reset( void ) override;
-   virtual uint64_t execute( void ) override;
-   virtual db::result result( void ) override;
 };
 
 //-----------------------------------------------------------------------------
