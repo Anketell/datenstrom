@@ -23,7 +23,7 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
-void check_status( const const char * operation, SQLHANDLE handle, SQLSMALLINT type, RETCODE rc )
+void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, RETCODE rc )
 {
    if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO )
    {

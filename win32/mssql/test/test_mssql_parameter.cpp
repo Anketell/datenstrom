@@ -2,19 +2,19 @@
 
 #include <gtest/gtest.h>
 #include <db/connection.h>
-#include <firebird/test/firebird_test_data.h>
+#include <mssql/test/mssql_test_data.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
 const ds::db::name_list_t named_parameters =
 {
-   "datetime_",
-   "time_",
-   "date_",
+   "datetime",
+   "time",
+   "date",
    "string",
-   "double_",
-   "float_",
+   "double",
+   "float",
    "u64",
    "u32",
    "u16",
@@ -29,19 +29,19 @@ const ds::db::name_list_t named_parameters =
 
 static const ds::db::name_list_t named_parameter_duplicates =
 {
-   "datetime_",
-   "time_",
-   "date_",
+   "datetime",
+   "time",
+   "date",
    "string",
-   "double_",
-   "float_",
+   "double",
+   "float",
    "unsigned",
    "signed"
 };
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_insert_named )
+TEST( mssql_parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -54,8 +54,8 @@ TEST( firebird_parameter, should_insert_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
-                                   << "14:05:20"
+      EXPECT_NO_THROW( insert_test << "2020-05-14 15:05:20"
+                                   << "15:05:20"
                                    << "2020-05-14"
                                    << "hello2"
                                    << double( 10.0 )
@@ -76,7 +76,7 @@ TEST( firebird_parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_retrieve_named )
+TEST( mssql_parameter, should_retrieve_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -89,62 +89,54 @@ TEST( firebird_parameter, should_retrieve_named )
    {
       ds::db::statement insert_test = test_db( named, named_parameters );
 
-      for ( int i = 0; i < 2; i++ )
-      {
-         EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
-                                      << "14:05:20"
-                                      << "2020-05-14"
-                                      << "hello2"
-                                      << 10
-                                      <<  9
-                                      <<  8
-                                      <<  7
-                                      <<  6
-                                      <<  5
-                                      <<  4
-                                      <<  3
-                                      <<  2
-                                      <<  1 );
-
-         EXPECT_EQ( insert_test.result().rows_affected(), 1 );
-      }
+      EXPECT_NO_THROW( insert_test << "2020-05-14 15:05:20"
+                                   << "15:05:20"
+                                   << "2020-05-14"
+                                   << "hello2"
+                                   << 10
+                                   <<  9
+                                   <<  8
+                                   <<  7
+                                   <<  6
+                                   <<  5
+                                   <<  4
+                                   <<  3
+                                   <<  2
+                                   <<  1
+                                   << ds::endr );
    }
 
    Object o;
 
    {
-      ds::db::statement results_test = test_db(
-         "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
-                "FROM Object WHERE hello = :hello", { "hello" } );
+      ds::db::statement results_test = test_db( results );
 
-      for ( auto row : results_test( "hello2" ) )
-      {
-         EXPECT_NO_THROW( row >> o );
-         EXPECT_EQ( row.rows_affected(), 2  );
+      auto row = results_test.result();
 
-         EXPECT_EQ( o.m_i8, 1 );
-         EXPECT_EQ( o.m_i16, 2 );
-         EXPECT_EQ( o.m_i32, 3 );
-         EXPECT_EQ( o.m_i64, 4 );
-         EXPECT_EQ( o.m_u8, 5 );
-         EXPECT_EQ( o.m_u16, 6 );
-         EXPECT_EQ( o.m_u32, 7 );
-         EXPECT_EQ( o.m_u64, 8 );
-         EXPECT_EQ( o.m_f, 9 );
-         EXPECT_EQ( o.m_d, 10 );
-         EXPECT_EQ( o.m_hello, "hello2" );
-         EXPECT_EQ( o.m_date, "2020-05-14" );
-         EXPECT_EQ( o.m_time, "14:05:20" );
-         EXPECT_EQ( o.m_datetime, "2020-05-14 14:05:20" );
-      }
+      EXPECT_NO_THROW( row >> o );
    }
+
+   EXPECT_EQ( o.m_i8, 1 );
+   EXPECT_EQ( o.m_i16, 2 );
+   EXPECT_EQ( o.m_i32, 3 );
+   EXPECT_EQ( o.m_i64, 4 );
+   EXPECT_EQ( o.m_u8, 5 );
+   EXPECT_EQ( o.m_u16, 6 );
+   EXPECT_EQ( o.m_u32, 7 );
+   EXPECT_EQ( o.m_u64, 8 );
+   EXPECT_EQ( o.m_f, 9 );
+   EXPECT_EQ( o.m_d, 10 );
+   EXPECT_EQ( o.m_hello, "hello2" );
+   EXPECT_EQ( o.m_date, "2020-05-14" );
+   EXPECT_EQ( o.m_time, "15:05:20" );
+   EXPECT_EQ( o.m_datetime, "2020-05-14 15:05:20" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_support_duplicate_parameters )
+TEST( mssql_parameter, should_support_duplicate_parameters )
 {
    ds::db::connection test_db( test_con_str );
 

@@ -5,9 +5,9 @@ add_library( ${TARGET} MODULE
    connection.cpp
    statement_base.cpp
    positional_statement.cpp
+   named_statement.cpp
    result.cpp
    error.cpp
-#   types.cpp
 )
 
 target_link_libraries( ${TARGET}

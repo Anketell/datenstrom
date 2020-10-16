@@ -45,6 +45,7 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
    std::string pos_sql;
 
+   int unique = 0;
    int param = 0;
 
    uint32_t from = 0;
@@ -60,14 +61,18 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
       int j = it - parameters.begin();
       if ( index[ j ] == -1 )
-         index[ j ] = param++;
+      {
+         index[ j ] = param;
+         unique++;
+      }
 
+      param++;
       from = parameter.from + parameter.len;
    }
 
    pos_sql += sql.substr( from );
 
-   if ( param != parameters.size() )
+   if ( unique != parameters.size() )
       throw_error( "Wrap SQL", "Wrong number of parameters" );
 
    return pos_sql;
@@ -187,13 +192,15 @@ std::string named_statement::wrap_sql( const std::string     & sql,
    if ( meta.in->sqld )
    {
       wrapped_sql << " ( ";
-      for ( int i = 0; i < meta.in->sqld; i++ )
+
+      int i = 0;
+      for ( auto name : parameters )
       {
          if ( i )
             wrapped_sql << ", ";
 
-         wrapped_sql << parameters[ i ] << " "
-                     << data_type( meta.in->sqlvar[ index[ i ] ] ) << " = ?";
+         wrapped_sql << name << " "
+                     << data_type( meta.in->sqlvar[ index[ i++ ] ] ) << " = ?";
       }
       wrapped_sql << " )";
    }

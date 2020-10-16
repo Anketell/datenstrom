@@ -23,6 +23,7 @@ extern const char * results;
 extern const char * num_rows;
 extern const char * del_rows;
 extern const char * named;
+extern const char * named_duplicates;
 extern const char * batch;
 
 //-----------------------------------------------------------------------------

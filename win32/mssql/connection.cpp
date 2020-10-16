@@ -2,6 +2,7 @@
 
 #include <mssql/connection.h>
 #include <mssql/positional_statement.h>
+#include <mssql/named_statement.h>
 #include <mssql/error.h>
 #include <sqlext.h>
 #include <sstream>
@@ -165,7 +166,7 @@ db::statement connection::operator()( const std::string     & query,
    if ( parameters.empty() )
       return db::statement( std::make_shared< positional_statement >( m_hdbc, query ) );
 
-   throw ds::Not_implemented();
+   return db::statement( std::make_shared< named_statement >( m_hdbc, query, parameters ) );
 }
 
 //-----------------------------------------------------------------------------
