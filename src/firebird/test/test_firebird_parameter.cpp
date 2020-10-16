@@ -27,6 +27,20 @@ const ds::db::name_list_t named_parameters =
 
 //-----------------------------------------------------------------------------
 
+static const ds::db::name_list_t named_parameter_duplicates =
+{
+   "datetime_",
+   "time_",
+   "date_",
+   "string",
+   "double_",
+   "float_",
+   "unsigned",
+   "signed"
+};
+
+//-----------------------------------------------------------------------------
+
 TEST( firebird_parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
@@ -124,6 +138,61 @@ TEST( firebird_parameter, should_retrieve_named )
          EXPECT_EQ( o.m_datetime, "2020-05-14 14:05:20" );
       }
    }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST( firebird_parameter, should_support_duplicate_parameters )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( named_duplicates, 
+                                               named_parameter_duplicates );
+
+      EXPECT_NO_THROW( insert_test << "2020-05-14 15:05:20"
+                                   << "15:05:20"
+                                   << "2020-05-14"
+                                   << "hello2"
+                                   << 10
+                                   << 9
+                                   << 4
+                                   << -4
+                                   << ds::endr );
+   }
+
+   Object o;
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      auto row = results_test.result();
+
+      EXPECT_NO_THROW( row >> o );
+   }
+
+   EXPECT_EQ( o.m_i8, -4 );
+   EXPECT_EQ( o.m_i16, -4 );
+   EXPECT_EQ( o.m_i32, -4 );
+   EXPECT_EQ( o.m_i64, -4 );
+   EXPECT_EQ( o.m_u8, 4 );
+   EXPECT_EQ( o.m_u16, 4 );
+   EXPECT_EQ( o.m_u32, 4 );
+   EXPECT_EQ( o.m_u64, 4 );
+   EXPECT_EQ( o.m_f, 9 );
+   EXPECT_EQ( o.m_d, 10 );
+   EXPECT_EQ( o.m_hello, "hello2" );
+   EXPECT_EQ( o.m_date, "2020-05-14" );
+   EXPECT_EQ( o.m_time, "15:05:20" );
+   EXPECT_EQ( o.m_datetime, "2020-05-14 15:05:20" );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
