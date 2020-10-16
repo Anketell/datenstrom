@@ -70,6 +70,12 @@ const char * named    = "INSERT INTO Object VALUES ( :i8, :i16, :i32, :i64, "
                                                     ":float_, :double_, :string, "
                                                     ":date_, :time_, :datetime_, "
                                                     "GEN_ID( ObjectID, 1 ) ) returning id";
+const char * named_duplicates = "INSERT INTO Object VALUES ( :signed, :signed, :signed, :signed, "
+                                                            ":unsigned, :unsigned, :unsigned, :unsigned, "
+                                                            ":float_, :double_, :string, "
+                                                            ":date_, :time_, :datetime_, "
+                                                            "GEN_ID( ObjectID, 1 ) ) returning id";
+
 
 const char * batch =
 R"(
