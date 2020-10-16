@@ -28,7 +28,7 @@ class named_statement : public statement_base
    std::string get_pos_sql( const std::string     & sql,
                             const db::name_list_t & parameters );
 
-   const char * check_parameter( int index );
+   void check_parameter( int index );
 
    template< typename T > void internal_set_parameter( int index, T t );
 

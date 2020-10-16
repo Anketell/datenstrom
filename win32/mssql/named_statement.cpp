@@ -16,46 +16,6 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
-std::string named_statement::get_pos_sql( const std::string     & sql,
-                                          const db::name_list_t & parameters )
-{
-   std::string pos_sql;
-
-   int unique = 0;
-   int param  = 0;
-
-   uint32_t from = 0;
-   for ( auto parameter : util::parameter::enumerator( sql, ":$" ) )
-   {
-      std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
-
-      pos_sql += sql.substr( from, parameter.from - from ) + '?';
-
-      auto it = std::find( parameters.begin(), parameters.end(), name );
-      if ( it == parameters.end() )
-         throw_error( "Wrap SQL", "Parameter mismatch" );
-
-      int j = static_cast< int >( it - parameters.begin() );
-
-      auto it2 = m_param_map.lower_bound( j );
-      if ( it2 == m_param_map.end() || it2->first != j )
-         unique++;
-
-      m_param_map.insert( { j, param++ } );
-
-      from = parameter.from + parameter.len;
-   }
-
-   pos_sql += sql.substr( from );
-
-   if ( unique != parameters.size() )
-      throw_error( "Wrap SQL", "Wrong number of parameters" );
-
-   return pos_sql;
-}
-
-//-----------------------------------------------------------------------------
-
 named_statement::named_statement( SQLHDBC                 hdbc,
                                   const std::string     & sql,
                                   const db::name_list_t & parameters ) :
@@ -74,7 +34,49 @@ named_statement::~named_statement( void )
 
 //-----------------------------------------------------------------------------
 
-const char * named_statement::check_parameter( int index )
+std::string named_statement::get_pos_sql( const std::string     & sql,
+                                          const db::name_list_t & parameters )
+{
+   static constexpr char operation[] = "MSSQL prepare named statement";
+
+   std::string pos_sql;
+
+   int unique = 0;
+   int param  = 0;
+
+   uint32_t from = 0;
+   for ( auto parameter : util::parameter::enumerator( sql, ":$" ) )
+   {
+      std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
+
+      pos_sql += sql.substr( from, parameter.from - from ) + '?';
+
+      auto it = std::find( parameters.begin(), parameters.end(), name );
+      if ( it == parameters.end() )
+         throw_error( operation, "Parameter mismatch" );
+
+      int j = static_cast< int >( it - parameters.begin() );
+
+      auto it2 = m_param_map.lower_bound( j );
+      if ( it2 == m_param_map.end() || it2->first != j )
+         unique++;
+
+      m_param_map.insert( { j, param++ } );
+
+      from = parameter.from + parameter.len;
+   }
+
+   pos_sql += sql.substr( from );
+
+   if ( unique != parameters.size() )
+      throw_error( operation, "Wrong number of parameters" );
+
+   return pos_sql;
+}
+
+//-----------------------------------------------------------------------------
+
+void named_statement::check_parameter( int index )
 {
    static constexpr char operation[] = "MSSQL named statement parameter check";
 
@@ -86,14 +88,14 @@ const char * named_statement::check_parameter( int index )
 
    if ( index >= m_names.size() )
       throw_error( operation, "Too many parameters" );
-
-   return m_names[ index ].c_str();
 }
 
 //-----------------------------------------------------------------------------
 
 template< typename T > void named_statement::internal_set_parameter( int index, T t )
 {
+   check_parameter( index );
+
    auto begin = m_param_map.lower_bound( index );
    auto end   = m_param_map.upper_bound( index );
 

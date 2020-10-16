@@ -21,6 +21,10 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
+static constexpr char operation[] = "Firebird prepare named statement";
+
+//-----------------------------------------------------------------------------
+
 named_statement::named_statement( transactional         & transactional,
                                   const std::string     & sql,
                                   const db::name_list_t & parameters ) :
@@ -57,7 +61,7 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
       auto it = std::find( parameters.begin(), parameters.end(), name );
       if ( it == parameters.end() )
-         throw_error( "Wrap SQL", "Parameter mismatch" );
+         throw_error( operation, "Parameter mismatch" );
 
       int j = it - parameters.begin();
       if ( index[ j ] == -1 )
@@ -73,7 +77,7 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
    pos_sql += sql.substr( from );
 
    if ( unique != parameters.size() )
-      throw_error( "Wrap SQL", "Wrong number of parameters" );
+      throw_error( operation, "Wrong number of parameters" );
 
    return pos_sql;
 }
@@ -84,8 +88,6 @@ void named_statement::get_stmt_meta( const std::string     & sql,
                                      const db::name_list_t & parameters,
                                      stmt_meta_t           * meta )
 {
-   static constexpr char operation[] = "Firebird statement prepare";
-
    std::string pos_sql = get_pos_sql( sql, parameters, meta->index );
 
    ISC_STATUS status[ status_vector_length ];
@@ -165,7 +167,7 @@ std::string data_type( const XSQLVAR & xsqlvar )
          break;
 
       default:
-         throw_error( "Firebird statement preparation", "Unsupported data type" );
+         throw_error( operation, "Unsupported data type" );
    }
 
    return type;
