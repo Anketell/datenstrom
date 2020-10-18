@@ -47,5 +47,10 @@
       "numeric": "cpp",
       "cinttypes": "cpp",
       "valarray": "cpp"
-   }
+   },
+   "testMate.cpp.test.advancedExecutables": [
+      {
+         "pattern": "${workspaceFolder}/debug/**/test/test_*"
+      }
+   ]
 }
