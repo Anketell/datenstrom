@@ -52,6 +52,8 @@ class statement_base : public db::statement::impl
    void execute_procedure( void );
    void internal_execute( void );
 
+   void begin_tmp_transaction( void );
+
    void write_blob( int index, uint32_t len, const char * data );
 
 protected:

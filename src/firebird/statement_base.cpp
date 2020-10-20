@@ -202,6 +202,14 @@ void statement_base::prepare_result_buffer( void )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::begin_tmp_transaction( void )
+{
+   if ( !m_transactional.tr_handle )
+      m_tmp_transaction = std::make_unique< ds::db::transaction >( m_transactional );
+}
+
+//-----------------------------------------------------------------------------
+
 void statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "Firebird statement parameter check";
@@ -367,8 +375,7 @@ void statement_base::write_blob( int index, uint32_t len, const char * data )
 {
    static constexpr char operation[] = "Firebird write blob";
 
-   if ( !m_transactional.tr_handle )
-      m_tmp_transaction = std::make_unique< ds::db::transaction >( m_transactional );
+   begin_tmp_transaction();
 
    transactional & fdb = dynamic_cast< transactional & >( m_transactional );
 
@@ -558,8 +565,7 @@ uint64_t statement_base::execute( void )
 
 db::result statement_base::result( void )
 {
-   if ( !m_transactional.tr_handle )
-      m_tmp_transaction = std::make_unique< ds::db::transaction >( m_transactional );
+   begin_tmp_transaction();
 
    internal_execute();
 

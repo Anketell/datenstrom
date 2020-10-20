@@ -33,16 +33,14 @@ TEST( firebird_blob, should_create_and_read_blob )
    {
       ds::db::statement insert = test_db( blob_insert );
       EXPECT_NO_THROW( insert << blob_data << ds::endr );
-   }
 
-   std::string value;
+      std::string value;
 
-   {
       ds::db::statement query = test_db( "SELECT * FROM Object" );
       EXPECT_NO_THROW( query.result() >> value );
-   }
 
-   EXPECT_EQ( value, blob_data );
+      EXPECT_EQ( value, blob_data );
+   }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
