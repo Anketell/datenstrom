@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/statement.h>
+#include <db/transaction.h>
 #include <firebird/types.h>
 #include <functional>
 
@@ -33,6 +34,8 @@ class statement_base : public db::statement::impl
 {
    XSQLDA * m_xsqlda = nullptr;
 
+   std::unique_ptr< ds::db::transaction > m_tmp_transaction;
+
    template< typename BI > void set_big_int( int index, BI bi );
    void set_string( int index, uint32_t len, const char * data );
 
@@ -48,6 +51,8 @@ class statement_base : public db::statement::impl
    void execute_statement( void );
    void execute_procedure( void );
    void internal_execute( void );
+
+   void write_blob( int index, uint32_t len, const char * data );
 
 protected:
 

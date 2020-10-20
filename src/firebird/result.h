@@ -27,6 +27,7 @@ class result : public db::result::impl
    std::unique_ptr< ds::db::transaction > m_transaction;
    bool                                   m_valid;
 
+   void read_blob( int index, std::string & s );
    void check_column( int index );
 
    template< typename BI > BI get_big_int( int index );

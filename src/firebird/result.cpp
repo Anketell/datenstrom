@@ -2,6 +2,7 @@
 
 #include <firebird/result.h>
 #include <firebird/error.h>
+#include <firebird/transactional.h>
 #include <limits>
 #include <type_traits>
 
@@ -296,6 +297,75 @@ void result::get_column( int index, double & d )
 
 //-----------------------------------------------------------------------------
 
+static uint32_t get_blob_size( isc_blob_handle & bl_handle )
+{
+   static constexpr char operaton[] = "Firebird get blob info";
+
+   static constexpr char request[] =
+   {
+      isc_info_blob_total_length
+   };
+
+   ISC_STATUS status[ status_vector_length ];
+
+   char blob_info[ 32 ];
+
+   isc_blob_info( status, &bl_handle,
+                          sizeof( request ),
+                          request,
+                          sizeof( blob_info ),
+                          blob_info );
+   check_status( operation, status );
+
+   return isc_vax_integer( blob_info + 3, isc_vax_integer( blob_info + 1, 2 ) );
+}
+
+//-----------------------------------------------------------------------------
+
+void result::read_blob( int index, std::string & s )
+{
+   static constexpr char operation[] = "Firebird read blob";
+
+   db::transactional & db  = static_cast< db::transactional & >( *m_transaction );
+   transactional     & fdb = dynamic_cast< transactional & >( db );
+
+   ISC_STATUS status[ status_vector_length ];
+
+   isc_blob_handle bl_handle = 0;
+
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
+
+   isc_open_blob2( status, &fdb.db_handle,
+                           &fdb.tr_handle,
+                           &bl_handle,
+                           reinterpret_cast< ISC_QUAD * >( column.sqldata ),
+                           0,
+                           nullptr );
+   check_status( operation, status );
+
+   uint32_t size = get_blob_size( bl_handle );
+
+   s.resize( size );
+   char * dest = const_cast< char * >( s.data() );
+
+   while ( size )
+   {
+      uint16_t len = std::min( size, 65535U );
+      uint16_t act_len;
+
+      isc_get_segment( status, &bl_handle, &act_len, len, reinterpret_cast< ISC_SCHAR * >( dest ) );
+      check_status( operation, status );
+
+      size -= act_len;
+      dest += act_len;
+   }
+
+   isc_close_blob( status, &bl_handle );
+   check_status( operation, status );
+}
+
+//-----------------------------------------------------------------------------
+
 void result::get_column( int index, std::string & s )
 {
    check_column( index );
@@ -322,6 +392,10 @@ void result::get_column( int index, std::string & s )
 
       case SQL_TIMESTAMP:
          s = decode_timestamp( *reinterpret_cast< ISC_TIMESTAMP * >( column.sqldata ) );
+         break;
+
+      case SQL_BLOB:
+         read_blob( index, s );
          break;
 
       default:

@@ -5,6 +5,7 @@ add_executable( ${TARGET}
    test_firebird_list.cpp
    test_firebird_parameter.cpp
    test_firebird_transaction.cpp
+   test_firebird_blob.cpp
    firebird_test_data.cpp
 )
 
