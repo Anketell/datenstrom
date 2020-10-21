@@ -5,6 +5,7 @@ add_executable( ${TARGET}
    test_mysql_list.cpp
    test_mysql_parameter.cpp
    test_mysql_transaction.cpp
+   test_mysql_blob.cpp
    mysql_test_data.cpp
 )
 
