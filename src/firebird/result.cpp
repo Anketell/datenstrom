@@ -317,7 +317,9 @@ static uint32_t get_blob_size( isc_blob_handle & bl_handle )
                           blob_info );
    check_status( operation, status );
 
-   return isc_vax_integer( blob_info + 3, isc_vax_integer( blob_info + 1, 2 ) );
+   int16_t len = isc_vax_integer( blob_info + 1, 2 );
+
+   return isc_vax_integer( blob_info + 3, len );
 }
 
 //-----------------------------------------------------------------------------
@@ -353,7 +355,10 @@ void result::read_blob( int index, std::string & s )
       uint16_t len = std::min( size, 65535U );
       uint16_t act_len;
 
-      isc_get_segment( status, &bl_handle, &act_len, len, reinterpret_cast< ISC_SCHAR * >( dest ) );
+      isc_get_segment( status, &bl_handle,
+                               &act_len,
+                               len,
+                               reinterpret_cast< ISC_SCHAR * >( dest ) );
       check_status( operation, status );
 
       size -= act_len;
