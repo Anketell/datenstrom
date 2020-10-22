@@ -166,6 +166,10 @@ std::string data_type( const XSQLVAR & xsqlvar )
          type = "TIMESTAMP";
          break;
 
+      case SQL_BLOB:
+         type = "BLOB";
+         break;
+
       default:
          throw_error( operation, "Unsupported data type" );
    }
