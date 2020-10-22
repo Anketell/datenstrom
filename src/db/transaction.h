@@ -36,6 +36,8 @@ public:
 
    transaction( transactional & db );
    ~transaction( void );
+
+   operator transactional & ( void ) { return m_db; }
 };
 
 //-----------------------------------------------------------------------------

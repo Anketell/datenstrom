@@ -1,6 +1,5 @@
 //-----------------------------------------------------------------------------
 
-#include <db/transaction.h>
 #include <firebird/statement_base.h>
 #include <firebird/result.h>
 #include <firebird/error.h>
@@ -203,6 +202,14 @@ void statement_base::prepare_result_buffer( void )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::begin_tmp_transaction( void )
+{
+   if ( !m_transactional.tr_handle )
+      m_tmp_transaction = std::make_unique< ds::db::transaction >( m_transactional );
+}
+
+//-----------------------------------------------------------------------------
+
 void statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "Firebird statement parameter check";
@@ -364,22 +371,53 @@ void statement_base::set_parameter( int index, double d )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::write_blob( int index, uint32_t len, const char * data )
+{
+   static constexpr char operation[] = "Firebird write blob";
+
+   begin_tmp_transaction();
+
+   transactional & fdb = dynamic_cast< transactional & >( m_transactional );
+
+   ISC_STATUS status[ status_vector_length ];
+
+   isc_blob_handle bl_handle = 0;
+
+   XSQLVAR & param( m_xsqlda->sqlvar[ index ] );
+
+   isc_create_blob2( status, &fdb.db_handle,
+                              &fdb.tr_handle,
+                              &bl_handle,
+                              reinterpret_cast< ISC_QUAD * >( param.sqldata ),
+                              0,
+                              nullptr );
+   check_status( operation, status );
+
+   isc_put_segment( status, &bl_handle, len, data );
+   check_status( operation, status );
+
+   isc_close_blob( status, &bl_handle );
+   check_status( operation, status );
+}
+
+//-----------------------------------------------------------------------------
+
 void statement_base::set_string( int index, uint32_t len, const char * data )
 {
    check_parameter( index );
 
    XSQLVAR & param( m_xsqlda->sqlvar[ index ] );
 
-   len = std::min( len, static_cast< uint32_t >( param.sqllen ) );
+   uint32_t text_len = std::min( len, static_cast< uint32_t >( param.sqllen ) );
 
    switch ( param.sqltype & ~1 )
    {
       case SQL_TEXT:
-         memcpy( param.sqldata, data, len );
+         memcpy( param.sqldata, data, text_len );
          break;
 
       case SQL_VARYING:
-         *reinterpret_cast< int16_t * >( param.sqldata ) = static_cast< int16_t >( len );
+         *reinterpret_cast< int16_t * >( param.sqldata ) = static_cast< int16_t >( text_len );
          memcpy( param.sqldata + sizeof( int16_t ), data, len );
          break;
 
@@ -393,6 +431,10 @@ void statement_base::set_string( int index, uint32_t len, const char * data )
 
       case SQL_TIMESTAMP:
          *reinterpret_cast< ISC_TIMESTAMP * >( param.sqldata ) = encode_timestamp( data );
+         break;
+
+      case SQL_BLOB:
+         write_blob( index, len, data );
          break;
 
       default:
@@ -514,6 +556,8 @@ uint64_t statement_base::execute( void )
       }
    } );
 
+   m_tmp_transaction.reset();
+
    return res;
 }
 
@@ -521,14 +565,11 @@ uint64_t statement_base::execute( void )
 
 db::result statement_base::result( void )
 {
-   std::unique_ptr< ds::db::transaction > transaction;
-
-   if ( !m_transactional.tr_handle )
-      transaction = std::make_unique< ds::db::transaction >( m_transactional );
+   begin_tmp_transaction();
 
    internal_execute();
 
-   return db::result( std::make_shared< firebird::result >( m_stmt, std::move( transaction ) ) );
+   return db::result( std::make_shared< firebird::result >( m_stmt, std::move( m_tmp_transaction ) ) );
 }
 
 //-----------------------------------------------------------------------------

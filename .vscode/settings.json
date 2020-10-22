@@ -49,8 +49,10 @@
       "valarray": "cpp"
    },
    "testMate.cpp.test.advancedExecutables": [
+
       {
-         "pattern": "${workspaceFolder}/debug/**/test/test_*"
+         "pattern": "${workspaceFolder}/debug/**/test/test_*",
+         "win32": { "pattern":"${workspaceFolder}/build/**/test/Debug/test_*.exe" }
       }
    ]
 }
