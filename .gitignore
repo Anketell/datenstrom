@@ -3,4 +3,5 @@ coverage
 build
 *.db
 *.csv
+*.exe
 .vscode/ipch
