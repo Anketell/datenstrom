@@ -31,8 +31,15 @@ TEST( firebird_db_list, should_provide_iterator )
    {
       int i = 0;
 
-      for ( Object o : test_db( results ) )
+      auto list = test_db( results );
+
+      ds::db::statement::iterator it;
+
+      for ( it = list.begin(); it != list.end(); it++ )
+      {
+         Object o = *it;
          EXPECT_EQ( o, data[ i++ ] );
+      }
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
