@@ -21,7 +21,7 @@ m_db( db )
    m_db.begin_transaction();
 
 #if __cplusplus >= 201703L
-   m_count = std::uncaught_exceptions();
+   m_uncaught_count = std::uncaught_exceptions();
 #endif
 }
 
@@ -30,7 +30,7 @@ m_db( db )
 transaction::~transaction( void )
 {
 #if __cplusplus >= 201703L
-   if ( std::uncaught_exceptions() > m_count )
+   if ( std::uncaught_exceptions() > m_uncaught_count )
 #else
    if ( std::uncaught_exception() )
 #endif
@@ -48,7 +48,7 @@ m_db( db )
    m_db.savepoint( name.c_str() );
 
 #if __cplusplus >= 201703L
-   m_count = std::uncaught_exceptions();
+   m_uncaught_count = std::uncaught_exceptions();
 #endif
 }
 
@@ -57,7 +57,7 @@ m_db( db )
 savepoint::~savepoint( void )
 {
 #if __cplusplus >= 201703L
-   if ( std::uncaught_exceptions() > m_count )
+   if ( std::uncaught_exceptions() > m_uncaught_count )
 #else
    if ( std::uncaught_exception() )
 #endif

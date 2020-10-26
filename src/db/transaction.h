@@ -27,10 +27,7 @@ class impl;
 class transaction
 {
    transactional & m_db;
-
-#if __cplusplus >= 201703L
-   int m_count;
-#endif
+   int             m_uncaught_count;
 
 public:
 
@@ -46,10 +43,7 @@ class savepoint
 {
    impl      & m_db;
    std::string m_name;
-
-#if __cplusplus >= 201703L
-   int m_count;
-#endif
+   int         m_uncaught_count;
 
 public:
 
