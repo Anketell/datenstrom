@@ -29,6 +29,13 @@ m_stmt( stmt )
 
 //-----------------------------------------------------------------------------
 
+result::~result( void )
+{
+   m_stmt->reset();
+}
+
+//-----------------------------------------------------------------------------
+
 int result::column_count( void ) const
 {
    return static_cast< int >( m_stmt->columns.size() );

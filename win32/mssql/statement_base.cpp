@@ -96,42 +96,10 @@ void statement_base::prepare_parameter_desc( void )
    {
       stmt_t::desc_t & desc( m_parameters[ i ] );
 
-      rc = SQLDescribeParam( m_stmt->hstmt, i + 1, &desc.type, 
-                                                   &desc.size, 
-                                                   &desc.digits, 
+      rc = SQLDescribeParam( m_stmt->hstmt, i + 1, &desc.type,
+                                                   &desc.size,
+                                                   &desc.digits,
                                                    &desc.nullable );
-
-      check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-   }
-}
-
-//-----------------------------------------------------------------------------
-
-void statement_base::prepare_result_desc( void )
-{
-   static constexpr char operation[] = "MSSQL statement prepare result descriptions";
-
-   if ( m_stmt->columns.size() )
-      return;
-
-   SQLSMALLINT count;
-
-   RETCODE rc = SQLNumResultCols( m_stmt->hstmt, &count );
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   m_stmt->columns.resize( count );
-
-   for ( SQLSMALLINT i = 0; i < count; i++ )
-   {
-      stmt_t::desc_t & desc( m_stmt->columns[ i ] );
-
-      rc = SQLDescribeCol( m_stmt->hstmt, i + 1, nullptr, 
-                                                 0,
-                                                 nullptr, 
-                                                 &desc.type, 
-                                                 &desc.size, 
-                                                 &desc.digits, 
-                                                 &desc.nullable );
 
       check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
    }
@@ -151,9 +119,7 @@ statement_base::buffer & statement_base::check_parameter( int index )
    if ( index >= m_parameters.size() )
       throw_error( operation, "Too many parameters" );
 
-   buffer & buffer = m_buffers[ index ];
-
-   return buffer;
+   return m_buffers[ index ];
 }
 
 //-----------------------------------------------------------------------------
@@ -237,7 +203,7 @@ template< typename T > void statement_base::bind_parameter( int index, int c_typ
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
-                                  SQL_PARAM_INPUT, 
+                                  SQL_PARAM_INPUT,
                                   c_type,
                                   desc.type,
                                   desc.size,
@@ -339,18 +305,7 @@ int statement_base::parameter_count( void )
 
 void statement_base::reset( void )
 {
-   static constexpr char operation[] = "MSSQL statement reset";
-
-   if ( m_state == Preparing )
-      return;
-
-   RETCODE rc = SQLCancel( m_stmt->hstmt );
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   rc = SQLFreeStmt( m_stmt->hstmt, SQL_UNBIND );
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   m_state = Preparing;
+   m_stmt->reset();
 }
 
 //-----------------------------------------------------------------------------
@@ -359,14 +314,7 @@ uint64_t statement_base::execute( void )
 {
    static constexpr char operation[] = "MSSQL statement execute";
 
-   reset();
-
-   RETCODE rc = SQLExecute( m_stmt->hstmt );
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   m_state = Executed;
-
-   prepare_result_desc();
+   m_stmt->execute();
 
    uint64_t res = 0;
 
@@ -379,9 +327,9 @@ uint64_t statement_base::execute( void )
 
       result.get_column( 0, res );
    }
-   
+
    reset();
- 
+
    return res;
 }
 
@@ -389,16 +337,7 @@ uint64_t statement_base::execute( void )
 
 db::result statement_base::result( void )
 {
-   static constexpr char operation[] = "MSSQL statement result";
-
-   reset();
-
-   RETCODE rc = SQLExecute( m_stmt->hstmt );
-   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
-   m_state = Executed;
-
-   prepare_result_desc();
+   m_stmt->execute();
 
    return std::make_shared< mssql::result >( m_stmt );
 }

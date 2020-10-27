@@ -8,6 +8,7 @@ add_library( ${TARGET} MODULE
    named_statement.cpp
    result.cpp
    error.cpp
+   types.cpp
 )
 
 target_link_libraries( ${TARGET}

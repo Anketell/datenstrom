@@ -34,9 +34,9 @@ class statement_base : public db::statement::impl
       ~buffer( void );
    };
 
-   std::shared_ptr< stmt_t >     m_stmt;
    std::vector< stmt_t::desc_t > m_parameters;
    std::vector< buffer >         m_buffers;
+
    buffer & check_parameter( int index );
 
    void bind_time( int index, time_t t );
@@ -44,13 +44,10 @@ class statement_base : public db::statement::impl
    template< typename T > void bind_parameter( int index, int c_type, const T & t );
 
    void prepare_parameter_desc( void );
-   void prepare_result_desc( void );
 
 protected:
 
-   enum state_t { Preparing, Executed };
-
-   state_t m_state;
+   std::shared_ptr< stmt_t > m_stmt;
 
    statement_base( SQLHDBC hdbc );
 

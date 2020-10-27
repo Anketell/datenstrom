@@ -27,7 +27,9 @@ constexpr SQLSMALLINT sql_time_type = -9;
 
 struct stmt_t
 {
-    struct desc_t
+   enum state_t { Preparing, Executed };
+
+   struct desc_t
     {
         SQLSMALLINT type;
         SQLULEN     size;
@@ -37,14 +39,16 @@ struct stmt_t
 
    SQLHSTMT              hstmt = nullptr;
    std::vector< desc_t > columns;
+   state_t               state = Preparing;
 
-   ~stmt_t( void )
-   {
-      if ( hstmt )
-         SQLFreeHandle( SQL_HANDLE_STMT, hstmt );
+   void execute( void );
+   void reset( void );
 
-      hstmt = nullptr;
-   }
+   ~stmt_t( void );
+
+private:
+
+   void prepare_result_desc( void );
 };
 
 //-----------------------------------------------------------------------------
