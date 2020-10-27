@@ -32,6 +32,8 @@ TEST( firebird_blob, should_create_and_read_blob )
    EXPECT_NO_THROW( test_db.execute_batch( blob_create ) );
 
    {
+      ds::db::transaction txn( test_db );
+
       ds::db::statement insert = test_db( blob_insert );
       EXPECT_NO_THROW( insert << blob_data << ds::endr );
 
