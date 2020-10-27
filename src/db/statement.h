@@ -114,7 +114,7 @@ public:
    iterator begin( void );
    iterator end( void );
 
-   template< typename T > statement operator()( T & t )
+   template< typename T > statement operator()( const T & t )
    {
       *this << t;
       return *this;
