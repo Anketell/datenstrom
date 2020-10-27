@@ -34,6 +34,7 @@ public:
    static void enroll_directory( const std::string & path );
 
    connection( const std::string & connect_string );
+   connection( const connect_params_t & connect_params );
 
    virtual const char * type( void ) const override;
 
