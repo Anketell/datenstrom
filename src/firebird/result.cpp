@@ -19,8 +19,10 @@ namespace firebird
 //-----------------------------------------------------------------------------
 
 result::result( std::shared_ptr< stmt_t >              stmt,
+                transactional                        & transactional,
                 std::unique_ptr< ds::db::transaction > transaction ) :
 m_stmt( stmt ),
+m_transactional( transactional ),
 m_transaction( std::move( transaction ) )
 {
    static constexpr char operation[] = "Firebird result prepare";
@@ -328,17 +330,14 @@ void result::read_blob( int index, std::string & s )
 {
    static constexpr char operation[] = "Firebird read blob";
 
-   db::transactional & db  = static_cast< db::transactional & >( *m_transaction );
-   transactional     & fdb = dynamic_cast< transactional & >( db );
-
    ISC_STATUS status[ status_vector_length ];
 
    isc_blob_handle bl_handle = 0;
 
    XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
 
-   isc_open_blob2( status, &fdb.db_handle,
-                           &fdb.tr_handle,
+   isc_open_blob2( status, &m_transactional.db_handle,
+                           &m_transactional.tr_handle,
                            &bl_handle,
                            reinterpret_cast< ISC_QUAD * >( column.sqldata ),
                            0,

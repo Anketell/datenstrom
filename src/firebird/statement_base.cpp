@@ -542,7 +542,7 @@ uint64_t statement_base::execute( void )
 
       if ( m_stmt->type != isc_info_sql_stmt_ddl )
       {
-         firebird::result result( m_stmt );
+         firebird::result result( m_stmt, m_transactional );
 
          if ( result )
          {
@@ -569,7 +569,9 @@ db::result statement_base::result( void )
 
    internal_execute();
 
-   return db::result( std::make_shared< firebird::result >( m_stmt, std::move( m_tmp_transaction ) ) );
+   return db::result( std::make_shared< firebird::result >( m_stmt,
+                                                            m_transactional,
+                                                            std::move( m_tmp_transaction ) ) );
 }
 
 //-----------------------------------------------------------------------------

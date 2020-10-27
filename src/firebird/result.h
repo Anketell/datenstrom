@@ -21,9 +21,14 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
+class transactional;
+
+//-----------------------------------------------------------------------------
+
 class result : public db::result::impl
 {
    std::shared_ptr< stmt_t >              m_stmt;
+   transactional                        & m_transactional;
    std::unique_ptr< ds::db::transaction > m_transaction;
    bool                                   m_valid;
 
@@ -35,7 +40,9 @@ class result : public db::result::impl
 
 public:
 
-   result( std::shared_ptr< stmt_t > stmt, std::unique_ptr< ds::db::transaction > = nullptr );
+   result( std::shared_ptr< stmt_t >              stmt,
+           transactional                        & trasnactional,
+           std::unique_ptr< ds::db::transaction > transaction = nullptr );
    ~result( void );
 
    virtual int column_count( void ) const override;
