@@ -153,7 +153,7 @@ template<> void result::get_column< std::string >( int index, int c_type, std::s
       count = std::min( t.find_last_of( '.' ), t.length() );
    }
 
-   t.resize( std::max( 1LL, static_cast< int64_t >( count ) ) );
+   t.resize( std::max( 0LL, static_cast< int64_t >( count ) ) );
 }
 
 //-----------------------------------------------------------------------------
