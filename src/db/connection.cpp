@@ -44,13 +44,17 @@ void connection::enroll_directory( const std::string & path )
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const std::string & connect_string )
+connection::connection( const std::string & connect_string ) :
+connection( parse_connect_string( connect_string ) )
 {
-   connect_params_t params = parse_connect_string( connect_string );
+}
 
+//-----------------------------------------------------------------------------
+
+connection::connection( const connect_params_t & connect_params )
+{
    init();
-
-   m_impl.reset( m_factory( params ) );
+   m_impl.reset( m_factory( connect_params ) );
 }
 
 //-----------------------------------------------------------------------------
