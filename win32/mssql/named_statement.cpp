@@ -4,6 +4,8 @@
 #include <mssql/error.h>
 #include <util/parameter.h>
 
+#include <sstream>
+
 //-----------------------------------------------------------------------------
 
 namespace ds
@@ -53,7 +55,15 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
       auto it = std::find( parameters.begin(), parameters.end(), name );
       if ( it == parameters.end() )
-         throw_error( operation, "Parameter mismatch" );
+      {
+         std::stringstream ss;
+
+         ss << std::endl
+            << sql << std::endl
+            << "Parameter mismatch: " << name;
+
+         throw_error( operation, ss.str().c_str() );
+      }
 
       int j = static_cast< int >( it - parameters.begin() );
 

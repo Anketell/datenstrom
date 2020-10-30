@@ -5,4 +5,5 @@ build
 *.db
 *.csv
 *.exe
+*.zip
 .vscode/ipch
