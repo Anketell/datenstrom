@@ -50,7 +50,7 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [],
+         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/sqlite"}],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
@@ -69,7 +69,7 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [],
+         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/firebird"}],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
@@ -88,7 +88,7 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [],
+         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"}],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
