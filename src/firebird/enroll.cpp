@@ -17,12 +17,13 @@ namespace db
 
 template<> impl * factory_helper< firebird::connection >::construct( const connect_params_t & params )
 {
-   auto server   = params[ "server" ];
-   auto path     = params[ "path" ];
-   auto port_str = params[ "port" ];
-   auto username = params[ "username" ];
-   auto password = params[ "password" ];
-   auto database = params[ "database" ];
+   auto server      = params[ "server" ];
+   auto path        = params[ "path" ];
+   auto port_str    = params[ "port" ];
+   auto username    = params[ "username" ];
+   auto password    = params[ "password" ];
+   auto dialect_str = params[ "dialect" ];
+   auto database    = params[ "database" ];
 
    if ( !server.empty() )
    {
@@ -40,7 +41,11 @@ template<> impl * factory_helper< firebird::connection >::construct( const conne
    if ( !port_str.empty() )
       port = atoi( port_str.c_str() );
 
-   impl * db = new firebird::connection( server, path, username, password, port );
+   int dialect = 3;
+   if ( !dialect_str.empty() )
+      dialect = atoi( dialect_str.c_str() );
+
+   impl * db = new firebird::connection( server, path, username, password, port, dialect );
 
    if ( !database.empty() )
    {

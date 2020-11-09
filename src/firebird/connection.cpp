@@ -30,12 +30,14 @@ connection::connection( const std::string & server,
                         const std::string & path,
                         const std::string & username,
                         const std::string & password,
-                        uint16_t            port ) :
+                        uint16_t            port,
+                        int                 dialect ) :
 m_server( server ),
 m_path( path ),
-m_port( port )
+m_port( port ),
+m_dialect( dialect )
 {
-   construct_dpb( username, password, 3 );
+   construct_dpb( username, password, m_dialect );
 }
 
 //-----------------------------------------------------------------------------
@@ -62,7 +64,7 @@ void connection::construct_dpb( const std::string & username,
 
    m_dpb += isc_dpb_sql_dialect;
    m_dpb += 1;
-   m_dpb += dialect;
+   m_dpb += dialect & 0xff;
 }
 
 //-----------------------------------------------------------------------------
@@ -179,7 +181,7 @@ void connection::create( const std::string & name )
 
    m_attached_db = name;
 
-   set_sql_dialect( 3 );
+   set_sql_dialect( m_dialect );
 }
 
 //-----------------------------------------------------------------------------
