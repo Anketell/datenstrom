@@ -32,7 +32,8 @@ class connection : public db::impl
    size_t                  m_password_offset;
 
    void construct_dpb( const std::string & username,
-                       const std::string & password );
+                       const std::string & password,
+                       int                 dialect );
 
    std::string get_local_path( const std::string & name ) const;
    std::string get_full_path( const std::string & name ) const;

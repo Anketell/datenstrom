@@ -35,13 +35,14 @@ m_server( server ),
 m_path( path ),
 m_port( port )
 {
-   construct_dpb( username, password );
+   construct_dpb( username, password, 3 );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::construct_dpb( const std::string & username,
-                                const std::string & password )
+                                const std::string & password,
+                                int                 dialect )
 {
    m_dpb.erase();
 
@@ -56,8 +57,12 @@ void connection::construct_dpb( const std::string & username,
 
    m_password_offset = m_dpb.length();
 
-   m_dpb += static_cast<int8_t>( password.length() );
+   m_dpb += static_cast< int8_t >( password.length() );
    m_dpb += password;
+
+   m_dpb += isc_dpb_sql_dialect;
+   m_dpb += 1;
+   m_dpb += dialect;
 }
 
 //-----------------------------------------------------------------------------
@@ -135,7 +140,7 @@ void connection::set_sql_dialect( int dialect )
    request += isc_action_svc_properties;
    request += isc_spb_dbname;
    request += local_path.length() & 0xff;
-   request += static_cast<int8_t>( local_path.length() >> 8 );
+   request += static_cast< int8_t >( local_path.length() >> 8 );
    request += local_path;
    request += isc_spb_prp_set_sql_dialect;
    request += dialect & 0xff;
