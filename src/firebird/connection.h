@@ -27,6 +27,7 @@ class connection : public db::impl
    std::string             m_path;
    std::string             m_attached_db;
    uint16_t                m_port;
+   int                     m_dialect;
    std::string             m_dpb;
    size_t                  m_username_offset;
    size_t                  m_password_offset;
@@ -50,7 +51,8 @@ public:
                const std::string & path,
                const std::string & username,
                const std::string & password,
-               uint16_t            port = 3050 );
+               uint16_t            port = 3050,
+               int                 dialect = 3 );
 
    virtual ~connection( void );
 
