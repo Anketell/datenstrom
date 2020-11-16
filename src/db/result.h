@@ -85,6 +85,8 @@ public:
    operator bool ( void ) const;
    operator bool ( void );
 
+   bool operator==( const result &  ) const;
+
    template< typename T > operator T ( void )
    {
       T t;
