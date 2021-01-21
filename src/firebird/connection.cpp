@@ -30,10 +30,12 @@ connection::connection( const std::string & server,
                         const std::string & path,
                         const std::string & username,
                         const std::string & password,
+                        const std::string & ext,
                         uint16_t            port,
                         int                 dialect ) :
 m_server( server ),
 m_path( path ),
+m_ext( ext ),
 m_port( port ),
 m_dialect( dialect )
 {
@@ -85,14 +87,14 @@ const char * connection::type( void ) const
 
 std::string connection::get_local_path( const std::string & name ) const
 {
-   return m_path + "/" + name + ".fdb";
+   return m_path + "/" + name + "." + m_ext;
 }
 
 //-----------------------------------------------------------------------------
 
 std::string connection::get_full_path( const std::string & name ) const
 {
-   return m_server + ":" + m_path + "/" + name + ".fdb";
+   return m_server + ":" + get_local_path( name );
 }
 
 //-----------------------------------------------------------------------------

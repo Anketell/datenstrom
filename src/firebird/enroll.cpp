@@ -24,6 +24,7 @@ template<> impl * factory_helper< firebird::connection >::construct( const conne
    auto password    = params[ "password" ];
    auto dialect_str = params[ "dialect" ];
    auto database    = params[ "database" ];
+   auto ext         = params[ "ext" ];
 
    if ( !server.empty() )
    {
@@ -37,6 +38,9 @@ template<> impl * factory_helper< firebird::connection >::construct( const conne
    if ( path.empty() )
       throw std::invalid_argument( "Connect string specifies forbidden path" );
 
+   if ( ext.empty() )
+      ext = "fdb";
+
    int port = 3050;
    if ( !port_str.empty() )
       port = atoi( port_str.c_str() );
@@ -45,7 +49,7 @@ template<> impl * factory_helper< firebird::connection >::construct( const conne
    if ( !dialect_str.empty() )
       dialect = atoi( dialect_str.c_str() );
 
-   impl * db = new firebird::connection( server, path, username, password, port, dialect );
+   impl * db = new firebird::connection( server, path, username, password, ext, port, dialect );
 
    if ( !database.empty() )
    {
