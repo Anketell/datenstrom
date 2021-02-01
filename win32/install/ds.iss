@@ -1,9 +1,9 @@
-;------------------------------------------------------------------------------
+﻿;------------------------------------------------------------------------------
 
 [Setup]
 AppName=Datenstrom
 AppPublisher=Lucid
-AppVersion=0.1.0 α
+AppVersion=0.1.0 β
 CreateAppDir=yes
 DefaultDirName={autopf}\datenstrom
 OutputBaseFilename=Datenstrom_Setup
