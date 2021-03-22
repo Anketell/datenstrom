@@ -54,5 +54,27 @@
          "pattern": "${workspaceFolder}/debug/**/test/test_*",
          "win32": { "pattern":"${workspaceFolder}/build/**/test/Debug/test_*.exe" }
       }
-   ]
+   ],
+   "editor.tokenColorCustomizations": {
+      "textMateRules": [
+         {
+            "scope": "googletest.failed",
+            "settings": {
+               "foreground": "#f00"
+            }
+         },
+         {
+            "scope": "googletest.passed",
+            "settings": {
+               "foreground": "#0f0"
+            }
+         },
+         {
+            "scope": "googletest.run",
+            "settings": {
+               "foreground": "#0f0"
+            }
+         }
+      ]
+   }
 }

@@ -26,6 +26,7 @@ class connection : public db::impl
    std::string             m_server;
    std::string             m_path;
    std::string             m_attached_db;
+   std::string             m_ext;
    uint16_t                m_port;
    int                     m_dialect;
    std::string             m_dpb;
@@ -51,6 +52,7 @@ public:
                const std::string & path,
                const std::string & username,
                const std::string & password,
+               const std::string & ext,
                uint16_t            port = 3050,
                int                 dialect = 3 );
 

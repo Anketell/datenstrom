@@ -18,7 +18,8 @@ namespace env
 
 std::string get( const char * name )
 {
-   return getenv( name );
+   const char * env = getenv( name );
+   return env ? env : "";
 }
 
 //-----------------------------------------------------------------------------
