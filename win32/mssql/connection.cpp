@@ -1,8 +1,10 @@
 //-----------------------------------------------------------------------------
 
+#include <db/transaction.h>
 #include <mssql/connection.h>
 #include <mssql/positional_statement.h>
 #include <mssql/named_statement.h>
+#include <mssql/statement_enum.h>
 #include <mssql/error.h>
 #include <sqlext.h>
 #include <sstream>
@@ -121,6 +123,19 @@ void connection::cleanup( void )
 
 //-----------------------------------------------------------------------------
 
+void connection::guard( guarded_fn fn )
+{
+   if ( !m_transactions )
+   {
+      db::transaction transaction( *this );
+      fn();
+   }
+   else
+      fn();
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::create( const std::string & name )
 {
    std::string query = "CREATE DATABASE " + name;
@@ -173,8 +188,14 @@ db::statement connection::operator()( const std::string     & query,
 
 void connection::execute_batch( const std::string & query )
 {
-   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL execute batch", m_stmt, SQL_HANDLE_STMT, rc );
+   guard( [ & ]()
+   {
+      for ( auto & statement : statement_enum( query ) )
+      {
+         RETCODE rc = SQLExecDirect( m_stmt, sql_char( statement.from ), sql_int( statement.len ) );
+         check_status( "MSSQL execute batch", m_stmt, SQL_HANDLE_STMT, rc );
+      }
+   } );
 }
 
 //-----------------------------------------------------------------------------

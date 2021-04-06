@@ -3,6 +3,7 @@ set( TARGET ds_mssql_module )
 add_library( ${TARGET} MODULE
    enroll.cpp
    connection.cpp
+   statement_enum.cpp
    statement_base.cpp
    positional_statement.cpp
    named_statement.cpp

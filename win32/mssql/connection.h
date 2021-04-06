@@ -11,6 +11,8 @@
 #include <sal.h>
 #include <sql.h>
 
+#include <functional>
+
 //-----------------------------------------------------------------------------
 
 namespace ds
@@ -25,6 +27,8 @@ namespace mssql
 
 class connection : public db::impl
 {
+   typedef std::function< void( void ) > guarded_fn;
+
    static std::string create_connection_string( const std::string & server, 
                                                 int                 port   );
 
@@ -38,6 +42,8 @@ class connection : public db::impl
 
    void init(const std::string& connection_string);
    void cleanup( void );
+
+   void guard( guarded_fn fn );
 
 public:
 

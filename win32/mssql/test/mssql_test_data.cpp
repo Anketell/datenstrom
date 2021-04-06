@@ -62,6 +62,20 @@ CREATE TABLE T2 (
    field INTEGER
 );
 
+CREATE FUNCTION F1()
+RETURNS INT
+AS
+BEGIN
+   RETURN 123456
+END;
+
+CREATE FUNCTION F2()
+RETURNS INT
+AS
+BEGIN
+   RETURN 234567
+END;
+
 )";
 
 //-----------------------------------------------------------------------------
