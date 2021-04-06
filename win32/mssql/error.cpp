@@ -2,6 +2,7 @@
 
 #include <mssql/error.h>
 #include <sqlext.h>
+#include <sstream>
 #include <stdexcept>
 
 //-----------------------------------------------------------------------------
@@ -27,7 +28,7 @@ void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, R
 {
    if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO )
    {
-      std::string message;
+      std::stringstream message;
 
       if ( rc != SQL_INVALID_HANDLE )
       {
@@ -35,17 +36,22 @@ void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, R
          SQLINTEGER  error;
          SQLCHAR     msg[ 1000 ];
          SQLCHAR     state[ SQL_SQLSTATE_SIZE + 1 ];
+         SQLLEN      count = 0;
 
-         while ( SQLGetDiagRec( type, handle, ++rec, state, &error, msg, sizeof( msg ), nullptr ) == SQL_SUCCESS )
+         SQLGetDiagField( SQL_HANDLE_STMT, handle, 0, SQL_DIAG_NUMBER, &count, 0, 0 );
+
+         if ( count )
          {
-             message += reinterpret_cast< char * >( msg );
-             message += "\n";
+            while ( SQLGetDiagRec( type, handle, ++rec, state, &error, msg, sizeof( msg ), nullptr ) == SQL_SUCCESS )
+               message << "(" << error << ") " << reinterpret_cast< char * >( msg ) << std::endl;
          }
+         else
+            message << "No details";
       }
       else
-         message = "Invalid handle";
+         message << "Invalid handle";
 
-      throw_error( operation, message.c_str() );
+      throw_error( operation, message.str().c_str() );
    }
 }
 

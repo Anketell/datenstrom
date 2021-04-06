@@ -174,7 +174,7 @@ db::statement connection::operator()( const std::string     & query,
 void connection::execute_batch( const std::string & query )
 {
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL execute batch", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( "MSSQL execute batch", m_stmt, SQL_HANDLE_STMT, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ void connection::begin_transaction( void )
    static constexpr char query[] = "BEGIN TRANSACTION";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
 
    m_transactions++;
 }
@@ -201,7 +201,7 @@ void connection::commit_transaction( void )
    static constexpr char query[] = "COMMIT";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( "MSSQL commit transaction", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( "MSSQL commit transaction", m_stmt, SQL_HANDLE_STMT, rc );
 
    m_transactions--;
 }
@@ -213,7 +213,7 @@ void connection::rollback_transaction( void )
    static constexpr char query[] = "ROLLBACK TRANSACTION";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( "MSSQL rollback transaction", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( "MSSQL rollback transaction", m_stmt, SQL_HANDLE_STMT, rc );
 
    m_transactions--;
 }
@@ -225,7 +225,7 @@ void connection::savepoint( const std::string & name )
    std::string query = "SAVE TRANSACTION " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( "MSSQL savepoint", m_stmt, SQL_HANDLE_STMT, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -242,7 +242,7 @@ void connection::rollback_to_savepoint( const std::string & name )
    std::string query = "ROLLBACK TRANSACTION " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL rollback savepoint", m_hdbc, SQL_HANDLE_DBC, rc );
+   check_status( "MSSQL rollback savepoint", m_stmt, SQL_HANDLE_STMT, rc );
 }
 
 //-----------------------------------------------------------------------------
