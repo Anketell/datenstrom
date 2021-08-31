@@ -1,14 +1,35 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 set( TARGET ds_db )
 
-# set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
-
-add_library( ${TARGET} SHARED
+set( SOURCE
    enroll.cpp
    connection.cpp
    statement.cpp
    result.cpp
    transaction.cpp
    connect_string.cpp
+)
+
+set( HEADERS
+   enroll.h
+   connection.h
+   statement.h
+   result.h
+   transaction.h
+   connect_string.h
+   connect_params.h
+   factory.h
+   factory_helper.h
+   impl.h
+   transactional.h
+)
+
+add_library( ${TARGET} SHARED
+   ${SOURCE}
+   ${HEADERS}
 )
 
 target_link_libraries( ${TARGET}

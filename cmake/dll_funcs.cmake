@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 function( dll_export )
    set( OPTIONS )
    set( ONE_VALUE_ARGS TARGET )

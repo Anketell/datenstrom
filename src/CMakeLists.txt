@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 include_directories( BEFORE, ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_subdirectory( ds )

@@ -1,10 +1,21 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 set( TARGET ds_csv )
 
-# set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
-
-add_library( ${TARGET} SHARED
+set( SOURCE
    istream.cpp
    ostream.cpp
+)
+
+set( HEADERS
+   csv.h
+)
+
+add_library( ${TARGET} SHARED
+   ${SOURCE}
+   ${HEADERS}
 )
 
 target_link_libraries( ${TARGET}

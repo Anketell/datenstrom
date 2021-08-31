@@ -1,4 +1,8 @@
-cmake_minimum_required( VERSION 2.8.12 FATAL_ERROR )
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
+cmake_minimum_required( VERSION 3.13 FATAL_ERROR )
 project( datenstrom )
 
 enable_testing()
@@ -12,6 +16,10 @@ if ( WIN32 )
    include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 
    add_compile_options( /Zc:__cplusplus )
+   add_link_options( /Brepro )
+
+   include( runsettings )
+
 endif ( WIN32 )
 
 if ( UNIX )
@@ -21,9 +29,9 @@ if ( UNIX )
       include("coverage")
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
-   add_compile_options( -std=c++14 )
+   add_compile_options( -std=c++17 )
 
-   endif ( UNIX )
+endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
 

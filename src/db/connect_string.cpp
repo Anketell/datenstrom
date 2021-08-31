@@ -65,7 +65,7 @@ part_parser_fn params_parser = []( connect_params_t & params, const std::string 
    auto begin = std::sregex_iterator( value.begin(), value.end(), regex );
    auto end   = std::sregex_iterator();
 
-   for ( auto it = begin; it != end; ++it )
+   for ( auto & it = begin; it != end; ++it )
       parse_param( params, it->str() );
 };
 
@@ -93,7 +93,7 @@ connect_params_t parse_connect_string( const std::string & connect_string )
 
    if ( std::regex_match( connect_string, match_result, regex ) )
    {
-      for ( auto def : part_def )
+      for ( auto & def : part_def )
       {
          std::string value = match_result[ def.index ];
          if ( !value.empty() )

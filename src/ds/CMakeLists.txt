@@ -1,9 +1,21 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 set( TARGET ds )
 
-# set( CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON )
+set( SOURCE
+   ds.cpp
+)
+
+set( HEADERS
+   ds.h
+   factory.h
+)
 
 add_library( ds SHARED
-   ds.cpp
+   ${SOURCE}
+   ${HEADERS}
 )
 
 if ( WIN32 )

@@ -1,7 +1,16 @@
 set( TARGET util )
 
-add_library( ${TARGET} STATIC
+set( SOURCE
    parameter.cpp
+)
+
+set( HEADERS
+   parameter.h
+)
+
+add_library( ${TARGET} STATIC
+   ${SOURCE}
+   ${HEADERS}
 )
 
 if ( UNIX )

@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 FIND_PROGRAM(LCOV_PATH lcov)
 FIND_PROGRAM(GENHTML_PATH genhtml)
 

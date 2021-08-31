@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 if ( WIN32 )
 
     include_directories( "$ENV{PROGRAMFILES}/Firebird/Firebird_2_5/include" )
