@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #ifndef DS_SQLITE_TYPES_H
 #define DS_SQLITE_TYPES_H

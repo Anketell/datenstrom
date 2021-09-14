@@ -1,1 +1,5 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 add_subdirectory( util )

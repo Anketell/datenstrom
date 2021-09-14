@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #include <mysql/positional_statement.h>
 #include <mysql/result.h>

@@ -1,3 +1,7 @@
+#
+# Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+#
+
 set( TARGET test_ds_csv )
 
 add_executable( ${TARGET}

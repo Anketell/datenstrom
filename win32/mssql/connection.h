@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #ifndef DS_MSSQL_CONNECTION_H
 #define DS_MSSQL_CONNECTION_H
@@ -29,7 +33,7 @@ class connection : public db::impl
 {
    typedef std::function< void( void ) > guarded_fn;
 
-   static std::string create_connection_string( const std::string & server, 
+   static std::string create_connection_string( const std::string & server,
                                                 int                 port   );
 
    SQLHENV  m_henv = SQL_NULL_HENV;

@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #ifndef MYSQL_TEST_DATA_H
 #define MYSQL_TEST_DATA_H

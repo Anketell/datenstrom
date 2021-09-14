@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 #include <db/connection.h>
@@ -155,7 +159,7 @@ TEST( firebird_parameter, should_support_duplicate_parameters )
    EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
-      ds::db::statement insert_test = test_db( named_duplicates, 
+      ds::db::statement insert_test = test_db( named_duplicates,
                                                named_parameter_duplicates );
 
       EXPECT_NO_THROW( insert_test << "2020-05-14 15:05:20"

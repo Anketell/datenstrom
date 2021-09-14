@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #ifndef DS_MYSQL_NAMED_STATEMENT_H
 #define DS_MYSQL_NAMED_STATEMENT_H

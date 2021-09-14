@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
 #include <db/connect_string.h>
@@ -9,7 +13,7 @@ TEST( db_connect_string, should_parse_connect_string )
 {
    static const char connect_string[] = "type://server:1234/path?name=value#database";
    ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
- 
+
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "server" );
    EXPECT_STREQ( params[ "port" ].c_str(),     "1234" );

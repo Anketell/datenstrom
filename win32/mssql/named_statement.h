@@ -1,4 +1,8 @@
 //-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
 
 #ifndef DS_MSSQL_NAMED_STATEMENT_H
 #define DS_MSSQL_NAMED_STATEMENT_H
