@@ -15,6 +15,10 @@ if ( WIN32 )
    include( googletest )
    include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 
+   if ( DS_DB AND DS_SQLITE )
+      include_directories( "${CMAKE_SOURCE_DIR}/third-party/sqlite3/src" )
+   endif ( DS_DB AND DS_SQLITE )
+
    add_compile_options( /Zc:__cplusplus )
    add_link_options( /Brepro )
 
@@ -45,4 +49,5 @@ if ( UNIX )
    add_subdirectory( linux )
 endif ( UNIX )
 
+add_subdirectory( third-party )
 add_subdirectory( src )

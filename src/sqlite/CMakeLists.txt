@@ -21,7 +21,7 @@ set( HEADERS
 )
 
 add_library( ${TARGET} MODULE
-   ${SOURCES}
+   ${SOURCE}
    ${HEADERS}
 )
 
@@ -31,3 +31,8 @@ target_link_libraries( ${TARGET}
 )
 
 add_subdirectory( test )
+
+if ( WIN32 )
+   include( dll_funcs )
+   module_def( TARGET ${TARGET} )
+endif( WIN32 )

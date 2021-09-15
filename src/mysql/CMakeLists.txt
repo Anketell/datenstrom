@@ -6,7 +6,7 @@ set( TARGET ds_mysql_module )
 
 find_package(MySQL REQUIRED)
 
-include_directories( BEFORE, ${MYSQL_INCLUDE_DIR} )
+include_directories( ${MYSQL_INCLUDE_DIR} )
 
 set( SOURCE
    enroll.cpp

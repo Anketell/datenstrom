@@ -7,7 +7,7 @@
 [Setup]
 AppName=Datenstrom
 AppPublisher=Lucid Systems Pty Ltd
-AppVersion=0.2.1 β
+AppVersion=0.3.0 β
 CreateAppDir=yes
 DefaultDirName={autopf}\datenstrom
 OutputBaseFilename=Datenstrom_Setup
@@ -49,6 +49,7 @@ Source: "../../build/src/db/Release/ds_db.dll";   DestDir: "{app}/bin"
 Source: "../../build/src/db/Release/ds_db.lib";   DestDir: "{app}/lib"
 
 Source: "../../build/src/firebird/Release/ds_firebird_module.dll"; DestDir: "{app}/module"
+Source: "../../build/src/sqlite/Release/ds_sqlite_module.dll";     DestDir: "{app}/module"
 Source: "../../build/win32/mssql/Release/ds_mssql_module.dll";     DestDir: "{app}/module"
 
 ;------------------------------------------------------------------------------
