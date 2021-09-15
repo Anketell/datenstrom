@@ -16,7 +16,7 @@ constexpr char module::PATTERN[];
 
 module::module( const std::string & path )
 {
-   m_handle =LoadLibraryA( path.c_str() );
+   m_handle = LoadLibraryA( path.c_str() );
 }
 
 //-----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ void module::close( void )
 {
    if ( m_handle )
    {
-      FreeLibrary(reinterpret_cast<HMODULE>(m_handle));
+      FreeLibrary( reinterpret_cast< HMODULE >( m_handle ) );
       m_handle = nullptr;
    }
 }
