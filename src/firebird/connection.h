@@ -11,7 +11,7 @@
 
 #include <db/impl.h>
 #include <firebird/transactional.h>
-#
+
 //-----------------------------------------------------------------------------
 
 namespace ds
