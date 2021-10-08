@@ -26,6 +26,14 @@ if ( WIN32 )
 
 else ( win32 )
 
+   set( SOURCE
+      parameter.cpp
+   )
+
+   set( HEADERS
+      parameter.h
+   )
+
 endif ( WIN32 )
 
 add_library( ${TARGET} SHARED
@@ -33,11 +41,12 @@ add_library( ${TARGET} SHARED
    ${HEADERS}
 )
 
-# target_link_libraries( ${TARGET} util )
 
 if ( WIN32 )
    include( dll_funcs )
    dll_def( TARGET ${TARGET} )
+else ( WIN32 )
+   target_link_libraries( ${TARGET} util )
 endif( WIN32 )
 
 add_subdirectory( test )
