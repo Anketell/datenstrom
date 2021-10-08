@@ -7,7 +7,7 @@
 [Setup]
 AppName=Datenstrom
 AppPublisher=Lucid Systems Pty Ltd
-AppVersion=0.3.0 β
+AppVersion=0.4.0 β
 CreateAppDir=yes
 DefaultDirName={autopf}\datenstrom
 OutputBaseFilename=Datenstrom_Setup
@@ -17,6 +17,7 @@ ArchitecturesInstallIn64BitMode=x64
 ;------------------------------------------------------------------------------
 
 [Dirs]
+Name: "{app}\include\util";  Permissions: users-full
 Name: "{app}\include\ds";  Permissions: users-full
 Name: "{app}\include\csv"; Permissions: users-full
 Name: "{app}\include\db";  Permissions: users-full
@@ -27,6 +28,11 @@ Name: "{app}\module";      Permissions: users-full
 ;------------------------------------------------------------------------------
 
 [Files]
+Source: "../../win32/util/env.h";        DestDir: "{app}/include/util"
+Source: "../../win32/util/filesys.h";    DestDir: "{app}/include/util"
+Source: "../../win32/util/module.h";     DestDir: "{app}/include/util"
+Source: "../../win32/util/string.h";     DestDir: "{app}/include/util"
+Source: "../../win32/util/time.h";       DestDir: "{app}/include/util"
 Source: "../../src/ds/ds.h";             DestDir: "{app}/include/ds"
 Source: "../../src/ds/factory.h";        DestDir: "{app}/include/ds"
 Source: "../../src/csv/csv.h";           DestDir: "{app}/include/csv"
@@ -41,6 +47,8 @@ Source: "../../src/db/statement.h";      DestDir: "{app}/include/db"
 Source: "../../src/db/transaction.h";    DestDir: "{app}/include/db"
 Source: "../../src/db/transactional.h";  DestDir: "{app}/include/db"
 
+Source: "../../build/src/util/Release/util.dll";  DestDir: "{app}/bin"
+Source: "../../build/src/util/Release/util.lib";  DestDir: "{app}/lib"
 Source: "../../build/src/ds/Release/ds.dll";      DestDir: "{app}/bin"
 Source: "../../build/src/ds/Release/ds.lib";      DestDir: "{app}/lib"
 Source: "../../build/src/csv/Release/ds_csv.dll"; DestDir: "{app}/bin"

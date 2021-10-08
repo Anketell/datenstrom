@@ -17,4 +17,3 @@ target_link_libraries( ${TARGET}
 )
 
 set_property( TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON )
-
