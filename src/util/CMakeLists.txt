@@ -2,29 +2,38 @@
 # Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
 #
 
-set( TARGET util )
+set( TARGET ds_util )
 
-set( SOURCE
-   parameter.cpp
-)
+if ( WIN32 )
 
-set( HEADERS
-   parameter.h
-)
+   set( SOURCE
+      ../../win32/util/env.cpp
+      ../../win32/util/filesys.cpp
+      ../../win32/util/module.cpp
+      ../../win32/util/string.cpp
+      ../../win32/util/time.cpp
+      parameter.cpp
+   )
+
+   set( HEADERS
+      ../../win32/util/env.h
+      ../../win32/util/filesys.h
+      ../../win32/util/module.h
+      ../../win32/util/string.h
+      ../../win32/util/time.h
+      parameter.h
+   )
+
+else ( win32 )
+
+endif ( WIN32 )
 
 add_library( ${TARGET} SHARED
    ${SOURCE}
    ${HEADERS}
 )
 
-if ( UNIX )
-   target_link_libraries( ${TARGET} linuxutil )
-#   set_property(TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON)
-endif ( UNIX )
-
-if ( WIN32 )
-   target_link_libraries( ${TARGET} win32util )
-endif ( WIN32 )
+# target_link_libraries( ${TARGET} util )
 
 if ( WIN32 )
    include( dll_funcs )

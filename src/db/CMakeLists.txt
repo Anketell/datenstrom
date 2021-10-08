@@ -34,7 +34,7 @@ add_library( ${TARGET} SHARED
 
 target_link_libraries( ${TARGET}
    ds
-   util
+   ds_util
 )
 
 if ( WIN32 )

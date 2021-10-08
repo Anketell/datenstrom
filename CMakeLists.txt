@@ -3,6 +3,10 @@
 #
 
 cmake_minimum_required( VERSION 3.13 FATAL_ERROR )
+
+cmake_policy( SET CMP0091 NEW )
+set( CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreadedDLL" )
+
 project( datenstrom )
 
 enable_testing()

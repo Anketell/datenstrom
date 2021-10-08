@@ -76,6 +76,20 @@ m_pattern_list( pattern_list )
 
 //-----------------------------------------------------------------------------
 
+find::iterator find::begin( void ) const
+{
+   return { m_path, m_pattern_list };
+}
+
+//-----------------------------------------------------------------------------
+
+find::iterator find::end( void ) const
+{
+   return {};
+}
+
+//-----------------------------------------------------------------------------
+
 const std::string    find::iterator::null_path;
 const pattern_list_t find::iterator::null_pattern;
 

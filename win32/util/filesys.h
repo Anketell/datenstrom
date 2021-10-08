@@ -85,8 +85,8 @@ public:
 
    find( const std::string & path, const pattern_list_t & pattern_list );
 
-   iterator begin(void) const { return { m_path, m_pattern_list }; }
-   iterator end(void)   const { return {}; }
+   iterator begin( void ) const;
+   iterator end( void )   const;
 };
 
 //-----------------------------------------------------------------------------

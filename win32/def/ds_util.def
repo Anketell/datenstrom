@@ -1,0 +1,40 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds_util
+
+EXPORTS
+   ??0enumerator@parameter@util@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
+   ??Diterator@enumerator@parameter@util@@QEBAAEBUparameter_t@0123@XZ
+   ??Eiterator@enumerator@parameter@util@@QEAA?AV0123@XZ
+   ??9iterator@enumerator@parameter@util@@QEBA_NAEBV0123@@Z
+   ?begin@enumerator@parameter@util@@QEBA?AViterator@123@XZ
+   ?end@enumerator@parameter@util@@QEBA?AViterator@123@XZ
+   ?begin@find@filesys@util@@QEBA?AViterator@123@XZ
+   ?end@find@filesys@util@@QEBA?AViterator@123@XZ
+   ??Diterator@find@filesys@util@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ??Eiterator@find@filesys@util@@QEAAAEAV0123@XZ
+   ??0find@filesys@util@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z
+   ?find_symbol@module@util@@AEBAPEAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??0module@util@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?close@module@util@@QEAAXXZ
+   ?get@env@util@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
+   ??0dir_list@env@util@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??Diterator@dir_list@env@util@@QEBAPEBDXZ
+   ??Eiterator@dir_list@env@util@@QEAA?AV0123@XZ
+   ??9iterator@dir_list@env@util@@QEBA_NAEBV0123@@Z
+   ?begin@dir_list@env@util@@QEBA?AViterator@123@XZ
+   ?end@dir_list@env@util@@QEBA?AViterator@123@XZ
+   ?gmtime@time@util@@YAXPEB_JPEAUtm@@@Z
+   ?timegm@time@util@@YA_JPEBUtm@@@Z
+   ??9iterator@find@filesys@util@@QEBA_NAEBV0123@@Z
+   ?parse_iso_8601_date@time@util@@YAXPEBDPEAUtm@@@Z
+   ?parse_iso_8601_time@time@util@@YAXPEBDPEAUtm@@@Z
+   ?parse_iso_8601@time@util@@YAXPEBDPEAUtm@@@Z
+   ?format_iso_8601_date@time@util@@YAXPEBUtm@@PEAD@Z
+   ?format_iso_8601_time@time@util@@YAXPEBUtm@@PEAD@Z
+   ?format_iso_8601@time@util@@YAXPEBUtm@@PEAD@Z
+   ?exists@filesys@util@@YA_NPEBD@Z
+   ?remove@filesys@util@@YAXPEBD@Z
+   ?cmpignorecase@string@util@@YAHPEBD0_K@Z

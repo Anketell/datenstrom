@@ -2,7 +2,7 @@
 # Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
 #
 
-set( TARGET win32util )
+set( TARGET util )
 
 set( SOURCE
    env.cpp

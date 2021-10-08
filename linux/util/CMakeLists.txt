@@ -2,7 +2,7 @@
 # Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
 #
 
-set( TARGET linuxutil )
+set( TARGET util )
 
 add_library( ${TARGET} STATIC
    env.cpp

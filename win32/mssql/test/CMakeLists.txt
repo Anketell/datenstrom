@@ -37,7 +37,7 @@ add_dependencies( ${TARGET} ds_mssql_module )
 add_test( ${TARGET} ${TARGET} )
 
 set( DLL_LIST
-   "${CMAKE_BINARY_DIR}/src/util/Debug/util.dll"
+   "${CMAKE_BINARY_DIR}/src/util/Debug/ds_util.dll"
    "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
    "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
    "${CMAKE_BINARY_DIR}/win32/mssql/Debug/ds_mssql_module.dll"

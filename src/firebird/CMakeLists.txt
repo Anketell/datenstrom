@@ -46,7 +46,6 @@ add_library( ${TARGET} MODULE
 
 target_link_libraries( ${TARGET}
    ds_db
-   util
    fbclient
 )
 
