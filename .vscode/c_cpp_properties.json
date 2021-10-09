@@ -3,7 +3,8 @@
         "DefaultIncludePath": [
             "${workspaceFolder}/src",
             "${workspaceFolder}/linux",
-            "${workspaceFolder}/win32"
+            "${workspaceFolder}/win32",
+            "${workspaceFolder}/third-party"
         ]
     },
     "configurations": [
