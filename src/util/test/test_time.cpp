@@ -56,7 +56,7 @@ NAMESPACE_TEST( util, time, should_support_timegm )
 
 NAMESPACE_TEST( util, time, should_parse_iso_date )
 {
-   struct tm tm;
+   struct tm tm = { 0 };
 
    util::time::parse_iso_8601_date( "1970-01-01", &tm );
 
@@ -73,7 +73,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_date )
 
 NAMESPACE_TEST( util, time, should_parse_iso_time )
 {
-   struct tm tm;
+   struct tm tm = { 0 };
 
    util::time::parse_iso_8601_time( "00:00:00", &tm );
 
