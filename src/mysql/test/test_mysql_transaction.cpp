@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <mysql/test/mysql_test_data.h>
@@ -12,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_transaction, should_commit_on_destruction )
+NAMESPACE_TEST( mysql, transaction, should_commit_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -44,7 +45,7 @@ TEST( mysql_transaction, should_commit_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_transaction, should_rollback_on_exception )
+NAMESPACE_TEST( mysql, transaction, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -88,7 +89,7 @@ TEST( mysql_transaction, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_release_on_destruction )
+NAMESPACE_TEST( mysql, savepoint, should_release_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -124,7 +125,7 @@ TEST( mysql_savepoint, should_release_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_rollback_on_exception )
+NAMESPACE_TEST( mysql, savepoint, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -174,7 +175,7 @@ TEST( mysql_savepoint, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_fail_no_name )
+NAMESPACE_TEST( mysql, savepoint, should_fail_no_name )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -193,7 +194,7 @@ TEST( mysql_savepoint, should_fail_no_name )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_fail_bad_release_name )
+NAMESPACE_TEST( mysql, savepoint, should_fail_bad_release_name )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -213,7 +214,7 @@ TEST( mysql_savepoint, should_fail_bad_release_name )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_savepoint, should_fail_bad_rollback_name )
+NAMESPACE_TEST( mysql, savepoint, should_fail_bad_rollback_name )
 {
    ds::db::connection test_db( test_con_str );
 

@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
@@ -31,7 +32,7 @@ const ds::db::name_list_t named_parameters =
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_parameter, should_insert_named )
+NAMESPACE_TEST( mysql, parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -66,7 +67,7 @@ TEST( mysql_parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_parameter, should_retrieve_named )
+NAMESPACE_TEST( mysql, parameter, should_retrieve_named )
 {
    ds::db::connection test_db( test_con_str );
 

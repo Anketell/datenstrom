@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <firebird/test/firebird_test_data.h>
@@ -12,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_list, should_provide_iterator )
+NAMESPACE_TEST( firebird, list, should_provide_iterator )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -51,7 +52,7 @@ TEST( firebird_db_list, should_provide_iterator )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_list, should_manage_cursor_within_transaction )
+NAMESPACE_TEST( firebird, list, should_manage_cursor_within_transaction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -94,7 +95,7 @@ TEST( firebird_db_list, should_manage_cursor_within_transaction )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_list, should_manage_cursor_without_transaction )
+NAMESPACE_TEST( firebird, list, should_manage_cursor_without_transaction )
 {
    ds::db::connection test_db( test_con_str );
 

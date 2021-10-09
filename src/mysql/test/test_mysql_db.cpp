@@ -5,13 +5,14 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <mysql/test/mysql_test_data.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db, should_return_type )
+NAMESPACE_TEST( mysql, db, should_return_type )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -20,7 +21,7 @@ TEST( mysql_db, should_return_type )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db, should_create_good_path )
+NAMESPACE_TEST( mysql, db, should_create_good_path )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -31,7 +32,7 @@ TEST( mysql_db, should_create_good_path )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db, should_execute_batch )
+NAMESPACE_TEST( mysql, db, should_execute_batch )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -47,7 +48,7 @@ TEST( mysql_db, should_execute_batch )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db, should_fail_create_bad_con_str )
+NAMESPACE_TEST( mysql, db, should_fail_create_bad_con_str )
 {
    EXPECT_THROW( ds::db::connection test_db( "mysql://blah?username=root" ), std::runtime_error );
    EXPECT_THROW( ds::db::connection test_db( "mysql://" ), std::invalid_argument );
@@ -56,7 +57,7 @@ TEST( mysql_db, should_fail_create_bad_con_str )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_execute_simple )
+NAMESPACE_TEST( mysql, statement, should_execute_simple )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -71,7 +72,7 @@ TEST( mysql_db_statement, should_execute_simple )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_fail_execute_bad_sql )
+NAMESPACE_TEST( mysql, statement, should_fail_execute_bad_sql )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -86,7 +87,7 @@ TEST( mysql_db_statement, should_fail_execute_bad_sql )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_return_execute_value )
+NAMESPACE_TEST( mysql, statement, should_return_execute_value )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -115,7 +116,7 @@ TEST( mysql_db_statement, should_return_execute_value )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_execute_query_parameters )
+NAMESPACE_TEST( mysql, statement, should_execute_query_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -144,7 +145,7 @@ TEST( mysql_db_statement, should_execute_query_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_fail_query_too_many_parameters )
+NAMESPACE_TEST( mysql, statement, should_fail_query_too_many_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -180,7 +181,7 @@ TEST( mysql_db_statement, should_fail_query_too_many_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
+NAMESPACE_TEST( mysql, statement, should_fail_query_not_enough_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -201,7 +202,7 @@ TEST( mysql_db_statement, should_fail_query_not_enough_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_provide_query_result_row )
+NAMESPACE_TEST( mysql, statement, should_provide_query_result_row )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -234,7 +235,7 @@ TEST( mysql_db_statement, should_provide_query_result_row )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_statement, should_fail_bad_query )
+NAMESPACE_TEST( mysql, statement, should_fail_bad_query )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -250,7 +251,7 @@ TEST( mysql_db_statement, should_fail_bad_query )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_result, should_provide_query_data )
+NAMESPACE_TEST( mysql, result, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -289,7 +290,7 @@ TEST( mysql_db_result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_result, should_support_unixtime )
+NAMESPACE_TEST( mysql, result, should_support_unixtime )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -328,7 +329,7 @@ TEST( mysql_db_result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_result, should_provide_rows_affected )
+NAMESPACE_TEST( mysql, result, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -357,7 +358,7 @@ TEST( mysql_db_result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_result, should_return_query_data_not_available )
+NAMESPACE_TEST( mysql, result, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -374,7 +375,7 @@ TEST( mysql_db_result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-TEST( mysql_db_result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( mysql, result, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 

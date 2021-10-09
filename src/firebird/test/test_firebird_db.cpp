@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <firebird/test/firebird_test_data.h>
@@ -12,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db, should_return_type )
+NAMESPACE_TEST( firebird, db, should_return_type )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -21,7 +22,7 @@ TEST( firebird_db, should_return_type )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db, should_create_good_path )
+NAMESPACE_TEST( firebird, db, should_create_good_path )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -32,7 +33,7 @@ TEST( firebird_db, should_create_good_path )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db, should_execute_batch )
+NAMESPACE_TEST( firebird, db, should_execute_batch )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -48,7 +49,7 @@ TEST( firebird_db, should_execute_batch )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db, should_fail_create_bad_con_str )
+NAMESPACE_TEST( firebird, db, should_fail_create_bad_con_str )
 {
    EXPECT_THROW( ds::db::connection test_db( "firebird://" ), std::invalid_argument );
    EXPECT_THROW( ds::db::connection test_db( "firebird://blah" ), std::invalid_argument );
@@ -58,7 +59,7 @@ TEST( firebird_db, should_fail_create_bad_con_str )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_execute_simple )
+NAMESPACE_TEST( firebird, statement, should_execute_simple )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -73,7 +74,7 @@ TEST( firebird_db_statement, should_execute_simple )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_fail_execute_bad_sql )
+NAMESPACE_TEST( firebird, statement, should_fail_execute_bad_sql )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -88,7 +89,7 @@ TEST( firebird_db_statement, should_fail_execute_bad_sql )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_return_execute_value )
+NAMESPACE_TEST( firebird, statement, should_return_execute_value )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -135,7 +136,7 @@ TEST( firebird_db_statement, should_return_execute_value )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_execute_query_parameters )
+NAMESPACE_TEST( firebird, statement, should_execute_query_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -162,7 +163,7 @@ TEST( firebird_db_statement, should_execute_query_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_fail_query_too_many_parameters )
+NAMESPACE_TEST( firebird, statement, should_fail_query_too_many_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -198,7 +199,7 @@ TEST( firebird_db_statement, should_fail_query_too_many_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_fail_query_not_enough_parameters )
+NAMESPACE_TEST( firebird, statement, should_fail_query_not_enough_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -218,7 +219,7 @@ TEST( firebird_db_statement, should_fail_query_not_enough_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_provide_query_result_row )
+NAMESPACE_TEST( firebird, statement, should_provide_query_result_row )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -251,7 +252,7 @@ TEST( firebird_db_statement, should_provide_query_result_row )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_statement, should_fail_bad_query )
+NAMESPACE_TEST( firebird, statement, should_fail_bad_query )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -267,7 +268,7 @@ TEST( firebird_db_statement, should_fail_bad_query )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_provide_query_data )
+NAMESPACE_TEST( firebird, result, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -306,7 +307,7 @@ TEST( firebird_db_result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_support_unixtime )
+NAMESPACE_TEST( firebird, result, should_support_unixtime )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -345,7 +346,7 @@ TEST( firebird_db_result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_provide_rows_affected )
+NAMESPACE_TEST( firebird, result, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -373,7 +374,7 @@ TEST( firebird_db_result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_return_query_data_not_available )
+NAMESPACE_TEST( firebird, result, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -389,7 +390,7 @@ TEST( firebird_db_result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( firebird, result, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -434,7 +435,7 @@ TEST( firebird_db_result, should_fail_query_wrong_column_count )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_db_result, should_fail_query_wrong_column_type )
+NAMESPACE_TEST( firebird, result, should_fail_query_wrong_column_type )
 {
    ds::db::connection test_db( test_con_str );
 

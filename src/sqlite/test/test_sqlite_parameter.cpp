@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
@@ -32,7 +33,7 @@ const ds::db::name_list_t named_parameters =
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_parameter, should_insert_named )
+NAMESPACE_TEST( sqlite, parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -67,7 +68,7 @@ TEST( sqlite_parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_parameter, should_retrieve_named )
+NAMESPACE_TEST( sqlite, parameter, should_retrieve_named )
 {
    ds::db::connection test_db( test_con_str );
 

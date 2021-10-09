@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <ds/ds.h>
 
 //-----------------------------------------------------------------------------
@@ -55,7 +56,7 @@ ds::ostream & manip( ds::ostream & out )
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_serial_istream, should_fail_input )
+NAMESPACE_TEST( ds, istream, should_fail_input )
 {
    ds::istream in;
 
@@ -78,7 +79,7 @@ TEST( ds_serial_istream, should_fail_input )
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_serial_istream, should_run_serial_manip )
+NAMESPACE_TEST( ds, istream, should_run_serial_manip )
 {
    test_istream in;
 
@@ -91,7 +92,7 @@ TEST( ds_serial_istream, should_run_serial_manip )
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_serial_ostream, should_fail_output )
+NAMESPACE_TEST( ds, ostream, should_fail_output )
 {
    ds::ostream out;
 
@@ -115,7 +116,7 @@ TEST( ds_serial_ostream, should_fail_output )
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_serial_ostream, should_run_serial_manip )
+NAMESPACE_TEST( ds, ostream, should_run_serial_manip )
 {
    test_ostream out;
 

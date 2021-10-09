@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/test/test_db.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( db_list_iterator, should_iterate_over_results )
+NAMESPACE_TEST( db, list_iterator, should_iterate_over_results )
 {
    ds::db::statement stmt( std::make_shared< Test_statement >( 1, 5 ) );
 
@@ -24,7 +25,7 @@ TEST( db_list_iterator, should_iterate_over_results )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_list_iterator, should_fail_dereferrence_end )
+NAMESPACE_TEST( db, list_iterator, should_fail_dereferrence_end )
 {
    ds::db::statement stmt( std::make_shared< Test_statement >( 0 ) );
 

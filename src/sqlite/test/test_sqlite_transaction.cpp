@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <sqlite/test/sqlite_test_data.h>
@@ -12,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_transaction, should_commit_on_destruction )
+NAMESPACE_TEST( sqlite, transaction, should_commit_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -44,7 +45,7 @@ TEST( sqlite_transaction, should_commit_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_transaction, should_rollback_on_exception )
+NAMESPACE_TEST( sqlite, transaction, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -82,7 +83,7 @@ TEST( sqlite_transaction, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_transaction, should_fail_nested )
+NAMESPACE_TEST( sqlite, transaction, should_fail_nested )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -105,7 +106,7 @@ TEST( sqlite_transaction, should_fail_nested )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_transaction, should_fail_lone_commit )
+NAMESPACE_TEST( sqlite, transaction, should_fail_lone_commit )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -122,7 +123,7 @@ TEST( sqlite_transaction, should_fail_lone_commit )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_transaction, should_fail_lone_rollback )
+NAMESPACE_TEST( sqlite, transaction, should_fail_lone_rollback )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -139,7 +140,7 @@ TEST( sqlite_transaction, should_fail_lone_rollback )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_savepoint, should_release_on_destruction )
+NAMESPACE_TEST( sqlite, savepoint, should_release_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -175,7 +176,7 @@ TEST( sqlite_savepoint, should_release_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_savepoint, should_rollback_on_exception )
+NAMESPACE_TEST( sqlite, savepoint, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -219,7 +220,7 @@ TEST( sqlite_savepoint, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_savepoint, should_fail_no_name  )
+NAMESPACE_TEST( sqlite, savepoint, should_fail_no_name  )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -237,7 +238,7 @@ TEST( sqlite_savepoint, should_fail_no_name  )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_savepoint, should_fail_bad_release_name  )
+NAMESPACE_TEST( sqlite, savepoint, should_fail_bad_release_name  )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -257,7 +258,7 @@ TEST( sqlite_savepoint, should_fail_bad_release_name  )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_savepoint, should_fail_bad_rollback_name  )
+NAMESPACE_TEST( sqlite, savepoint, should_fail_bad_rollback_name  )
 {
    ds::db::connection test_db( test_con_str );
 

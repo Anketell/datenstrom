@@ -5,12 +5,13 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/test/test_db.h>
 #include <db/transaction.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( db_transaction, should_begin_transaction_upon_construction )
+NAMESPACE_TEST( db, transaction, should_begin_transaction_upon_construction )
 {
    Test_db db;
 
@@ -27,7 +28,7 @@ TEST( db_transaction, should_begin_transaction_upon_construction )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_transaction, should_commit_transaction_upon_destruction )
+NAMESPACE_TEST( db, transaction, should_commit_transaction_upon_destruction )
 {
    Test_db db;
 
@@ -46,7 +47,7 @@ TEST( db_transaction, should_commit_transaction_upon_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_transaction, should_rollback_transaction_upon_exception )
+NAMESPACE_TEST( db, transaction, should_rollback_transaction_upon_exception )
 {
    Test_db db;
 
@@ -71,7 +72,7 @@ TEST( db_transaction, should_rollback_transaction_upon_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_savepoint, should_create_savepoint_upon_construction )
+NAMESPACE_TEST( db, savepoint, should_create_savepoint_upon_construction )
 {
    Test_db db;
 
@@ -90,7 +91,7 @@ TEST( db_savepoint, should_create_savepoint_upon_construction )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_savepoint, should_release_savepoint_upon_destruction )
+NAMESPACE_TEST( db, savepoint, should_release_savepoint_upon_destruction )
 {
    Test_db db;
 
@@ -111,7 +112,7 @@ TEST( db_savepoint, should_release_savepoint_upon_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_savepoint, should_rollback_savepoint_upon_exception )
+NAMESPACE_TEST( db, savepoint, should_rollback_savepoint_upon_exception )
 {
    Test_db db;
 

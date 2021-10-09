@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <sstream>
 #include <test_model/object.h>
 #include <test_model/object_serialise.h>
@@ -42,7 +43,7 @@ R"(-8,-16,-32,-64,8,16,32,64,12.34,56.78,"Hello","2020-05-13","13:05:20","2020-0
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_read_comma_separated_values )
+NAMESPACE_TEST( csv, istream, should_read_comma_separated_values )
 {
    std::stringstream ss( line );
 
@@ -70,7 +71,7 @@ TEST( csv_istream, should_read_comma_separated_values )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_skip_ens_of_record )
+NAMESPACE_TEST( csv, istream, should_skip_ens_of_record )
 {
    std::stringstream ss( line );
 
@@ -83,7 +84,7 @@ TEST( csv_istream, should_skip_ens_of_record )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_read_unquoted_strings )
+NAMESPACE_TEST( csv, istream, should_read_unquoted_strings )
 {
   std::stringstream ss( unquoted_strings );
 
@@ -111,7 +112,7 @@ TEST( csv_istream, should_read_unquoted_strings )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_ignore_whitespace )
+NAMESPACE_TEST( csv, istream, should_ignore_whitespace )
 {
      std::stringstream ss( whitespace );
 
@@ -139,7 +140,7 @@ TEST( csv_istream, should_ignore_whitespace )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_support_embeded_quotes )
+NAMESPACE_TEST( csv, istream, should_support_embeded_quotes )
 {
    std::stringstream ss( embedded_quotes );
 
@@ -167,7 +168,7 @@ TEST( csv_istream, should_support_embeded_quotes )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_ignore_extra_fields )
+NAMESPACE_TEST( csv, istream, should_ignore_extra_fields )
 {
    std::stringstream ss( extra_field );
 
@@ -195,7 +196,7 @@ TEST( csv_istream, should_ignore_extra_fields )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_fail_missing_separator )
+NAMESPACE_TEST( csv, istream, should_fail_missing_separator )
 {
    std::stringstream ss( missing_separator );
 
@@ -208,7 +209,7 @@ TEST( csv_istream, should_fail_missing_separator )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_fail_unterminated_quotes )
+NAMESPACE_TEST( csv, istream, should_fail_unterminated_quotes )
 {
    std::stringstream ss( unterminated_quotes );
 
@@ -221,7 +222,7 @@ TEST( csv_istream, should_fail_unterminated_quotes )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_istream, should_fail_quotes_in_unquoted_strings )
+NAMESPACE_TEST( csv, istream, should_fail_quotes_in_unquoted_strings )
 {
    std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello\"\n" );
 
@@ -234,7 +235,7 @@ TEST( csv_istream, should_fail_quotes_in_unquoted_strings )
 
 //-----------------------------------------------------------------------------
 
-TEST( csv_ostream, should_write_comma_separated_values )
+NAMESPACE_TEST( csv, ostream, should_write_comma_separated_values )
 {
    std::stringstream ss;
 

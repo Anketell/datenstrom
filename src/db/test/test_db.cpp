@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/test/test_db.h>
 
 //-----------------------------------------------------------------------------
@@ -13,7 +14,7 @@ constexpr char Test_db::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-TEST( db_endr, should_call_db_result_step )
+NAMESPACE_TEST( db, endr, should_call_db_result_step )
 {
    auto test_stmt = std::make_shared< Test_statement >();
    ds::db::statement stmt( test_stmt );
@@ -27,7 +28,7 @@ TEST( db_endr, should_call_db_result_step )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_endr, should_call_db_statement_execute )
+NAMESPACE_TEST( db, endr, should_call_db_statement_execute )
 {
    auto test_result = std::make_shared< Test_result >();
    ds::db::result result( test_result );

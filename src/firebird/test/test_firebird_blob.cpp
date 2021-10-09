@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <firebird/test/firebird_test_data.h>
@@ -25,7 +26,7 @@ constexpr char blob_data[] = "The quick brown fox jumps over the lazy dog";
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_blob, should_create_and_read_blob )
+NAMESPACE_TEST( firebird, blob, should_create_and_read_blob )
 {
    ds::db::connection test_db( test_con_str );
 

@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <firebird/test/firebird_test_data.h>
 #include <test_model/object_serialise.h>
@@ -45,7 +46,7 @@ static const ds::db::name_list_t named_parameter_duplicates =
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_insert_named )
+NAMESPACE_TEST( firebird, parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -80,7 +81,7 @@ TEST( firebird_parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_retrieve_named )
+NAMESPACE_TEST( firebird, parameter, should_retrieve_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -148,7 +149,7 @@ TEST( firebird_parameter, should_retrieve_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( firebird_parameter, should_support_duplicate_parameters )
+NAMESPACE_TEST( firebird, parameter, should_support_duplicate_parameters )
 {
    ds::db::connection test_db( test_con_str );
 

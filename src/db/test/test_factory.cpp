@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/factory.h>
 #include <db/connection.h>
 #include <stdexcept>
@@ -124,7 +125,7 @@ template<> impl * factory_helper< derived_db_2::connection >::construct( const c
 
 //-----------------------------------------------------------------------------
 
-TEST( db_factory, should_register_and_create )
+NAMESPACE_TEST( db, factory, should_register_and_create )
 {
    ds::db::factory factory;
 
@@ -172,7 +173,7 @@ TEST( db_factory, should_register_and_create )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_factory, should_fail_unknown )
+NAMESPACE_TEST( db, factory, should_fail_unknown )
 {
    ds::db::factory factory;
 

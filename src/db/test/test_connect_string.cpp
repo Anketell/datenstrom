@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connect_string.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( db_connect_string, should_parse_connect_string )
+NAMESPACE_TEST( db, connect_string, should_parse_connect_string )
 {
    static const char connect_string[] = "type://server:1234/path?name=value#database";
    ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
@@ -24,7 +25,7 @@ TEST( db_connect_string, should_parse_connect_string )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_connect_string, should_parse_no_server_connect_string )
+NAMESPACE_TEST( db, connect_string, should_parse_no_server_connect_string )
 {
    static const char connect_string[] = "type:///path?name=value#database";
    ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
@@ -39,7 +40,7 @@ TEST( db_connect_string, should_parse_no_server_connect_string )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_connect_string, should_fail_poorly_formed )
+NAMESPACE_TEST( db, connect_string, should_fail_poorly_formed )
 {
    static const char connect_string[] = "type://ser&ver:1234?name=value#database";
    ds::db::connect_params_t params;
@@ -49,7 +50,7 @@ TEST( db_connect_string, should_fail_poorly_formed )
 
 //-----------------------------------------------------------------------------
 
-TEST( db_connect_string, should_fail_null_param )
+NAMESPACE_TEST( db, connect_string, should_fail_null_param )
 {
    static const char connect_string[] = "type://server:1234?name=value=asd#database";
    ds::db::connect_params_t params;

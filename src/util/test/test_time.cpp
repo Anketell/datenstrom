@@ -5,11 +5,12 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <util/time.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( util_time, should_support_gmtime )
+NAMESPACE_TEST( util, time, should_support_gmtime )
 {
    time_t    t = 0;
    struct tm tm;
@@ -31,7 +32,7 @@ TEST( util_time, should_support_gmtime )
 
 //-----------------------------------------------------------------------------
 
-TEST( util_time, should_support_timegm )
+NAMESPACE_TEST( util, time, should_support_timegm )
 {
    struct tm tm =
    {
@@ -53,7 +54,7 @@ TEST( util_time, should_support_timegm )
 
 //-----------------------------------------------------------------------------
 
-TEST( util_time, should_parse_iso_date )
+NAMESPACE_TEST( util, time, should_parse_iso_date )
 {
    struct tm tm;
 
@@ -70,7 +71,7 @@ TEST( util_time, should_parse_iso_date )
 
 //-----------------------------------------------------------------------------
 
-TEST( util_time, should_parse_iso_time )
+NAMESPACE_TEST( util, time, should_parse_iso_time )
 {
    struct tm tm;
 
@@ -87,7 +88,7 @@ TEST( util_time, should_parse_iso_time )
 
 //-----------------------------------------------------------------------------
 
-TEST( util_time, should_parse_iso_datetime )
+NAMESPACE_TEST( util, time, should_parse_iso_datetime )
 {
    struct tm tm;
 

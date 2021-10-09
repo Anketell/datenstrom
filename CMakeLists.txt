@@ -17,7 +17,6 @@ set( CMAKE_CXX_STANDARD 17 )
 
 if ( WIN32 )
    include( googletest )
-   include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 
    if ( DS_DB AND DS_SQLITE )
       include_directories( "${CMAKE_SOURCE_DIR}/third-party/sqlite3/src" )
@@ -42,6 +41,7 @@ if ( UNIX )
 endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
+include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
 
 if ( WIN32 )
    include_directories( "${CMAKE_SOURCE_DIR}/win32" )

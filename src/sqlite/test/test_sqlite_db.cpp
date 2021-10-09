@@ -5,13 +5,14 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_return_type )
+NAMESPACE_TEST( sqlite, db, should_return_type )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -20,7 +21,7 @@ TEST( sqlite_db, should_return_type )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_create_good_path )
+NAMESPACE_TEST( sqlite, db, should_create_good_path )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -31,7 +32,7 @@ TEST( sqlite_db, should_create_good_path )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_execute_batch )
+NAMESPACE_TEST( sqlite, db, should_execute_batch )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -47,7 +48,7 @@ TEST( sqlite_db, should_execute_batch )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db, should_fail_create_bad_path )
+NAMESPACE_TEST( sqlite, db, should_fail_create_bad_path )
 {
    EXPECT_THROW( ds::db::connection test_db( "sqlite:///blah#test_db" ), std::runtime_error );
    EXPECT_THROW( ds::db::connection test_db( "sqlite://" ), std::invalid_argument );
@@ -55,7 +56,7 @@ TEST( sqlite_db, should_fail_create_bad_path )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_execute_simple )
+NAMESPACE_TEST( sqlite, statement, should_execute_simple )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -70,7 +71,7 @@ TEST( sqlite_db_statement, should_execute_simple )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_execute_bad_sql )
+NAMESPACE_TEST( sqlite, statement, should_fail_execute_bad_sql )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -85,7 +86,7 @@ TEST( sqlite_db_statement, should_fail_execute_bad_sql )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_execute_query_parameters )
+NAMESPACE_TEST( sqlite, statement, should_execute_query_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -112,7 +113,7 @@ TEST( sqlite_db_statement, should_execute_query_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_return_execute_value )
+NAMESPACE_TEST( sqlite, statement, should_return_execute_value )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -141,7 +142,7 @@ TEST( sqlite_db_statement, should_return_execute_value )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
+NAMESPACE_TEST( sqlite, statement, should_fail_query_too_many_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -177,7 +178,7 @@ TEST( sqlite_db_statement, should_fail_query_too_many_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
+NAMESPACE_TEST( sqlite, statement, should_fail_query_not_enough_parameters )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -198,7 +199,7 @@ TEST( sqlite_db_statement, should_fail_query_not_enough_parameters )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_statement, should_provide_query_result_row )
+NAMESPACE_TEST( sqlite, statement, should_provide_query_result_row )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -231,7 +232,7 @@ TEST( sqlite_db_statement, should_provide_query_result_row )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_provide_query_data )
+NAMESPACE_TEST( sqlite, result, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -270,7 +271,7 @@ TEST( sqlite_db_result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_support_unixtime )
+NAMESPACE_TEST( sqlite, result, should_support_unixtime )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -309,7 +310,7 @@ TEST( sqlite_db_result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_provide_rows_affected )
+NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -340,7 +341,7 @@ TEST( sqlite_db_result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_return_query_data_not_available )
+NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -359,7 +360,7 @@ TEST( sqlite_db_result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -404,7 +405,7 @@ TEST( sqlite_db_result, should_fail_query_wrong_column_count )
 
 //-----------------------------------------------------------------------------
 
-TEST( sqlite_db_result, should_fail_query_wrong_column_type )
+NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
 {
    ds::db::connection test_db( test_con_str );
 
