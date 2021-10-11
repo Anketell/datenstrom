@@ -5,8 +5,8 @@
 //-----------------------------------------------------------------------------
 
 #include <db/enroll.h>
-#include <util/filesys.h>
-#include <util/module.h>
+#include <dsutil/filesys.h>
+#include <dsutil/module.h>
 
 //-----------------------------------------------------------------------------
 

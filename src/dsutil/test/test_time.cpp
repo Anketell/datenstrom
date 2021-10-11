@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <util/time.h>
+#include <dsutil/time.h>
 
 //-----------------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ NAMESPACE_TEST( util, time, should_support_gmtime )
    time_t    t = 24 * 60 * 60 * 32; 
    struct tm tm;
 
-   util::time::gmtime( &t, &tm );
+   ds::util::time::gmtime( &t, &tm );
 
    EXPECT_EQ( tm.tm_sec,  0 );
    EXPECT_EQ( tm.tm_min,  0 );
@@ -47,7 +47,7 @@ NAMESPACE_TEST( util, time, should_support_timegm )
       0
    };
 
-   time_t t = util::time::timegm( &tm );
+   time_t t = ds::util::time::timegm( &tm );
 
    EXPECT_EQ( t, 24 * 60 * 60 );
 }
@@ -58,7 +58,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_date )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601_date( "1970-01-01", &tm );
+   ds::util::time::parse_iso_8601_date( "1970-01-01", &tm );
 
    EXPECT_EQ( tm.tm_sec , 0 );
    EXPECT_EQ( tm.tm_min,  0 );
@@ -75,7 +75,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_time )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601_time( "01:01:01", &tm );
+   ds::util::time::parse_iso_8601_time( "01:01:01", &tm );
 
    EXPECT_EQ( tm.tm_sec,  1 );
    EXPECT_EQ( tm.tm_min,  1 );
@@ -92,7 +92,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_datetime )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601( "1970-02-01 01:01:01", &tm );
+   ds::util::time::parse_iso_8601( "1970-02-01 01:01:01", &tm );
 
    EXPECT_EQ( tm.tm_sec , 1 );
    EXPECT_EQ( tm.tm_min,  1 );

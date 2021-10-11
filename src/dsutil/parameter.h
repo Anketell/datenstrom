@@ -13,12 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace util
-{
-
-//-----------------------------------------------------------------------------
-
-namespace parameter
+namespace ds::util::parameter
 {
 
 //-----------------------------------------------------------------------------
@@ -74,21 +69,17 @@ public:
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
 namespace std
 {
-template<> class iterator_traits< util::parameter::enumerator::iterator >
+template<> class iterator_traits< ds::util::parameter::enumerator::iterator >
 {
 public:
 
-   typedef int32_t                               difference_type;
-   typedef util::parameter::enumerator::iterator value_type;
-   typedef value_type *                          pointer;
-   typedef value_type &                          reference;
-   typedef forward_iterator_tag                  iterator_category;
+   typedef int32_t                                   difference_type;
+   typedef ds::util::parameter::enumerator::iterator value_type;
+   typedef value_type *                              pointer;
+   typedef value_type &                              reference;
+   typedef forward_iterator_tag                      iterator_category;
 };
 }
 

@@ -7,7 +7,7 @@
 #include <sqlite/connection.h>
 #include <sqlite/statement.h>
 #include <sqlite/error.h>
-#include <util/filesys.h>
+#include <dsutil/filesys.h>
 
 //-----------------------------------------------------------------------------
 

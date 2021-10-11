@@ -7,7 +7,7 @@
 #include <db/connection.h>
 #include <db/connect_string.h>
 #include <db/enroll.h>
-#include <util/env.h>
+#include <dsutil/env.h>
 
 #include <cstring>
 

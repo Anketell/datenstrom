@@ -4,76 +4,98 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <util/time.h>
+#include <dsutil/env.h>
+#include <cstdlib>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 
-namespace util
+namespace ds::util::env
 {
 
 //-----------------------------------------------------------------------------
 
-namespace time
+std::string get( const char * name )
 {
-
-//-----------------------------------------------------------------------------
-
-void gmtime( const time_t * t,  struct tm * tm )
-{
-   gmtime_r( t, tm );
+   const char * env = getenv( name );
+   return env ? env : "";
 }
 
 //-----------------------------------------------------------------------------
 
-time_t timegm( const struct tm * tm )
+dir_list::dir_list( const std::string & dirlist ) :
+m_dirlist( dirlist )
 {
-   return ::timegm( const_cast< struct tm * >( tm ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_date( const char * s, struct tm * tm )
+dir_list::iterator::iterator( const char * dirlist )
 {
-   strptime( s, "%F", tm );
+   if ( dirlist )
+   {
+      m_dirlist = dirlist;
+      m_token   = strtok_r( const_cast< char * >( m_dirlist.c_str() ), ":", &m_save );
+   }
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_time( const char * s, struct tm * tm )
+void dir_list::iterator::next_dir( void )
 {
-   strptime( s, "%T", tm );
+   m_token = strtok_r( nullptr, ":", &m_save );
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601( const char * s, struct tm * tm )
+const char * dir_list::iterator::operator*( void ) const
 {
-   strptime( s, "%F %T", tm );
+   return m_token;
 }
 
 //-----------------------------------------------------------------------------
 
-void format_iso_8601_date( const struct tm * tm, char * s )
+dir_list::iterator dir_list::iterator::operator++( void )
 {
-   strftime( s, 11, "%F", tm );
+   next_dir();
+   return *this;
 }
 
 //-----------------------------------------------------------------------------
 
-void format_iso_8601_time( const struct tm * tm, char * s )
+dir_list::iterator dir_list::iterator::operator++( int )
 {
-   strftime( s, 9, "%T", tm );
+   auto it = *this;
+   next_dir();
+   return *this;
 }
 
 //-----------------------------------------------------------------------------
 
-void format_iso_8601( const struct tm * tm, char * s )
+bool dir_list::iterator::operator==( const iterator & it ) const
 {
-   strftime( s, 20, "%F %T", tm );
+   return **this == *it;
 }
 
 //-----------------------------------------------------------------------------
 
+bool dir_list::iterator::operator!=( const iterator & it ) const
+{
+   return !( *this == it );
+}
+
+//-----------------------------------------------------------------------------
+
+dir_list::iterator dir_list::begin( void ) const
+{
+   return { m_dirlist.c_str() };
+}
+
+//-----------------------------------------------------------------------------
+
+dir_list::iterator dir_list::end( void ) const
+{
+   return {};
 }
 
 //-----------------------------------------------------------------------------
