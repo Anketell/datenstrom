@@ -18,12 +18,12 @@ ArchitecturesInstallIn64BitMode=x64
 
 [Dirs]
 Name: "{app}\include\util";  Permissions: users-full
-Name: "{app}\include\ds";  Permissions: users-full
-Name: "{app}\include\csv"; Permissions: users-full
-Name: "{app}\include\db";  Permissions: users-full
-Name: "{app}\lib";         Permissions: users-full
-Name: "{app}\bin";         Permissions: users-full
-Name: "{app}\module";      Permissions: users-full
+Name: "{app}\include\ds";    Permissions: users-full
+Name: "{app}\include\csv";   Permissions: users-full
+Name: "{app}\include\db";    Permissions: users-full
+Name: "{app}\lib";           Permissions: users-full
+Name: "{app}\bin";           Permissions: users-full
+Name: "{app}\module";        Permissions: users-full
 
 ;------------------------------------------------------------------------------
 
