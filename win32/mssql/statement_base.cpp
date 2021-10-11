@@ -7,7 +7,7 @@
 #include <mssql/statement_base.h>
 #include <mssql/result.h>
 #include <mssql/error.h>
-#include <util/time.h>
+#include <dsutil/time.h>
 #include <sqlext.h>
 
 #undef min

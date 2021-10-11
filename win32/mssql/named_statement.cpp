@@ -6,7 +6,7 @@
 
 #include <mssql/named_statement.h>
 #include <mssql/error.h>
-#include <util/parameter.h>
+#include <dsutil/parameter.h>
 
 #include <sstream>
 

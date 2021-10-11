@@ -38,7 +38,7 @@ add_test( ${TARGET} ${TARGET} )
 if ( MSVC )
 
    set( DLL_LIST
-      "${CMAKE_BINARY_DIR}/src/util/Debug/ds_util.dll"
+      "${CMAKE_BINARY_DIR}/src/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
       "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
       "${CMAKE_BINARY_DIR}/src/sqlite/Debug/ds_sqlite_module.dll"

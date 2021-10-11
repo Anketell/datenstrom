@@ -17,22 +17,22 @@ ArchitecturesInstallIn64BitMode=x64
 ;------------------------------------------------------------------------------
 
 [Dirs]
-Name: "{app}\include\util";  Permissions: users-full
-Name: "{app}\include\ds";    Permissions: users-full
-Name: "{app}\include\csv";   Permissions: users-full
-Name: "{app}\include\db";    Permissions: users-full
-Name: "{app}\lib";           Permissions: users-full
-Name: "{app}\bin";           Permissions: users-full
-Name: "{app}\module";        Permissions: users-full
+Name: "{app}\include\dsutil";  Permissions: users-full
+Name: "{app}\include\ds";      Permissions: users-full
+Name: "{app}\include\csv";     Permissions: users-full
+Name: "{app}\include\db";      Permissions: users-full
+Name: "{app}\lib";             Permissions: users-full
+Name: "{app}\bin";             Permissions: users-full
+Name: "{app}\module";          Permissions: users-full
 
 ;------------------------------------------------------------------------------
 
 [Files]
-Source: "../../win32/util/env.h";        DestDir: "{app}/include/util"
-Source: "../../win32/util/filesys.h";    DestDir: "{app}/include/util"
-Source: "../../win32/util/module.h";     DestDir: "{app}/include/util"
-Source: "../../win32/util/string.h";     DestDir: "{app}/include/util"
-Source: "../../win32/util/time.h";       DestDir: "{app}/include/util"
+Source: "../../win32/dsutil/env.h";      DestDir: "{app}/include/dsutil"
+Source: "../../win32/dsutil/filesys.h";  DestDir: "{app}/include/dsutil"
+Source: "../../win32/dsutil/module.h";   DestDir: "{app}/include/dsutil"
+Source: "../../win32/dsutil/string.h";   DestDir: "{app}/include/dsutil"
+Source: "../../win32/dsutil/time.h";     DestDir: "{app}/include/dsutil"
 Source: "../../src/ds/ds.h";             DestDir: "{app}/include/ds"
 Source: "../../src/ds/factory.h";        DestDir: "{app}/include/ds"
 Source: "../../src/csv/csv.h";           DestDir: "{app}/include/csv"
@@ -47,14 +47,14 @@ Source: "../../src/db/statement.h";      DestDir: "{app}/include/db"
 Source: "../../src/db/transaction.h";    DestDir: "{app}/include/db"
 Source: "../../src/db/transactional.h";  DestDir: "{app}/include/db"
 
-Source: "../../build/src/util/Release/ds_util.dll"; DestDir: "{app}/bin"
-Source: "../../build/src/util/Release/ds_util.lib"; DestDir: "{app}/lib"
-Source: "../../build/src/ds/Release/ds.dll";        DestDir: "{app}/bin"
-Source: "../../build/src/ds/Release/ds.lib";        DestDir: "{app}/lib"
-Source: "../../build/src/csv/Release/ds_csv.dll";   DestDir: "{app}/bin"
-Source: "../../build/src/csv/Release/ds_csv.lib";   DestDir: "{app}/lib"
-Source: "../../build/src/db/Release/ds_db.dll";     DestDir: "{app}/bin"
-Source: "../../build/src/db/Release/ds_db.lib";     DestDir: "{app}/lib"
+Source: "../../build/src/dsutil/Release/ds_util.dll"; DestDir: "{app}/bin"
+Source: "../../build/src/dsutil/Release/ds_util.lib"; DestDir: "{app}/lib"
+Source: "../../build/src/ds/Release/ds.dll";          DestDir: "{app}/bin"
+Source: "../../build/src/ds/Release/ds.lib";          DestDir: "{app}/lib"
+Source: "../../build/src/csv/Release/ds_csv.dll";     DestDir: "{app}/bin"
+Source: "../../build/src/csv/Release/ds_csv.lib";     DestDir: "{app}/lib"
+Source: "../../build/src/db/Release/ds_db.dll";       DestDir: "{app}/bin"
+Source: "../../build/src/db/Release/ds_db.lib";       DestDir: "{app}/lib"
 
 Source: "../../build/src/firebird/Release/ds_firebird_module.dll"; DestDir: "{app}/module"
 Source: "../../build/src/sqlite/Release/ds_sqlite_module.dll";     DestDir: "{app}/module"

@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mssql/statement_enum.h>
-#include <util/string.h>
+#include <dsutil/string.h>
 
 #include <functional>
 

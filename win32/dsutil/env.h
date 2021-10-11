@@ -9,12 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace util
-{
-
-//-----------------------------------------------------------------------------
-
-namespace env
+namespace ds::util::env
 {
 
 //-----------------------------------------------------------------------------
@@ -62,19 +57,15 @@ public:
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-template<> class std::iterator_traits< util::env::dir_list::iterator >
+template<> class std::iterator_traits< ds::util::env::dir_list::iterator >
 {
 public:
 
-   typedef int32_t                       difference_type;
-   typedef util::env::dir_list::iterator value_type;
-   typedef value_type *                  pointer;
-   typedef value_type &                  reference;
-   typedef forward_iterator_tag          iterator_category;
+   typedef int32_t                           difference_type;
+   typedef ds::util::env::dir_list::iterator value_type;
+   typedef value_type *                      pointer;
+   typedef value_type &                      reference;
+   typedef forward_iterator_tag              iterator_category;
 };
 
 //-----------------------------------------------------------------------------

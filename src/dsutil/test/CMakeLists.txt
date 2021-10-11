@@ -29,7 +29,7 @@ if ( MSVC )
 
    add_custom_command(TARGET ${TARGET} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
-         "${CMAKE_BINARY_DIR}/src/util/Debug/ds_util.dll"
+         "${CMAKE_BINARY_DIR}/src/dsutil/Debug/ds_util.dll"
          "${CMAKE_CURRENT_BINARY_DIR}/Debug/ds_util.dll"
    )
 

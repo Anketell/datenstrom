@@ -7,20 +7,20 @@ set( TARGET ds_util )
 if ( WIN32 )
 
    set( SOURCE
-      ../../win32/util/env.cpp
-      ../../win32/util/filesys.cpp
-      ../../win32/util/module.cpp
-      ../../win32/util/string.cpp
-      ../../win32/util/time.cpp
+      ../../win32/dsutil/env.cpp
+      ../../win32/dsutil/filesys.cpp
+      ../../win32/dsutil/module.cpp
+      ../../win32/dsutil/string.cpp
+      ../../win32/dsutil/time.cpp
       parameter.cpp
    )
 
    set( HEADERS
-      ../../win32/util/env.h
-      ../../win32/util/filesys.h
-      ../../win32/util/module.h
-      ../../win32/util/string.h
-      ../../win32/util/time.h
+      ../../win32/dsutil/env.h
+      ../../win32/dsutil/filesys.h
+      ../../win32/dsutil/module.h
+      ../../win32/dsutil/string.h
+      ../../win32/dsutil/time.h
       parameter.h
    )
 
