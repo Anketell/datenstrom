@@ -22,6 +22,10 @@ add_executable( ${TARGET}
    ${HEADERS}
 )
 
+if ( WIN32 )
+   add_dependencies( ${TARGET} googletest )
+endif ( WIN32 )
+
 target_link_libraries( ${TARGET}
    ds_db
    test_model

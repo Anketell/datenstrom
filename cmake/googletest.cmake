@@ -15,22 +15,26 @@ add_library( gtest IMPORTED STATIC GLOBAL )
 add_library( gtest_main IMPORTED STATIC GLOBAL )
 
 ExternalProject_Get_Property( googletest source_dir binary_dir )
+
+set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtestd.lib" )
+
+set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtest_maind.lib" )
+
+link_directories( "${binary_dir}/lib/Debug" )
+
 include_directories( "${source_dir}/googletest/include" )
 
-if ( CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "MultiThreadedDLL" )
+# set( gtest_link_dir ${binary_dir}/lib/$<CONFIG> )
 
-   set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Release/gtest.lib" )
+# message( NOTICE ${gtest_link_dir} )
 
-   set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Release/gtest_main.lib" )
+# set( gtest_target ${gtest_link_dir}/$<$<CONFIG:Debug>:gtestd.lib>$<$<CONFIG:Release>:gtest.lib> )
 
-   link_directories( "${binary_dir}/lib/Release" )
+# set( gtest_main_target ${gtest_link_dir}/$<$<CONFIG:Debug>:gtest_maind.lib>$<$<CONFIG:Release>:gtest_main.lib> )
 
-else ( CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "MultiThreadedDLL" )
+# set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" ${gtest_target} )
 
-   set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtestd.lib" )
+# set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" ${gtest_main_target} )
 
-   set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtest_maind.lib" )
+# link_directories( ${gtest_link_dir} )
 
-   link_directories( "${binary_dir}/lib/Debug" )
-
-endif ( CMAKE_MSVC_RUNTIME_LIBRARY STREQUAL "MultiThreadedDLL" )
