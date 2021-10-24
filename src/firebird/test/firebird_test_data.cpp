@@ -102,7 +102,7 @@ SET TERM ; !!
 
 const char * create_dom =
 R"(
-CREATE DOMAIN DM_ID AS VARCHAR( 50 );
+CREATE DOMAIN DM_ID AS CHAR( 1 );
 
 CREATE TABLE Dom (
    id DM_ID )

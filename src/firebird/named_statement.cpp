@@ -130,7 +130,7 @@ std::string data_type( const XSQLVAR & xsqlvar )
    switch ( xsqlvar.sqltype & ~1 )
    {
       case SQL_TEXT:
-         type = "TEXT( " + std::to_string( xsqlvar.sqllen ) + " )";
+         type = "CHAR( " + std::to_string( xsqlvar.sqllen ) + " )";
          break;
 
       case SQL_VARYING:

@@ -217,7 +217,7 @@ NAMESPACE_TEST( firebird, parameter, should_support_queries_without_result )
    {
       ds::db::statement insert_test = test_db( insert_dom, { "id" } );
 
-      EXPECT_NO_THROW( insert_test << "blah" << ds::endr );
+      EXPECT_NO_THROW( insert_test << "b" << ds::endr );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
