@@ -36,7 +36,6 @@ statement_base( transactional )
    int32_t type;
 
    std::string wrapped_sql = wrap_sql( sql, parameters, &type );
-   std::cout << wrapped_sql << std::endl;
    prepare( wrapped_sql );
 
    m_stmt->type = type;
