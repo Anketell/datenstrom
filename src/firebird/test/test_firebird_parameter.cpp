@@ -203,3 +203,24 @@ NAMESPACE_TEST( firebird, parameter, should_support_duplicate_parameters )
 }
 
 //-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( firebird, parameter, should_support_queries_without_result )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create_dom ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert_dom, { "id" } );
+
+      EXPECT_NO_THROW( insert_test << "blah" << ds::endr );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------

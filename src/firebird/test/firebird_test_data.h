@@ -29,6 +29,8 @@ extern const char * del_rows;
 extern const char * named;
 extern const char * named_duplicates;
 extern const char * batch;
+extern const char * create_dom;
+extern const char * insert_dom;
 
 //-----------------------------------------------------------------------------
 

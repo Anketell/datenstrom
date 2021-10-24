@@ -36,6 +36,7 @@ statement_base( transactional )
    int32_t type;
 
    std::string wrapped_sql = wrap_sql( sql, parameters, &type );
+   std::cout << wrapped_sql << std::endl;
    prepare( wrapped_sql );
 
    m_stmt->type = type;
@@ -236,11 +237,11 @@ std::string named_statement::wrap_sql( const std::string     & sql,
    if ( meta.type == isc_info_sql_stmt_select )
       wrapped_sql << "FOR" << std::endl;
 
-   wrapped_sql << sql << std::endl;
+   wrapped_sql << sql;
 
    if ( meta.out->sqld )
    {
-      wrapped_sql << "INTO ";
+      wrapped_sql << std::endl << "INTO ";
       for ( int i = 0; i < meta.out->sqld; i++ )
       {
          if ( i )
@@ -254,10 +255,10 @@ std::string named_statement::wrap_sql( const std::string     & sql,
       else
          wrapped_sql << ";" << std::endl;
 
-      wrapped_sql << "SUSPEND;" << std::endl;
+      wrapped_sql << "SUSPEND";
    }
 
-   wrapped_sql << "END" << std::endl;
+   wrapped_sql << ";" << std::endl << "END" << std::endl;
 
    free( meta.in );
    free( meta.out );
