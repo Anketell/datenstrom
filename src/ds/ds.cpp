@@ -207,6 +207,13 @@ void ostream::endr( void )
 
 //-----------------------------------------------------------------------------
 
+istream::operator bool ( void ) const
+{
+   throw Not_implemented();
+}
+
+//-----------------------------------------------------------------------------
+
 istream & endr( istream & in )
 {
    in.endr();

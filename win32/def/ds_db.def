@@ -41,8 +41,7 @@ EXPORTS
    ?end@statement@db@ds@@QEAA?AViterator@123@XZ
    ?parse_connect_string@db@ds@@YA?AVconnect_params_t@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0result@db@ds@@QEAA@XZ
-   ??Bresult@db@ds@@QEBA_NXZ
-   ??Bresult@db@ds@@QEAA_NXZ
+   ??Bresult@db@ds@@UEBA_NXZ
    ??8result@db@ds@@QEBA_NAEBV012@@Z
    ?execute@statement@db@ds@@QEAA_KXZ
    ?execute@statement@db@ds@@QEAA_KXZ

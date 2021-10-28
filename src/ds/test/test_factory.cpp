@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <ds/factory.h>
 
 //-----------------------------------------------------------------------------
@@ -52,7 +53,7 @@ typedef ds::factory< base_t, std::string, int > test_factory_t;
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_factory, should_register_and_create )
+NAMESPACE_TEST( ds, factory, should_register_and_create )
 {
    test_factory_t factory;
 
@@ -74,7 +75,7 @@ TEST( ds_factory, should_register_and_create )
 
 //-----------------------------------------------------------------------------
 
-TEST( ds_factory, should_fail_unknown_type )
+NAMESPACE_TEST( ds, factory, should_fail_unknown_type )
 {
    test_factory_t factory;
 

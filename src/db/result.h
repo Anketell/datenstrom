@@ -86,8 +86,7 @@ public:
 
    bool step( void );
 
-   operator bool ( void ) const;
-   operator bool ( void );
+   virtual operator bool ( void ) const override;
 
    bool operator==( const result &  ) const;
 

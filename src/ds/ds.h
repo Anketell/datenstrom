@@ -53,6 +53,8 @@ public:
    virtual void read( void *, size_t );
 
    virtual void endr( void );
+
+   virtual operator bool ( void ) const;
 };
 
 //-----------------------------------------------------------------------------

@@ -75,6 +75,8 @@ NAMESPACE_TEST( ds, istream, should_fail_input )
    EXPECT_THROW( get< std::string >( in ), ds::Not_implemented );
 
    EXPECT_THROW( in.read( nullptr, 0 ), ds::Not_implemented );
+
+   EXPECT_THROW( in.operator bool(), ds::Not_implemented );
 }
 
 //-----------------------------------------------------------------------------
