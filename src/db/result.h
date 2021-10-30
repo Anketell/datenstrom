@@ -87,7 +87,8 @@ public:
    bool step( void );
 
    virtual operator bool ( void ) const override;
-
+   operator bool ( void );
+   
    bool operator==( const result &  ) const;
 
    template< typename T > operator T ( void )

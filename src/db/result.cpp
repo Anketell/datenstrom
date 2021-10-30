@@ -155,6 +155,13 @@ result::operator bool ( void ) const
 
 //-----------------------------------------------------------------------------
 
+result::operator bool ( void )
+{
+   return *const_cast< const result * >( this );
+}
+
+//-----------------------------------------------------------------------------
+
 bool result::operator==( const result & r ) const
 {
    return !*this && !r || m_impl == r.m_impl;
