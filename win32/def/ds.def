@@ -40,4 +40,4 @@ EXPORTS
    ?endr@ostream@ds@@UEAAXXZ
    ?read@istream@ds@@UEAAXPEAX_K@Z
    ?write@ostream@ds@@UEAAXPEBX_K@Z
-   ??Bistream@ds@@UEBA_NXZ
+   ?eof@istream@ds@@UEBA_NXZ

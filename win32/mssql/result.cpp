@@ -236,7 +236,7 @@ bool result::step( void )
 {
    m_valid = SQLFetch( m_stmt->hstmt ) == SQL_SUCCESS;
 
-   return *this;
+   return !this->eof();
 }
 
 //-----------------------------------------------------------------------------
