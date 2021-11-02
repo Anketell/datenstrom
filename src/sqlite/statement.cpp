@@ -231,7 +231,7 @@ uint64_t statement::execute( void )
 
    m_state = Executed;
 
-   if ( result )
+   if ( !result.eof() )
    {
       if ( result.column_count() != 1 )
          throw_error( operation, "Too many result columns" );

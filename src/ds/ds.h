@@ -54,7 +54,7 @@ public:
 
    virtual void endr( void );
 
-   virtual operator bool ( void ) const;
+   virtual bool eof( void ) const;
 };
 
 //-----------------------------------------------------------------------------

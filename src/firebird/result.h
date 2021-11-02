@@ -67,7 +67,7 @@ public:
 
    virtual bool step( void ) override;
 
-   virtual operator bool ( void ) const override;
+   virtual bool eof( void ) const override;
 };
 
 //-----------------------------------------------------------------------------

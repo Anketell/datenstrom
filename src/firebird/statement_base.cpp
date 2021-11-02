@@ -548,13 +548,13 @@ uint64_t statement_base::execute( void )
       {
          firebird::result result( m_stmt, m_transactional );
 
-         if ( result )
+         if ( !result.eof() )
          {
             if ( result.column_count() != 1 )
                throw_error( operation, "Too many result columns" );
 
             result.get_column( 0, res );
-            if ( result )
+            if ( !result.eof() )
                reset();
          }
       }

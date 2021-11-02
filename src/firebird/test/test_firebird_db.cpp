@@ -418,7 +418,7 @@ NAMESPACE_TEST( firebird, result, should_fail_query_wrong_column_count )
       {
          Object o_db = {};
 
-         if ( row )
+         if ( !row.eof() )
          {
             EXPECT_NO_THROW( row >> o_db );
             EXPECT_THROW( row >> o_db, std::runtime_error );

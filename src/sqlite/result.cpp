@@ -145,14 +145,14 @@ bool result::step( void )
 {
    m_valid = sqlite3_step( m_stmt->stmt ) == SQLITE_ROW;
 
-   return *this;
+   return !this->eof();
 }
 
 //-----------------------------------------------------------------------------
 
-result::operator bool ( void ) const
+bool result::eof( void ) const
 {
-   return m_valid;
+   return !m_valid;
 }
 
 //-----------------------------------------------------------------------------

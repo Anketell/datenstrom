@@ -427,14 +427,14 @@ bool result::step( void )
 
    check_status( operation, status );
 
-   return *this;
+   return !this->eof();
 }
 
 //-----------------------------------------------------------------------------
 
-result::operator bool ( void ) const
+bool result::eof( void ) const
 {
-   return m_valid;
+   return !m_valid;
 }
 
 //-----------------------------------------------------------------------------

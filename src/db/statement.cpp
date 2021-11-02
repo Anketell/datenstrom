@@ -186,7 +186,7 @@ statement::iterator::iterator( db::result result )
 
 result statement::iterator::operator*( void )
 {
-   if ( !m_result )
+   if ( m_result.eof() )
       throw std::runtime_error( "No result available" );
 
    return m_result;

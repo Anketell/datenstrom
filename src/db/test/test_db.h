@@ -79,12 +79,12 @@ struct Test_result : public ds::db::result::impl
    virtual bool step( void ) override
    {
        ++m_step_calls;
-       return *this;
+       return !this->eof();
    }
 
-   virtual operator bool ( void ) const
+   virtual bool eof( void ) const
    {
-       return m_step_calls < m_row_count;
+       return m_step_calls >= m_row_count;
    }
 };
 

@@ -207,7 +207,7 @@ void ostream::endr( void )
 
 //-----------------------------------------------------------------------------
 
-istream::operator bool ( void ) const
+bool istream::eof( void ) const
 {
    throw Not_implemented();
 }

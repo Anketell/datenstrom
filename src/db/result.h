@@ -53,7 +53,7 @@ public:
       virtual void get_column( int index, std::string & ) = 0;
 
       virtual bool step( void ) = 0;
-      virtual operator bool ( void ) const = 0;
+      virtual bool eof( void ) const = 0;
    };
 
 private:
@@ -86,8 +86,7 @@ public:
 
    bool step( void );
 
-   virtual operator bool ( void ) const override;
-   operator bool ( void );
+   virtual bool eof( void ) const override;
    
    bool operator==( const result &  ) const;
 

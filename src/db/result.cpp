@@ -148,23 +148,16 @@ bool result::step( void )
 
 //-----------------------------------------------------------------------------
 
-result::operator bool ( void ) const
+bool result::eof( void ) const
 {
-   return m_impl != nullptr && *m_impl;
-}
-
-//-----------------------------------------------------------------------------
-
-result::operator bool ( void )
-{
-   return *const_cast< const result * >( this );
+   return m_impl == nullptr || m_impl->eof();
 }
 
 //-----------------------------------------------------------------------------
 
 bool result::operator==( const result & r ) const
 {
-   return !*this && !r || m_impl == r.m_impl;
+   return this->eof() && r.eof() || m_impl == r.m_impl;
 }
 
 //-----------------------------------------------------------------------------
