@@ -34,8 +34,6 @@ void connection::init( void )
    {
       for ( auto path : util::env::dir_list( util::env::get( "DS_MODULE_PATH" ) ) )
          enroll_directory( path );
-
-      m_initialized = true;
    }
 }
 
@@ -44,6 +42,7 @@ void connection::init( void )
 void connection::enroll_directory( const std::string & path )
 {
    db::enroll_directory( m_factory, path );
+   m_initialized = true;
 }
 
 //-----------------------------------------------------------------------------
