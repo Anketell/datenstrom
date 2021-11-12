@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <mssql/test/mssql_test_data.h>
 #include <test_model/object_serialise.h>
@@ -41,7 +42,7 @@ static const ds::db::name_list_t named_parameter_duplicates =
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_parameter, should_insert_named )
+NAMESPACE_TEST( mssql, parameter, should_insert_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -76,7 +77,7 @@ TEST( mssql_parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_parameter, should_retrieve_named )
+NAMESPACE_TEST( mssql, parameter, should_retrieve_named )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -136,7 +137,7 @@ TEST( mssql_parameter, should_retrieve_named )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_parameter, should_support_duplicate_parameters )
+NAMESPACE_TEST( mssql, parameter, should_support_duplicate_parameters )
 {
    ds::db::connection test_db( test_con_str );
 

@@ -35,10 +35,29 @@ std::string connection::create_connection_string( const std::string & server,
    std::stringstream ss;
 
    ss << "Driver={SQL Server}; "
-       << "Server=" << server << "," << port << "; "
-       << "Trusted_Connection=yes;";
+      << "Server=" << server << "," << port << "; "
+      << "Trusted_Connection=yes;";
 
-   return ss.str();;
+   return ss.str();
+}
+
+//-----------------------------------------------------------------------------
+
+std::string connection::create_connection_string( const std::string & user_id,
+                                                  const std::string & password,
+                                                  const std::string & server,
+                                                  int                 port  )
+{
+   std::stringstream ss;
+
+   ss << "Driver={SQL Server}; "
+      << "Server=tcp:" << server << "," << port << "; "
+      << "UID=" << user_id << "; "
+      << "PWD=" << password << "; "
+      << "Encrypt = yes; "
+      << "TrustServerCertificate=no;";
+
+   return ss.str();
 }
 
 //-----------------------------------------------------------------------------
@@ -46,6 +65,16 @@ std::string connection::create_connection_string( const std::string & server,
 connection::connection( const std::string & server, int port )
 {
    std::string connection_string = create_connection_string( server, port );
+   init( connection_string );
+}
+
+//-----------------------------------------------------------------------------
+
+connection::connection( const std::string & user_id,
+                        const std::string & password,
+                        const std::string & server, int port )
+{
+   std::string connection_string = create_connection_string( user_id, password, server, port );
    init( connection_string );
 }
 

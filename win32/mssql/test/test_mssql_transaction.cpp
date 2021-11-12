@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <mssql/test/mssql_test_data.h>
@@ -8,7 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_transaction, should_commit_on_destruction )
+NAMESPACE_TEST( mssql, transaction, should_commit_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -40,7 +41,7 @@ TEST( mssql_transaction, should_commit_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_transaction, should_rollback_on_exception )
+NAMESPACE_TEST( mssql, transaction, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -78,7 +79,7 @@ TEST( mssql_transaction, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_transaction, should_fail_nested )
+NAMESPACE_TEST( mssql, transaction, should_fail_nested )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -101,7 +102,7 @@ TEST( mssql_transaction, should_fail_nested )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_transaction, should_fail_lone_commit )
+NAMESPACE_TEST( mssql, transaction, should_fail_lone_commit )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -118,7 +119,7 @@ TEST( mssql_transaction, should_fail_lone_commit )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_transaction, should_fail_lone_rollback )
+NAMESPACE_TEST( mssql, transaction, should_fail_lone_rollback )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -135,7 +136,7 @@ TEST( mssql_transaction, should_fail_lone_rollback )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_savepoint, should_release_on_destruction )
+NAMESPACE_TEST( mssql, savepoint, should_release_on_destruction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -172,7 +173,7 @@ TEST( mssql_savepoint, should_release_on_destruction )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_savepoint, should_rollback_on_exception )
+NAMESPACE_TEST( mssql, savepoint, should_rollback_on_exception )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -215,7 +216,7 @@ TEST( mssql_savepoint, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_savepoint, should_fail_no_name  )
+NAMESPACE_TEST( mssql, savepoint, should_fail_no_name  )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -233,7 +234,7 @@ TEST( mssql_savepoint, should_fail_no_name  )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_savepoint, should_fail_bad_rollback_name  )
+NAMESPACE_TEST( mssql, savepoint, should_fail_bad_rollback_name  )
 {
    ds::db::connection test_db( test_con_str );
 

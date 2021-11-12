@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 
 #include <gtest/gtest.h>
+#include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <db/transaction.h>
 #include <mssql/test/mssql_test_data.h>
@@ -8,7 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_db_list, should_provide_iterator )
+NAMESPACE_TEST( mssql, list, should_provide_iterator )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -39,7 +40,7 @@ TEST( mssql_db_list, should_provide_iterator )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_db_list, should_manage_cursor_within_transaction )
+NAMESPACE_TEST( mssql, list, should_manage_cursor_within_transaction )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -82,7 +83,7 @@ TEST( mssql_db_list, should_manage_cursor_within_transaction )
 
 //-----------------------------------------------------------------------------
 
-TEST( mssql_db_list, should_manage_cursor_without_transaction )
+NAMESPACE_TEST( mssql, list, should_manage_cursor_without_transaction )
 {
    ds::db::connection test_db( test_con_str );
 
