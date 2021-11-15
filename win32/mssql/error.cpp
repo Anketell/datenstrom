@@ -50,7 +50,7 @@ void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, R
                message << "(" << error << ") " << reinterpret_cast< char * >( msg ) << std::endl;
          }
          else
-            message << "No details";
+            message << "No details (" << rc << ")";
       }
       else
          message << "Invalid handle";

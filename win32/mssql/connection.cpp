@@ -53,9 +53,7 @@ std::string connection::create_connection_string( const std::string & user_id,
    ss << "Driver={SQL Server}; "
       << "Server=tcp:" << server << "," << port << "; "
       << "UID=" << user_id << "; "
-      << "PWD=" << password << "; "
-      << "Encrypt = yes; "
-      << "TrustServerCertificate=no;";
+      << "PWD=" << password << "; ";
 
    return ss.str();
 }
@@ -64,8 +62,8 @@ std::string connection::create_connection_string( const std::string & user_id,
 
 connection::connection( const std::string & server, int port )
 {
-   std::string connection_string = create_connection_string( server, port );
-   init( connection_string );
+   m_connection_string = create_connection_string( server, port );
+   init( m_connection_string );
 }
 
 //-----------------------------------------------------------------------------
@@ -74,8 +72,8 @@ connection::connection( const std::string & user_id,
                         const std::string & password,
                         const std::string & server, int port )
 {
-   std::string connection_string = create_connection_string( user_id, password, server, port );
-   init( connection_string );
+   m_connection_string = create_connection_string( user_id, password, server, port );
+   init( m_connection_string );
 }
 
 //-----------------------------------------------------------------------------
@@ -187,7 +185,15 @@ void connection::use( const std::string & name )
    std::string query = "USE " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL use database", m_hdbc, SQL_HANDLE_DBC, rc );
+
+   // Auzre doesn't support using a database not specified in the
+   // connection string so try to reconnect to the database.
+
+   if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO )
+   {
+      cleanup();
+      init( m_connection_string + " Database=" + name + ";" );
+   }
 
    m_database = name;
 }

@@ -47,6 +47,7 @@ class connection : public db::impl
 
    int m_transactions = 0;
 
+   std::string m_connection_string;
    std::string m_database;
 
    void init(const std::string& connection_string);
