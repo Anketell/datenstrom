@@ -32,6 +32,21 @@ struct part_def_t
 
 //-----------------------------------------------------------------------------
 
+part_parser_fn path_parser = []( connect_params_t & params, const std::string & value )
+{
+   static std::regex regex(
+      R"(^/.:[^:?&#]+$)",
+      std::regex::extended
+   );
+
+   if ( std::regex_match( value, regex ) )
+      params[ "path" ] = value.substr( 1 );
+   else
+      params[ "path" ] = value;
+};
+
+//-----------------------------------------------------------------------------
+
 void parse_param( connect_params_t & params, const std::string & value )
 {
    static std::regex regex (
@@ -78,7 +93,7 @@ part_parser_fn params_parser = []( connect_params_t & params, const std::string 
 connect_params_t parse_connect_string( const std::string & connect_string )
 {
    static std::regex regex (
-      R"(^(([^:\/?&#]+):)?(//([^:?&#\/]*)(:([0-9]+))?)?(/[^:?&#]*)?([^?&#]*)(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?)",
+      R"(^(([^:\/?&#]+):)?(//([^:?&#\/]*)(:([0-9]+))?)?(/[^?&#]*)?([^?&#]*)(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?)",
       std::regex::extended
    );
    std::smatch match_result;
@@ -88,7 +103,7 @@ connect_params_t parse_connect_string( const std::string & connect_string )
       {  2, part_parser( "type" ) },
       {  4, part_parser( "server" ) },
       {  6, part_parser( "port" ) },
-      {  7, part_parser( "path" ) },
+      {  7, path_parser },
       { 10, params_parser },
       { 14, part_parser( "database" ) }
    };
