@@ -46,6 +46,7 @@ EXPORTS
    ?execute@statement@db@ds@@QEAA_KXZ
    ?execute@statement@db@ds@@QEAA_KXZ
    ?result@statement@db@ds@@QEAA?AV023@XZ
+   ?enroll_directory@connection@db@ds@@SAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0connection@db@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0connection@db@ds@@QEAA@AEBVconnect_params_t@12@@Z
    ?type@connection@db@ds@@UEBAPEBDXZ
