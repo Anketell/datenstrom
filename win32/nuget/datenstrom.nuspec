@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Lucid.Datenstrom</id>
+        <version>0.0.0</version>
+        <description>Lucid Datenstrom</description>
+        <authors>Matt Henderson</authors>
+        <tags>Native, native</tags>
+    </metadata>
+
+    <files>
+        <file src="lib\*"            target="native\lib"     />
+        <file src="include\**\*"     target="native\include" />
+        <file src="bin\*"            target="native\bin"     />
+        <file src="module\*"         target="native\module"  />
+    </files>
+</package>
