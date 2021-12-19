@@ -35,7 +35,7 @@ class connection : public impl
 
 public:
 
-   static void enroll_directory( const std::string & path );
+   static void enroll_path_list( const std::string & path_list );
 
    connection( const std::string & connect_string );
    connection( const connect_params_t & connect_params );
