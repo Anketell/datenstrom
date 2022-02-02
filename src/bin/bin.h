@@ -14,12 +14,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace bin
+namespace ds::bin
 {
 
 //-----------------------------------------------------------------------------
@@ -182,14 +177,10 @@ public:
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-istream & big_endian( istream & in );
-ostream & big_endian( ostream & out );
-istream & little_endian( istream & in );
-ostream & little_endian( ostream & out );
+ds::istream & big_endian( ds::istream & in );
+ds::ostream & big_endian( ds::ostream & out );
+ds::istream & little_endian( ds::istream & in );
+ds::ostream & little_endian( ds::ostream & out );
 
 //-----------------------------------------------------------------------------
 

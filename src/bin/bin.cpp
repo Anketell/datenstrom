@@ -9,12 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace bin
+namespace ds::bin
 {
 
 //-----------------------------------------------------------------------------
@@ -435,11 +430,7 @@ std::runtime_error( "Binary buffer overrun" )
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-istream & big_endian( istream & in )
+ds::istream & big_endian( ds::istream & in )
 {
    dynamic_cast< bin::istream & >( in ).filter( &bin::be_filter ) ;
    return in;
@@ -447,7 +438,7 @@ istream & big_endian( istream & in )
 
 //-----------------------------------------------------------------------------
 
-ostream & big_endian( ostream & out )
+ds::ostream & big_endian( ds::ostream & out )
 {
    dynamic_cast< bin::ostream & >( out ).filter( &bin::be_filter ) ;
    return out;
@@ -455,7 +446,7 @@ ostream & big_endian( ostream & out )
 
 //-----------------------------------------------------------------------------
 
-istream & little_endian( istream & in )
+ds::istream & little_endian( ds::istream & in )
 {
    dynamic_cast< bin::istream & >( in ).filter( &bin::le_filter ) ;
    return in;
@@ -463,7 +454,7 @@ istream & little_endian( istream & in )
 
 //-----------------------------------------------------------------------------
 
-ostream & little_endian( ostream & out )
+ds::ostream & little_endian( ds::ostream & out )
 {
    dynamic_cast< bin::ostream & >( out ).filter( &bin::le_filter ) ;
    return out;
