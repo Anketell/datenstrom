@@ -8,10 +8,12 @@ mkdir build\image\include\dsutil
 mkdir build\image\include\ds
 mkdir build\image\include\csv
 mkdir build\image\include\db
+mkdir build\image\include\bin
 mkdir build\image\lib
 mkdir build\image\bin
 mkdir build\image\module
 
+cp -v win32\dsutil\endian.h                                          build\image\include\dsutil
 cp -v win32\dsutil\env.h                                             build\image\include\dsutil
 cp -v win32\dsutil\filesys.h                                         build\image\include\dsutil
 cp -v win32\dsutil\module.h                                          build\image\include\dsutil
@@ -34,6 +36,8 @@ cp -v src\db\statement.h                                             build\image
 cp -v src\db\transaction.h                                           build\image\include\db
 cp -v src\db\transactional.h                                         build\image\include\db
 
+cp -v src\bin\bin.h                                                 build\image\include\bin
+
 cp -v build\src\dsutil\Release\ds_util.dll                           build\image\bin
 cp -v build\src\dsutil\Release\ds_util.lib                           build\image\lib
 
@@ -45,5 +49,8 @@ cp -v build\src\csv\Release\ds_csv.lib                               build\image
 
 cp -v build\src\db\Release\ds_db.dll                                 build\image\bin
 cp -v build\src\db\Release\ds_db.lib                                 build\image\lib
+
+cp -v build\src\bin\Release\ds_bin.dll                               build\image\bin
+cp -v build\src\bin\Release\ds_bin.lib                               build\image\lib
 
 popd
