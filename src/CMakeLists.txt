@@ -6,6 +6,10 @@ include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_subdirectory( ds )
 
+if ( DS_BIN )
+   add_subdirectory( bin )
+endif()
+
 if ( DS_CSV )
    add_subdirectory( csv )
 endif()

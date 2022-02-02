@@ -4,12 +4,27 @@
 
 set( TARGET util )
 
-add_library( ${TARGET} STATIC
+set( SOURCE
+   endian.cpp
    env.cpp
    filesys.cpp
    module.cpp
    string.cpp
    time.cpp
+)
+
+set( HEADERS
+   endian.h
+   env.h
+   filesys.h
+   module.h
+   string.h
+   time.h
+)
+
+add_library( ${TARGET} STATIC
+   ${SOURCE}
+   ${HEADERS}
 )
 
 target_link_libraries( ${TARGET}
