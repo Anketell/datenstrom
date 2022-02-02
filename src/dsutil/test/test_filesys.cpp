@@ -13,7 +13,9 @@
 
 NAMESPACE_TEST( util, filesys, should_detect_file_existance )
 {
-   EXPECT_TRUE( ds::util::filesys::exists( "../CMakeFiles" ) );
+   ds::util::filesys::find file_list( ".", { "*" } );
+
+   EXPECT_TRUE( ds::util::filesys::exists( ( *file_list.begin() ).c_str() ) );
    EXPECT_FALSE( ds::util::filesys::exists( "/non_existent" ) );
 }
 
@@ -40,7 +42,12 @@ NAMESPACE_TEST( util, filesys, should_remove_file )
 NAMESPACE_TEST( util, filesys, should_find_files )
 {
    ds::util::filesys::find file_list( ".", { "*" } );
-   EXPECT_GT( std::distance( file_list.begin(), file_list.end() ), 0 );
+
+   int count = 0;
+   for ( auto f : file_list )
+      count++;
+
+   EXPECT_GT( count, 0 );
 }
 
 //-----------------------------------------------------------------------------
