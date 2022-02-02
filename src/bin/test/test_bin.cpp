@@ -867,9 +867,7 @@ NAMESPACE_TEST( bin, istream, should_get_double_le )
 
 NAMESPACE_TEST( bin, ostream, should_fail_overrun )
 {
-   uint8_t buffer[] = {};
-   
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
+   ds::bin::streamwrap sw( nullptr, 0 );
    ds::bin::ostream    out( &sw );
 
    EXPECT_THROW( out << ( uint8_t )1,  ds::bin::buffer_overrun );
@@ -887,9 +885,7 @@ NAMESPACE_TEST( bin, ostream, should_fail_overrun )
 
 NAMESPACE_TEST( bin, istream, should_fail_underrun )
 {
-   uint8_t buffer[] = {};
-   
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
+   ds::bin::streamwrap sw( nullptr, 0 );
    ds::bin::istream    in( &sw );
 
    EXPECT_THROW( { uint8_t  u8;  in >> u8;  }, ds::bin::buffer_underrun );

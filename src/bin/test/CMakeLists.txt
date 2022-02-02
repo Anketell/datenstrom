@@ -26,7 +26,8 @@ if ( MSVC )
 
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
-      "${CMAKE_BINARY_DIR}/src/csv/Debug/ds_bin.dll"
+      "${CMAKE_BINARY_DIR}/src/dsutil/Debug/ds_util.dll"
+      "${CMAKE_BINARY_DIR}/src/bin/Debug/ds_bin.dll"
    )
 
    foreach( dll ${DLL_LIST} )

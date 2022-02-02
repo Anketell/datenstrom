@@ -38,3 +38,9 @@ EXPORTS
 ??Eiterator@enumerator@parameter@util@ds@@QEAA?AV01234@XZ
 ?exists@filesys@util@ds@@YA_NPEBD@Z
 ?remove@filesys@util@ds@@YAXPEBD@Z
+?htol@endian@util@ds@@YAGG@Z
+?htol@endian@util@ds@@YAII@Z
+?htol@endian@util@ds@@YA_K_K@Z
+?htob@endian@util@ds@@YAGG@Z
+?htob@endian@util@ds@@YAII@Z
+?htob@endian@util@ds@@YA_K_K@Z

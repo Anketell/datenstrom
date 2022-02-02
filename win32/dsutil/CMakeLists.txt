@@ -5,6 +5,7 @@
 set( TARGET util )
 
 set( SOURCE
+   endian.cpp
    env.cpp
    filesys.cpp
    module.cpp
@@ -13,6 +14,7 @@ set( SOURCE
 )
 
 set( HEADERS
+   endian.h
    env.h
    filesys.h
    module.h

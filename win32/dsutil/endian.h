@@ -4,29 +4,29 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-#include <test_utils/gtest.h>
-#include <dsutil/env.h>
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( util, env, should_retrieve_variable )
+#include <cstdint>
+
+//-----------------------------------------------------------------------------
+
+namespace ds::util::endian
 {
-   std::string path = ds::util::env::get( "PATH" );
-   EXPECT_FALSE( path.empty() );
-}
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( util, env, should_iterate_dir_list )
-{
-   std::string path = ds::util::env::get( "PATH" );
-
-   EXPECT_FALSE( path.empty() );
-
-   ds::util::env::dir_list dl( path );
-
-   EXPECT_GT( std::distance( dl.begin(), dl.end() ), 1 );
-}
+uint16_t htol( uint16_t u );
+uint32_t htol( uint32_t u );
+uint64_t htol( uint64_t u );
 
 //-----------------------------------------------------------------------------
+
+uint16_t htob( uint16_t u );
+uint32_t htob( uint32_t u );
+uint64_t htob( uint64_t u );
+
+//-----------------------------------------------------------------------------
+
+}

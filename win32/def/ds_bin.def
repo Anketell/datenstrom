@@ -1,0 +1,32 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds_bin
+
+EXPORTS
+??0istream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+??0ostream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+??6ostream@bin@ds@@UEAAAEAV02@C@Z
+??6ostream@bin@ds@@UEAAAEAV02@F@Z
+??6ostream@bin@ds@@UEAAAEAV02@H@Z
+??6ostream@bin@ds@@UEAAAEAV02@_J@Z
+??6ostream@bin@ds@@UEAAAEAV02@E@Z
+??6ostream@bin@ds@@UEAAAEAV02@G@Z
+??6ostream@bin@ds@@UEAAAEAV02@I@Z
+??6ostream@bin@ds@@UEAAAEAV02@_K@Z
+??6ostream@bin@ds@@UEAAAEAV02@N@Z
+??0streamwrap@bin@ds@@QEAA@PEAX_J@Z
+?buffer@streamwrap@bin@ds@@QEBAPEAXXZ
+?size@streamwrap@bin@ds@@QEBA_JXZ
+?plength@streamwrap@bin@ds@@QEBA_JXZ
+?premaining@streamwrap@bin@ds@@QEBA_JXZ
+?ppos@streamwrap@bin@ds@@QEBAPEAXXZ
+?glength@streamwrap@bin@ds@@QEBA_JXZ
+?gremaining@streamwrap@bin@ds@@QEBA_JXZ
+?gpos@streamwrap@bin@ds@@QEBAPEAXXZ
+??0lengthcalc@bin@ds@@QEAA@XZ
+?big_endian@ds@@YAAEAVistream@1@AEAV21@@Z
+?big_endian@ds@@YAAEAVostream@1@AEAV21@@Z
+?little_endian@ds@@YAAEAVistream@1@AEAV21@@Z
+?little_endian@ds@@YAAEAVostream@1@AEAV21@@Z

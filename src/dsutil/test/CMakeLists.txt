@@ -34,3 +34,12 @@ if ( MSVC )
    )
 
 endif( MSVC )
+
+add_library(  null_module MODULE
+   null_module.cpp
+)
+
+if ( WIN32 )
+   include( dll_funcs )
+   module_def( TARGET null_module )
+endif( WIN32 )
