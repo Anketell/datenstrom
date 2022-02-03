@@ -26,7 +26,7 @@ EXPORTS
 ?gremaining@streamwrap@bin@ds@@QEBA_JXZ
 ?gpos@streamwrap@bin@ds@@QEBAPEAXXZ
 ??0lengthcalc@bin@ds@@QEAA@XZ
-?big_endian@ds@@YAAEAVistream@1@AEAV21@@Z
-?big_endian@ds@@YAAEAVostream@1@AEAV21@@Z
-?little_endian@ds@@YAAEAVistream@1@AEAV21@@Z
-?little_endian@ds@@YAAEAVostream@1@AEAV21@@Z
+?big_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
+?big_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
+?little_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
+?little_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
