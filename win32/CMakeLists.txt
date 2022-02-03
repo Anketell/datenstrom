@@ -10,4 +10,12 @@ if ( DS_DB )
       add_subdirectory( mssql )
    endif( DS_MSSQL )
 
+   if ( DS_FIREBIRD )
+      add_subdirectory( firebird )
+   endif()
+
+   if ( DS_SQLITE )
+      add_subdirectory( sqlite )
+   endif()
+
 endif ( DS_DB )

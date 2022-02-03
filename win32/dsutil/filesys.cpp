@@ -63,6 +63,15 @@ void remove( const char * path )
 
 //-----------------------------------------------------------------------------
 
+std::string temp_directory( void )
+{
+   char buffer[ MAX_PATH + 1 ];
+   GetTempPath( sizeof( buffer ), buffer );
+   return buffer;
+}
+
+//-----------------------------------------------------------------------------
+
 find::find( const std::string & path, const pattern_list_t & pattern_list ) :
 m_path( path ),
 m_pattern_list( pattern_list )

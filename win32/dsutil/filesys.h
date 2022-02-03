@@ -19,6 +19,7 @@ namespace ds::util::filesys
 
 bool exists( const char * path );
 void remove( const char * path );
+std::string temp_directory( void );
 
 //-----------------------------------------------------------------------------
 

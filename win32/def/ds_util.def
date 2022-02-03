@@ -44,3 +44,4 @@ EXPORTS
 ?htob@endian@util@ds@@YAGG@Z
 ?htob@endian@util@ds@@YAII@Z
 ?htob@endian@util@ds@@YA_K_K@Z
+?temp_directory@filesys@util@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
