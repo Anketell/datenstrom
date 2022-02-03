@@ -28,7 +28,6 @@ const char * create = "CREATE TABLE Object ("
 //-----------------------------------------------------------------------------
 
 const char * test_db_name = "test_db";
-const char * test_con_str = "sqlite:///tmp";
 const char * bad_con_str  = "sqlite:///blah";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "

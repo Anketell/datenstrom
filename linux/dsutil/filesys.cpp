@@ -35,6 +35,13 @@ void remove( const char * path )
 
 //-----------------------------------------------------------------------------
 
+std::string temp_directory( void )
+{
+   return "/tmp/";
+}
+
+//-----------------------------------------------------------------------------
+
 find::find( const std::string & path, const pattern_list_t & pattern_list ) :
 m_path( path ),
 m_pattern_list( pattern_list )

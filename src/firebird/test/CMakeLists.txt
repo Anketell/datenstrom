@@ -27,6 +27,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
+   firebird_native_test_data
    ds_db
    test_model
    gtest

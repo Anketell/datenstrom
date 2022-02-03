@@ -13,41 +13,59 @@
 
 NAMESPACE_TEST( util, filesys, should_detect_file_existance )
 {
-   ds::util::filesys::find file_list( ".", { "*" } );
+   auto temp_file_name = ds::util::filesys::temp_directory() + "temp_file";
 
-   EXPECT_TRUE( ds::util::filesys::exists( ( *file_list.begin() ).c_str() ) );
+   {
+      std::ofstream ofs( temp_file_name );
+   }
+
+   EXPECT_TRUE( ds::util::filesys::exists( temp_file_name.c_str() ) );
    EXPECT_FALSE( ds::util::filesys::exists( "/non_existent" ) );
+
+   ds::util::filesys::remove( temp_file_name.c_str() );
 }
 
 //-----------------------------------------------------------------------------
 
 NAMESPACE_TEST( util, filesys, should_remove_file )
 {
-   static constexpr char file_name[] = "Unusual_file_name";
+   auto temp_file_name = ds::util::filesys::temp_directory() + "temp_file";
 
-   EXPECT_FALSE( ds::util::filesys::exists( file_name ) );
+  ds::util::filesys::remove( temp_file_name.c_str() );
+
+   EXPECT_FALSE( ds::util::filesys::exists( temp_file_name.c_str() ) );
 
    {
-      std::ofstream( file_name ) << std::endl;
+      std::ofstream ofs( temp_file_name );
    }
-   EXPECT_TRUE( ds::util::filesys::exists( file_name ) );
 
-   ds::util::filesys::remove( file_name );
+   EXPECT_TRUE( ds::util::filesys::exists( temp_file_name.c_str() ) );
 
-   EXPECT_FALSE( ds::util::filesys::exists( file_name ) );
+   ds::util::filesys::remove( temp_file_name.c_str() );
+
+   EXPECT_FALSE( ds::util::filesys::exists( temp_file_name.c_str() ) );
 }
 
 //-----------------------------------------------------------------------------
 
 NAMESPACE_TEST( util, filesys, should_find_files )
 {
+   auto temp_file_name = ds::util::filesys::temp_directory() + "temp_file_";
+
+   for ( int i = 0; i < 5; i++ )
+      std::ofstream ofs( temp_file_name + std::to_string( i ) );
+
    ds::util::filesys::find file_list( ".", { "*" } );
 
    int count = 0;
    for ( auto f : file_list )
       count++;
 
-   EXPECT_GT( count, 0 );
+   EXPECT_GE( count, 5 );
+
+   for ( int i = 0; i < 5; i++ )
+      ds::util::filesys::remove( ( temp_file_name + std::to_string( i ) ).c_str() );
+
 }
 
 //-----------------------------------------------------------------------------

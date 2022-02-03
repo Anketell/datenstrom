@@ -3,3 +3,5 @@
 #
 
 add_subdirectory( dsutil )
+add_subdirectory( firebird )
+add_subdirectory( sqlite )

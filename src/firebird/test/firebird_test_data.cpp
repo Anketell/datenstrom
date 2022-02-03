@@ -59,7 +59,6 @@ CREATE TABLE Object (
 //-----------------------------------------------------------------------------
 
 const char * test_db_name = "test_db";
-const char * test_con_str = "firebird://127.0.0.1:3050/tmp?username=sysdba&password=masterkey";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ?, ?, ?, "
