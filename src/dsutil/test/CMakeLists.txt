@@ -8,7 +8,6 @@ add_executable( ${TARGET}
    test_env.cpp
    test_filesys.cpp
    test_module.cpp
-   test_parameter.cpp
    test_string.cpp
    test_time.cpp
 )

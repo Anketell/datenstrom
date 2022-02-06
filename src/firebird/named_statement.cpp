@@ -6,7 +6,7 @@
 
 #include <firebird/named_statement.h>
 #include <firebird/guard.h>
-#include <dsutil/parameter.h>
+#include <db/parameter.h>
 #include <algorithm>
 #include <sstream>
 #include <iostream>

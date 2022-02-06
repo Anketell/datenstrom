@@ -2,7 +2,7 @@
 # Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
 #
 
-set( TARGET util )
+set( TARGET ds_util )
 
 set( SOURCE
    endian.cpp
@@ -22,7 +22,7 @@ set( HEADERS
    time.h
 )
 
-add_library( ${TARGET} STATIC
+add_library( ${TARGET} SHARED
    ${SOURCE}
    ${HEADERS}
 )
@@ -30,5 +30,3 @@ add_library( ${TARGET} STATIC
 target_link_libraries( ${TARGET}
    dl
 )
-
-set_property( TARGET ${TARGET} PROPERTY POSITION_INDEPENDENT_CODE ON )

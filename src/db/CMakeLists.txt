@@ -11,6 +11,7 @@ set( SOURCE
    result.cpp
    transaction.cpp
    connect_string.cpp
+   parameter.cpp
 )
 
 set( HEADERS
@@ -25,6 +26,7 @@ set( HEADERS
    factory_helper.h
    impl.h
    transactional.h
+   parameter.h
 )
 
 add_library( ${TARGET} SHARED
