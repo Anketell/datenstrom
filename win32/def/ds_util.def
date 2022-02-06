@@ -29,13 +29,7 @@ EXPORTS
 ?format_iso_8601_date@time@util@ds@@YAXPEBUtm@@PEAD@Z
 ?format_iso_8601_time@time@util@ds@@YAXPEBUtm@@PEAD@Z
 ?format_iso_8601@time@util@ds@@YAXPEBUtm@@PEAD@Z
-??0enumerator@parameter@util@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
-??Diterator@enumerator@parameter@util@ds@@QEBAAEBUparameter_t@01234@XZ
-??9iterator@enumerator@parameter@util@ds@@QEBA_NAEBV01234@@Z
-?begin@enumerator@parameter@util@ds@@QEBA?AViterator@1234@XZ
-?end@enumerator@parameter@util@ds@@QEBA?AViterator@1234@XZ
 ?cmpignorecase@string@util@ds@@YAHPEBD0_K@Z
-??Eiterator@enumerator@parameter@util@ds@@QEAA?AV01234@XZ
 ?exists@filesys@util@ds@@YA_NPEBD@Z
 ?remove@filesys@util@ds@@YAXPEBD@Z
 ?htol@endian@util@ds@@YAGG@Z
