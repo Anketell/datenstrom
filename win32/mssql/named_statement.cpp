@@ -51,7 +51,7 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
    int param  = 0;
 
    uint32_t from = 0;
-   for ( auto parameter : util::parameter::enumerator( sql, ":$" ) )
+   for ( auto parameter : db::parameter::enumerator( sql, ":$" ) )
    {
       std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
 

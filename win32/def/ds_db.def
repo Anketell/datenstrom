@@ -70,9 +70,9 @@ EXPORTS
    ?rollback_to_savepoint@connection@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??Rconnection@db@ds@@UEAA?AVstatement@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@5@@Z
    ?begin_transaction@connection@db@ds@@UEAAXXZ
-   ??0enumerator@parameter@util@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
-   ??Diterator@enumerator@parameter@util@ds@@QEBAAEBUparameter_t@01234@XZ
-   ??9iterator@enumerator@parameter@util@ds@@QEBA_NAEBV01234@@Z
-   ?begin@enumerator@parameter@util@ds@@QEBA?AViterator@1234@XZ
-   ?end@enumerator@parameter@util@ds@@QEBA?AViterator@1234@XZ
-   ??Eiterator@enumerator@parameter@util@ds@@QEAA?AV01234@XZ
+   ??0enumerator@parameter@db@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
+   ??Diterator@enumerator@parameter@db@ds@@QEBAAEBUparameter_t@01234@XZ
+   ??9iterator@enumerator@parameter@db@ds@@QEBA_NAEBV01234@@Z
+   ?begin@enumerator@parameter@db@ds@@QEBA?AViterator@1234@XZ
+   ?end@enumerator@parameter@db@ds@@QEBA?AViterator@1234@XZ
+   ??Eiterator@enumerator@parameter@db@ds@@QEAA?AV01234@XZ

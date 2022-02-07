@@ -4,8 +4,8 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef UTIL_PARAMETER_H
-#define UTIL_PARAMETER_H
+#ifndef DB_PARAMETER_H
+#define DB_PARAMETER_H
 
 //-----------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds::util::parameter
+namespace ds::db::parameter
 {
 
 //-----------------------------------------------------------------------------
@@ -71,15 +71,15 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::util::parameter::enumerator::iterator >
+template<> class iterator_traits< ds::db::parameter::enumerator::iterator >
 {
 public:
 
-   typedef int32_t                                   difference_type;
-   typedef ds::util::parameter::enumerator::iterator value_type;
-   typedef value_type *                              pointer;
-   typedef value_type &                              reference;
-   typedef forward_iterator_tag                      iterator_category;
+   typedef int32_t                                 difference_type;
+   typedef ds::db::parameter::enumerator::iterator value_type;
+   typedef value_type *                            pointer;
+   typedef value_type &                            reference;
+   typedef forward_iterator_tag                    iterator_category;
 };
 }
 
