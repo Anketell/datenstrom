@@ -10,7 +10,6 @@ set( SOURCE
    test_list.cpp
    test_factory.cpp
    test_connect_string.cpp
-   test_context.cpp
 )
 
 set( HEADERS
@@ -33,30 +32,9 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
-add_test( ${TARGET} ${TARGET})
-
-add_library( sqlite_sql_module MODULE
-   sqlite_sql_module.cpp
-)
-
-target_link_libraries( sqlite_sql_module
-   sql_module_harness
-   ds_util
-)
-
-add_library( sqlite_test_module MODULE
-   sqlite_test_module.cpp
-)
-
-target_link_libraries( sqlite_test_module
-   sql_module_harness
-   ds_util
-)
+add_test( ${TARGET} ${TARGET} )
 
 if ( MSVC )
-
-   target_link_options( sqlite_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
-   target_link_options( sqlite_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
@@ -71,10 +49,5 @@ if ( MSVC )
             "${CMAKE_CURRENT_BINARY_DIR}/Debug/"
       )
    endforeach( dll )
-
-else( MSVC )
-
-   target_link_options( sqlite_sql_module PRIVATE "--entry=enroll_sql" )
-   target_link_options( sqlite_test_module PRIVATE "--entry=enroll_sql" )
 
 endif( MSVC )
