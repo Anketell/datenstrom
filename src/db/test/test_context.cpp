@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
+#include <db/test/test_context.h>
 #include <test_utils/gtest.h>
 #include <db/context.h>
 #include <db/transaction.h>
@@ -8,10 +8,6 @@
 #include <dsutil/filesys.h>
 #include <algorithm>
 #include <array>
-
-//-----------------------------------------------------------------------------
-
-class Context : public testing::TestWithParam< const char * > {};
 
 //-----------------------------------------------------------------------------
 
@@ -169,14 +165,5 @@ TEST_P( Context, should_fail_unknown_sql_key )
 
     ds::db::context::clean_up();
 }
-
-//-----------------------------------------------------------------------------
-
-static std::string sqlite_con_str = "sqlite:///" + ds::util::filesys::temp_directory();
-
-INSTANTIATE_NAMESPACE_TEST_SUITE_P( db,
-                                    sqlite,
-                                    Context,
-                                    testing::Values( sqlite_con_str.c_str() ) );
 
 //-----------------------------------------------------------------------------
