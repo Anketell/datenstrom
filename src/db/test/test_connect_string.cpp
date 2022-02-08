@@ -85,6 +85,21 @@ NAMESPACE_TEST( db, connect_string, should_parse_no_server_connect_string )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( db, connect_string, should_parse_no_server_no_params_connect_string )
+{
+   static const char connect_string[] = "type:////path/";
+   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+
+   EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
+   EXPECT_STREQ( params[ "server" ].c_str(),   "" );
+   EXPECT_STREQ( params[ "port" ].c_str(),     "" );
+   EXPECT_STREQ( params[ "path" ].c_str(),     "/path/" );
+   EXPECT_STREQ( params[ "name" ].c_str(),     "" );
+   EXPECT_STREQ( params[ "database" ].c_str(), "" );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( db, connect_string, should_parse_no_server_full_windows_path_connect_string )
 {
    static const char connect_string[] = "type:///C:\\path\\?name=value#database";

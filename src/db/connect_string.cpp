@@ -93,7 +93,7 @@ part_parser_fn params_parser = []( connect_params_t & params, const std::string 
 connect_params_t parse_connect_string( const std::string & connect_string )
 {
    static std::regex regex (
-      R"(^(([^:\/?&#]+):)?//([^:?&#\/]*)(:([0-9]+))?(/([^?&#]*))?(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?)",
+      R"(^(([^:\/?&#]+):)?//([^:?&#\/]*)(:([0-9]+))?(/([^?&#]*))?(\?(([^&#]+)(&[^&#]+)*))?(#(.*))?$)",
       std::regex::extended
    );
    std::smatch match_result;

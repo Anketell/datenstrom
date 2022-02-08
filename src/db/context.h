@@ -20,25 +20,25 @@ class context : public connection
 {
 public:
 
-   class unsupported_db_type : public std::exception
+   class unsupported_db_type : public std::runtime_error
    {
    public:
 
       unsupported_db_type( const std::string & type ) :
       type( type ),
-      std::exception( ( "Unsupported database type: " + type ).c_str() ) {}
+      std::runtime_error( "Unsupported database type: " + type ) {}
 
       const std::string type;
    };
 
-   class unknown_sql : public std::exception
+   class unknown_sql : public std::runtime_error
    {
    public:
 
       unknown_sql( const std::string & type, const std::string & key ) :
       type( type ),
       key( key ),
-      std::exception( ( "Unknown " + type + " sql: " + key ).c_str() ) {}
+      std::runtime_error( "Unknown " + type + " sql: " + key ) {}
 
       const std::string type;
       const std::string key;

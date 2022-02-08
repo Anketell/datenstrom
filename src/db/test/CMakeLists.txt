@@ -55,10 +55,10 @@ target_link_libraries( sqlite_test_module
 
 if ( MSVC )
 
-target_link_options( sqlite_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
-target_link_options( sqlite_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
+   target_link_options( sqlite_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
+   target_link_options( sqlite_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
-set( DLL_LIST
+   set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
       "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
@@ -71,5 +71,10 @@ set( DLL_LIST
             "${CMAKE_CURRENT_BINARY_DIR}/Debug/"
       )
    endforeach( dll )
+
+else( MSVC )
+
+   target_link_options( sqlite_sql_module PRIVATE "--entry=enroll_sql" )
+   target_link_options( sqlite_test_module PRIVATE "--entry=enroll_sql" )
 
 endif( MSVC )

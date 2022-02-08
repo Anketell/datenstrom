@@ -61,6 +61,10 @@ add_library( ${SQL_MODULE_LIB} STATIC
 if ( WIN32 )
    include( dll_funcs )
    dll_def( TARGET ${TARGET} )
+else ( WIN32 )
+
+   target_compile_options( ${SQL_MODULE_LIB} PRIVATE "-fPIC" )
+
 endif( WIN32 )
 
 add_subdirectory( test )
