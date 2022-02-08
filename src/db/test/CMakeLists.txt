@@ -34,6 +34,11 @@ target_link_libraries( ${TARGET}
 
 add_test( ${TARGET} ${TARGET} )
 
+add_library( test_db_context STATIC
+   test_context.cpp
+   test_context.h
+)
+
 if ( MSVC )
 
    set( DLL_LIST

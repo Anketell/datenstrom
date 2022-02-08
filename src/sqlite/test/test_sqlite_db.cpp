@@ -440,7 +440,7 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
 //-----------------------------------------------------------------------------
 
 INSTANTIATE_NAMESPACE_TEST_SUITE_P( sqlite,
-                                    SQL,
+                                    SQL_Module,
                                     Context,
                                     testing::Values( test_con_str ) );
 

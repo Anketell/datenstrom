@@ -26,11 +26,26 @@ TEST_P( Context, should_construct_context )
 
 //-----------------------------------------------------------------------------
 
+TEST_P( Context, should_perform_lookup )
+{
+   const char * con_string = GetParam();
+
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context ctx( con_string );
+
+   EXPECT_STREQ( ctx.lookup( "test.type" ), ctx.type() );
+
+   ds::db::context::clean_up();
+}
+
+//-----------------------------------------------------------------------------
+
 TEST_P( Context, should_insert_test_text )
 {
    const char            * con_string   = GetParam();
    static constexpr char   database[]   = "test_db";
-   static constexpr char * text_table[] =
+   static const char     * text_table[] =
    {
       { "1st Text String" },
       { "2nd Text String" },
@@ -71,7 +86,7 @@ TEST_P( Context, should_read_test_text )
 {
    const char            * con_string = GetParam();
    static constexpr char   database[] = "test_db";
-   static constexpr char * text_table[] =
+   static const char     * text_table[] =
    {
       { "1st Text String" },
       { "2nd Text String" },
@@ -146,7 +161,7 @@ TEST_P( Context, should_fail_unknown_sql_key )
 {
    const char            * con_string   = GetParam();
    static constexpr char   database[]   = "test_db";
-   static constexpr char * text_table[] =
+   static const     char * text_table[] =
    {
       { "1st Text String" },
       { "2nd Text String" },

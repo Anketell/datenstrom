@@ -11,7 +11,6 @@ set( SOURCE
    test_sqlite_list.cpp
    test_sqlite_blob.cpp
    sqlite_test_data.cpp
-   ../../db/test/test_context.cpp
 )
 
 set( HEADERS
@@ -28,6 +27,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
+   test_db_context
    ds_db
    test_model
    gtest
@@ -82,5 +82,10 @@ else( MSVC )
 
    target_link_options( sqlite_sql_module PRIVATE "--entry=enroll_sql" )
    target_link_options( sqlite_test_module PRIVATE "--entry=enroll_sql" )
+
+   target_link_options( ${TARGET} PRIVATE "-Wl,-L${CMAKE_BINARY_DIR}/src/db/test;"
+                                          "-Wl,--whole-archive;"
+                                          "-Wl,-ltest_db_context;"
+                                          "-Wl,--no-whole-archive" )
 
 endif( MSVC )
