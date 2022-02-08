@@ -4,7 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <db/test/test_context.h>
+#include <gtest/gtest.h>
 #include <test_utils/gtest.h>
 #include <db/connection.h>
 #include <sqlite/test/sqlite_test_data.h>
@@ -436,12 +436,5 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-
-//-----------------------------------------------------------------------------
-
-INSTANTIATE_NAMESPACE_TEST_SUITE_P( sqlite,
-                                    SQL_Module,
-                                    Context,
-                                    testing::Values( test_con_str ) );
 
 //-----------------------------------------------------------------------------

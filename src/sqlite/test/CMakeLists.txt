@@ -10,6 +10,7 @@ set( SOURCE
    test_sqlite_parameter.cpp
    test_sqlite_list.cpp
    test_sqlite_blob.cpp
+   test_sqlite_context.cpp
    sqlite_test_data.cpp
 )
 
