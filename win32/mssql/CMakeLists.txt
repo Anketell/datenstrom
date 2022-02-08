@@ -38,6 +38,6 @@ target_link_libraries( ${TARGET}
 )
 
 include( dll_funcs )
-module_def( TARGET ${TARGET} )
+db_module_def( TARGET ${TARGET} )
 
 add_subdirectory( test )

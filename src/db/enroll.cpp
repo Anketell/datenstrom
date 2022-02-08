@@ -34,7 +34,7 @@ void enroll_module( factory & factory, const std::string & path )
    if ( !module )
       return;
 
-   enroll_t enroll_module = module.symbol< enroll_t >( "enroll" );
+   enroll_t enroll_module = module.symbol< enroll_t >( "enroll_db" );
 
    if ( enroll_module )
       enroll_module( factory );

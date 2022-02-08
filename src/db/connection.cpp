@@ -31,15 +31,15 @@ bool    connection::m_initialized = false;
 void connection::init( void )
 {
    if ( !m_initialized )
-      enroll_path_list( util::env::get( "DS_MODULE_PATH" ) );
+      enroll_db_path_list( util::env::get( "DS_MODULE_PATH" ) );
 }
 
 //-----------------------------------------------------------------------------
 
-void connection::enroll_path_list( const std::string & path_list )
+void connection::enroll_db_path_list( const std::string & path_list )
 {
    for ( auto path : util::env::dir_list( path_list ) )
-      db::enroll_directory( m_factory, path );
+      enroll_directory( m_factory, path );
 
    m_initialized = true;
 }

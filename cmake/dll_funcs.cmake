@@ -60,7 +60,7 @@ function( dll_def )
 endfunction( dll_def )
 
 
-function( module_def )
+function( db_module_def )
    set( OPTIONS )
    set( ONE_VALUE_ARGS TARGET )
    set( MULTI_VALUE_ARGS )
@@ -71,7 +71,7 @@ function( module_def )
       message( FATAL_ERROR "TARGET not defined" )
    endif( NOT DEFINED ARGS_TARGET )
 
-   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/def/module.def")
+   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/def/db_module.def")
    target_link_options( ${ARGS_TARGET} PRIVATE "/DEF:${DEF_FILE}" )
 
-endfunction( module_def )
+endfunction( db_module_def )

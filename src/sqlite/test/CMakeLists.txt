@@ -27,7 +27,6 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
-   sqlite_native_test_data
    ds_db
    test_model
    gtest
@@ -39,7 +38,7 @@ add_test( ${TARGET} ${TARGET} )
 if ( MSVC )
 
    set( DLL_LIST
-      "${CMAKE_BINARY_DIR}/src/dsutil/Debug/ds_util.dll"
+      "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
       "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
       "${CMAKE_BINARY_DIR}/src/sqlite/Debug/ds_sqlite_module.dll"

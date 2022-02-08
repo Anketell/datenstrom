@@ -7,7 +7,7 @@ namespace ds::db
 
 //-----------------------------------------------------------------------------
 
-extern "C" void enroll( ds::db::factory & factory )
+extern "C" void enroll_db( ds::db::factory & factory )
 {
 }
 

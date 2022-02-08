@@ -7,16 +7,19 @@ set( TARGET ds_db )
 set( SOURCE
    enroll.cpp
    connection.cpp
+   context.cpp
    statement.cpp
    result.cpp
    transaction.cpp
    connect_string.cpp
    parameter.cpp
+   sql_map.cpp
 )
 
 set( HEADERS
    enroll.h
    connection.h
+   context.h
    statement.h
    result.h
    transaction.h
@@ -27,6 +30,7 @@ set( HEADERS
    impl.h
    transactional.h
    parameter.h
+   sql_map.h
 )
 
 add_library( ${TARGET} SHARED
@@ -37,6 +41,21 @@ add_library( ${TARGET} SHARED
 target_link_libraries( ${TARGET}
    ds
    ds_util
+)
+
+set( SQL_MODULE_LIB sql_module_harness )
+
+set( SQL_MODULE_LIB_SRC
+   sql_module_harness.cpp
+)
+
+set( SQL_MODULE_LIB_INC
+   sql_module_harness.h
+)
+
+add_library( ${SQL_MODULE_LIB} STATIC
+   ${SQL_MODULE_LIB_SRC}
+   ${SQL_MODULE_LIB_INC}
 )
 
 if ( WIN32 )

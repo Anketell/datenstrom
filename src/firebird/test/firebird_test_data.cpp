@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <firebird/test/firebird_test_data.h>
+#include <dsutil/filesys.h>
 
 //-----------------------------------------------------------------------------
 
@@ -58,6 +59,9 @@ CREATE TABLE Object (
 
 //-----------------------------------------------------------------------------
 
+static const std::string test_con = "firebird://127.0.0.1:3050/" + ds::util::filesys::temp_directory() + "?username=sysdba&password=masterkey";
+
+const char * test_con_str = test_con.c_str();
 const char * test_db_name = "test_db";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, ?, "

@@ -59,7 +59,7 @@ template<> impl * factory_helper< sqlite::connection >::construct( const connect
 
 //-----------------------------------------------------------------------------
 
-extern "C" void enroll( ds::db::factory & factory )
+extern "C" void enroll_db( ds::db::factory & factory )
 {
    factory.register_impl< ds::sqlite::connection >();
 }

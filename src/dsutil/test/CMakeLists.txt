@@ -28,7 +28,7 @@ if ( MSVC )
 
    add_custom_command(TARGET ${TARGET} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
-         "${CMAKE_BINARY_DIR}/src/dsutil/Debug/ds_util.dll"
+         "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
          "${CMAKE_CURRENT_BINARY_DIR}/Debug/ds_util.dll"
    )
 
@@ -40,5 +40,5 @@ add_library(  null_module MODULE
 
 if ( WIN32 )
    include( dll_funcs )
-   module_def( TARGET null_module )
+   db_module_def( TARGET null_module )
 endif( WIN32 )

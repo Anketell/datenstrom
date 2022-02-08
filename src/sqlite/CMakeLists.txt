@@ -34,5 +34,5 @@ add_subdirectory( test )
 
 if ( WIN32 )
    include( dll_funcs )
-   module_def( TARGET ${TARGET} )
+   db_module_def( TARGET ${TARGET} )
 endif( WIN32 )
