@@ -28,6 +28,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
+   test_db_context
    ds_db
    test_model
    gtest
