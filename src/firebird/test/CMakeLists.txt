@@ -63,7 +63,6 @@ if ( MSVC )
 
    target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
 
-
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
@@ -83,7 +82,7 @@ if ( MSVC )
        VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
    )
 
-   else( MSVC )
+else( MSVC )
 
    target_link_options( firebird_sql_module PRIVATE "--entry=enroll_sql" )
    target_link_options( firebird_test_module PRIVATE "--entry=enroll_sql" )
