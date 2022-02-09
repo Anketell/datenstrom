@@ -60,6 +60,8 @@ if ( MSVC )
    target_link_options( sqlite_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
    target_link_options( sqlite_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
+   target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
+
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
