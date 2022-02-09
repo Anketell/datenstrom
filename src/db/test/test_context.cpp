@@ -117,7 +117,7 @@ TEST_P( Context, should_read_test_text )
               sizeof( text_table ) / sizeof( text_table[ 0 ] ) );
 
    {
-      auto query_text_by_id = ctx( "test_table.query_text_by_id" );
+      auto query_text_by_id = ctx( "test_table.query_text_by_id", { "id" } );
 
       ds::db::transaction txn( ctx );
 
