@@ -185,7 +185,9 @@ TEST_P( Context, should_fail_unknown_sql_key )
                        ds::db::context::unknown_sql,
                        e.key == "test.unknown" );
 
-    ds::db::context::clean_up();
+   EXPECT_NO_THROW( ctx.drop( database ) );
+
+   ds::db::context::clean_up();
 }
 
 //-----------------------------------------------------------------------------

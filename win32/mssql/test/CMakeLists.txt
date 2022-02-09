@@ -9,6 +9,7 @@ set( SOURCE
    test_mssql_transaction.cpp
    test_mssql_parameter.cpp
    test_mssql_list.cpp
+   test_mssql_context.cpp
    mssql_test_data.cpp
 )
 
@@ -26,6 +27,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
+   test_db_context
    ds_db
    test_model
    gtest
@@ -35,6 +37,29 @@ target_link_libraries( ${TARGET}
 add_dependencies( ${TARGET} ds_mssql_module )
 
 add_test( ${TARGET} ${TARGET} )
+
+add_library( mssql_sql_module MODULE
+   mssql_sql_module.cpp
+)
+
+target_link_libraries( mssql_sql_module
+   sql_module_harness
+   ds_util
+)
+
+add_library( mssql_test_module MODULE
+   mssql_test_module.cpp
+)
+
+target_link_libraries( mssql_test_module
+   sql_module_harness
+   ds_util
+)
+
+target_link_options( mssql_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
+target_link_options( mssql_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
+
+target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
 
 set( DLL_LIST
    "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
