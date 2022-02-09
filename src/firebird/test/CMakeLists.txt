@@ -28,6 +28,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
+   test_db_context
    ds_db
    test_model
    gtest
@@ -83,7 +84,7 @@ if ( MSVC )
        VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
    )
 
-   else( MSVC )
+else( MSVC )
 
    target_link_options( firebird_sql_module PRIVATE "--entry=enroll_sql" )
    target_link_options( firebird_test_module PRIVATE "--entry=enroll_sql" )
