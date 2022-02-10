@@ -40,8 +40,8 @@ cp -v src\db\transactional.h                                         build\image
 
 cp -v src\bin\bin.h                                                 build\image\include\bin
 
-cp -v build\src\dsutil\Release\ds_util.dll                           build\image\bin
-cp -v build\src\dsutil\Release\ds_util.lib                           build\image\lib
+cp -v build\win32\dsutil\Release\ds_util.dll                           build\image\bin
+cp -v build\win32\dsutil\Release\ds_util.lib                           build\image\lib
 
 cp -v build\src\ds\Release\ds.dll                                    build\image\bin
 cp -v build\src\ds\Release\ds.lib                                    build\image\lib
@@ -54,5 +54,9 @@ cp -v build\src\db\Release\ds_db.lib                                 build\image
 
 cp -v build\src\bin\Release\ds_bin.dll                               build\image\bin
 cp -v build\src\bin\Release\ds_bin.lib                               build\image\lib
+
+cp -v build\src\firebird\Release\ds_firebird_module.dll              build\image\module
+cp -v build\src\sqlite\Release\ds_sqlite_module.dll                  build\image\module
+cp -v build\win32\mssql\Release\ds_mssql_module.dll                  build\image\module
 
 popd
