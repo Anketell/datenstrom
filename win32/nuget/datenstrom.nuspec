@@ -13,5 +13,6 @@
         <file src="include\**\*"     target="native\include" />
         <file src="bin\*"            target="native\bin"     />
         <file src="module\*"         target="native\module"  />
+        <file src="def\*"            target="native\def"  />
     </files>
 </package>
