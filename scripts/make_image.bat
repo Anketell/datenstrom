@@ -28,10 +28,12 @@ cp -v src\csv\csv.h                                                  build\image
 cp -v src\db\connect_params.h                                        build\image\include\db
 cp -v src\db\connect_string.h                                        build\image\include\db
 cp -v src\db\connection.h                                            build\image\include\db
+cp -v src\db\context.h                                               build\image\include\db
 cp -v src\db\factory_helper.h                                        build\image\include\db
 cp -v src\db\factory.h                                               build\image\include\db
 cp -v src\db\impl.h                                                  build\image\include\db
 cp -v src\db\result.h                                                build\image\include\db
+cp -v src\db\sql_map.h                                               build\image\include\db
 cp -v src\db\statement.h                                             build\image\include\db
 cp -v src\db\transaction.h                                           build\image\include\db
 cp -v src\db\transactional.h                                         build\image\include\db
