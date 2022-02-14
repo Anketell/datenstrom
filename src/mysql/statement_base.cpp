@@ -7,6 +7,7 @@
 #include <mysql/statement_base.h>
 #include <mysql/result.h>
 #include <mysql/error.h>
+#include <db/simple_result.h>
 
 //-----------------------------------------------------------------------------
 
@@ -62,29 +63,12 @@ void statement_base::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint64_t statement_base::execute( void )
+void statement_base::execute( void )
 {
    static constexpr char operation[] = "MySQL statement execute";
 
    internal_execute();
-
-   uint64_t res = 0;
-
-   mysql::result result( m_stmt );
-
-   if ( !result.eof() )
-   {
-      if ( result.column_count() != 1 )
-         throw_error( operation, "Too many result columns" );
-
-      result.get_column( 0, res );
-   }
-   else
-      res = mysql_stmt_insert_id( m_stmt->stmt );
-
    reset();
-
-   return res;
 }
 
 //-----------------------------------------------------------------------------
@@ -93,7 +77,17 @@ db::result statement_base::result( void )
 {
    internal_execute();
 
-   return db::result( std::make_shared< mysql::result >( m_stmt ) );
+   db::result result( std::make_shared< mysql::result >( m_stmt ) );
+
+   if ( result.eof() )
+   {
+      uint64_t value = mysql_stmt_insert_id( m_stmt->stmt );
+      if ( value )
+         result = db::result( std::make_shared< db::simple_result >( value ) );
+   }
+      
+
+   return result;
 }
 
 //-----------------------------------------------------------------------------

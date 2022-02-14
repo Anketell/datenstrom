@@ -10,6 +10,7 @@ set( SOURCE
    test_list.cpp
    test_factory.cpp
    test_connect_string.cpp
+   test_simple_result.cpp
 )
 
 set( HEADERS

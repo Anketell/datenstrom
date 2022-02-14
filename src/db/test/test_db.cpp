@@ -10,10 +10,6 @@
 
 //-----------------------------------------------------------------------------
 
-constexpr char Test_db::TYPE[];
-
-//-----------------------------------------------------------------------------
-
 NAMESPACE_TEST( db, endr, should_call_db_result_step )
 {
    auto test_stmt = std::make_shared< Test_statement >();

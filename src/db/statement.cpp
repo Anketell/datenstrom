@@ -135,13 +135,13 @@ void statement::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint64_t statement::execute( void )
+void statement::execute( void )
 {
    if ( m_parameter != m_impl->parameter_count() )
       throw std::runtime_error( "Wrong number of parameters" );
 
    m_parameter = 0;
-   return m_impl->execute();
+   m_impl->execute();
 }
 
 //-----------------------------------------------------------------------------

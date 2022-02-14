@@ -70,10 +70,10 @@ TEST_P( Context, should_insert_test_text )
 
       int i = 0;
       for ( auto text : text_table )
-         ids[ i++ ] = static_cast< int >( insert( text ).execute() );
+         ids[ i++ ] = insert( text ).result();
    }
 
-   EXPECT_EQ( ctx( "test.count_test_rows" ).execute(),
+   EXPECT_EQ( static_cast< int >( ctx( "test.count_test_rows" ).result() ),
               sizeof( text_table ) / sizeof( text_table[ 0 ] ) );
 
    EXPECT_NO_THROW( ctx.drop( database ) );
@@ -112,10 +112,10 @@ TEST_P( Context, should_read_test_text )
 
       int i = 0;
       for ( auto text : text_table )
-         ids[ i++ ] = static_cast< int >( insert( text ).execute() );
+         ids[ i++ ] = insert( text ).result();
    }
 
-   EXPECT_EQ( ctx( "test.count_test_rows" ).execute(),
+   EXPECT_EQ( static_cast< int >( ctx( "test.count_test_rows" ).result() ),
               sizeof( text_table ) / sizeof( text_table[ 0 ] ) );
 
    {

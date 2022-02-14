@@ -161,10 +161,9 @@ struct Test_statement : public ds::db::statement::impl
       m_reset_calls++;
    }
 
-   virtual uint64_t execute( void ) override
+   virtual void execute( void ) override
    {
       m_execute_calls++;
-      return 0;
    }
 
    virtual ds::db::result result( void ) override

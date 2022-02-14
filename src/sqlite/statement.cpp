@@ -7,6 +7,7 @@
 #include <sqlite/statement.h>
 #include <sqlite/result.h>
 #include <sqlite/error.h>
+#include <db/simple_result.h>
 #include <cassert>
 
 //-----------------------------------------------------------------------------
@@ -21,6 +22,19 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
+int statement::authorizor( void       * stmt, 
+                           int          action, 
+                           const char *, 
+                           const char *, 
+                           const char *, 
+                           const char * )
+{
+   reinterpret_cast< statement * >( stmt )->m_stmt->action = action;
+   return SQLITE_OK;
+}
+
+//-----------------------------------------------------------------------------
+
 statement::statement( sqlite3 * db, const std::string     & sql,
                                     const db::name_list_t & parameters )
 {
@@ -30,7 +44,14 @@ statement::statement( sqlite3 * db, const std::string     & sql,
 
    m_stmt = std::make_shared< stmt_t >();
 
-   int rc = sqlite3_prepare_v2( m_db, sql.c_str(), sql.length(), &m_stmt->stmt, nullptr );
+   int rc = sqlite3_set_authorizer( m_db, authorizor, this );
+   if ( rc )
+      throw_error( operation, rc );
+
+   rc = sqlite3_prepare_v2( m_db, sql.c_str(), sql.length(), &m_stmt->stmt, nullptr );
+
+   sqlite3_set_authorizer( m_db, nullptr, nullptr );
+
    if ( rc )
       throw_error( operation, rc );
 
@@ -219,44 +240,43 @@ void statement::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint64_t statement::execute( void )
+void statement::execute( void )
 {
    static constexpr char operation[] = "SQLite statement execute";
 
-   uint64_t res = 0;
-
    reset();
 
-   sqlite::result result( m_stmt );
+   int rc = sqlite3_step( m_stmt->stmt );
+   if ( rc != SQLITE_OK && rc != SQLITE_DONE )
+      throw_error( operation, "SQLite statement step" );
 
    m_state = Executed;
 
-   if ( !result.eof() )
-   {
-      if ( result.column_count() != 1 )
-         throw_error( operation, "Too many result columns" );
-
-      result.get_column( 0, res );
-   }
-   else
-      res = sqlite3_last_insert_rowid( m_db );
-
    reset();
-
-   return res;
 }
 
 //-----------------------------------------------------------------------------
 
 db::result statement::result( void )
 {
-   reset();
+   static constexpr char operation[] = "SQLite statement result";
 
-   db::result result = db::result( std::make_shared< sqlite::result >( m_stmt ) );
+   reset();
 
    m_state = Executed;
 
-   return result;
+   if ( m_stmt->action == SQLITE_INSERT )
+   {
+      int rc = sqlite3_step( m_stmt->stmt );
+      if ( rc != SQLITE_OK && rc != SQLITE_DONE )
+         throw_error( operation, "SQLite statement step" );
+
+      uint64_t value = sqlite3_last_insert_rowid( m_db );
+      if ( value )
+         return db::result( std::make_shared< db::simple_result >( value ) );
+   }
+
+   return db::result( std::make_shared< sqlite::result >( m_stmt ) );
 }
 
 //-----------------------------------------------------------------------------

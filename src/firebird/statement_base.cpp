@@ -534,35 +534,22 @@ void statement_base::internal_execute( void )
 
 //-----------------------------------------------------------------------------
 
-uint64_t statement_base::execute( void )
+void statement_base::execute( void )
 {
    static constexpr char operation[] = "Firebird statement execute";
-
-   uint64_t res = 0;
 
    guard( m_transactional, [ & ]( void ) -> void
    {
       internal_execute();
-
       if ( m_stmt->type != isc_info_sql_stmt_ddl )
       {
          firebird::result result( m_stmt, m_transactional );
-
          if ( !result.eof() )
-         {
-            if ( result.column_count() != 1 )
-               throw_error( operation, "Too many result columns" );
-
-            result.get_column( 0, res );
-            if ( !result.eof() )
-               reset();
-         }
+            reset();
       }
    } );
 
    m_tmp_transaction.reset();
-
-   return res;
 }
 
 //-----------------------------------------------------------------------------

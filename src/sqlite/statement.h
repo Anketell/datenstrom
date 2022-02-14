@@ -28,6 +28,13 @@ class statement : public db::statement::impl
 {
    enum state_t { Preparing, Executed };
 
+   static int authorizor( void       * stmt, 
+                          int          action, 
+                          const char *, 
+                          const char *, 
+                          const char *, 
+                          const char * );
+
    sqlite3                 * m_db;
    std::shared_ptr< stmt_t > m_stmt;
    std::vector< int >        m_parameters;
@@ -60,7 +67,7 @@ public:
    virtual int parameter_count( void ) override;
 
    virtual void reset( void ) override;
-   virtual uint64_t execute( void ) override;
+   virtual void execute( void ) override;
    virtual db::result result( void ) override;
 };
 

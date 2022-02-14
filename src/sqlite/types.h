@@ -26,6 +26,7 @@ namespace sqlite
 struct stmt_t
 {
    sqlite3_stmt * stmt = nullptr;
+   int            action;
 
    ~stmt_t( void )
    {

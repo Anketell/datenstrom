@@ -1,0 +1,60 @@
+//-----------------------------------------------------------------------------
+//
+// Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+//
+//-----------------------------------------------------------------------------
+
+#ifndef DS_DB_SIMPLE_RESULT_H
+#define DS_DB_SIMPLE_RESULT_H
+
+//-----------------------------------------------------------------------------
+
+#include <db/result.h>
+
+//-----------------------------------------------------------------------------
+
+namespace ds::db
+{
+
+//-----------------------------------------------------------------------------
+
+class simple_result : public result::impl
+{
+   uint64_t m_value;
+   bool     m_valid;
+
+   void check_column( int index );
+   template< typename I > I get_integer( int index );
+
+public:
+
+   simple_result( uint64_t value );
+   ~simple_result( void );
+
+   virtual int column_count( void ) const override;
+   virtual int rows_affected( void ) const override;
+
+   virtual void get_column( int index, int8_t & ) override;
+   virtual void get_column( int index, int16_t & ) override;
+   virtual void get_column( int index, int32_t & ) override;
+   virtual void get_column( int index, int64_t & ) override;
+
+   virtual void get_column( int index, uint8_t & ) override;
+   virtual void get_column( int index, uint16_t & ) override;
+   virtual void get_column( int index, uint32_t & ) override;
+   virtual void get_column( int index, uint64_t & ) override;
+
+   virtual void get_column( int index, double & ) override;
+   virtual void get_column( int index, std::string & ) override;
+
+   virtual bool step( void ) override;
+   virtual bool eof( void ) const override;
+};
+
+//-----------------------------------------------------------------------------
+
+}
+
+//-----------------------------------------------------------------------------
+
+#endif

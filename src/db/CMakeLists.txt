@@ -10,6 +10,7 @@ set( SOURCE
    context.cpp
    statement.cpp
    result.cpp
+   simple_result.cpp
    transaction.cpp
    connect_string.cpp
    parameter.cpp
@@ -22,6 +23,7 @@ set( HEADERS
    context.h
    statement.h
    result.h
+   simple_result.h
    transaction.h
    connect_string.h
    connect_params.h

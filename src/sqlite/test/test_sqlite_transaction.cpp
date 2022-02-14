@@ -35,7 +35,7 @@ NAMESPACE_TEST( sqlite, transaction, should_commit_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count = results_test.execute();
+      int count = results_test.result();
 
       EXPECT_EQ( 2, count );
    }
@@ -73,7 +73,7 @@ NAMESPACE_TEST( sqlite, transaction, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count = results_test.execute();
+      int count = results_test.result();
 
       EXPECT_EQ( 0, count );
    }
@@ -166,7 +166,7 @@ NAMESPACE_TEST( sqlite, savepoint, should_release_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count = results_test.execute();
+      int count = results_test.result();
 
       EXPECT_EQ( 2, count );
    }
@@ -210,7 +210,7 @@ NAMESPACE_TEST( sqlite, savepoint, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      int count = results_test.execute();
+      int count = results_test.result();
 
       EXPECT_EQ( 0, count );
    }

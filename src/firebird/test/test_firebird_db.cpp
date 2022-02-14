@@ -107,28 +107,28 @@ NAMESPACE_TEST( firebird, statement, should_return_execute_value )
          ;
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
-      EXPECT_EQ( insert_test.execute(), 1 );
+      EXPECT_EQ( static_cast< int >( insert_test.result() ), 1 );
 
       for ( std::string hello : query_test( 2 ) )
          ;
 
       EXPECT_NO_THROW( insert_test << data[ 1 ] );
-      EXPECT_EQ( insert_test.execute(), 2 );
+      EXPECT_EQ( static_cast< int >( insert_test.result() ), 2 );
 
       for ( std::string hello : query_test( 3 ) )
          ;
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
-      EXPECT_EQ( insert_test.execute(), 3 );
+      EXPECT_EQ( static_cast< int >( insert_test.result() ), 3 );
 
       for ( std::string hello : query_test( 4 ) )
          ;
 
       EXPECT_NO_THROW( insert_test << data[ 1 ] );
-      EXPECT_EQ( insert_test.execute(), 4 );
+      EXPECT_EQ( static_cast< int >( insert_test.result() ), 4 );
 
       ds::db::statement value_test = test_db( num_rows );
-      EXPECT_EQ( value_test.execute(), 4 );
+      EXPECT_EQ( static_cast< int >( value_test.result() ), 4 );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
