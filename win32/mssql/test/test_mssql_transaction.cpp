@@ -31,7 +31,7 @@ NAMESPACE_TEST( mssql, transaction, should_commit_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      uint64_t count = results_test.execute();
+      uint64_t count = results_test.result();
 
       EXPECT_EQ( 2, count );
    }
@@ -69,7 +69,7 @@ NAMESPACE_TEST( mssql, transaction, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      uint64_t count = results_test.execute();
+      uint64_t count = results_test.result();
 
       EXPECT_EQ( 0, count );
    }
@@ -163,7 +163,7 @@ NAMESPACE_TEST( mssql, savepoint, should_release_on_destruction )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      uint64_t count = results_test.execute();
+      uint64_t count = results_test.result();
 
       EXPECT_EQ( 2, count );
    }
@@ -206,7 +206,7 @@ NAMESPACE_TEST( mssql, savepoint, should_rollback_on_exception )
    {
       ds::db::statement results_test = test_db( num_rows );
 
-      uint64_t count = results_test.execute();
+      uint64_t count = results_test.result();
 
       EXPECT_EQ( 1, count );
    }

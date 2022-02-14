@@ -135,7 +135,7 @@ NAMESPACE_TEST( db, simple_result, should_error_value_too_big )
 NAMESPACE_TEST( db, simple_result, should_error_not_character_type )
 {
    ds::db::result res( std::make_shared< ds::db::simple_result >( 123 ) );
-   EXPECT_THROW_VALUE( static_cast< std::string >( res ), 
+   EXPECT_THROW_VALUE( res.operator std::string (), 
                      std::runtime_error, 
                      strcmp( e.what(), "Get simple result column: Not character type" ) == 0 );
 }

@@ -314,27 +314,10 @@ void statement_base::reset( void )
 
 //-----------------------------------------------------------------------------
 
-uint64_t statement_base::execute( void )
+void statement_base::execute( void )
 {
-   static constexpr char operation[] = "MSSQL statement execute";
-
    m_stmt->execute();
-
-   uint64_t res = 0;
-
-   if ( m_stmt->columns.size() )
-   {
-      if ( m_stmt->columns.size() != 1 )
-         throw_error( operation, "Too many result columns" );
-
-      mssql::result result( m_stmt );
-
-      result.get_column( 0, res );
-   }
-
    reset();
-
-   return res;
 }
 
 //-----------------------------------------------------------------------------

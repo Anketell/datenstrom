@@ -50,15 +50,13 @@ void simple_result::check_column( int index )
 
 //-----------------------------------------------------------------------------
 
-#define stringify( type ) #type
-
 template< typename I > I simple_result::get_integer( int index )
 {
    check_column( index );
 
    typedef std::numeric_limits< I > limits;
 
-   if ( m_value > limits::max() )
+   if ( m_value > static_cast< uint64_t >( limits::max() ) )
       throw std::runtime_error( "Get simple result column: Integer data value too big" );
 
    return static_cast< I >( m_value );
@@ -126,7 +124,7 @@ void simple_result::get_column( int index, uint64_t & u )
 void simple_result::get_column( int index, double & d )
 {
    check_column( index );
-   d = m_value;
+   d = static_cast< double >( m_value );
 }
 
 //-----------------------------------------------------------------------------
