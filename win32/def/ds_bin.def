@@ -18,6 +18,9 @@ EXPORTS
 ??6ostream@bin@ds@@UEAAAEAV02@N@Z
 ??0streamwrap@bin@ds@@QEAA@PEAX_J@Z
 ?buffer@streamwrap@bin@ds@@QEBAPEAXXZ
+??1streambuf@bin@ds@@UEAA@XZ
+??0streambuf@bin@ds@@QEAA@_J@Z
+?setbuf@streamwrap@bin@ds@@MEAAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@PEAD_J@Z
 ?size@streamwrap@bin@ds@@QEBA_JXZ
 ?plength@streamwrap@bin@ds@@QEBA_JXZ
 ?premaining@streamwrap@bin@ds@@QEBA_JXZ
@@ -25,6 +28,10 @@ EXPORTS
 ?glength@streamwrap@bin@ds@@QEBA_JXZ
 ?gremaining@streamwrap@bin@ds@@QEBA_JXZ
 ?gpos@streamwrap@bin@ds@@QEBAPEAXXZ
+?underflow@streamwrap@bin@ds@@MEAAHXZ
+?overflow@streamwrap@bin@ds@@MEAAHH@Z
+?xsgetn@streamwrap@bin@ds@@MEAA_JPEAD_J@Z
+?xsputn@streamwrap@bin@ds@@MEAA_JPEBD_J@Z
 ??0lengthcalc@bin@ds@@QEAA@XZ
 ?big_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
 ?big_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
