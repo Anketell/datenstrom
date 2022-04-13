@@ -16,3 +16,11 @@ add_library( test_model STATIC
    ${SOURCE}
    ${HEADERS}
 )
+
+if ( MSVC )
+
+   set_target_properties( test_model
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+endif()

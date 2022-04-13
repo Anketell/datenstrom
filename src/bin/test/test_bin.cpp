@@ -32,21 +32,21 @@ public:
 
 NAMESPACE_TEST( bin, length, should_calculate_data_length )
 {
-   uint32_t data_0_length = sizeof( int8_t   ) +  
-                            sizeof( int16_t  ) +   
-                            sizeof( int32_t  ) +   
-                            sizeof( int64_t  ) +   
-                            sizeof( uint8_t  ) +  
-                            sizeof( uint16_t ) +   
-                            sizeof( uint32_t ) +   
-                            sizeof( uint64_t ) +   
-                            sizeof( double   ) + 
+   uint32_t data_0_length = sizeof( int8_t   ) +
+                            sizeof( int16_t  ) +
+                            sizeof( int32_t  ) +
+                            sizeof( int64_t  ) +
+                            sizeof( uint8_t  ) +
+                            sizeof( uint16_t ) +
+                            sizeof( uint32_t ) +
+                            sizeof( uint64_t ) +
+                            sizeof( double   ) +
                             sizeof( double   ) +
                             sizeof( uint32_t ) + data[ 0 ].m_hello.length() +
                             sizeof( uint32_t ) + data[ 0 ].m_date.length() +
                             sizeof( uint32_t ) + data[ 0 ].m_time.length() +
                             sizeof( uint32_t ) + data[ 0 ].m_datetime.length();
- 
+
    EXPECT_EQ( ds::bin::length( ( uint8_t )0 ),  sizeof( uint8_t ) );
    EXPECT_EQ( ds::bin::length( ( uint16_t )0 ), sizeof( uint16_t ) );
    EXPECT_EQ( ds::bin::length( ( uint32_t )0 ), sizeof( uint32_t ) );
@@ -69,7 +69,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u8_be )
 {
    uint8_t u8       = 0x88;
    uint8_t buffer[] = { 0 };
-   
+
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
    ds::bin::ostream    out( &sw );
 
@@ -89,7 +89,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u8_le )
 {
    uint8_t u8       = 0x88;
    uint8_t buffer[] = { 0 };
-   
+
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
    ds::bin::ostream    out( &sw );
 
@@ -132,7 +132,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u16_le )
 {
    uint16_t u16      = 0x8899;
    uint8_t  buffer[] = { 0, 0 };
-   
+
    auto leu16    = ds::util::endian::htol( u16 );
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
@@ -155,7 +155,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u32_be )
 {
    uint32_t u32      = 0x8899aabb;
    uint8_t  buffer[] = { 0, 0, 0, 0 };
-   
+
    auto beu32    = ds::util::endian::htob( u32 );
    auto expected = reinterpret_cast< uint8_t * >( &beu32 );
 
@@ -201,7 +201,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u64_be )
 {
    uint64_t u64      = 0x8899aabbccddeeffULL;
    uint8_t  buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-   
+
    auto beu64    = ds::util::endian::htob( u64 );
    auto expected = reinterpret_cast< uint8_t * >( &beu64 );
 
@@ -310,7 +310,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s16_le )
 {
    int16_t s16      = -0x7899;
    uint8_t buffer[] = { 0, 0 };
-   
+
    auto leu16    = ds::util::endian::htol( static_cast< uint16_t >( s16 ) );
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
@@ -333,7 +333,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_be )
 {
    int32_t s32      = -0x7899aabb;
    uint8_t buffer[] = { 0, 0, 0, 0 };
-   
+
    auto bes32    = ds::util::endian::htob( static_cast< uint32_t >( s32 ) );
    auto expected = reinterpret_cast< uint8_t * >( &bes32 );
 
@@ -356,7 +356,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_le )
 {
    int32_t s32      = -0x7899aabb;
    uint8_t buffer[] = { 0, 0, 0, 0 };
-   
+
    auto les32    = ds::util::endian::htol( static_cast< uint32_t >( s32 ) );
    auto expected = reinterpret_cast< uint8_t * >( &les32 );
 
@@ -379,7 +379,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s64_be )
 {
    int64_t s64      = -0x7899aabbccddeeffULL;
    uint8_t buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-   
+
    auto bes64    = ds::util::endian::htob( static_cast< uint64_t >( s64 ) );
    auto expected = reinterpret_cast< uint8_t * >( &bes64 );
 
@@ -425,7 +425,7 @@ NAMESPACE_TEST( bin, ostream, should_put_double_be )
 {
    double  d        = -123.456;
    uint8_t buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-   
+
    auto expected = reinterpret_cast< uint8_t * >( &d );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -447,7 +447,7 @@ NAMESPACE_TEST( bin, ostream, should_put_double_le )
 {
    double  d        = -123.456;
    uint8_t buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-   
+
    auto expected = reinterpret_cast< uint8_t * >( &d );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );

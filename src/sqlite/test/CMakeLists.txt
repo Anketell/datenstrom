@@ -57,6 +57,18 @@ target_link_libraries( sqlite_test_module
 
 if ( MSVC )
 
+   set_target_properties( ${TARGET}
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+   set_target_properties( sqlite_sql_module
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+   set_target_properties( sqlite_test_module
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
    target_link_options( sqlite_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
    target_link_options( sqlite_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 

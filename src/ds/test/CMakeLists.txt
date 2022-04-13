@@ -23,6 +23,10 @@ add_test( ${TARGET} ${TARGET} )
 
 if ( MSVC )
 
+   set_target_properties( ${TARGET}
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
    add_custom_command(TARGET ${TARGET} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
          "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"

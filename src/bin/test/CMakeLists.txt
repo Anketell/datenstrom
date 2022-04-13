@@ -24,6 +24,10 @@ add_test( ${TARGET} ${TARGET} )
 
 if ( MSVC )
 
+   set_target_properties( ${TARGET}
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"

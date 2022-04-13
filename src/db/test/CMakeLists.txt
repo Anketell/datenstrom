@@ -42,6 +42,14 @@ add_library( test_db_context STATIC
 
 if ( MSVC )
 
+   set_target_properties( ${TARGET}
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+   set_target_properties( test_db_context
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"

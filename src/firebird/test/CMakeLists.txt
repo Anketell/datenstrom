@@ -59,6 +59,18 @@ target_link_libraries( firebird_test_module
 
 if ( MSVC )
 
+   set_target_properties( ${TARGET}
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+   set_target_properties( firebird_sql_module
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
+   set_target_properties( firebird_test_module
+      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
+   )
+
    target_link_options( firebird_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
    target_link_options( firebird_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
