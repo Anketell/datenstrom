@@ -25,7 +25,7 @@ public:
       static_cast< ds::ostream & >( *this ) << static_cast< uint32_t >( s.length() );
       m_sb->sputn( s.data(), s.length() );
       return *this;
-   }
+   } 
 };
 
 //-----------------------------------------------------------------------------
@@ -71,9 +71,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u8_be )
    uint8_t buffer[] = { 0 };
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << u8 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << u8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u8 ) );
@@ -91,9 +90,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u8_le )
    uint8_t buffer[] = { 0 };
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << u8 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << u8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u8 ) );
@@ -114,9 +112,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u16_be )
    auto expected = reinterpret_cast< uint8_t * >( &beu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << u16 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << u16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u16 ) );
@@ -137,9 +134,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u16_le )
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << u16 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << u16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u16 ) );
@@ -160,9 +156,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u32_be )
    auto expected = reinterpret_cast< uint8_t * >( &beu32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << u32 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << u32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u32 ) );
@@ -183,9 +178,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u32_le )
    auto expected = reinterpret_cast< uint8_t * >( &leu32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << u32 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << u32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u32 ) );
@@ -206,9 +200,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u64_be )
    auto expected = reinterpret_cast< uint8_t * >( &beu64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << u64 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << u64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u64 ) );
@@ -229,9 +222,8 @@ NAMESPACE_TEST( bin, ostream, should_put_u64_le )
    auto expected = reinterpret_cast< uint8_t * >( &leu64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << u64 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << u64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( u64 ) );
@@ -249,9 +241,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s8_be )
    uint8_t buffer[] = { 0 };
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << s8 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << s8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s8 ) );
@@ -269,9 +260,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s8_le )
    uint8_t buffer[] = { 0 };
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << s8 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << s8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s8 ) );
@@ -292,9 +282,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s16_be )
    auto expected = reinterpret_cast< uint8_t * >( &bes16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << s16 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << s16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s16 ) );
@@ -315,9 +304,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s16_le )
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << s16 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << s16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s16 ) );
@@ -338,9 +326,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_be )
    auto expected = reinterpret_cast< uint8_t * >( &bes32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << s32 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << s32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s32 ) );
@@ -361,9 +348,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_le )
    auto expected = reinterpret_cast< uint8_t * >( &les32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << s32 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << s32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s32 ) );
@@ -384,9 +370,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s64_be )
    auto expected = reinterpret_cast< uint8_t * >( &bes64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << s64 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << s64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s64 ) );
@@ -407,9 +392,8 @@ NAMESPACE_TEST( bin, ostream, should_put_s64_le )
    auto expected = reinterpret_cast< uint8_t * >( &les64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << s64 );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << s64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( s64 ) );
@@ -429,9 +413,8 @@ NAMESPACE_TEST( bin, ostream, should_put_double_be )
    auto expected = reinterpret_cast< uint8_t * >( &d );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::big_endian << d );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::big_endian << d );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( d ) );
@@ -451,9 +434,8 @@ NAMESPACE_TEST( bin, ostream, should_put_double_le )
    auto expected = reinterpret_cast< uint8_t * >( &d );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::ostream    out( &sw );
 
-   EXPECT_NO_THROW( out << ds::bin::little_endian << d );
+   EXPECT_NO_THROW( ds::bin::ostream( &sw ) << ds::bin::little_endian << d );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.plength(), ds::bin::length( d ) );
@@ -472,10 +454,10 @@ NAMESPACE_TEST( bin, istream, should_get_u8_be )
 
    uint8_t expected = 0x88;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> u8 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> u8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u8 ) );
@@ -494,10 +476,10 @@ NAMESPACE_TEST( bin, istream, should_get_u8_le )
 
    uint8_t expected = 0x88;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> u8 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> u8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u8 ) );
@@ -516,10 +498,10 @@ NAMESPACE_TEST( bin, istream, should_get_u16_be )
 
    uint16_t expected = 0x8899;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> u16 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> u16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u16 ) );
@@ -538,10 +520,10 @@ NAMESPACE_TEST( bin, istream, should_get_u16_le )
 
    uint16_t expected = 0x8899;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> u16 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> u16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u16 ) );
@@ -560,10 +542,10 @@ NAMESPACE_TEST( bin, istream, should_get_u32_be )
 
    uint32_t expected = 0x8899aabb;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> u32 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> u32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u32 ) );
@@ -582,10 +564,10 @@ NAMESPACE_TEST( bin, istream, should_get_u32_le )
 
    uint32_t expected = 0x8899aabb;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> u32 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> u32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u32 ) );
@@ -604,10 +586,10 @@ NAMESPACE_TEST( bin, istream, should_get_u64_be )
 
    uint64_t expected = 0x8899aabbccddeeffULL;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> u64 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> u64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u64 ) );
@@ -626,10 +608,10 @@ NAMESPACE_TEST( bin, istream, should_get_u64_le )
 
    uint64_t expected = 0x8899aabbccddeeffULL;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> u64 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> u64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( u64 ) );
@@ -648,10 +630,10 @@ NAMESPACE_TEST( bin, istream, should_get_s8_be )
 
    int8_t expected = 0x88;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> s8 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> s8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s8 ) );
@@ -670,10 +652,10 @@ NAMESPACE_TEST( bin, istream, should_get_s8_le )
 
    int8_t expected = 0x88;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> s8 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> s8 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s8 ) );
@@ -692,10 +674,10 @@ NAMESPACE_TEST( bin, istream, should_get_s16_be )
 
    int16_t expected = 0x8899;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> s16 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> s16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s16 ) );
@@ -714,10 +696,10 @@ NAMESPACE_TEST( bin, istream, should_get_s16_le )
 
    int16_t expected = 0x8899;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> s16 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> s16 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s16 ) );
@@ -736,10 +718,10 @@ NAMESPACE_TEST( bin, istream, should_get_s32_be )
 
    int32_t expected = 0x8899aabb;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> s32 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> s32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s32 ) );
@@ -758,10 +740,10 @@ NAMESPACE_TEST( bin, istream, should_get_s32_le )
 
    int32_t expected = 0x8899aabb;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> s32 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> s32 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s32 ) );
@@ -780,10 +762,10 @@ NAMESPACE_TEST( bin, istream, should_get_s64_be )
 
    uint64_t expected = 0x8899aabbccddeeffULL;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> s64 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> s64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s64 ) );
@@ -802,10 +784,10 @@ NAMESPACE_TEST( bin, istream, should_get_s64_le )
 
    uint64_t expected = 0x8899aabbccddeeffULL;
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> s64 );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> s64 );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( s64 ) );
@@ -826,10 +808,10 @@ NAMESPACE_TEST( bin, istream, should_get_double_be )
 
    memcpy( buffer, &expected, sizeof( expected ) );
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::big_endian >> d );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::big_endian >> d );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( d ) );
@@ -850,10 +832,10 @@ NAMESPACE_TEST( bin, istream, should_get_double_le )
 
    memcpy( buffer, &expected, sizeof( expected ) );
 
-   ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
-   ds::bin::istream    in( &sw );
+   ds::bin::streambuf sw( sizeof( buffer ) );
+   sw.sputn( reinterpret_cast< char * >( buffer ), sizeof( buffer ) );
 
-   EXPECT_NO_THROW( in >> ds::bin::little_endian >> d );
+   EXPECT_NO_THROW( ds::bin::istream( &sw ) >> ds::bin::little_endian >> d );
 
    EXPECT_EQ( sw.size(), sizeof( buffer ) );
    EXPECT_EQ( sw.glength(), ds::bin::length( d ) );

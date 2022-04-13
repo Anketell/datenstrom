@@ -55,35 +55,35 @@ m_filter( &null_filter )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( int8_t & i ) 
+ds::istream & istream::operator >> ( int8_t & i )
 {
    return *this >> *reinterpret_cast< uint8_t * >( &i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( int16_t & i ) 
+ds::istream & istream::operator >> ( int16_t & i )
 {
    return *this >> *reinterpret_cast< uint16_t * >( &i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( int32_t & i ) 
+ds::istream & istream::operator >> ( int32_t & i )
 {
    return *this >> *reinterpret_cast< uint32_t * >( &i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( int64_t & i ) 
+ds::istream & istream::operator >> ( int64_t & i )
 {
    return *this >> *reinterpret_cast< uint64_t * >( &i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( uint8_t & u ) 
+ds::istream & istream::operator >> ( uint8_t & u )
 {
    m_sb->sgetn( reinterpret_cast< char * >( &u ), sizeof( u ) );
    return *this;
@@ -91,7 +91,7 @@ ds::istream & istream::operator >> ( uint8_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( uint16_t & u ) 
+ds::istream & istream::operator >> ( uint16_t & u )
 {
    uint16_t tmp;
    m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -101,7 +101,7 @@ ds::istream & istream::operator >> ( uint16_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( uint32_t & u ) 
+ds::istream & istream::operator >> ( uint32_t & u )
 {
    uint32_t tmp;
    m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -111,7 +111,7 @@ ds::istream & istream::operator >> ( uint32_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( uint64_t & u ) 
+ds::istream & istream::operator >> ( uint64_t & u )
 {
    uint64_t tmp;
    m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -121,7 +121,7 @@ ds::istream & istream::operator >> ( uint64_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & istream::operator >> ( double & d ) 
+ds::istream & istream::operator >> ( double & d )
 {
    m_sb->sgetn( reinterpret_cast< char * >( &d ), sizeof( d ) );
    return *this;
@@ -165,21 +165,21 @@ ds::ostream & ostream::operator << ( int8_t i )
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( int16_t i ) 
+ds::ostream & ostream::operator << ( int16_t i )
 {
    return *this << static_cast< uint16_t >( i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( int32_t i ) 
+ds::ostream & ostream::operator << ( int32_t i )
 {
    return *this << static_cast< uint32_t >( i );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( int64_t i ) 
+ds::ostream & ostream::operator << ( int64_t i )
 {
    return *this << static_cast< uint64_t >( i );
 }
@@ -187,7 +187,7 @@ ds::ostream & ostream::operator << ( int64_t i )
 //-----------------------------------------------------------------------------
 
 
-ds::ostream & ostream::operator << ( uint8_t u ) 
+ds::ostream & ostream::operator << ( uint8_t u )
 {
    m_sb->sputn( reinterpret_cast< char * >( &u ), sizeof( u ) );
    return *this;
@@ -195,7 +195,7 @@ ds::ostream & ostream::operator << ( uint8_t u )
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( uint16_t u ) 
+ds::ostream & ostream::operator << ( uint16_t u )
 {
    auto tmp = ( *m_filter )( u );
    m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -204,7 +204,7 @@ ds::ostream & ostream::operator << ( uint16_t u )
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( uint32_t u ) 
+ds::ostream & ostream::operator << ( uint32_t u )
 {
    auto tmp = ( *m_filter )( u );
    m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -213,7 +213,7 @@ ds::ostream & ostream::operator << ( uint32_t u )
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & ostream::operator << ( uint64_t u ) 
+ds::ostream & ostream::operator << ( uint64_t u )
 {
    auto tmp = ( *m_filter )( u );
    m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
@@ -223,7 +223,7 @@ ds::ostream & ostream::operator << ( uint64_t u )
 //-----------------------------------------------------------------------------
 
 
-ds::ostream & ostream::operator << ( double d ) 
+ds::ostream & ostream::operator << ( double d )
 {
    m_sb->sputn( reinterpret_cast< char * >( &d ), sizeof( d ) );
    return *this;
@@ -262,7 +262,7 @@ streamwrap::streamwrap( void * buffer, std::streamsize length )
 std::streambuf * streamwrap::setbuf( char * s, std::streamsize n )
 {
    setp( s, s + n );
-   setg( s, s, s + n );
+   setg( s, s, s );
 
    return this;
 }
@@ -279,10 +279,12 @@ int streamwrap::underflow( void )
 
 //-----------------------------------------------------------------------------
 
-int streamwrap::overflow( int ch ) 
+int streamwrap::overflow( int ch )
 {
    if ( !premaining() )
       throw buffer_overrun();
+
+   setg( eback(), gptr(), pptr() + 1 );
 
    return std::streambuf::overflow( ch );
 }
@@ -303,6 +305,8 @@ std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
 {
    if ( premaining() < count )
       throw buffer_overrun();
+
+   setg( eback(), gptr(), pptr() + count );
 
    return std::streambuf::xsputn( s, count );
 }

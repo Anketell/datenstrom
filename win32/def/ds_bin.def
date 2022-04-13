@@ -33,7 +33,11 @@ EXPORTS
 ?xsgetn@streamwrap@bin@ds@@MEAA_JPEAD_J@Z
 ?xsputn@streamwrap@bin@ds@@MEAA_JPEBD_J@Z
 ??0lengthcalc@bin@ds@@QEAA@XZ
+?rdbuf@istream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
+?rdbuf@ostream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
 ?big_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
 ?big_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
 ?little_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
 ?little_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
+??0buffer_underrun@bin@ds@@QEAA@XZ
+??0buffer_overrun@bin@ds@@QEAA@XZ
