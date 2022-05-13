@@ -284,9 +284,11 @@ int streamwrap::overflow( int ch )
    if ( !premaining() )
       throw buffer_overrun();
 
-   setg( eback(), gptr(), pptr() + 1 );
+   auto res = std::streambuf::overflow( ch );
 
-   return std::streambuf::overflow( ch );
+   setg( eback(), gptr(), pptr() );
+
+   return res;
 }
 
 //-----------------------------------------------------------------------------
@@ -306,9 +308,11 @@ std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
    if ( premaining() < count )
       throw buffer_overrun();
 
-   setg( eback(), gptr(), pptr() + count );
+   auto res = std::streambuf::xsputn( s, count );
 
-   return std::streambuf::xsputn( s, count );
+   setg( eback(), gptr(), pptr() );
+
+   return res;
 }
 
 //-----------------------------------------------------------------------------
