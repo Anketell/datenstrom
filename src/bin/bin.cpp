@@ -317,6 +317,70 @@ std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
 
 //-----------------------------------------------------------------------------
 
+std::streampos streamwrap::seekoff( std::streambuf::off_type off,
+                                    std::ios_base::seekdir way,
+   std::ios_base::openmode which )
+{
+   if ( which & std::ios::in )
+   {
+      std::streamoff new_off = gptr() - eback();
+      switch ( way )
+      {
+         case std::ios::beg :
+            new_off = off;
+            break;
+
+         case std::ios::cur :
+            new_off += off;
+            break;
+
+         case std::ios::end :
+            new_off = egptr() - eback() + off;
+            break;
+      }
+
+      if ( new_off < 0 )
+         throw ds::bin::buffer_underrun();
+
+      if ( new_off > egptr() - eback() )
+         throw ds::bin::buffer_overrun();
+
+      gbump( new_off - ( gptr() - eback() ) );
+   }
+
+   if ( which & std::ios::out )
+   {
+      std::streamoff new_off = pptr() - pbase();
+      switch ( way )
+      {
+         case std::ios::beg :
+            new_off = off;
+            break;
+
+         case std::ios::cur :
+            new_off += off;
+            break;
+
+         case std::ios::end :
+            new_off = epptr() - pbase() + off;
+            break;
+      }
+
+      if ( new_off < 0 )
+         throw ds::bin::buffer_underrun();
+
+      if ( new_off > epptr() - pbase() )
+         throw ds::bin::buffer_overrun();
+
+      pbump( new_off - ( pptr() - pbase() ) );
+      setg( eback(), gptr(), pptr() );
+   }
+
+   return -1;
+}
+
+//-----------------------------------------------------------------------------
+
 void * streamwrap::buffer( void ) const
 {
    return pbase();
@@ -388,7 +452,7 @@ streambuf::~streambuf( void )
 //-----------------------------------------------------------------------------
 
 lengthcalc::lengthcalc( void ) :
-streamwrap( 0, 0xffffffff )
+streamwrap( 0, 0x7fffffff )
 {
 }
 

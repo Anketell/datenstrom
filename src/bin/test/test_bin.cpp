@@ -25,7 +25,7 @@ public:
       static_cast< ds::ostream & >( *this ) << static_cast< uint32_t >( s.length() );
       m_sb->sputn( s.data(), s.length() );
       return *this;
-   } 
+   }
 };
 
 //-----------------------------------------------------------------------------
@@ -843,6 +843,26 @@ NAMESPACE_TEST( bin, istream, should_get_double_le )
    EXPECT_EQ( sw.gremaining(), 0 );
 
    EXPECT_EQ( d, expected );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( bin, streamwrap, should_seek_buffer )
+{
+   ds::bin::streambuf sw( 100 );
+
+   EXPECT_EQ( sw.glength(), 0 );
+   EXPECT_EQ( sw.plength(), 0 );
+
+   sw.pubseekoff( 10, std::ios::cur, std::ios::out );
+
+   EXPECT_EQ( sw.glength(),  0 );
+   EXPECT_EQ( sw.plength(), 10 );
+
+   sw.pubseekoff( 10, std::ios::cur, std::ios::in );
+
+   EXPECT_EQ( sw.glength(), 10 );
+   EXPECT_EQ( sw.plength(), 10 );
 }
 
 //-----------------------------------------------------------------------------

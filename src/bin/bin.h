@@ -11,6 +11,7 @@
 
 #include <ds/ds.h>
 #include <streambuf>
+#include <ios>
 
 //-----------------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ class istream : public ds::istream
 {
    filter_t * m_filter;
 
-protected: 
+protected:
 
    std::streambuf * m_sb;
 
@@ -58,7 +59,7 @@ class ostream : public ds::ostream
 {
    filter_t * m_filter;
 
-protected: 
+protected:
 
    std::streambuf * m_sb;
 
@@ -96,6 +97,10 @@ protected:
 
    virtual std::streamsize xsgetn( char * s, std::streamsize count ) override;
    virtual std::streamsize xsputn( const char * s, std::streamsize count ) override;
+
+   virtual std::streampos seekoff( std::streambuf::off_type off,
+                                   std::ios_base::seekdir way,
+                                   std::ios_base::openmode which = std::ios::in | std::ios::out ) override;
 
 public:
 
