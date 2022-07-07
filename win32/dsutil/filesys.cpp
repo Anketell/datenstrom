@@ -215,16 +215,23 @@ void find::iterator::next_file( void )
          if ( m_pattern_it == m_pattern_list.end() )
             break;
 
-         m_hfile = FindFirstFileA( (full_path() + "/" + *m_pattern_it).c_str(), &m_file_data );
+         m_hfile = FindFirstFileA( ( full_path() + "/" + *m_pattern_it ).c_str(), &m_file_data );
 
          if ( m_hfile != INVALID_HANDLE_VALUE )
-            break;
+         {
+            if ( ( m_file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) == 0 )
+               break;
+         }
       }
       else
       {
          if ( FindNextFileA( m_hfile, &m_file_data ) )
-            break;
-
+         {
+            if ( ( m_file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) == 0 )
+               break;
+            else
+               continue;
+         }
          FindClose( m_hfile );
          m_hfile = INVALID_HANDLE_VALUE;
       }

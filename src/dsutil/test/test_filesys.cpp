@@ -55,13 +55,13 @@ NAMESPACE_TEST( util, filesys, should_find_files )
    for ( int i = 0; i < 5; i++ )
       std::ofstream ofs( temp_file_name + std::to_string( i ) );
 
-   ds::util::filesys::find file_list( ".", { "*" } );
+   ds::util::filesys::find file_list( ds::util::filesys::temp_directory(), { "temp_file_*" } );
 
    int count = 0;
    for ( auto f : file_list )
       count++;
 
-   EXPECT_GE( count, 5 );
+   EXPECT_EQ( count, 5 );
 
    for ( int i = 0; i < 5; i++ )
       ds::util::filesys::remove( ( temp_file_name + std::to_string( i ) ).c_str() );
