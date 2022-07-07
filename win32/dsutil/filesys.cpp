@@ -221,6 +221,8 @@ void find::iterator::next_file( void )
          {
             if ( ( m_file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) == 0 )
                break;
+            else
+               continue;
          }
       }
       else
