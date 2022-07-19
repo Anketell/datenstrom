@@ -54,7 +54,8 @@ function( dll_def )
       message( FATAL_ERROR "TARGET not defined" )
    endif( NOT DEFINED ARGS_TARGET )
 
-   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/def/${ARGS_TARGET}.def")
+   set( DEF_FILE "${CMAKE_SOURCE_DIR}/win32/def/${DS_ARCH}/${ARGS_TARGET}.def")
+
    target_link_options( ${ARGS_TARGET} PRIVATE "/DEF:${DEF_FILE}" )
 
 endfunction( dll_def )

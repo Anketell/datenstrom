@@ -1,0 +1,39 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds
+
+EXPORTS
+   ??1istream@ds@@UAE@XZ
+   ??5istream@ds@@UAEAAV01@AAC@Z
+   ??5istream@ds@@UAEAAV01@AAF@Z
+   ??5istream@ds@@UAEAAV01@AAH@Z
+   ??5istream@ds@@UAEAAV01@AA_J@Z
+   ??5istream@ds@@UAEAAV01@AAE@Z
+   ??5istream@ds@@UAEAAV01@AAG@Z
+   ??5istream@ds@@UAEAAV01@AAI@Z
+   ??5istream@ds@@UAEAAV01@AA_K@Z
+   ??5istream@ds@@UAEAAV01@AAN@Z
+   ??5istream@ds@@UAEAAV01@AAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?read@istream@ds@@UAEXPAXI@Z
+   ?endr@istream@ds@@UAEXXZ
+   ?eof@istream@ds@@UBE_NXZ
+   ??1ostream@ds@@UAE@XZ
+   ??6ostream@ds@@UAEAAV01@C@Z
+   ??6ostream@ds@@UAEAAV01@F@Z
+   ??6ostream@ds@@UAEAAV01@H@Z
+   ??6ostream@ds@@UAEAAV01@_J@Z
+   ??6ostream@ds@@UAEAAV01@E@Z
+   ??6ostream@ds@@UAEAAV01@G@Z
+   ??6ostream@ds@@UAEAAV01@I@Z
+   ??6ostream@ds@@UAEAAV01@_K@Z
+   ??6ostream@ds@@UAEAAV01@N@Z
+   ??6ostream@ds@@UAEAAV01@PBD@Z
+   ??6ostream@ds@@UAEAAV01@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?write@ostream@ds@@UAEXPBXI@Z
+   ?endr@ostream@ds@@UAEXXZ
+   ??5@YAAAVistream@ds@@AAV01@P6AAAV01@0@Z@Z
+   ??6@YAAAVostream@ds@@AAV01@P6AAAV01@0@Z@Z
+   ?endr@ds@@YAAAVistream@1@AAV21@@Z
+   ?endr@ds@@YAAAVostream@1@AAV21@@Z

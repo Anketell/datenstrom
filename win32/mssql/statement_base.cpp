@@ -136,7 +136,7 @@ template<> void statement_base::bind_parameter< std::string >( int index, int c_
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
-   size_t size = std::min( t.length(), desc.size ) + 1;
+   size_t size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
 
    buffer.resize( desc.size + 1 );
 

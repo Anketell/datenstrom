@@ -1,0 +1,9 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds_csv
+
+EXPORTS
+   ??0istream@csv@ds@@QAE@AAV?$basic_istream@DU?$char_traits@D@std@@@std@@@Z
+   ??0ostream@csv@ds@@QAE@AAV?$basic_ostream@DU?$char_traits@D@std@@@std@@@Z

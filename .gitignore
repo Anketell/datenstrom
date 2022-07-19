@@ -2,6 +2,8 @@ debug
 release
 coverage
 build
+build32
+build64
 *.db
 *.csv
 *.exe

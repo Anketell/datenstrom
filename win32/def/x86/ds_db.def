@@ -1,0 +1,66 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds_db
+
+EXPORTS
+   ??0result@db@ds@@QAE@V?$shared_ptr@Vimpl@result@db@ds@@@std@@@Z
+   ??0statement@db@ds@@QAE@V?$shared_ptr@Vimpl@statement@db@ds@@@std@@@Z
+   ??0transaction@db@ds@@QAE@AAVtransactional@12@@Z
+   ??1transaction@db@ds@@QAE@XZ
+   ??0savepoint@db@ds@@QAE@AAVimpl@12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??1savepoint@db@ds@@QAE@XZ
+   ?rows_affected@result@db@ds@@QBEHXZ
+   ??5result@db@ds@@UAEAAVistream@2@AAC@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAF@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAH@Z
+   ??5result@db@ds@@UAEAAVistream@2@AA_J@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAE@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAG@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAI@Z
+   ??5result@db@ds@@UAEAAVistream@2@AA_K@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAN@Z
+   ??5result@db@ds@@UAEAAVistream@2@AAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?endr@result@db@ds@@UAEXXZ
+   ?eof@result@db@ds@@UBE_NXZ
+   ??Diterator@statement@db@ds@@QAE?AVresult@23@XZ
+   ??Citerator@statement@db@ds@@QAEPAVresult@23@XZ
+   ??Eiterator@statement@db@ds@@QAEAAV0123@XZ
+   ??9iterator@statement@db@ds@@QBE_NABV0123@@Z
+   ?begin@statement@db@ds@@QAE?AViterator@123@XZ
+   ?end@statement@db@ds@@QAE?AViterator@123@XZ
+   ?parse_connect_string@db@ds@@YA?AVconnect_params_t@12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?column_count@result@db@ds@@QBEHXZ
+   ?step@result@db@ds@@QAE_NXZ
+   ??0simple_result@db@ds@@QAE@_K@Z
+   ??0result@db@ds@@QAE@XZ
+   ??8result@db@ds@@QBE_NABV012@@Z
+   ?execute@statement@db@ds@@QAEXXZ
+   ?result@statement@db@ds@@QAE?AV023@XZ
+   ??0connection@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?type@connection@db@ds@@UBEPBDXZ
+   ?create@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?use@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?drop@connection@db@ds@@UAE_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?execute_batch@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?commit_transaction@connection@db@ds@@UAEXXZ
+   ?rollback_transaction@connection@db@ds@@UAEXXZ
+   ?savepoint@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?release_savepoint@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?rollback_to_savepoint@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?enroll_sql_path_list@context@db@ds@@SAXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?clean_up@context@db@ds@@SAXXZ
+   ??0context@db@ds@@QAE@AAVconnection@12@@Z
+   ??0context@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??0context@db@ds@@QAE@ABVconnect_params_t@12@@Z
+   ?execute_batch@context@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?lookup@context@db@ds@@QAEPBDABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??0enumerator@parameter@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PBD@Z
+   ??Diterator@enumerator@parameter@db@ds@@QBEABUparameter_t@01234@XZ
+   ??Eiterator@enumerator@parameter@db@ds@@QAE?AV01234@XZ
+   ??9iterator@enumerator@parameter@db@ds@@QBE_NABV01234@@Z
+   ?begin@enumerator@parameter@db@ds@@QBE?AViterator@1234@XZ
+   ?end@enumerator@parameter@db@ds@@QBE?AViterator@1234@XZ
+   ??0iterator@statement@db@ds@@QAE@XZ
+   ??Eiterator@statement@db@ds@@QAEAAV0123@H@Z

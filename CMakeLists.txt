@@ -13,6 +13,9 @@ set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" )
 set( CMAKE_CXX_STANDARD 17 )
 
 if ( WIN32 )
+
+   include( architecture )
+
    include( googletest )
 
    if ( DS_DB AND DS_SQLITE )

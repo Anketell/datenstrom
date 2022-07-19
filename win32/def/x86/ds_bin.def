@@ -1,0 +1,34 @@
+;
+; Copyright (C) 2021 Lucid Systems Pty Ltd - All Rights Reserved
+;
+
+LIBRARY ds_bin
+
+EXPORTS
+   ??0istream@bin@ds@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+   ??0ostream@bin@ds@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+   ??6ostream@bin@ds@@UAEAAV02@C@Z
+   ??6ostream@bin@ds@@UAEAAV02@F@Z
+   ??6ostream@bin@ds@@UAEAAV02@H@Z
+   ??6ostream@bin@ds@@UAEAAV02@_J@Z
+   ??6ostream@bin@ds@@UAEAAV02@E@Z
+   ??6ostream@bin@ds@@UAEAAV02@G@Z
+   ??6ostream@bin@ds@@UAEAAV02@I@Z
+   ??6ostream@bin@ds@@UAEAAV02@_K@Z
+   ??6ostream@bin@ds@@UAEAAV02@N@Z
+   ??0streamwrap@bin@ds@@QAE@PAX_J@Z
+   ?buffer@streamwrap@bin@ds@@QBEPAXXZ
+   ?size@streamwrap@bin@ds@@QBE_JXZ
+   ?plength@streamwrap@bin@ds@@QBE_JXZ
+   ?premaining@streamwrap@bin@ds@@QBE_JXZ
+   ?gpos@streamwrap@bin@ds@@QBEPAXXZ
+   ??0streambuf@bin@ds@@QAE@_J@Z
+   ??1streambuf@bin@ds@@UAE@XZ
+   ??0lengthcalc@bin@ds@@QAE@XZ
+   ?big_endian@bin@ds@@YAAAVistream@2@AAV32@@Z
+   ?big_endian@bin@ds@@YAAAVostream@2@AAV32@@Z
+   ?little_endian@bin@ds@@YAAAVistream@2@AAV32@@Z
+   ?little_endian@bin@ds@@YAAAVostream@2@AAV32@@Z
+   ?ppos@streamwrap@bin@ds@@QBEPAXXZ
+   ?glength@streamwrap@bin@ds@@QBE_JXZ
+   ?gremaining@streamwrap@bin@ds@@QBE_JXZ
