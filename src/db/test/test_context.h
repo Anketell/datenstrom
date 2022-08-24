@@ -13,7 +13,16 @@
 
 //-----------------------------------------------------------------------------
 
-class Context : public testing::TestWithParam< const char * > {};
+class Context : public testing::TestWithParam< const char * >
+{
+protected:
+
+   std::string m_sql_module_path;
+
+public:
+
+   Context( void );
+};
 
 //-----------------------------------------------------------------------------
 

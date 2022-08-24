@@ -6,8 +6,18 @@
 #include <db/transaction.h>
 #include <db/connect_string.h>
 #include <dsutil/filesys.h>
+#include <dsutil/env.h>
 #include <algorithm>
 #include <array>
+
+//-----------------------------------------------------------------------------
+
+Context::Context( void )
+{
+   m_sql_module_path = ds::util::env::get( "SQL_MODULE_PATH" );
+   if ( m_sql_module_path.empty() )
+      m_sql_module_path = ".";
+}
 
 //-----------------------------------------------------------------------------
 
@@ -15,7 +25,7 @@ TEST_P( Context, should_construct_context )
 {
    const char * con_string = GetParam();
 
-   ds::db::context::enroll_sql_path_list( "." );
+   ds::db::context::enroll_sql_path_list( m_sql_module_path );
 
    EXPECT_NO_THROW( ds::db::context ctx( con_string ) );
    EXPECT_NO_THROW( { ds::db::connection con( con_string );  ds::db::context ctx( con ); } );
@@ -30,7 +40,7 @@ TEST_P( Context, should_perform_lookup )
 {
    const char * con_string = GetParam();
 
-   ds::db::context::enroll_sql_path_list( "." );
+   ds::db::context::enroll_sql_path_list( m_sql_module_path );
 
    ds::db::context ctx( con_string );
 
@@ -52,7 +62,7 @@ TEST_P( Context, should_insert_test_text )
       { "3rd Text String" }
    };
 
-   ds::db::context::enroll_sql_path_list( "." );
+   ds::db::context::enroll_sql_path_list( m_sql_module_path );
 
    ds::db::context ctx( con_string );
 
@@ -94,7 +104,7 @@ TEST_P( Context, should_read_test_text )
       { "3rd Text String" }
    };
 
-    ds::db::context::enroll_sql_path_list( "." );
+    ds::db::context::enroll_sql_path_list( m_sql_module_path );
 
    ds::db::context ctx( con_string );
 
@@ -174,7 +184,7 @@ TEST_P( Context, should_fail_unknown_sql_key )
       { "3rd Text String" }
    };
 
-    ds::db::context::enroll_sql_path_list( "." );
+    ds::db::context::enroll_sql_path_list( m_sql_module_path );
 
    ds::db::context ctx( con_string );
 

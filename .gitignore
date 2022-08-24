@@ -4,8 +4,11 @@ coverage
 build
 build32
 build64
+output
 *.db
 *.csv
 *.exe
 *.zip
+*.log
+*.cov
 .vscode/ipch

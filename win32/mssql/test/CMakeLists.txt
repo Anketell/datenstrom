@@ -22,9 +22,11 @@ add_executable( ${TARGET}
    ${HEADERS}
 )
 
-if ( WIN32 )
-   add_dependencies( ${TARGET} googletest )
-endif ( WIN32 )
+add_dependencies( ${TARGET} googletest )
+
+target_compile_definitions( ${TARGET} PUBLIC
+   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+)
 
 target_link_libraries( ${TARGET}
    test_db_context
