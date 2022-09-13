@@ -28,6 +28,7 @@ EXPORTS
    ??Citerator@statement@db@ds@@QAEPAVresult@23@XZ
    ??Eiterator@statement@db@ds@@QAEAAV0123@XZ
    ??9iterator@statement@db@ds@@QBE_NABV0123@@Z
+   ??8iterator@statement@db@ds@@QBE_NABV0123@@Z
    ?begin@statement@db@ds@@QAE?AViterator@123@XZ
    ?end@statement@db@ds@@QAE?AViterator@123@XZ
    ?parse_connect_string@db@ds@@YA?AVconnect_params_t@12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z

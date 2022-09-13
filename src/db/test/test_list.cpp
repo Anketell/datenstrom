@@ -33,3 +33,19 @@ NAMESPACE_TEST( db, list_iterator, should_fail_dereferrence_end )
 }
 
 //-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( db, list_iterator, should_compare )
+{
+   ds::db::statement stmt( std::make_shared< Test_statement >( 1, 5 ) );
+
+   auto begin = stmt.begin();
+   auto end = stmt.end();
+
+   EXPECT_TRUE( begin == begin );
+   EXPECT_TRUE( end == end   );
+
+   EXPECT_FALSE( begin == end );
+   EXPECT_FALSE( end == begin );
+}
+
+//-----------------------------------------------------------------------------

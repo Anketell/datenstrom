@@ -1,7 +1,9 @@
 @echo off
 
-set DS_MODULE_PATH=./build/x64/win32/mssql/test/Debug
-set SQL_MODULE_PATH=./build/x64/win32/mssql/test/Debug
+pushd %~dp0\..\build
+
+set DS_MODULE_PATH=./x64/win32/mssql/test/Debug
+set SQL_MODULE_PATH=./x64/win32/mssql/test/Debug
 
 opencppcoverage ^
 --modules ds_mssql_module.dll ^
@@ -9,10 +11,10 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/win32/mssql/test/Debug/test_ds_mssql.exe
+--  x64/win32/mssql/test/Debug/test_ds_mssql.exe
 
-set DS_MODULE_PATH=./build/x64/src/firebird/test/Debug
-set SQL_MODULE_PATH=./build/x64/src/firebird/test/Debug
+set DS_MODULE_PATH=./x64/src/firebird/test/Debug
+set SQL_MODULE_PATH=./x64/src/firebird/test/Debug
 
 opencppcoverage ^
 --modules ds_firebird_module.dll ^
@@ -21,10 +23,10 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/firebird/test/Debug/test_ds_firebird.exe
+--  x64/src/firebird/test/Debug/test_ds_firebird.exe
 
-set DS_MODULE_PATH=./build/x64/src/sqlite/test/Debug
-set SQL_MODULE_PATH=./build/x64/src/sqlite/test/Debug
+set DS_MODULE_PATH=./x64/src/sqlite/test/Debug
+set SQL_MODULE_PATH=./x64/src/sqlite/test/Debug
 
 opencppcoverage ^
 --modules ds_sqlite_module.dll ^
@@ -33,7 +35,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/sqlite/test/Debug/test_ds_sqlite.exe
+--  x64/src/sqlite/test/Debug/test_ds_sqlite.exe
 
 opencppcoverage ^
 --modules ds_db.dll ^
@@ -42,7 +44,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/db/test/Debug/test_ds_db.exe
+--  x64/src/db/test/Debug/test_ds_db.exe
 
 opencppcoverage ^
 --modules ds_bin.dll ^
@@ -51,7 +53,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/bin/test/Debug/test_ds_bin.exe
+--  x64/src/bin/test/Debug/test_ds_bin.exe
 
 opencppcoverage ^
 --modules ds_csv.dll ^
@@ -60,7 +62,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/csv/test/Debug/test_ds_csv.exe
+--  x64/src/csv/test/Debug/test_ds_csv.exe
 
 opencppcoverage ^
 --modules ds_util.dll ^
@@ -69,7 +71,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/dsutil/test/Debug/test_ds_util.exe
+--  x64/src/dsutil/test/Debug/test_ds_util.exe
 
 opencppcoverage ^
 --modules ds.dll ^
@@ -78,12 +80,14 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  build/x64/src/ds/test/Debug/test_ds.exe
+--  x64/src/ds/test/Debug/test_ds.exe
 
-..\coverage_display_test\build\src\code_report\RelWithDebInfo\code_report.exe ^
+rd /s /q code_report
+
+pryda_code_report.exe ^
 -s test_ds.cov ^
--p Lucid.Datenstrom ^
--j %~dp0/.. ^
--r output ^
--t ..\coverage_display_test\template
--w ..\coverage_display_test\www
+-p "Lucid Datenstrom" ^
+-j .. ^
+-r code_report
+
+popd

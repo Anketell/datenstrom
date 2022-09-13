@@ -24,7 +24,18 @@ CREATE TABLE Object(
                       dttm DATETIME2,
                       id INT IDENTITY( 1, 1 ) PRIMARY KEY
 )
+)";
 
+//-----------------------------------------------------------------------------
+
+const char * create_add2 =
+R"(
+CREATE FUNCTION ADD2( @value1 INT, @value2 INT )
+RETURNS INT
+AS
+BEGIN
+   RETURN ( @value1 + @value2 );
+END;
 )";
 
 //-----------------------------------------------------------------------------

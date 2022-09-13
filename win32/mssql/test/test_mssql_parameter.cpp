@@ -148,7 +148,7 @@ NAMESPACE_TEST( mssql, parameter, should_support_duplicate_parameters )
    EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
-      ds::db::statement insert_test = test_db( named_duplicates, 
+      ds::db::statement insert_test = test_db( named_duplicates,
                                                named_parameter_duplicates );
 
       EXPECT_NO_THROW( insert_test << "2020-05-14 15:05:20"
@@ -190,4 +190,25 @@ NAMESPACE_TEST( mssql, parameter, should_support_duplicate_parameters )
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
+//-----------------------------------------------------------------------------
+/*
+NAMESPACE_TEST( mssql, parameter, should_support_function_parameters )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create_add2 ) );
+
+   ds::db::statement add = test_db( "select dbo.ADD2( $param1, $param2 );", { "param1", "param2" } );
+
+   add << 10 << 20;
+
+   int result = add.result();
+
+   EXPECT_EQ( result, 30 );
+}
+*/
 //-----------------------------------------------------------------------------
