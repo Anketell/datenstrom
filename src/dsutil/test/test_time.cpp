@@ -12,7 +12,7 @@
 
 NAMESPACE_TEST( util, time, should_support_gmtime )
 {
-   time_t    t = 24 * 60 * 60 * 32; 
+   time_t    t = 24 * 60 * 60 * 32;
    struct tm tm;
 
    ds::util::time::gmtime( &t, &tm );
@@ -105,6 +105,26 @@ NAMESPACE_TEST( util, time, should_parse_iso_datetime )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( util, time, should_format_iso_datetime )
+{
+   struct tm tm =
+   {
+      1,
+      1,
+      1,
+      1,
+      1,
+      70
+   };
+
+   char timestamp[ 20 ];
+   ds::util::time::format_iso_8601( &tm, timestamp );
+      
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01" );
+
+}
+
+//-----------------------------------------------------------------------------
 
 
 //-----------------------------------------------------------------------------

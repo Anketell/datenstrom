@@ -168,7 +168,7 @@ XSQLDA *  statement_base::prepare_parameter_xsqlda( isc_stmt_handle stmt )
 
    return prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
    {
-      isc_dsql_describe_bind( status, &stmt, 3, xsqlda );
+      isc_dsql_describe_bind( status, &stmt, 1, xsqlda );
       check_status( operation, status );
    } );
 }
@@ -183,7 +183,7 @@ XSQLDA * statement_base::prepare_result_xqslda( isc_stmt_handle stmt )
 
    return prepare_xsqlda( [ & ]( XSQLDA * xsqlda )
    {
-      isc_dsql_describe( status, &stmt, 3, xsqlda );
+      isc_dsql_describe( status, &stmt, 1, xsqlda );
       check_status( operation, status );
    } );
 }
