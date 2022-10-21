@@ -27,23 +27,23 @@ time_t timegm( const struct tm * tm )
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_date( const char * s, struct tm * tm )
+bool parse_iso_8601_date( const char * s, struct tm * tm )
 {
-   strptime( s, "%F", tm );
+   return strptime( s, "%F", tm ) != nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_time( const char * s, struct tm * tm )
+bool parse_iso_8601_time( const char * s, struct tm * tm )
 {
-   strptime( s, "%T", tm );
+   return strptime( s, "%T", tm ) != nullptr;
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601( const char * s, struct tm * tm )
+bool parse_iso_8601( const char * s, struct tm * tm )
 {
-   strptime( s, "%F %T", tm );
+   return strptime( s, "%F %T", tm ) != nullptr;
 }
 
 //-----------------------------------------------------------------------------

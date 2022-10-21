@@ -58,7 +58,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_date )
 {
    struct tm tm = { 0 };
 
-   ds::util::time::parse_iso_8601_date( "1970-01-01", &tm );
+   EXPECT_TRUE( ds::util::time::parse_iso_8601_date( "1970-01-01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec , 0 );
    EXPECT_EQ( tm.tm_min,  0 );
@@ -75,7 +75,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_time )
 {
    struct tm tm = { 0 };
 
-   ds::util::time::parse_iso_8601_time( "01:01:01", &tm );
+   EXPECT_TRUE( ds::util::time::parse_iso_8601_time( "01:01:01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec,  1 );
    EXPECT_EQ( tm.tm_min,  1 );
@@ -92,7 +92,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_datetime )
 {
    struct tm tm = { 0 };
 
-   ds::util::time::parse_iso_8601( "1970-02-01 01:01:01", &tm );
+   EXPECT_TRUE( ds::util::time::parse_iso_8601( "1970-02-01 01:01:01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec , 1 );
    EXPECT_EQ( tm.tm_min,  1 );
@@ -101,6 +101,33 @@ NAMESPACE_TEST( util, time, should_parse_iso_datetime )
    EXPECT_EQ( tm.tm_mday,  1 );
    EXPECT_EQ( tm.tm_mon,   1 );
    EXPECT_EQ( tm.tm_year, 70 );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_date )
+{
+   struct tm tm = { 0 };
+
+   EXPECT_FALSE( ds::util::time::parse_iso_8601_date( "bad date", &tm ) );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_time )
+{
+   struct tm tm = { 0 };
+
+   EXPECT_FALSE( ds::util::time::parse_iso_8601_time( "bad time", &tm ) );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_date_time )
+{
+   struct tm tm = { 0 };
+
+   EXPECT_FALSE( ds::util::time::parse_iso_8601( "bad date time", &tm ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -119,9 +146,8 @@ NAMESPACE_TEST( util, time, should_format_iso_datetime )
 
    char timestamp[ 20 ];
    ds::util::time::format_iso_8601( &tm, timestamp );
-      
-   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01" );
 
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01" );
 }
 
 //-----------------------------------------------------------------------------

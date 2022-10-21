@@ -24,9 +24,9 @@ EXPORTS
    ??0module@util@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?gmtime@time@util@ds@@YAXPB_JPAUtm@@@Z
    ?timegm@time@util@ds@@YA_JPBUtm@@@Z
-   ?parse_iso_8601_date@time@util@ds@@YAXPBDPAUtm@@@Z
-   ?parse_iso_8601_time@time@util@ds@@YAXPBDPAUtm@@@Z
-   ?parse_iso_8601@time@util@ds@@YAXPBDPAUtm@@@Z
+   ?parse_iso_8601_date@time@util@ds@@YA_NPBDPAUtm@@@Z
+   ?parse_iso_8601_time@time@util@ds@@YA_NPBDPAUtm@@@Z
+   ?parse_iso_8601@time@util@ds@@YA_NPBDPAUtm@@@Z
    ?htol@endian@util@ds@@YAGG@Z
    ?htol@endian@util@ds@@YAII@Z
    ?htol@endian@util@ds@@YA_K_K@Z

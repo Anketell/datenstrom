@@ -24,9 +24,9 @@ EXPORTS
 ?end@dir_list@env@util@ds@@QEBA?AViterator@1234@XZ
 ?gmtime@time@util@ds@@YAXPEB_JPEAUtm@@@Z
 ?timegm@time@util@ds@@YA_JPEBUtm@@@Z
-?parse_iso_8601_date@time@util@ds@@YAXPEBDPEAUtm@@@Z
-?parse_iso_8601_time@time@util@ds@@YAXPEBDPEAUtm@@@Z
-?parse_iso_8601@time@util@ds@@YAXPEBDPEAUtm@@@Z
+?parse_iso_8601_date@time@util@ds@@YA_NPEBDPEAUtm@@@Z
+?parse_iso_8601_time@time@util@ds@@YA_NPEBDPEAUtm@@@Z
+?parse_iso_8601@time@util@ds@@YA_NPEBDPEAUtm@@@Z
 ?format_iso_8601_date@time@util@ds@@YAXPEBUtm@@PEAD@Z
 ?format_iso_8601_time@time@util@ds@@YAXPEBUtm@@PEAD@Z
 ?format_iso_8601@time@util@ds@@YAXPEBUtm@@PEAD@Z

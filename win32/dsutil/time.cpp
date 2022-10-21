@@ -24,13 +24,14 @@ time_t timegm( const struct tm * tm )
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_date( const char * s, struct tm * tm )
+bool parse_iso_8601_date( const char * s, struct tm * tm )
 {
     int year;
     int month;
     int day;
 
-    sscanf_s( s, "%d-%d-%d", &year, &month, &day );
+    if ( sscanf_s( s, "%d-%d-%d", &year, &month, &day ) != 3 )
+        return false;
 
     tm->tm_year = year - 1900;
     tm->tm_mon  = month - 1;
@@ -38,17 +39,20 @@ void parse_iso_8601_date( const char * s, struct tm * tm )
     tm->tm_hour = 0;
     tm->tm_min  = 0;
     tm->tm_sec  = 0;
+
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601_time( const char * s, struct tm * tm )
+bool parse_iso_8601_time( const char * s, struct tm * tm )
 {
     int hour;
     int minute;
     int second;
 
-    sscanf_s( s, "%d:%d:%dZ", &hour, &minute, &second );
+    if ( sscanf_s( s, "%d:%d:%dZ", &hour, &minute, &second ) != 3 )
+        return false;
 
     tm->tm_year = 0;
     tm->tm_mon  = 0;
@@ -56,11 +60,13 @@ void parse_iso_8601_time( const char * s, struct tm * tm )
     tm->tm_hour = hour;
     tm->tm_min  = minute;
     tm->tm_sec  = second;
+
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
-void parse_iso_8601( const char * s, struct tm * tm )
+bool parse_iso_8601( const char * s, struct tm * tm )
 {
     int year;
     int month;
@@ -69,7 +75,8 @@ void parse_iso_8601( const char * s, struct tm * tm )
     int minute;
     int second;
 
-    sscanf_s( s, "%d-%d-%d %d:%d:%dZ", &year, &month, &day, &hour, &minute, &second );
+    if ( sscanf_s( s, "%d-%d-%d %d:%d:%dZ", &year, &month, &day, &hour, &minute, &second ) != 6 )
+        return false;
 
     tm->tm_year = year - 1900;
     tm->tm_mon  = month - 1;
@@ -77,6 +84,8 @@ void parse_iso_8601( const char * s, struct tm * tm )
     tm->tm_hour = hour;
     tm->tm_min  = minute;
     tm->tm_sec  = second;
+
+    return true;
 }
 
 //-----------------------------------------------------------------------------
