@@ -129,6 +129,13 @@ ds::istream & istream::operator >> ( double & d )
 
 //-----------------------------------------------------------------------------
 
+void istream::read( void * data, size_t size )
+{
+   m_sb->sgetn( reinterpret_cast< char * >( data ), size );
+}
+
+//-----------------------------------------------------------------------------
+
 void istream::filter( filter_t * filter )
 {
    m_filter = filter;
@@ -231,6 +238,13 @@ ds::ostream & ostream::operator << ( double d )
 
 //-----------------------------------------------------------------------------
 
+void ostream::write( const void * data, size_t size )
+{
+   m_sb->sputn( reinterpret_cast< const char * >( data ), size );
+}
+
+//-----------------------------------------------------------------------------
+
 void ostream::filter( filter_t * filter )
 {
    m_filter = filter;
@@ -262,7 +276,7 @@ streamwrap::streamwrap( void * buffer, std::streamsize length )
 std::streambuf * streamwrap::setbuf( char * s, std::streamsize n )
 {
    setp( s, s + n );
-   setg( s, s, s );
+   setg( s, s, s + n );
 
    return this;
 }
@@ -318,12 +332,12 @@ std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
 //-----------------------------------------------------------------------------
 
 std::streampos streamwrap::seekoff( std::streambuf::off_type off,
-                                    std::ios_base::seekdir way,
-   std::ios_base::openmode which )
+                                    std::ios_base::seekdir   way,
+                                    std::ios_base::openmode  which )
 {
    if ( which & std::ios::in )
    {
-      std::streamoff new_off = gptr() - eback();
+      std::streamoff new_off;
       switch ( way )
       {
          case std::ios::beg :
@@ -331,7 +345,7 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
             break;
 
          case std::ios::cur :
-            new_off += off;
+            new_off = gptr() - eback() + off;
             break;
 
          case std::ios::end :
@@ -350,7 +364,7 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
 
    if ( which & std::ios::out )
    {
-      std::streamoff new_off = pptr() - pbase();
+      std::streamoff new_off;
       switch ( way )
       {
          case std::ios::beg :
@@ -358,7 +372,7 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
             break;
 
          case std::ios::cur :
-            new_off += off;
+            new_off = pptr() - pbase() + off;
             break;
 
          case std::ios::end :
@@ -373,7 +387,6 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
          throw ds::bin::buffer_overrun();
 
       pbump( new_off - ( pptr() - pbase() ) );
-      setg( eback(), gptr(), pptr() );
    }
 
    return -1;

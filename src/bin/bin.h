@@ -48,6 +48,8 @@ public:
 
    virtual ds::istream & operator >> ( double & ) override;
 
+   virtual void read( void *, size_t ) override;
+
    void filter( filter_t * filter );
    void rdbuf( std::streambuf * sb );
    std::streambuf * rdbuf( void ) const;
@@ -78,6 +80,8 @@ public:
    virtual ds::ostream & operator << ( uint64_t ) override;
 
    virtual ds::ostream & operator << ( double ) override;
+
+   virtual void write( const void *, size_t ) override;
 
    void filter( filter_t * filter );
    void rdbuf( std::streambuf * sb );

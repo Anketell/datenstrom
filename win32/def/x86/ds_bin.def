@@ -32,3 +32,4 @@ EXPORTS
    ?ppos@streamwrap@bin@ds@@QBEPAXXZ
    ?glength@streamwrap@bin@ds@@QBE_JXZ
    ?gremaining@streamwrap@bin@ds@@QBE_JXZ
+   ?write@ostream@bin@ds@@UAEXPBXI@Z
