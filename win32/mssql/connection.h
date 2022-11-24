@@ -34,12 +34,14 @@ class connection : public db::impl
    typedef std::function< void( void ) > guarded_fn;
 
    static std::string create_connection_string( const std::string & server,
-                                                int                 port   );
+                                                const std::string & instance,
+                                                int                 port );
 
    static std::string create_connection_string( const std::string & user_id,
                                                 const std::string & password,
                                                 const std::string & server,
-                                                int                 port   );
+                                                const std::string & instance,
+                                                int                 port );
 
    SQLHENV  m_henv = SQL_NULL_HENV;
    SQLHDBC  m_hdbc = SQL_NULL_HDBC;
@@ -59,10 +61,10 @@ public:
 
    static constexpr char TYPE[] = "mssql";
 
-   connection( const std::string & server, int port );
+   connection( const std::string & server, const std::string & instance, int port );
    connection( const std::string & user_id,
                const std::string & password,
-               const std::string & server, int port );
+               const std::string & server, const std::string & instance, int port );
 
    virtual ~connection( void );
 
