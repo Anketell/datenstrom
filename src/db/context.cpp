@@ -21,7 +21,7 @@ bool       context::m_initialized = false;
 void context::init( void )
 {
    if ( !m_initialized )
-      enroll_db_path_list( util::env::get( "DS_MODULE_PATH" ) );
+      enroll_sql_path_list( util::env::get( "SQL_MODULE_PATH" ) );
 }
 
 //-----------------------------------------------------------------------------
