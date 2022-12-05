@@ -30,10 +30,20 @@ if ( MSVC )
       PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
    )
 
+   target_compile_definitions( ${TARGET} PUBLIC
+      DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+   )
+
    add_custom_command(TARGET ${TARGET} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy
          "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
          "${CMAKE_CURRENT_BINARY_DIR}/Debug/ds_util.dll"
+   )
+
+else( MSVC )
+
+   target_compile_definitions( ${TARGET} PUBLIC
+      DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    )
 
 endif( MSVC )
