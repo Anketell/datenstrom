@@ -135,4 +135,17 @@ NAMESPACE_TEST( db, connect_string, should_fail_null_param )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( db, connect_string, should_parse_tls_connect_string )
+{
+   static const char connect_string[] = "TLS://127.0.0.1:40002?cert=My Cert";
+   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+
+   EXPECT_STREQ( params[ "type" ].c_str(), "TLS" );
+   EXPECT_STREQ( params[ "server" ].c_str(), "127.0.0.1" );
+   EXPECT_STREQ( params[ "port" ].c_str(), "40002" );
+   EXPECT_STREQ( params[ "cert" ].c_str(), "My Cert" );
+}
+
+//-----------------------------------------------------------------------------
+
 
