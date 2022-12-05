@@ -164,12 +164,14 @@ TEST_P( Context, should_fail_unsupported_database_type )
    auto params = ds::db::parse_connect_string( con_string );
 
    ds::db::context::clean_up();
+   ds::db::context::enroll_sql_path_list( "" );
 
    EXPECT_THROW_VALUE( ds::db::context ctx( params ),
                        ds::db::context::unsupported_db_type,
                        e.type == params[ "type" ] );
-}
 
+   ds::db::context::clean_up();
+}
 
 //-----------------------------------------------------------------------------
 
