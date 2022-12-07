@@ -12,7 +12,7 @@
 
 NAMESPACE_TEST( util, env, should_retrieve_variable )
 {
-   std::string path = ds::util::env::get( "PATH" );
+   std::string path = ds::env::get( "PATH" );
    EXPECT_FALSE( path.empty() );
 }
 
@@ -20,11 +20,11 @@ NAMESPACE_TEST( util, env, should_retrieve_variable )
 
 NAMESPACE_TEST( util, env, should_iterate_dir_list )
 {
-   std::string path = ds::util::env::get( "PATH" );
+   std::string path = ds::env::get( "PATH" );
 
    EXPECT_FALSE( path.empty() );
 
-   ds::util::env::dir_list dl( path );
+   ds::env::dir_list dl( path );
 
    EXPECT_GT( std::distance( dl.begin(), dl.end() ), 1 );
 }

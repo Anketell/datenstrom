@@ -23,7 +23,7 @@ ISC_DATE encode_sql_date( const char * date )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601_date( date, &tm );
+   ds::time::parse_iso_8601_date( date, &tm );
 
    ISC_DATE isc_date;
 
@@ -38,7 +38,7 @@ ISC_TIME encode_sql_time( const char * time )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601_time( time, &tm );
+   ds::time::parse_iso_8601_time( time, &tm );
 
    ISC_TIME isc_time;
 
@@ -53,7 +53,7 @@ ISC_TIMESTAMP encode_timestamp( const char * time )
 {
    struct tm tm = { 0 };
 
-   util::time::parse_iso_8601( time, &tm );
+   ds::time::parse_iso_8601( time, &tm );
 
    ISC_TIMESTAMP isc_timestamp;
 
@@ -68,7 +68,7 @@ ISC_DATE encode_sql_unixdate( time_t t )
 {
    struct tm tm = { 0 };
 
-   util::time::gmtime( &t, &tm );
+   ds::time::gmtime( &t, &tm );
 
    ISC_DATE isc_date;
 
@@ -83,7 +83,7 @@ ISC_TIME encode_sql_unixtime( time_t t )
 {
    struct tm tm = { 0 };
 
-   util::time::gmtime( &t, &tm );
+   ds::time::gmtime( &t, &tm );
 
    ISC_TIME isc_time;
 
@@ -98,7 +98,7 @@ ISC_TIMESTAMP encode_unixtimestamp( time_t t )
 {
    struct tm tm = { 0 };
 
-   util::time::gmtime( &t, &tm );
+   ds::time::gmtime( &t, &tm );
 
    ISC_TIMESTAMP isc_timestamp;
 
@@ -117,7 +117,7 @@ std::string decode_sql_date( ISC_DATE isc_date )
 
    char date[ 11 ];
 
-   util::time::format_iso_8601_date( &tm, date );
+   ds::time::format_iso_8601_date( &tm, date );
 
    return date;
 }
@@ -132,7 +132,7 @@ std::string decode_sql_time( ISC_TIME isc_time )
 
    char time[ 9 ];
 
-   util::time::format_iso_8601_time( &tm, time );
+   ds::time::format_iso_8601_time( &tm, time );
 
    return time;
 }
@@ -147,7 +147,7 @@ std::string decode_timestamp( ISC_TIMESTAMP isc_timestamp )
 
    char timestamp[ 20 ];
 
-   util::time::format_iso_8601( &tm, timestamp );
+   ds::time::format_iso_8601( &tm, timestamp );
 
    return timestamp;
 }
@@ -160,7 +160,7 @@ time_t decode_sql_unixdate( ISC_DATE isc_date )
 
    isc_decode_sql_date( &isc_date, &tm );
 
-   return util::time::timegm( &tm );
+   return ds::time::timegm( &tm );
 }
 
 //-----------------------------------------------------------------------------
@@ -175,7 +175,7 @@ time_t decode_sql_unixtime( ISC_TIME isc_time )
    tm.tm_mon  = 0;
    tm.tm_mday = 1;
 
-   return util::time::timegm( &tm );
+   return ds::time::timegm( &tm );
 }
 
 //-----------------------------------------------------------------------------
@@ -186,7 +186,7 @@ time_t decode_unixtimestamp( ISC_TIMESTAMP isc_timestamp )
 
    isc_decode_timestamp( &isc_timestamp, &tm );
 
-   return util::time::timegm( &tm );
+   return ds::time::timegm( &tm );
 }
 
 //-----------------------------------------------------------------------------

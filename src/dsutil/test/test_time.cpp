@@ -15,7 +15,7 @@ NAMESPACE_TEST( util, time, should_support_gmtime )
    time_t    t = 24 * 60 * 60 * 32;
    struct tm tm;
 
-   ds::util::time::gmtime( &t, &tm );
+   ds::time::gmtime( &t, &tm );
 
    EXPECT_EQ( tm.tm_sec,  0 );
    EXPECT_EQ( tm.tm_min,  0 );
@@ -47,7 +47,7 @@ NAMESPACE_TEST( util, time, should_support_timegm )
       0
    };
 
-   time_t t = ds::util::time::timegm( &tm );
+   time_t t = ds::time::timegm( &tm );
 
    EXPECT_EQ( t, 24 * 60 * 60 );
 }
@@ -58,7 +58,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_date )
 {
    struct tm tm = { 0 };
 
-   EXPECT_TRUE( ds::util::time::parse_iso_8601_date( "1970-01-01", &tm ) );
+   EXPECT_TRUE( ds::time::parse_iso_8601_date( "1970-01-01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec , 0 );
    EXPECT_EQ( tm.tm_min,  0 );
@@ -75,7 +75,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_time )
 {
    struct tm tm = { 0 };
 
-   EXPECT_TRUE( ds::util::time::parse_iso_8601_time( "01:01:01", &tm ) );
+   EXPECT_TRUE( ds::time::parse_iso_8601_time( "01:01:01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec,  1 );
    EXPECT_EQ( tm.tm_min,  1 );
@@ -92,7 +92,7 @@ NAMESPACE_TEST( util, time, should_parse_iso_datetime )
 {
    struct tm tm = { 0 };
 
-   EXPECT_TRUE( ds::util::time::parse_iso_8601( "1970-02-01 01:01:01", &tm ) );
+   EXPECT_TRUE( ds::time::parse_iso_8601( "1970-02-01 01:01:01", &tm ) );
 
    EXPECT_EQ( tm.tm_sec , 1 );
    EXPECT_EQ( tm.tm_min,  1 );
@@ -109,7 +109,7 @@ NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_date )
 {
    struct tm tm = { 0 };
 
-   EXPECT_FALSE( ds::util::time::parse_iso_8601_date( "bad date", &tm ) );
+   EXPECT_FALSE( ds::time::parse_iso_8601_date( "bad date", &tm ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_time )
 {
    struct tm tm = { 0 };
 
-   EXPECT_FALSE( ds::util::time::parse_iso_8601_time( "bad time", &tm ) );
+   EXPECT_FALSE( ds::time::parse_iso_8601_time( "bad time", &tm ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -127,7 +127,7 @@ NAMESPACE_TEST( util, time, should_fail_parse_iso_bad_date_time )
 {
    struct tm tm = { 0 };
 
-   EXPECT_FALSE( ds::util::time::parse_iso_8601( "bad date time", &tm ) );
+   EXPECT_FALSE( ds::time::parse_iso_8601( "bad date time", &tm ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -145,7 +145,7 @@ NAMESPACE_TEST( util, time, should_format_iso_datetime )
    };
 
    char timestamp[ 20 ];
-   ds::util::time::format_iso_8601( &tm, timestamp );
+   ds::time::format_iso_8601( &tm, timestamp );
 
    EXPECT_STREQ( timestamp, "1970-02-01 01:01:01" );
 }

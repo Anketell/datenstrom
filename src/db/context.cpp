@@ -21,14 +21,14 @@ bool       context::m_initialized = false;
 void context::init( void )
 {
    if ( !m_initialized )
-      enroll_sql_path_list( util::env::get( "SQL_MODULE_PATH" ) );
+      enroll_sql_path_list( env::get( "SQL_MODULE_PATH" ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void context::enroll_sql_path_list( const std::string & path_list )
 {
-   for ( auto path :  util::env::dir_list( path_list ) )
+   for ( auto path :  env::dir_list( path_list ) )
       sql::enroll_directory( m_sql_map, path );
 
    m_initialized = true;
@@ -60,7 +60,7 @@ connection( connect_string )
 
 //-----------------------------------------------------------------------------
 
-context::context( const connect_params_t & connect_params ) :
+context::context( const ds::connect_params_t & connect_params ) :
 connection( connect_params )
 {
    common_constructor();

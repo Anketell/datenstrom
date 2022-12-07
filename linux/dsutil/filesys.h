@@ -16,7 +16,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds::util::filesys
+namespace ds::filesys
 {
 
 //-----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::util::filesys::find::iterator >
+template<> class iterator_traits< ds::filesys::find::iterator >
 {
 public:
 

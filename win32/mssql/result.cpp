@@ -84,25 +84,25 @@ time_t result::get_time( int index )
 
    switch ( time.length() )
    {
-      case util::time::time_len:
-         util::time::parse_iso_8601_time( time.c_str(), &tm );
+      case time::time_len:
+         time::parse_iso_8601_time( time.c_str(), &tm );
          tm.tm_year = 70;
          tm.tm_mday = 1;
          break;
 
-      case util::time::date_len:
-         util::time::parse_iso_8601_date( time.c_str(), &tm );
+      case time::date_len:
+         time::parse_iso_8601_date( time.c_str(), &tm );
          break;
 
-      case util::time::datetime_len:
-         util::time::parse_iso_8601( time.c_str(), &tm );
+      case time::datetime_len:
+         time::parse_iso_8601( time.c_str(), &tm );
          break;
 
       default:
          return 0;
    }
 
-   return util::time::timegm( &tm );
+   return time::timegm( &tm );
 }
 
 //-----------------------------------------------------------------------------

@@ -62,7 +62,7 @@ public:
 
    context( connection & con );
    context( const std::string & connect_string );
-   context( const connect_params_t & connect_params );
+   context( const ds::connect_params_t & connect_params );
 
    virtual statement operator()( const std::string & query_key,
                                  const name_list_t & parameters = {} ) override;

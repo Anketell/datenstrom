@@ -59,7 +59,7 @@ CREATE TABLE Object (
 
 //-----------------------------------------------------------------------------
 
-static const std::string test_con = "firebird://127.0.0.1:3050/" + ds::util::filesys::temp_directory() + "?username=sysdba&password=masterkey";
+static const std::string test_con = "firebird://127.0.0.1:3050/" + ds::filesys::temp_directory() + "?username=sysdba&password=masterkey";
 
 const char * test_con_str = test_con.c_str();
 const char * test_db_name = "test_db";

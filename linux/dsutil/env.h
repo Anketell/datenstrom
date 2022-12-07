@@ -13,7 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds::util::env
+namespace ds::env
 {
 
 //-----------------------------------------------------------------------------
@@ -63,12 +63,12 @@ public:
 
 namespace std
 {
-template<> class iterator_traits< ds::util::env::dir_list::iterator >
+template<> class iterator_traits< ds::env::dir_list::iterator >
 {
 public:
 
    typedef int32_t                           difference_type;
-   typedef ds::util::env::dir_list::iterator value_type;
+   typedef ds::env::dir_list::iterator value_type;
    typedef value_type *                      pointer;
    typedef value_type &                      reference;
    typedef forward_iterator_tag              iterator_category;

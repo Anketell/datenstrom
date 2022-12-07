@@ -4,20 +4,17 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <dsutil/string.h>
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-namespace ds::string
-{
+#include <dsutil/connect_params.h>
 
 //-----------------------------------------------------------------------------
 
-int cmpignorecase( const char * s1, const char * s2, size_t n )
+namespace ds
 {
-    return strncasecmp( s1, s2, n );
+   connect_params_t parse_connect_string( const std::string & connect_string );
 }
 
 //-----------------------------------------------------------------------------
-
-}

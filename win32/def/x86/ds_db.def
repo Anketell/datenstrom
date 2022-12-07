@@ -31,7 +31,6 @@ EXPORTS
    ??8iterator@statement@db@ds@@QBE_NABV0123@@Z
    ?begin@statement@db@ds@@QAE?AViterator@123@XZ
    ?end@statement@db@ds@@QAE?AViterator@123@XZ
-   ?parse_connect_string@db@ds@@YA?AVconnect_params_t@12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?column_count@result@db@ds@@QBEHXZ
    ?step@result@db@ds@@QAE_NXZ
    ??0simple_result@db@ds@@QAE@_K@Z
@@ -54,7 +53,7 @@ EXPORTS
    ?clean_up@context@db@ds@@SAXXZ
    ??0context@db@ds@@QAE@AAVconnection@12@@Z
    ??0context@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-   ??0context@db@ds@@QAE@ABVconnect_params_t@12@@Z
+   ??0context@db@ds@@QAE@ABVconnect_params_t@2@@Z
    ?execute_batch@context@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?lookup@context@db@ds@@QAEPBDABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0enumerator@parameter@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PBD@Z
@@ -65,3 +64,4 @@ EXPORTS
    ?end@enumerator@parameter@db@ds@@QBE?AViterator@1234@XZ
    ??0iterator@statement@db@ds@@QAE@XZ
    ??Eiterator@statement@db@ds@@QAEAAV0123@H@Z
+   ??0connection@db@ds@@QAE@ABVconnect_params_t@2@@Z

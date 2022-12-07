@@ -29,7 +29,7 @@ namespace db
 
 void enroll_module( factory & factory, const std::string & path )
 {
-   util::module module( path );
+   module module( path );
 
    if ( !module )
       return;
@@ -46,7 +46,7 @@ void enroll_module( factory & factory, const std::string & path )
 
 void enroll_directory( factory & factory, const std::string & path )
 {
-   for ( auto file_path : util::filesys::find( path, { util::module::PATTERN } ) )
+   for ( auto file_path : filesys::find( path, { module::PATTERN } ) )
       enroll_module( factory, file_path );
 }
 

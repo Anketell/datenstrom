@@ -5,51 +5,51 @@
 LIBRARY ds_bin
 
 EXPORTS
-??0istream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAC@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAF@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAH@Z
-??5istream@bin@ds@@UEAAAEAV02@AEA_J@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAE@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAG@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAI@Z
-??5istream@bin@ds@@UEAAAEAV02@AEA_K@Z
-??5istream@bin@ds@@UEAAAEAV02@AEAN@Z
-??0ostream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
-??6ostream@bin@ds@@UEAAAEAV02@C@Z
-??6ostream@bin@ds@@UEAAAEAV02@F@Z
-??6ostream@bin@ds@@UEAAAEAV02@H@Z
-??6ostream@bin@ds@@UEAAAEAV02@_J@Z
-??6ostream@bin@ds@@UEAAAEAV02@E@Z
-??6ostream@bin@ds@@UEAAAEAV02@G@Z
-??6ostream@bin@ds@@UEAAAEAV02@I@Z
-??6ostream@bin@ds@@UEAAAEAV02@_K@Z
-??6ostream@bin@ds@@UEAAAEAV02@N@Z
-??0streamwrap@bin@ds@@QEAA@PEAX_J@Z
-?buffer@streamwrap@bin@ds@@QEBAPEAXXZ
-??1streambuf@bin@ds@@UEAA@XZ
-??0streambuf@bin@ds@@QEAA@_J@Z
-?setbuf@streamwrap@bin@ds@@MEAAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@PEAD_J@Z
-?size@streamwrap@bin@ds@@QEBA_JXZ
-?plength@streamwrap@bin@ds@@QEBA_JXZ
-?premaining@streamwrap@bin@ds@@QEBA_JXZ
-?ppos@streamwrap@bin@ds@@QEBAPEAXXZ
-?glength@streamwrap@bin@ds@@QEBA_JXZ
-?gremaining@streamwrap@bin@ds@@QEBA_JXZ
-?gpos@streamwrap@bin@ds@@QEBAPEAXXZ
-?underflow@streamwrap@bin@ds@@MEAAHXZ
-?overflow@streamwrap@bin@ds@@MEAAHH@Z
-?xsgetn@streamwrap@bin@ds@@MEAA_JPEAD_J@Z
-?xsputn@streamwrap@bin@ds@@MEAA_JPEBD_J@Z
-?seekoff@streamwrap@bin@ds@@MEAA?AV?$fpos@U_Mbstatet@@@std@@_JHH@Z
-??0lengthcalc@bin@ds@@QEAA@XZ
-?rdbuf@istream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
-?rdbuf@ostream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
-?big_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
-?big_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
-?little_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
-?little_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
-??0buffer_underrun@bin@ds@@QEAA@XZ
-??0buffer_overrun@bin@ds@@QEAA@XZ
-?write@ostream@bin@ds@@UEAAXPEBX_K@Z
-?read@istream@bin@ds@@UEAAXPEAX_K@Z
+   ??0istream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAC@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAF@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAH@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEA_J@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAE@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAG@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAI@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEA_K@Z
+   ??5istream@bin@ds@@UEAAAEAV02@AEAN@Z
+   ??0ostream@bin@ds@@QEAA@PEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@C@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@F@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@H@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@_J@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@E@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@G@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@I@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@_K@Z
+   ??6ostream@bin@ds@@UEAAAEAV02@N@Z
+   ??0streamwrap@bin@ds@@QEAA@PEAX_J@Z
+   ?buffer@streamwrap@bin@ds@@QEBAPEAXXZ
+   ??1streambuf@bin@ds@@UEAA@XZ
+   ??0streambuf@bin@ds@@QEAA@_J@Z
+   ?setbuf@streamwrap@bin@ds@@MEAAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@PEAD_J@Z
+   ?size@streamwrap@bin@ds@@QEBA_JXZ
+   ?plength@streamwrap@bin@ds@@QEBA_JXZ
+   ?premaining@streamwrap@bin@ds@@QEBA_JXZ
+   ?ppos@streamwrap@bin@ds@@QEBAPEAXXZ
+   ?glength@streamwrap@bin@ds@@QEBA_JXZ
+   ?gremaining@streamwrap@bin@ds@@QEBA_JXZ
+   ?gpos@streamwrap@bin@ds@@QEBAPEAXXZ
+   ?underflow@streamwrap@bin@ds@@MEAAHXZ
+   ?overflow@streamwrap@bin@ds@@MEAAHH@Z
+   ?xsgetn@streamwrap@bin@ds@@MEAA_JPEAD_J@Z
+   ?xsputn@streamwrap@bin@ds@@MEAA_JPEBD_J@Z
+   ?seekoff@streamwrap@bin@ds@@MEAA?AV?$fpos@U_Mbstatet@@@std@@_JHH@Z
+   ??0lengthcalc@bin@ds@@QEAA@XZ
+   ?rdbuf@istream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
+   ?rdbuf@ostream@bin@ds@@QEBAPEAV?$basic_streambuf@DU?$char_traits@D@std@@@std@@XZ
+   ?big_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
+   ?big_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
+   ?little_endian@bin@ds@@YAAEAVistream@2@AEAV32@@Z
+   ?little_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
+   ??0buffer_underrun@bin@ds@@QEAA@XZ
+   ??0buffer_overrun@bin@ds@@QEAA@XZ
+   ?write@ostream@bin@ds@@UEAAXPEBX_K@Z
+   ?read@istream@bin@ds@@UEAAXPEAX_K@Z

@@ -25,18 +25,18 @@ struct filter_t
 
 struct le_filter_t : filter_t
 {
-   virtual uint16_t operator() ( uint16_t u ) override { return util::endian::htol( u ); }
-   virtual uint32_t operator() ( uint32_t u ) override { return util::endian::htol( u ); }
-   virtual uint64_t operator() ( uint64_t u ) override { return util::endian::htol( u ); }
+   virtual uint16_t operator() ( uint16_t u ) override { return endian::htol( u ); }
+   virtual uint32_t operator() ( uint32_t u ) override { return endian::htol( u ); }
+   virtual uint64_t operator() ( uint64_t u ) override { return endian::htol( u ); }
 };
 
 //-----------------------------------------------------------------------------
 
 struct be_filter_t : filter_t
 {
-   virtual uint16_t operator() ( uint16_t u ) override { return util::endian::htob( u ); }
-   virtual uint32_t operator() ( uint32_t u ) override { return util::endian::htob( u ); }
-   virtual uint64_t operator() ( uint64_t u ) override { return util::endian::htob( u ); }
+   virtual uint16_t operator() ( uint16_t u ) override { return endian::htob( u ); }
+   virtual uint32_t operator() ( uint32_t u ) override { return endian::htob( u ); }
+   virtual uint64_t operator() ( uint64_t u ) override { return endian::htob( u ); }
 };
 
 //-----------------------------------------------------------------------------

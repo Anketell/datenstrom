@@ -28,7 +28,7 @@ const char * create = "CREATE TABLE Object ("
 
 //-----------------------------------------------------------------------------
 
-static const std::string test_con = "sqlite:///" + ds::util::filesys::temp_directory();
+static const std::string test_con = "sqlite:///" + ds::filesys::temp_directory();
 
 const char * test_con_str = test_con.c_str();
 const char * test_db_name = "test_db";

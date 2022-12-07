@@ -5,38 +5,39 @@
 LIBRARY ds_util
 
 EXPORTS
-??Diterator@find@filesys@util@ds@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
-??Eiterator@find@filesys@util@ds@@QEAAAEAV01234@XZ
-??9iterator@find@filesys@util@ds@@QEBA_NAEBV01234@@Z
-??8iterator@find@filesys@util@ds@@QEBA_NAEBV01234@@Z
-??0find@filesys@util@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@5@@Z
-?begin@find@filesys@util@ds@@QEBA?AViterator@1234@XZ
-?end@find@filesys@util@ds@@QEBA?AViterator@1234@XZ
-?find_symbol@module@util@ds@@AEBAPEAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-??0module@util@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-?close@module@util@ds@@QEAAXXZ
-?get@env@util@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
-??0dir_list@env@util@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-??Diterator@dir_list@env@util@ds@@QEBAPEBDXZ
-??Eiterator@dir_list@env@util@ds@@QEAA?AV01234@XZ
-??9iterator@dir_list@env@util@ds@@QEBA_NAEBV01234@@Z
-?begin@dir_list@env@util@ds@@QEBA?AViterator@1234@XZ
-?end@dir_list@env@util@ds@@QEBA?AViterator@1234@XZ
-?gmtime@time@util@ds@@YAXPEB_JPEAUtm@@@Z
-?timegm@time@util@ds@@YA_JPEBUtm@@@Z
-?parse_iso_8601_date@time@util@ds@@YA_NPEBDPEAUtm@@@Z
-?parse_iso_8601_time@time@util@ds@@YA_NPEBDPEAUtm@@@Z
-?parse_iso_8601@time@util@ds@@YA_NPEBDPEAUtm@@@Z
-?format_iso_8601_date@time@util@ds@@YAXPEBUtm@@PEAD@Z
-?format_iso_8601_time@time@util@ds@@YAXPEBUtm@@PEAD@Z
-?format_iso_8601@time@util@ds@@YAXPEBUtm@@PEAD@Z
-?cmpignorecase@string@util@ds@@YAHPEBD0_K@Z
-?exists@filesys@util@ds@@YA_NPEBD@Z
-?remove@filesys@util@ds@@YAXPEBD@Z
-?htol@endian@util@ds@@YAGG@Z
-?htol@endian@util@ds@@YAII@Z
-?htol@endian@util@ds@@YA_K_K@Z
-?htob@endian@util@ds@@YAGG@Z
-?htob@endian@util@ds@@YAII@Z
-?htob@endian@util@ds@@YA_K_K@Z
-?temp_directory@filesys@util@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ??Diterator@find@filesys@ds@@QEBA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ??Eiterator@find@filesys@ds@@QEAAAEAV0123@XZ
+   ??9iterator@find@filesys@ds@@QEBA_NAEBV0123@@Z
+   ??8iterator@find@filesys@ds@@QEBA_NAEBV0123@@Z
+   ??0find@filesys@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@4@@Z
+   ?begin@find@filesys@ds@@QEBA?AViterator@123@XZ
+   ?end@find@filesys@ds@@QEBA?AViterator@123@XZ
+   ?find_symbol@module@ds@@AEBAPEAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??0module@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?close@module@ds@@QEAAXXZ
+   ?get@env@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
+   ??0dir_list@env@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ??Diterator@dir_list@env@ds@@QEBAPEBDXZ
+   ??Eiterator@dir_list@env@ds@@QEAA?AV0123@XZ
+   ??9iterator@dir_list@env@ds@@QEBA_NAEBV0123@@Z
+   ?begin@dir_list@env@ds@@QEBA?AViterator@123@XZ
+   ?end@dir_list@env@ds@@QEBA?AViterator@123@XZ
+   ?gmtime@time@ds@@YAXPEB_JPEAUtm@@@Z
+   ?timegm@time@ds@@YA_JPEBUtm@@@Z
+   ?parse_iso_8601_date@time@ds@@YA_NPEBDPEAUtm@@@Z
+   ?parse_iso_8601_time@time@ds@@YA_NPEBDPEAUtm@@@Z
+   ?parse_iso_8601@time@ds@@YA_NPEBDPEAUtm@@@Z
+   ?format_iso_8601_date@time@ds@@YAXPEBUtm@@PEAD@Z
+   ?format_iso_8601_time@time@ds@@YAXPEBUtm@@PEAD@Z
+   ?format_iso_8601@time@ds@@YAXPEBUtm@@PEAD@Z
+   ?cmpignorecase@string@ds@@YAHPEBD0_K@Z
+   ?exists@filesys@ds@@YA_NPEBD@Z
+   ?remove@filesys@ds@@YAXPEBD@Z
+   ?htol@endian@ds@@YAGG@Z
+   ?htol@endian@ds@@YAII@Z
+   ?htol@endian@ds@@YA_K_K@Z
+   ?htob@endian@ds@@YAGG@Z
+   ?htob@endian@ds@@YAII@Z
+   ?htob@endian@ds@@YA_K_K@Z
+   ?temp_directory@filesys@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ?parse_connect_string@ds@@YA?AVconnect_params_t@1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z

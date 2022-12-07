@@ -10,6 +10,7 @@ add_executable( ${TARGET}
    test_module.cpp
    test_string.cpp
    test_time.cpp
+   test_connect_string.cpp
 )
 
 if ( WIN32 )

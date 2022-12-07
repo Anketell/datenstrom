@@ -4,7 +4,7 @@
 #include <test_utils/gtest.h>
 #include <db/context.h>
 #include <db/transaction.h>
-#include <db/connect_string.h>
+#include <dsutil/connect_string.h>
 #include <dsutil/filesys.h>
 #include <dsutil/env.h>
 #include <algorithm>
@@ -14,7 +14,7 @@
 
 Context::Context( void )
 {
-   m_sql_module_path = ds::util::env::get( "SQL_MODULE_PATH" );
+   m_sql_module_path = ds::env::get( "SQL_MODULE_PATH" );
    if ( m_sql_module_path.empty() )
       m_sql_module_path = ".";
 }
@@ -29,7 +29,7 @@ TEST_P( Context, should_construct_context )
 
    EXPECT_NO_THROW( ds::db::context ctx( con_string ) );
    EXPECT_NO_THROW( { ds::db::connection con( con_string );  ds::db::context ctx( con ); } );
-   EXPECT_NO_THROW( ds::db::context ctx( ds::db::parse_connect_string( con_string ) ) );
+   EXPECT_NO_THROW( ds::db::context ctx( ds::parse_connect_string( con_string ) ) );
 
    ds::db::context::clean_up();
 }
@@ -161,10 +161,12 @@ TEST_P( Context, should_fail_unsupported_database_type )
 {
    const char * con_string = GetParam();
 
-   auto params = ds::db::parse_connect_string( con_string );
+   auto params = ds::parse_connect_string( con_string );
 
    ds::db::context::clean_up();
    ds::db::context::enroll_sql_path_list( "" );
+
+   EXPECT_NO_THROW( ds::db::connection con( params ) );
 
    EXPECT_THROW_VALUE( ds::db::context ctx( params ),
                        ds::db::context::unsupported_db_type,

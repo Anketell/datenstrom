@@ -10,7 +10,7 @@
 
 #include <ctime>
 
-namespace ds::util::time
+namespace ds::time
 {
 
 //-----------------------------------------------------------------------------

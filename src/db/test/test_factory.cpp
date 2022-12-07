@@ -135,7 +135,7 @@ NAMESPACE_TEST( db, factory, should_register_and_create )
    ds::db::impl * db;
 
    {
-      ds::db::connect_params_t params =
+      ds::connect_params_t params =
       {
          { "type",     "derived_db_1" },
          { "location", "parameters" }
@@ -153,7 +153,7 @@ NAMESPACE_TEST( db, factory, should_register_and_create )
    EXPECT_NO_THROW( delete db );
 
    {
-      ds::db::connect_params_t params =
+      ds::connect_params_t params =
       {
          { "type",     "derived_db_2" },
          { "location", "other_parameters" }

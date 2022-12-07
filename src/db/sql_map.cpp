@@ -17,7 +17,7 @@ namespace ds::db::sql
 
 void enroll_module( map_t & sql_map, const std::string & path )
 {
-   ds::util::module module( path );
+   ds::module module( path );
 
    if ( !module )
       return;
@@ -34,7 +34,7 @@ void enroll_module( map_t & sql_map, const std::string & path )
 
 void enroll_directory( map_t & sql_map, const std::string & path )
 {
-   for ( auto file_path : ds::util::filesys::find( path, { ds::util::module::PATTERN } ) )
+   for ( auto file_path : ds::filesys::find( path, { ds::module::PATTERN } ) )
       enroll_module( sql_map, file_path );
 }
 

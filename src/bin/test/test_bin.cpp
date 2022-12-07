@@ -110,7 +110,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u16_be )
    uint16_t u16      = 0x8899;
    uint8_t  buffer[] = { 0, 0 };
 
-   auto beu16    = ds::util::endian::htob( u16 );
+   auto beu16    = ds::endian::htob( u16 );
    auto expected = reinterpret_cast< uint8_t * >( &beu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -133,7 +133,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u16_le )
    uint16_t u16      = 0x8899;
    uint8_t  buffer[] = { 0, 0 };
 
-   auto leu16    = ds::util::endian::htol( u16 );
+   auto leu16    = ds::endian::htol( u16 );
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -156,7 +156,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u32_be )
    uint32_t u32      = 0x8899aabb;
    uint8_t  buffer[] = { 0, 0, 0, 0 };
 
-   auto beu32    = ds::util::endian::htob( u32 );
+   auto beu32    = ds::endian::htob( u32 );
    auto expected = reinterpret_cast< uint8_t * >( &beu32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -179,7 +179,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u32_le )
    uint32_t u32      = 0x8899aabb;
    uint8_t  buffer[] = { 0, 0, 0, 0 };
 
-   auto leu32    = ds::util::endian::htol( u32 );
+   auto leu32    = ds::endian::htol( u32 );
    auto expected = reinterpret_cast< uint8_t * >( &leu32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -202,7 +202,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u64_be )
    uint64_t u64      = 0x8899aabbccddeeffULL;
    uint8_t  buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-   auto beu64    = ds::util::endian::htob( u64 );
+   auto beu64    = ds::endian::htob( u64 );
    auto expected = reinterpret_cast< uint8_t * >( &beu64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -225,7 +225,7 @@ NAMESPACE_TEST( bin, ostream, should_put_u64_le )
    uint64_t u64      = 0x8899aabbccddeeffULL;
    uint8_t  buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-   auto leu64    = ds::util::endian::htol( u64 );
+   auto leu64    = ds::endian::htol( u64 );
    auto expected = reinterpret_cast< uint8_t * >( &leu64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -288,7 +288,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s16_be )
    int16_t s16      = -0x7899;
    uint8_t buffer[] = { 0, 0 };
 
-   auto bes16    = ds::util::endian::htob( static_cast< uint16_t >( s16 ) );
+   auto bes16    = ds::endian::htob( static_cast< uint16_t >( s16 ) );
    auto expected = reinterpret_cast< uint8_t * >( &bes16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -311,7 +311,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s16_le )
    int16_t s16      = -0x7899;
    uint8_t buffer[] = { 0, 0 };
 
-   auto leu16    = ds::util::endian::htol( static_cast< uint16_t >( s16 ) );
+   auto leu16    = ds::endian::htol( static_cast< uint16_t >( s16 ) );
    auto expected = reinterpret_cast< uint8_t * >( &leu16 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -334,7 +334,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_be )
    int32_t s32      = -0x7899aabb;
    uint8_t buffer[] = { 0, 0, 0, 0 };
 
-   auto bes32    = ds::util::endian::htob( static_cast< uint32_t >( s32 ) );
+   auto bes32    = ds::endian::htob( static_cast< uint32_t >( s32 ) );
    auto expected = reinterpret_cast< uint8_t * >( &bes32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -357,7 +357,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s32_le )
    int32_t s32      = -0x7899aabb;
    uint8_t buffer[] = { 0, 0, 0, 0 };
 
-   auto les32    = ds::util::endian::htol( static_cast< uint32_t >( s32 ) );
+   auto les32    = ds::endian::htol( static_cast< uint32_t >( s32 ) );
    auto expected = reinterpret_cast< uint8_t * >( &les32 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -380,7 +380,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s64_be )
    int64_t s64      = -0x7899aabbccddeeffULL;
    uint8_t buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-   auto bes64    = ds::util::endian::htob( static_cast< uint64_t >( s64 ) );
+   auto bes64    = ds::endian::htob( static_cast< uint64_t >( s64 ) );
    auto expected = reinterpret_cast< uint8_t * >( &bes64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );
@@ -403,7 +403,7 @@ NAMESPACE_TEST( bin, ostream, should_put_s64_le )
    int64_t s64      = -0x7899aabbccddeeffULL;
    uint8_t buffer[] = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-   auto les64    = ds::util::endian::htol( static_cast< uint64_t >( s64 ) );
+   auto les64    = ds::endian::htol( static_cast< uint64_t >( s64 ) );
    auto expected = reinterpret_cast< uint8_t * >( &les64 );
 
    ds::bin::streamwrap sw( buffer, sizeof( buffer ) );

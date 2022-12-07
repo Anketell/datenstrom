@@ -12,7 +12,6 @@ set( SOURCE
    result.cpp
    simple_result.cpp
    transaction.cpp
-   connect_string.cpp
    parameter.cpp
    sql_map.cpp
 )
@@ -25,8 +24,6 @@ set( HEADERS
    result.h
    simple_result.h
    transaction.h
-   connect_string.h
-   connect_params.h
    factory.h
    factory_helper.h
    impl.h

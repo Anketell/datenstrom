@@ -5,8 +5,8 @@
 //-----------------------------------------------------------------------------
 
 #include <db/connection.h>
-#include <db/connect_string.h>
 #include <db/enroll.h>
+#include <dsutil/connect_string.h>
 #include <dsutil/env.h>
 
 #include <cstring>
@@ -31,14 +31,14 @@ bool    connection::m_initialized = false;
 void connection::init( void )
 {
    if ( !m_initialized )
-      enroll_db_path_list( util::env::get( "DS_MODULE_PATH" ) );
+      enroll_db_path_list( env::get( "DS_MODULE_PATH" ) );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::enroll_db_path_list( const std::string & path_list )
 {
-   for ( auto path : util::env::dir_list( path_list ) )
+   for ( auto path : env::dir_list( path_list ) )
       enroll_directory( m_factory, path );
 
    m_initialized = true;
@@ -53,7 +53,7 @@ connection( parse_connect_string( connect_string ) )
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const connect_params_t & connect_params )
+connection::connection( const ds::connect_params_t & connect_params )
 {
    init();
    m_impl.reset( m_factory( connect_params ) );

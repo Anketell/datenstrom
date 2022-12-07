@@ -164,24 +164,24 @@ void statement_base::bind_time( int index, time_t t )
 
    struct tm tm;
 
-   util::time::gmtime( &t, &tm );
+   time::gmtime( &t, &tm );
 
    if ( t < 60 * 60 * 24 )
    {
       time.resize( 9 );
-      util::time::format_iso_8601_time( &tm, const_cast< char * >( time.c_str() ) );
+      time::format_iso_8601_time( &tm, const_cast< char * >( time.c_str() ) );
    }
    else
    {
       if ( t % ( 60 * 60 * 24 ) == 0 )
       {
          time.resize( 11 );
-         util::time::format_iso_8601_date( &tm, const_cast< char * >( time.c_str() ) );
+         time::format_iso_8601_date( &tm, const_cast< char * >( time.c_str() ) );
       }
       else
       {
          time.resize( 20 );
-         util::time::format_iso_8601( &tm, const_cast< char * >( time.c_str() ) );
+         time::format_iso_8601( &tm, const_cast< char * >( time.c_str() ) );
       }
    }
 

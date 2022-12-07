@@ -70,7 +70,7 @@ void connection::create( const std::string & name )
 
    std::string path = get_full_path( name );
 
-   if ( util::filesys::exists( path.c_str() ) )
+   if ( filesys::exists( path.c_str() ) )
       throw_error( operation, ( path + " exists" ).c_str() );
 
    close();
@@ -111,7 +111,7 @@ bool connection::drop( const std::string & name )
 
    try
    {
-      util::filesys::remove( get_full_path( name ).c_str() );
+      filesys::remove( get_full_path( name ).c_str() );
    }
    catch ( std::exception & e )
    {

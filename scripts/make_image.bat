@@ -17,6 +17,8 @@ mkdir build\image\module\x64
 mkdir build\image\module\x86
 mkdir build\image\def
 
+xcopy /y /f src\dsutil\connect_params.h                                    build\image\include\dsutil
+xcopy /y /f src\dsutil\connect_string.h                                    build\image\include\dsutil
 xcopy /y /f win32\dsutil\endian.h                                          build\image\include\dsutil
 xcopy /y /f win32\dsutil\env.h                                             build\image\include\dsutil
 xcopy /y /f win32\dsutil\filesys.h                                         build\image\include\dsutil
@@ -29,8 +31,6 @@ xcopy /y /f src\ds\factory.h                                               build
 
 xcopy /y /f src\csv\csv.h                                                  build\image\include\csv
 
-xcopy /y /f src\db\connect_params.h                                        build\image\include\db
-xcopy /y /f src\db\connect_string.h                                        build\image\include\db
 xcopy /y /f src\db\connection.h                                            build\image\include\db
 xcopy /y /f src\db\context.h                                               build\image\include\db
 xcopy /y /f src\db\factory_helper.h                                        build\image\include\db

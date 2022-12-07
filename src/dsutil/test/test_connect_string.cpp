@@ -6,14 +6,14 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/connect_string.h>
+#include <dsutil/connect_string.h>
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_connect_string )
+NAMESPACE_TEST( util, connect_string, should_parse_connect_string )
 {
    static const char connect_string[] = "type://server:1234//path?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "server" );
@@ -25,10 +25,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_connect_string )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_connect_string_no_path )
+NAMESPACE_TEST( util, connect_string, should_parse_connect_string_no_path )
 {
    static const char connect_string[] = "type://server:1234?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(), "type" );
    EXPECT_STREQ( params[ "server" ].c_str(), "server" );
@@ -40,10 +40,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_connect_string_no_path )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_support_full_windows_path_with_port )
+NAMESPACE_TEST( util, connect_string, should_parse_support_full_windows_path_with_port )
 {
    static const char connect_string[] = "type://server:1234/C:\\path?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "server" );
@@ -55,10 +55,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_support_full_windows_path_with_
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_support_full_windows_path_without_port )
+NAMESPACE_TEST( util, connect_string, should_parse_support_full_windows_path_without_port )
 {
    static const char connect_string[] = "type://server/C:\\path?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "server" );
@@ -70,10 +70,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_support_full_windows_path_witho
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_no_server_connect_string )
+NAMESPACE_TEST( util, connect_string, should_parse_no_server_connect_string )
 {
    static const char connect_string[] = "type:////path?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "" );
@@ -85,10 +85,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_no_server_connect_string )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_no_server_no_params_connect_string )
+NAMESPACE_TEST( util, connect_string, should_parse_no_server_no_params_connect_string )
 {
    static const char connect_string[] = "type:////path/";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(),     "type" );
    EXPECT_STREQ( params[ "server" ].c_str(),   "" );
@@ -100,10 +100,10 @@ NAMESPACE_TEST( db, connect_string, should_parse_no_server_no_params_connect_str
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_no_server_full_windows_path_connect_string )
+NAMESPACE_TEST( util, connect_string, should_parse_no_server_full_windows_path_connect_string )
 {
    static const char connect_string[] = "type:///C:\\path\\?name=value#database";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(), "type" );
    EXPECT_STREQ( params[ "server" ].c_str(), "" );
@@ -115,30 +115,30 @@ NAMESPACE_TEST( db, connect_string, should_parse_no_server_full_windows_path_con
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_fail_poorly_formed )
+NAMESPACE_TEST( util, connect_string, should_fail_poorly_formed )
 {
    static const char connect_string[] = "type://ser&ver:1234?name=value#database";
-   ds::db::connect_params_t params;
+   ds::connect_params_t params;
 
-   EXPECT_THROW( params = ds::db::parse_connect_string( connect_string ), std::invalid_argument );
+   EXPECT_THROW( params = ds::parse_connect_string( connect_string ), std::invalid_argument );
 }
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_fail_null_param )
+NAMESPACE_TEST( util, connect_string, should_fail_null_param )
 {
    static const char connect_string[] = "type://server:1234?name=value=asd#database";
-   ds::db::connect_params_t params;
+   ds::connect_params_t params;
 
-   EXPECT_THROW( params = ds::db::parse_connect_string( connect_string ), std::invalid_argument );
+   EXPECT_THROW( params = ds::parse_connect_string( connect_string ), std::invalid_argument );
 }
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, connect_string, should_parse_tls_connect_string )
+NAMESPACE_TEST( util, connect_string, should_parse_tls_connect_string )
 {
    static const char connect_string[] = "TLS://127.0.0.1:40002?cert=My Cert";
-   ds::db::connect_params_t params = ds::db::parse_connect_string( connect_string );
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
 
    EXPECT_STREQ( params[ "type" ].c_str(), "TLS" );
    EXPECT_STREQ( params[ "server" ].c_str(), "127.0.0.1" );
