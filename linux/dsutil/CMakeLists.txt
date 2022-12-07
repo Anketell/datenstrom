@@ -29,4 +29,5 @@ add_library( ${TARGET} SHARED
 
 target_link_libraries( ${TARGET}
    dl
+   ds_util_common
 )
