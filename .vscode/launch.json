@@ -4,7 +4,45 @@
    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
    "version": "0.2.0",
    "configurations": [
-      {
+    {
+        "name": "test_ds",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/debug/src/ds/test/test_ds",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+     },
+     {
+        "name": "test_ds_util",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/debug/src/dsutil/test/test_ds_util",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}/debug/src/dsutil/test",
+        "environment": [],
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+     },
+     {
          "name": "test_ds_csv",
          "type": "cppdbg",
          "request": "launch",
@@ -50,7 +88,10 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/sqlite"}],
+         "environment": [
+            {"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/sqlite"},
+            {"name": "SQL_MODULE_PATH", "value": "${workspaceFolder}/debug/src/sqlite"}
+        ],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
@@ -69,7 +110,10 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/firebird"}],
+         "environment": [
+            {"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/firebird"},
+            {"name": "SQL_MODULE_PATH", "value": "${workspaceFolder}/debug/src/firebird"}
+        ],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
@@ -88,7 +132,10 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [{"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"}],
+         "environment": [
+            {"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"},
+            {"name": "SQL_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"}
+        ],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [

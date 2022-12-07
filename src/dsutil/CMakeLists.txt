@@ -18,4 +18,10 @@ add_library( ${TARGET} STATIC
    ${HEADERS}
 )
 
+if ( UNIX )
+
+   target_compile_options( ${TARGET} PRIVATE "-fPIC" )
+
+endif( UNIX )
+
 add_subdirectory( test )
