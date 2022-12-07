@@ -22,11 +22,11 @@ namespace db
 template<> impl * factory_helper< mssql::connection >::construct( const connect_params_t & params )
 {
    auto server   = params[ "server" ];
+   auto path     = params[ "path" ];
    auto port_str = params[ "port" ];
    auto database = params[ "database" ];
    auto username = params[ "username" ];
    auto password = params[ "password" ];
-   auto instance = params[ "instance" ];
 
    if ( server.empty() )
       throw std::invalid_argument( "Connect string does not specify server" );
@@ -38,9 +38,9 @@ template<> impl * factory_helper< mssql::connection >::construct( const connect_
    impl * db;
 
    if ( !username.empty() )
-      db = new mssql::connection( username, password, server, instance, port );
+      db = new mssql::connection( username, password, server, path, port );
    else
-      db = new mssql::connection( server, instance, port );
+      db = new mssql::connection( server, path, port );
 
    if ( !database.empty() )
    {
