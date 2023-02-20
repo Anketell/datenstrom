@@ -87,15 +87,8 @@ public:
    bool step( void );
 
    virtual bool eof( void ) const override;
-   
-   bool operator==( const result &  ) const;
 
-   template< typename T > operator T ( void )
-   {
-      T t;
-      *this >> t;
-      return t;
-   }
+   bool operator==( const result &  ) const;
 };
 
 //-----------------------------------------------------------------------------

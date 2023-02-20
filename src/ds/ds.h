@@ -55,6 +55,13 @@ public:
    virtual void endr( void );
 
    virtual bool eof( void ) const;
+
+   template< typename T > operator T ( void )
+   {
+      T t;
+      *this >> t;
+      return t;
+   }
 };
 
 //-----------------------------------------------------------------------------
