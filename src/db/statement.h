@@ -123,6 +123,12 @@ public:
       *this << t;
       return *this;
    }
+
+   template< typename T, typename ... Rest > statement & operator()( const T & t, const Rest & ... rest )
+   {
+      *this << t;
+      return operator()( rest... );
+   }
 };
 
 //-----------------------------------------------------------------------------
