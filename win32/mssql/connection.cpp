@@ -202,7 +202,8 @@ void connection::use( const std::string & name )
    std::string query = "USE " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-
+   check_status( "MSSQL create database", m_hdbc, SQL_HANDLE_DBC, rc );
+/*
    // Auzre doesn't support using a database not specified in the
    // connection string so try to reconnect to the database.
 
@@ -211,7 +212,7 @@ void connection::use( const std::string & name )
       cleanup();
       init( m_connection_string + " Database=" + name + ";" );
    }
-
+*/
    m_database = name;
 }
 

@@ -474,3 +474,15 @@ NAMESPACE_TEST( mssql, statement, should_fail_query_wrong_column_type )
 }
 
 //-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( mssql, db, should_create_after_use_path )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_THROW( test_db.use( test_db_name ), std::runtime_error );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
