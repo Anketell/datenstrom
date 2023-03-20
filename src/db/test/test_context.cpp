@@ -35,7 +35,7 @@ TEST_P( Context, should_construct_context )
    EXPECT_NO_THROW( { ds::db::connection con( con_string );  ds::db::context ctx( con ); } );
    EXPECT_NO_THROW( ds::db::context ctx( ds::parse_connect_string( con_string ) ) );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ TEST_P( Context, should_perform_lookup )
 
    EXPECT_STREQ( ctx.lookup( "test.type" ), ctx.type() );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ TEST_P( Context, should_insert_test_text )
 
    EXPECT_NO_THROW( ctx.drop( database ) );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------
@@ -156,7 +156,7 @@ TEST_P( Context, should_read_test_text )
 
    EXPECT_NO_THROW( ctx.drop( database ) );
 
-    ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------
@@ -167,7 +167,7 @@ TEST_P( Context, should_fail_unsupported_database_type )
 
    auto params = ds::parse_connect_string( con_string );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
    ds::db::context::enroll_sql_path_list( "" );
 
    EXPECT_NO_THROW( ds::db::connection con( params ) );
@@ -176,7 +176,7 @@ TEST_P( Context, should_fail_unsupported_database_type )
                        ds::db::context::unsupported_db_type,
                        e.type == params[ "type" ] );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------
@@ -205,7 +205,7 @@ TEST_P( Context, should_fail_unknown_sql_key )
 
    EXPECT_NO_THROW( ctx.drop( database ) );
 
-   ds::db::context::clean_up();
+   ds::db::context::clear_sql_path_list();
 }
 
 //-----------------------------------------------------------------------------

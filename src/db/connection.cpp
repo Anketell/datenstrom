@@ -46,6 +46,13 @@ void connection::enroll_db_path_list( const std::string & path_list )
 
 //-----------------------------------------------------------------------------
 
+void connection::clear_db_path_list( void )
+{
+   m_factory.deregister_all();
+}
+
+//-----------------------------------------------------------------------------
+
 connection::connection( const std::string & connect_string ) :
 connection( parse_connect_string( connect_string ) )
 {

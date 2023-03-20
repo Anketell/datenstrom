@@ -50,7 +50,7 @@ EXPORTS
    ?release_savepoint@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?rollback_to_savepoint@connection@db@ds@@UAEXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?enroll_sql_path_list@context@db@ds@@SAXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-   ?clean_up@context@db@ds@@SAXXZ
+   ?clear_sql_path_list@context@db@ds@@SAXXZ
    ??0context@db@ds@@QAE@AAVconnection@12@@Z
    ??0context@db@ds@@QAE@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0context@db@ds@@QAE@ABVconnect_params_t@2@@Z

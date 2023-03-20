@@ -48,6 +48,7 @@ EXPORTS
    ?result@statement@db@ds@@QEAA?AV023@XZ
    ??8iterator@statement@db@ds@@QEBA_NAEBV0123@@Z
    ?enroll_db_path_list@connection@db@ds@@SAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?clear_db_path_list@connection@db@ds@@SAXXZ
    ??0connection@db@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0connection@db@ds@@QEAA@AEBVconnect_params_t@2@@Z
    ?type@connection@db@ds@@UEBAPEBDXZ
@@ -79,7 +80,7 @@ EXPORTS
    ?end@enumerator@parameter@db@ds@@QEBA?AViterator@1234@XZ
    ??Eiterator@enumerator@parameter@db@ds@@QEAA?AV01234@XZ
    ?enroll_sql_path_list@context@db@ds@@SAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-   ?clean_up@context@db@ds@@SAXXZ
+   ?clear_sql_path_list@context@db@ds@@SAXXZ
    ??0context@db@ds@@QEAA@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??0context@db@ds@@QEAA@AEAVconnection@12@@Z
    ??0context@db@ds@@QEAA@AEBVconnect_params_t@2@@Z

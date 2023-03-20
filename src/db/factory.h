@@ -56,6 +56,11 @@ public:
 
       return it->second( params );
    }
+
+   void deregister_all( void )
+   {
+      m_constructor_map.clear();
+   }
 };
 
 //-----------------------------------------------------------------------------

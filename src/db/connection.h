@@ -36,6 +36,7 @@ class connection : public impl
 public:
 
    static void enroll_db_path_list( const std::string & path_list );
+   static void clear_db_path_list( void );
 
    connection( const std::string & connect_string );
    connection( const ds::connect_params_t & connect_params );

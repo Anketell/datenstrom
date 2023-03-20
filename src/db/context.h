@@ -62,7 +62,7 @@ private:
 public:
 
    static void enroll_sql_path_list( const std::string & path_list );
-   static void clean_up( void );
+   static void clear_sql_path_list( void );
 
    context( connection & con );
    context( const std::string & connect_string );

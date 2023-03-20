@@ -173,6 +173,44 @@ NAMESPACE_TEST( db, factory, should_register_and_create )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( db, factory, should_deregister )
+{
+   ds::db::factory factory;
+
+   factory.register_impl< derived_db_1::connection >();
+   factory.register_impl< derived_db_2::connection >();
+
+   ds::db::impl * db;
+
+   {
+      ds::connect_params_t params =
+      {
+         { "type",     "derived_db_1" },
+         { "location", "parameters" }
+      };
+
+      EXPECT_NO_THROW( db = factory( params ) );
+      EXPECT_EQ( typeid( *db ), typeid( derived_db_1::connection ) );
+
+      derived_db_1::connection * ddb1;
+
+      EXPECT_NE( ddb1 = dynamic_cast< derived_db_1::connection * >( db ), nullptr );
+      EXPECT_STREQ( ddb1->param().c_str(), "parameters" );
+   }
+
+   EXPECT_NO_THROW( delete db );
+
+   factory.deregister_all();
+
+   EXPECT_THROW( factory( { { "type", "derived_db_1" }, { "location", "parameters" } } ),
+                 ds::db::factory::Not_found_exception );
+
+   EXPECT_THROW( factory( { { "type", "derived_db_2" }, { "location", "other_parameters" } } ),
+                 ds::db::factory::Not_found_exception );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( db, factory, should_fail_unknown )
 {
    ds::db::factory factory;

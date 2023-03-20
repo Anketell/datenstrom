@@ -40,7 +40,7 @@ void context::enroll_sql_path_list( const std::string & path_list )
 
 //-----------------------------------------------------------------------------
 
-void context::clean_up( void )
+void context::clear_sql_path_list( void )
 {
    m_sql_map.clear();
    m_initialized = false;
