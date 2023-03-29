@@ -27,6 +27,7 @@ EXPORTS
    ?parse_iso_8601_date@time@ds@@YA_NPBDPAUtm@@@Z
    ?parse_iso_8601_time@time@ds@@YA_NPBDPAUtm@@@Z
    ?parse_iso_8601@time@ds@@YA_NPBDPAUtm@@@Z
+   ?cmpignorecase@string@ds@@YAHPBD0@Z
    ?htol@endian@ds@@YAGG@Z
    ?htol@endian@ds@@YAII@Z
    ?htol@endian@ds@@YA_K_K@Z

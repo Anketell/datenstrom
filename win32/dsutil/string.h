@@ -18,6 +18,7 @@ namespace ds::string
 //-----------------------------------------------------------------------------
 
 int cmpignorecase( const char * s1, const char * s2, size_t n );
+int cmpignorecase( const char * s1, const char * s2 );
 
 //-----------------------------------------------------------------------------
 

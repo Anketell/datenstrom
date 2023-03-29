@@ -8,6 +8,7 @@
 #include <dsutil/string.h>
 
 #include <functional>
+#include <set>
 
 //-----------------------------------------------------------------------------
 
@@ -78,12 +79,21 @@ statement_enum::iterator::token_t statement_enum::iterator::next_token( const ch
 void statement_enum::iterator::next_statement( void )
 {
    static const std::string create( "create" );
-   static const std::string function( "function" );
 
    static const std::function< bool( int, int )> CmpNoCase = []( int c1, int c2 )
    {
       return std::tolower( c1 ) == std::tolower( c2 );
    };
+
+   struct insensitive_compare
+   {
+      bool operator()( const std::string & s1, const std::string & s2 ) const
+      {
+         return ds::string::cmpignorecase( s1.c_str(), s2.c_str() ) < 0;
+      }
+   };
+
+   static const std::set< std::string, insensitive_compare > db_obj_set = { "function", "view" };
 
    if ( !m_statement.from )
       return;
@@ -98,7 +108,7 @@ void statement_enum::iterator::next_statement( void )
       if ( std::equal( token.from, token.from + token.len, create.begin(), create.end(), CmpNoCase ) )
       {
          token_t object = next_token( token.from + token.len );
-         if ( std::equal( object.from, object.from + object.len, function.begin(), function.end(), CmpNoCase ) )
+         if ( db_obj_set.find( std::string( object.from, object.len ) ) != db_obj_set.end() )
          {
             if ( m_statement.from != token.from )
             {

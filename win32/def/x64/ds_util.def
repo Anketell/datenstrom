@@ -31,6 +31,7 @@ EXPORTS
    ?format_iso_8601_time@time@ds@@YAXPEBUtm@@PEAD@Z
    ?format_iso_8601@time@ds@@YAXPEBUtm@@PEAD@Z
    ?cmpignorecase@string@ds@@YAHPEBD0_K@Z
+   ?cmpignorecase@string@ds@@YAHPEBD0@Z
    ?exists@filesys@ds@@YA_NPEBD@Z
    ?remove@filesys@ds@@YAXPEBD@Z
    ?htol@endian@ds@@YAGG@Z
