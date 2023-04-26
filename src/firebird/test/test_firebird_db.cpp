@@ -390,6 +390,43 @@ NAMESPACE_TEST( firebird, result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( firebird, result, should_return_eof_after_last_row )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   int insert_count = 0;
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+      {
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+         insert_count++;
+      }
+   }
+
+   ds::db::result res = test_db( results ).result();
+
+   int query_count = 0;
+
+   while ( !res.eof() )
+   {
+      query_count++;
+      res.step();
+   }
+
+   EXPECT_EQ( insert_count, query_count );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( firebird, result, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );

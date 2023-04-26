@@ -224,7 +224,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
          if ( i )
             wrapped_sql << ", ";
 
-         wrapped_sql << meta.out->sqlvar[ i ].sqlname << suffix << " "
+         wrapped_sql << "t_" << meta.out->sqlvar[ i ].sqlname << "_" << i << " "
                      << data_type( meta.out->sqlvar[ i ] );
       }
       wrapped_sql << " )" << std::endl;
@@ -246,7 +246,7 @@ std::string named_statement::wrap_sql( const std::string     & sql,
          if ( i )
             wrapped_sql << ", ";
 
-         wrapped_sql << ":" << meta.out->sqlvar[ i ].sqlname << suffix;
+         wrapped_sql << ":t_" << meta.out->sqlvar[ i ].sqlname << "_" << i;
       }
 
       if ( meta.type == isc_info_sql_stmt_select )
