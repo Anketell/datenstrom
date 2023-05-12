@@ -129,6 +129,11 @@ public:
       *this << t;
       return operator()( rest... );
    }
+
+   template< typename T > operator T ( void )
+   {
+      return result();
+   }
 };
 
 //-----------------------------------------------------------------------------
