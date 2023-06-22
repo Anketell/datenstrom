@@ -523,3 +523,22 @@ NAMESPACE_TEST( mssql, db, should_create_after_use_path )
 }
 
 //-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( mssql, db, should_return_datetime2 )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   ds::db::statement date_test = test_db( "select CAST( '2000-01-01' AS DATETIME2 )" );
+
+   std::string date = date_test.result();
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
