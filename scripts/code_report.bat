@@ -65,16 +65,16 @@ opencppcoverage ^
 --  x64/src/csv/test/Debug/test_ds_csv.exe
 
 opencppcoverage ^
---modules ds_util.dll ^
+--modules ds_util.dll --modules test_ds_util.exe ^
 --input_coverage test_ds_csv.cov ^
---sources datenstrom\src\dsutil\* --sources datenstrom\win32\dsutil\* ^
+--sources dsutil\* ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
 -- x64/src/dsutil/test/Debug/test_ds_util.exe
 
 opencppcoverage ^
---modules ds.dll ^
+--modules ds.dll --modules test_ds.exe ^
 --input_coverage test_ds_util.cov ^
 --sources datenstrom\src\ds\* ^
 --excluded_sources \test* ^

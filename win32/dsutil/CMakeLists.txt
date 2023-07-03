@@ -27,11 +27,11 @@ add_library( ${TARGET} SHARED
    ${HEADERS}
 )
 
+target_link_options( ${TARGET} PUBLIC "/WHOLEARCHIVE:ds_util_common" )
+
 target_link_libraries( ${TARGET}
    ds_util_common
 )
-
-target_link_options( ${TARGET} PUBLIC "/WHOLEARCHIVE:ds_util_common" )
 
 include( dll_funcs )
 dll_def( TARGET ${TARGET} )

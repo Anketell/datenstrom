@@ -12,7 +12,7 @@ static std::string bad_esc = "%20%40%23%24%25%5e%26%3a%3b%a%22%2f%60-_.%21~%2a%2
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( URL, Encode, should_escape_URL )
+NAMESPACE_TEST( util, URL, should_escape )
 {
    std::string result = ds::url::escape( url );
    EXPECT_EQ( result, esc_url );
@@ -20,7 +20,7 @@ NAMESPACE_TEST( URL, Encode, should_escape_URL )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( URL, Decode, should_unescape_URL )
+NAMESPACE_TEST( util, URL, should_unescape )
 {
    std::string result = ds::url::unescape( esc_url );
    EXPECT_EQ( result, url );
@@ -28,7 +28,7 @@ NAMESPACE_TEST( URL, Decode, should_unescape_URL )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( URL, Decode, should_recover_from_bad_URL_escape )
+NAMESPACE_TEST( util, URL, should_recover_unescaping_bad_encoding )
 {
    std::string result = ds::url::unescape( bad_esc );
    EXPECT_EQ( result, url );
