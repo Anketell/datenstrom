@@ -11,7 +11,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/win32/mssql/test/Debug/test_ds_mssql.exe
+-- x64/win32/mssql/test/Debug/test_ds_mssql.exe
 
 set DS_MODULE_PATH=./x64/src/firebird/test/Debug
 set SQL_MODULE_PATH=./x64/src/firebird/test/Debug
@@ -23,7 +23,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/firebird/test/Debug/test_ds_firebird.exe
+-- x64/src/firebird/test/Debug/test_ds_firebird.exe
 
 set DS_MODULE_PATH=./x64/src/sqlite/test/Debug
 set SQL_MODULE_PATH=./x64/src/sqlite/test/Debug
@@ -35,7 +35,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/sqlite/test/Debug/test_ds_sqlite.exe
+-- x64/src/sqlite/test/Debug/test_ds_sqlite.exe
 
 opencppcoverage ^
 --modules ds_db.dll --modules ds.dll ^
@@ -44,7 +44,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/db/test/Debug/test_ds_db.exe
+-- x64/src/db/test/Debug/test_ds_db.exe
 
 opencppcoverage ^
 --modules ds_bin.dll --modules ds.dll ^
@@ -53,7 +53,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/bin/test/Debug/test_ds_bin.exe
+-- x64/src/bin/test/Debug/test_ds_bin.exe
 
 opencppcoverage ^
 --modules ds_csv.dll --modules ds.dll ^
@@ -67,11 +67,11 @@ opencppcoverage ^
 opencppcoverage ^
 --modules ds_util.dll ^
 --input_coverage test_ds_csv.cov ^
---sources datenstrom\*\dsutil\* ^
+--sources datenstrom\src\dsutil\* --sources datenstrom\win32\dsutil\* ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/dsutil/test/Debug/test_ds_util.exe
+-- x64/src/dsutil/test/Debug/test_ds_util.exe
 
 opencppcoverage ^
 --modules ds.dll ^
@@ -80,7 +80,7 @@ opencppcoverage ^
 --excluded_sources \test* ^
 --excluded_sources \third-party\* ^
 --export_type binary ^
---  x64/src/ds/test/Debug/test_ds.exe
+-- x64/src/ds/test/Debug/test_ds.exe
 
 rd /s /q code_report
 

@@ -11,6 +11,7 @@ add_executable( ${TARGET}
    test_string.cpp
    test_time.cpp
    test_connect_string.cpp
+   test_url_encode.cpp
 )
 
 if ( WIN32 )

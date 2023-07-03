@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <dsutil/connect_params.h>
+#include <dsutil/url_encode.h>
 
 #include <regex>
 #include <functional>
@@ -35,9 +36,9 @@ part_parser_fn path_parser = []( connect_params_t & params, const std::string & 
    );
 
    if ( std::regex_match( value, regex ) )
-      params[ "path" ] = value.substr( 1 );
+      params[ "path" ] = url::unescape( value.substr( 1 ) );
    else
-      params[ "path" ] = value;
+      params[ "path" ] = url::unescape( value );
 };
 
 //-----------------------------------------------------------------------------
@@ -51,7 +52,7 @@ void parse_param( connect_params_t & params, const std::string & value )
    std::smatch match_result;
 
    if ( std::regex_match( value, match_result, regex ) )
-      params[ match_result[ 2 ] ] = match_result[ 3 ];
+      params[ url::unescape( match_result[ 2 ] ) ] = url::unescape( match_result[ 3 ] );
    else
       throw std::invalid_argument( "Bad parameter" );
 }
@@ -62,7 +63,7 @@ part_parser_fn part_parser( const std::string & part )
 {
    return [ part ]( connect_params_t & params, const std::string & value )
    {
-      params[ part ] = value;
+      params[ part ] = url::unescape( value );
    };
 }
 
