@@ -36,13 +36,15 @@ ISC_DATE encode_sql_date( const char * date )
 
 ISC_TIME encode_sql_time( const char * time )
 {
-   struct tm tm = { 0 };
+   ds::time::stamp ts;
 
-   ds::time::parse_iso_8601_time( time, &tm );
+   ds::time::parse_iso_8601_time( time, &ts );
 
    ISC_TIME isc_time;
 
-   isc_encode_sql_time( &tm, &isc_time );
+   isc_encode_sql_time( &ts, &isc_time );
+
+   isc_time += ts.nano_sec / 100000;
 
    return isc_time;
 }
@@ -51,13 +53,15 @@ ISC_TIME encode_sql_time( const char * time )
 
 ISC_TIMESTAMP encode_timestamp( const char * time )
 {
-   struct tm tm = { 0 };
+   ds::time::stamp ts;
 
-   ds::time::parse_iso_8601( time, &tm );
+   ds::time::parse_iso_8601( time, &ts );
 
    ISC_TIMESTAMP isc_timestamp;
 
-   isc_encode_timestamp( &tm, &isc_timestamp );
+   isc_encode_timestamp( &ts, &isc_timestamp );
+
+   isc_timestamp.timestamp_time += ts.nano_sec / 100000;
 
    return isc_timestamp;
 }
@@ -124,6 +128,28 @@ std::string decode_sql_date( ISC_DATE isc_date )
 
 //-----------------------------------------------------------------------------
 
+static std::string sub_seconds( ISC_TIME isc_time )
+{
+   uint32_t magnitude = 10000;
+   uint32_t sub_sec   = isc_time % magnitude;
+   if ( !sub_sec )
+      return "";
+
+   std::string res = ".";
+
+   do
+   {
+      magnitude /= 10;
+      res       += sub_sec / magnitude + '0';
+      sub_sec   %= magnitude;
+   }
+   while ( sub_sec );
+
+   return res;
+}
+
+//-----------------------------------------------------------------------------
+
 std::string decode_sql_time( ISC_TIME isc_time )
 {
    struct tm tm = { 0 };
@@ -134,7 +160,7 @@ std::string decode_sql_time( ISC_TIME isc_time )
 
    ds::time::format_iso_8601_time( &tm, time );
 
-   return time;
+   return time + sub_seconds( isc_time );
 }
 
 //-----------------------------------------------------------------------------
@@ -149,7 +175,7 @@ std::string decode_timestamp( ISC_TIMESTAMP isc_timestamp )
 
    ds::time::format_iso_8601( &tm, timestamp );
 
-   return timestamp;
+   return timestamp + sub_seconds( isc_timestamp.timestamp_time );
 }
 
 //-----------------------------------------------------------------------------

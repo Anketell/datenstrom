@@ -7,6 +7,7 @@
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
 #include <dsutil/connect_string.h>
+#include <dsutil/url_encode.h>
 
 //-----------------------------------------------------------------------------
 
@@ -148,4 +149,21 @@ NAMESPACE_TEST( util, connect_string, should_parse_tls_connect_string )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( util, connect_string, should_parse_escaped_connect_string )
+{
+   std::string connect_string;
+
+   connect_string = "mssql://ITWCONS-0195/SQLEXPRESS#PM_Analytics";
+
+   ds::connect_params_t params;
+
+   EXPECT_NO_THROW( params = ds::parse_connect_string( connect_string ) );
+
+   EXPECT_STREQ( params[ "type" ].c_str(),     "mssql" );
+   EXPECT_STREQ( params[ "server" ].c_str(),   "ITWCONS-0195" );
+   EXPECT_STREQ( params[ "path" ].c_str(),     "SQLEXPRESS" );
+   EXPECT_STREQ( params[ "database" ].c_str(), "PM_Analytics" );
+}
+
+//-----------------------------------------------------------------------------
 

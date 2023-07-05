@@ -59,6 +59,7 @@ struct Object_alt
 
 extern Object     data[ 2 ];
 extern Object_alt data_alt[ 2 ];
+extern Object     data_hires[ 2 ];
 
 //-----------------------------------------------------------------------------
 

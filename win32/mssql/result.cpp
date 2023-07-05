@@ -154,7 +154,17 @@ template<> void result::get_column< std::string >( int index, int c_type, std::s
             break;
          }
       }
-      count = std::min( t.find_last_of( '.' ), t.length() );
+
+      if ( t.find_last_of( '.' ) == std::string::npos )
+         return;
+
+      for ( it = t.rbegin(); *it == '0'; it++ )
+         ;
+
+      if ( *it == '.' )
+         it++;
+
+      count = t.length() - ( it - t.rbegin() );
    }
 
    t.resize( std::max( 0LL, static_cast< int64_t >( count ) ) );

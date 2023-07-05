@@ -346,6 +346,45 @@ NAMESPACE_TEST( firebird, result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( firebird, result, should_support_sub_second_time )
+{
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data_hires )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement results_test = test_db( results );
+
+      ds::db::result result;
+
+      EXPECT_NO_THROW( result = results_test.result() );
+
+      for ( auto o : data_hires )
+      {
+         Object o_db = {};
+
+         result >> o_db >> ds::endr;
+
+         EXPECT_EQ( o, o_db );
+      }
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( firebird, result, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );

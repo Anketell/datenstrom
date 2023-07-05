@@ -40,5 +40,7 @@ EXPORTS
    ?format_iso_8601_time@time@ds@@YAXPBUtm@@PAD@Z
    ?format_iso_8601@time@ds@@YAXPBUtm@@PAD@Z
    ?cmpignorecase@string@ds@@YAHPBD0I@Z
-
-;   ?parse_connect_string@ds@@YA?AVconnect_params_t@12@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?parse_iso_8601_time@time@ds@@YA_NPBDPAUstamp@12@@Z
+   ?parse_iso_8601@time@ds@@YA_NPBDPAUstamp@12@@Z
+   ?format_iso_8601_time@time@ds@@YAXPBUstamp@12@PAD@Z
+   ?format_iso_8601@time@ds@@YAXPBUstamp@12@PAD@Z

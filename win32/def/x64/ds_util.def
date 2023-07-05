@@ -43,3 +43,7 @@ EXPORTS
    ?temp_directory@filesys@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
    ?parse_connect_string@ds@@YA?AVconnect_params_t@1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?escape@url@ds@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV34@@Z
+   ?parse_iso_8601_time@time@ds@@YA_NPEBDPEAUstamp@12@@Z
+   ?parse_iso_8601@time@ds@@YA_NPEBDPEAUstamp@12@@Z
+   ?format_iso_8601_time@time@ds@@YAXPEBUstamp@12@PEAD@Z
+   ?format_iso_8601@time@ds@@YAXPEBUstamp@12@PEAD@Z

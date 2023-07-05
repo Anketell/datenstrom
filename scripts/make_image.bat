@@ -20,6 +20,7 @@ mkdir build\image\def
 xcopy /y /f src\dsutil\url_encode.h                                        build\image\include\dsutil
 xcopy /y /f src\dsutil\connect_params.h                                    build\image\include\dsutil
 xcopy /y /f src\dsutil\connect_string.h                                    build\image\include\dsutil
+xcopy /y /f src\dsutil\timestamp.h                                         build\image\include\dsutil
 xcopy /y /f win32\dsutil\endian.h                                          build\image\include\dsutil
 xcopy /y /f win32\dsutil\env.h                                             build\image\include\dsutil
 xcopy /y /f win32\dsutil\filesys.h                                         build\image\include\dsutil
