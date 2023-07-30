@@ -81,6 +81,27 @@ NAMESPACE_TEST( ds, istream, should_fail_input )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( ds, istream, should_support_cast_operators )
+{
+   ds::istream in;
+
+   EXPECT_THROW( static_cast< int8_t >( in ),  ds::Not_implemented );
+   EXPECT_THROW( static_cast< int16_t >( in ), ds::Not_implemented );
+   EXPECT_THROW( static_cast< int32_t >( in ), ds::Not_implemented );
+   EXPECT_THROW( static_cast< int64_t >( in ), ds::Not_implemented );
+
+   EXPECT_THROW( static_cast< uint8_t >( in ),  ds::Not_implemented );
+   EXPECT_THROW( static_cast< uint16_t >( in ), ds::Not_implemented );
+   EXPECT_THROW( static_cast< uint32_t >( in ), ds::Not_implemented );
+   EXPECT_THROW( static_cast< uint64_t >( in ), ds::Not_implemented );
+
+   EXPECT_THROW( static_cast< double >( in ), ds::Not_implemented );
+
+   EXPECT_THROW( static_cast< std::string >( in ), ds::Not_implemented );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( ds, istream, should_run_serial_manip )
 {
    test_istream in;

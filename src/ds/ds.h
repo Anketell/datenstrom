@@ -11,6 +11,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <type_traits>
 
 //-----------------------------------------------------------------------------
 
@@ -56,7 +57,14 @@ public:
 
    virtual bool eof( void ) const;
 
-   template< typename T > operator T ( void )
+   template< typename T, 
+             std::enable_if_t< std::is_same_v< T, const char * >                  == false &&
+                               std::is_same_v< T, std::initializer_list< char > > == false &&
+                               std::is_same_v< T, char >                          == false, 
+                               bool 
+                             > = false
+           > 
+   operator T ( void )
    {
       T t;
       *this >> t;

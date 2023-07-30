@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <dsutil/time.h>
+#include <dsutil/timestamp.h>
 
 //-----------------------------------------------------------------------------
 

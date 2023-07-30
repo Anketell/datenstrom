@@ -6,12 +6,14 @@ set( TARGET ds_util_common )
 
 set( SOURCE
    connect_string.cpp
+   timestamp.cpp
    url_encode.cpp
 )
 
 set( HEADERS
    connect_params.h
    connect_string.h
+   timestamp.h
    url_encode.h
 )
 
