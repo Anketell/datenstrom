@@ -15,6 +15,7 @@ endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
    ds
+   test_model
    gtest
    gtest_main
 )

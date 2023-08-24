@@ -7,6 +7,8 @@
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
 #include <ds/ds.h>
+#include <test_model/object.h>
+#include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
@@ -52,6 +54,28 @@ ds::ostream & manip( ds::ostream & out )
 {
    dynamic_cast< test_ostream & >( out ).m_flag = true;
    return out;
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( ds, istream, should_detect_get_from )
+{
+   struct test_t
+   {
+      int i;
+      int j;
+   };
+
+   static_assert( ds::has_istream_get_from< int8_t > );
+   static_assert( !ds::has_istream_get_from< Object > );
+   static_assert( !ds::has_global_get_from< int8_t > );
+   static_assert( ds::has_global_get_from< Object > );
+   static_assert( ds::has_get_from< int8_t > );
+   static_assert( ds::has_get_from< Object > );
+
+   static_assert( !ds::has_istream_get_from< test_t > );
+   static_assert( !ds::has_global_get_from< test_t > );
+   static_assert( !ds::has_get_from< test_t > );
 }
 
 //-----------------------------------------------------------------------------

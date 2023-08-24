@@ -131,14 +131,12 @@ public:
       return operator()( rest... );
    }
 
-   template< typename T, 
-             std::enable_if_t< std::is_same_v< T, const char * >                  == false &&
-                               std::is_same_v< T, std::initializer_list< char > > == false &&
-                               std::is_same_v< T, char >                          == false, 
-                               bool 
+   template< typename T,
+             std::enable_if_t< ds::has_get_from< T > || std::is_same_v< T, db::result >,
+                               bool
                              > = false
-           > 
-    operator T ( void )
+           >
+   operator T ( void )
    {
       return result();
    }

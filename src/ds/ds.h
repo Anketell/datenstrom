@@ -13,10 +13,43 @@
 #include <stdexcept>
 #include <type_traits>
 
-//-----------------------------------------------------------------------------
-
 namespace ds
 {
+
+//-----------------------------------------------------------------------------
+
+class istream;
+
+//-----------------------------------------------------------------------------
+
+template< typename T > struct has_global_get_from_operator_t
+{
+   template< typename V >
+   static auto test( void ) -> decltype( std::declval< ds::istream >() >> std::declval< V >() );
+   template< typename >
+   static auto test( ... ) -> std::false_type;
+
+   using type = typename std::is_same< ds::istream &, decltype( test< T >() ) >::type;
+};
+
+//-----------------------------------------------------------------------------
+
+template< typename T > using istream_get_from_operator_t =
+decltype( std::declval< ds::istream & >().operator>>( std::declval< T & >() ) );
+
+//-----------------------------------------------------------------------------
+
+template< typename T >
+constexpr bool has_global_get_from = has_global_get_from_operator_t< T >::type {};
+
+template< typename T, typename = void >
+constexpr bool has_istream_get_from = false;
+
+template< typename T >
+constexpr bool has_istream_get_from< T, std::void_t< istream_get_from_operator_t< T >() > > = true;
+
+template< typename T >
+constexpr bool has_get_from = has_global_get_from< T > || has_istream_get_from< T >;
 
 //-----------------------------------------------------------------------------
 
@@ -57,13 +90,7 @@ public:
 
    virtual bool eof( void ) const;
 
-   template< typename T, 
-             std::enable_if_t< std::is_same_v< T, const char * >                  == false &&
-                               std::is_same_v< T, std::initializer_list< char > > == false &&
-                               std::is_same_v< T, char >                          == false, 
-                               bool 
-                             > = false
-           > 
+   template< typename T, std::enable_if_t< has_get_from< T >, bool > = false >
    operator T ( void )
    {
       T t;
