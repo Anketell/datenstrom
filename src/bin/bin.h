@@ -155,7 +155,7 @@ template< typename S, typename T > std::streamsize length( const T & t )
 {
    lengthcalc lc;
    S out( &lc );
-   out << t;
+   dynamic_cast< ds::ostream & >( out ) << t;
    return lc.plength();
 }
 
