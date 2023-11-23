@@ -123,4 +123,40 @@ connect_params_t parse_connect_string( const std::string & connect_string )
 
 //-----------------------------------------------------------------------------
 
+std::string form_connect_string( const connect_params_t & connect_params )
+{
+   connect_params_t params = connect_params;
+
+   std::string type     = url::escape( params[ "type" ] );
+   std::string server   = url::escape( params[ "server" ] );
+   std::string port     = url::escape( params[ "port" ] );
+   std::string path     = url::escape( params[ "path" ] );
+   std::string database = url::escape( params[ "database" ] );
+
+   params.erase( "type" );
+   params.erase( "server" );
+   params.erase( "port" );
+   params.erase( "path" );
+   params.erase( "database" );
+
+   std::string connect_string = type + "://" + server;
+
+   if ( !port.empty() )
+      connect_string += ":" + port;
+
+   if ( !path.empty() )
+      connect_string += '/' + path;
+
+   char separator = '?';
+   for ( auto it = params.begin(); it != params.end(); separator = '&', it++ )
+      connect_string += separator + url::escape( it->first ) + '=' + url::escape( it->second );
+
+   if ( !database.empty() )
+      connect_string += '#' + url::escape( database );
+
+   return connect_string;
+}
+
+//-----------------------------------------------------------------------------
+
 }

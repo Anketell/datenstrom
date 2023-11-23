@@ -167,3 +167,18 @@ NAMESPACE_TEST( util, connect_string, should_parse_escaped_connect_string )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( util, connect_string, should_form_connect_string )
+{
+   static const char connect_string[] = 
+         "type://server:1234/C:\\path?name=value&name2=value2#database";
+
+   ds::connect_params_t params = ds::parse_connect_string( connect_string );
+
+   std::string formed_con_str = ds::form_connect_string( params );
+
+   ds::connect_params_t formed_params = ds::parse_connect_string( formed_con_str );
+
+   EXPECT_EQ( formed_params, params );
+}
+
+//-----------------------------------------------------------------------------
