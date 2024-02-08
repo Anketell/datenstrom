@@ -161,6 +161,14 @@ template< typename S, typename T > std::streamsize length( const T & t )
 
 //-----------------------------------------------------------------------------
 
+template< typename S, typename T, typename ... Rest >
+std::streamsize length( const T & t, const Rest & ... rest )
+{
+   return length< S >( t ) + length< S >( rest... );
+}
+
+//-----------------------------------------------------------------------------
+
 template< typename T > std::streamsize length( const T & t )
 {
    return length< ostream, T >( t );
