@@ -26,3 +26,7 @@ add_library( ${TARGET} STATIC
    ${SOURCE}
    ${HEADERS}
  )
+
+if ( UNIX )
+   target_compile_options( ${TARGET} PRIVATE "-fPIC" )
+endif ( UNIX )

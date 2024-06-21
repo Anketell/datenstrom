@@ -30,7 +30,7 @@ SELECT id FROM test_table ORDER BY id
 { "test_table.insert",
 
 R"(
-INSERT INTO test_table ( text ) VALUES( @text )
+INSERT INTO test_table ( text ) VALUES( @text ) RETURNING id
 )"
 },
 

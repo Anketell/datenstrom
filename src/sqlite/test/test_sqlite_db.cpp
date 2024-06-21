@@ -124,7 +124,7 @@ NAMESPACE_TEST( sqlite, statement, should_return_execute_value )
    EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( insert_id );
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
       EXPECT_EQ( static_cast< int >( insert_test.result() ), 1 );

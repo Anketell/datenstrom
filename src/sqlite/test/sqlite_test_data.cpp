@@ -34,8 +34,15 @@ const char * test_con_str = test_con.c_str();
 const char * test_db_name = "test_db";
 const char * bad_con_str  = "sqlite:///blah";
 const char * bad_sql      = "THIS IS BAD SQL";
-const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, "
-                                                        "?, ?, ?, ?, ?, ?, ?, ?, NULL )";
+const char * insert       = "INSERT INTO Object( i8, i16, i32, i64, "
+                                                "u8, u16, u32, u64, "
+                                                "f, d, hello, dt, tm, dttm ) "
+                            "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+const char * insert_id    = "INSERT INTO Object( i8, i16, i32, i64, "
+                                                "u8, u16, u32, u64, "
+                                                "f, d, hello, dt, tm, dttm ) "
+                             "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "
+                             "RETURNING id;";
 const char * result   = "SELECT * FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";

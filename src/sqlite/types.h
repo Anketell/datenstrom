@@ -10,6 +10,8 @@
 //-----------------------------------------------------------------------------
 
 #include <sqlite3.h>
+#include <sqlite/error.h>
+#include <cassert>
 
 //-----------------------------------------------------------------------------
 
@@ -25,8 +27,26 @@ namespace sqlite
 
 struct stmt_t
 {
-   sqlite3_stmt * stmt = nullptr;
-   int            action;
+   enum state_t { Preparing, Executed };
+
+   sqlite3_stmt * stmt   = nullptr;
+   state_t        state  = Preparing;
+   int            action = -1;
+
+   void reset( void )
+   {
+      if ( state == Preparing )
+         return;
+
+      int rc = sqlite3_reset( stmt );
+      if ( rc != SQLITE_OK )
+         throw_error( "SQLite statement reset", rc );
+
+      rc = sqlite3_clear_bindings( stmt );
+      assert( rc == SQLITE_OK );
+
+      state = stmt_t::Preparing;
+   }
 
    ~stmt_t( void )
    {

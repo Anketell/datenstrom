@@ -29,7 +29,9 @@ int statement::authorizor( void       * stmt,
                            const char *, 
                            const char * )
 {
-   reinterpret_cast< statement * >( stmt )->m_stmt->action = action;
+   int & stmt_action( reinterpret_cast< statement * >( stmt )->m_stmt->action );
+   if ( stmt_action < 0 )
+      stmt_action = action;
    return SQLITE_OK;
 }
 
@@ -55,7 +57,7 @@ statement::statement( sqlite3 * db, const std::string     & sql,
    if ( rc )
       throw_error( operation, rc );
 
-   m_state = Preparing;
+   m_stmt->state = stmt_t::Preparing;
 
    m_count = sqlite3_bind_parameter_count( m_stmt->stmt );
 
@@ -225,17 +227,7 @@ int statement::parameter_count( void )
 
 void statement::reset( void )
 {
-   if ( m_state == Preparing )
-      return;
-
-   int rc = sqlite3_reset( m_stmt->stmt );
-   if ( rc != SQLITE_OK )
-      throw_error( "SQLite statement reset", rc );
-
-   rc = sqlite3_clear_bindings( m_stmt->stmt );
-   assert( rc == SQLITE_OK );
-
-   m_state = Preparing;
+   m_stmt->reset();
 }
 
 //-----------------------------------------------------------------------------
@@ -247,10 +239,18 @@ void statement::execute( void )
    reset();
 
    int rc = sqlite3_step( m_stmt->stmt );
-   if ( rc != SQLITE_OK && rc != SQLITE_DONE )
-      throw_error( operation, "SQLite statement step" );
+   switch ( rc )
+   {
+      case SQLITE_OK:
+      case SQLITE_DONE:
+      case SQLITE_ROW:
+         break;
 
-   m_state = Executed;
+      default:
+         throw_error( operation, "SQLite statement step" );
+   }
+
+   m_stmt->state = stmt_t::Executed;
 
    reset();
 }
@@ -263,8 +263,8 @@ db::result statement::result( void )
 
    reset();
 
-   m_state = Executed;
-
+   m_stmt->state = stmt_t::Executed;
+/*
    if ( m_stmt->action == SQLITE_INSERT )
    {
       int rc = sqlite3_step( m_stmt->stmt );
@@ -275,7 +275,7 @@ db::result statement::result( void )
       if ( value )
          return db::result( std::make_shared< db::simple_result >( value ) );
    }
-
+*/
    return db::result( std::make_shared< sqlite::result >( m_stmt ) );
 }
 
