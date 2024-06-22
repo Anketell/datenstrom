@@ -264,18 +264,7 @@ db::result statement::result( void )
    reset();
 
    m_stmt->state = stmt_t::Executed;
-/*
-   if ( m_stmt->action == SQLITE_INSERT )
-   {
-      int rc = sqlite3_step( m_stmt->stmt );
-      if ( rc != SQLITE_OK && rc != SQLITE_DONE )
-         throw_error( operation, "SQLite statement step" );
 
-      uint64_t value = sqlite3_last_insert_rowid( m_db );
-      if ( value )
-         return db::result( std::make_shared< db::simple_result >( value ) );
-   }
-*/
    return db::result( std::make_shared< sqlite::result >( m_stmt ) );
 }
 
