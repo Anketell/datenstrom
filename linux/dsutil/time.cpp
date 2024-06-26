@@ -29,6 +29,7 @@ time_t timegm( const struct tm * tm )
 
 bool parse_iso_8601_date( const char * s, struct tm * tm )
 {
+   *tm = {};
    return strptime( s, "%F", tm ) != nullptr;
 }
 
@@ -36,6 +37,7 @@ bool parse_iso_8601_date( const char * s, struct tm * tm )
 
 bool parse_iso_8601_time( const char * s, struct tm * tm )
 {
+   *tm = {};
    return strptime( s, "%T", tm ) != nullptr;
 }
 
@@ -43,6 +45,7 @@ bool parse_iso_8601_time( const char * s, struct tm * tm )
 
 bool parse_iso_8601( const char * s, struct tm * tm )
 {
+   *tm = {};
    return strptime( s, "%F %T", tm ) != nullptr;
 }
 
