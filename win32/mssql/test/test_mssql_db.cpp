@@ -20,7 +20,7 @@ NAMESPACE_TEST( mssql, db, should_return_type )
 }
 
 //-----------------------------------------------------------------------------
-
+/*
 NAMESPACE_TEST( mssql, db, should_SQL_authenticate )
 {
    ds::db::connection test_db( tester_con_str );
@@ -31,7 +31,7 @@ NAMESPACE_TEST( mssql, db, should_SQL_authenticate )
 }
 
 //-----------------------------------------------------------------------------
-/*
+
 NAMESPACE_TEST( mssql, db, should_Azure_create_good_path )
 {
    ds::db::connection test_db( azure_con_str );

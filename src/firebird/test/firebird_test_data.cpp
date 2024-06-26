@@ -67,6 +67,10 @@ const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ?, ?, ?, "
                                                         "GEN_ID( ObjectID, 1 ) ) returning id";
+const char * insert_nulls = "INSERT INTO Object VALUES ( NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                                                        "NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
+                                                        "GEN_ID( ObjectID, 1 ) ) returning id";
+
 const char * result   = "SELECT * FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";

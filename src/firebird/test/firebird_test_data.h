@@ -22,6 +22,7 @@ extern const char * test_db_name;
 extern const char * test_con_str;
 extern const char * bad_sql;
 extern const char * insert;
+extern const char * insert_nulls;
 extern const char * result;
 extern const char * results;
 extern const char * num_rows;

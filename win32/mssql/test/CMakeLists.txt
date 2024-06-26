@@ -26,6 +26,7 @@ add_dependencies( ${TARGET} googletest )
 
 target_compile_definitions( ${TARGET} PUBLIC
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+   MSSQL_TEST="${MSSQL_TEST}"
 )
 
 target_link_libraries( ${TARGET}

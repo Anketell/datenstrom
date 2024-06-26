@@ -45,8 +45,8 @@ END;
 //-----------------------------------------------------------------------------
 
 const char * test_db_name   = "test_db";
-const char * test_con_str   = "mssql://127.0.0.1:1433";
-const char * tester_con_str = "mssql://127.0.0.1:1433?username=tester&password=tester";
+const char * test_con_str   = MSSQL_TEST;
+const char * tester_con_str = MSSQL_TEST"?username=tester&password=tester";
 const char * azure_con_str  = "mssql://pryda-pm-analytics.database.windows.net:1433?username=PMA_admin&password=Gumpti0n";
 const char * bad_con_str    = "mssql:///blah";
 const char * bad_sql        = "THIS IS BAD SQL";
