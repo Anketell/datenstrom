@@ -87,5 +87,6 @@ EXPORTS
    ??0context@db@ds@@QEAA@AEBVconnect_params_t@2@@Z
    ?execute_batch@context@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?lookup@context@db@ds@@QEAAPEBDAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?keys@context@db@ds@@QEAA?AV?$set@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@XZ
    ??0simple_result@db@ds@@QEAA@_K@Z
 

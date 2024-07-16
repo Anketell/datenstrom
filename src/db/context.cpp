@@ -17,8 +17,8 @@ namespace ds::db
 
 //-----------------------------------------------------------------------------
 
-sql::map_t context::m_sql_map;
-bool       context::m_initialized = false;
+sql::module_map_t context::m_module_map;
+bool              context::m_initialized = false;
 
 //-----------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ void context::init( void )
 void context::enroll_sql_path_list( const std::string & path_list )
 {
    for ( auto path :  env::dir_list( path_list ) )
-      sql::enroll_directory( m_sql_map, path );
+      sql::enroll_directory( m_module_map, path );
 
    m_initialized = true;
 }
@@ -42,7 +42,7 @@ void context::enroll_sql_path_list( const std::string & path_list )
 
 void context::clear_sql_path_list( void )
 {
-   m_sql_map.clear();
+   m_module_map.clear();
    m_initialized = false;
 }
 
@@ -76,13 +76,13 @@ void context::common_constructor( void )
 {
    init();
 
-   auto it_begin = m_sql_map.lower_bound( type() );
-   auto it_end   = m_sql_map.upper_bound( type() );
+   auto it_begin = m_module_map.lower_bound( type() );
+   auto it_end   = m_module_map.upper_bound( type() );
 
    for ( auto it = it_begin; it != it_end; it++ )
-      m_sql_lookup.push_front( it->second );
+      m_sql_module.push_front( it->second );
 
-   if ( m_sql_lookup.empty() )
+   if ( m_module_map.empty() )
       throw unsupported_db_type( type() );
 }
 
@@ -107,9 +107,9 @@ const char * context::lookup( const std::string & key )
 {
    const char * v = nullptr;
 
-   for ( auto & lu : m_sql_lookup )
+   for ( auto & mod : m_sql_module )
    {
-      v = ( *lu )( key );
+      v = ( *mod.lookup )( key );
       if ( v )
          break;
    }
@@ -118,6 +118,18 @@ const char * context::lookup( const std::string & key )
       throw context::unknown_sql( type(), key );
 
    return v;
+}
+
+//-----------------------------------------------------------------------------
+
+sql::keyset_t context::keys( void )
+{
+   sql::keyset_t keyset;
+
+   for ( auto & mod : m_sql_module )
+      ( *mod.keys )( keyset );
+
+   return keyset;
 }
 
 //-----------------------------------------------------------------------------

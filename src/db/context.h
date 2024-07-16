@@ -50,12 +50,12 @@ public:
 
 private:
 
-   static sql::map_t m_sql_map;
-   static bool    m_initialized;
+   static sql::module_map_t m_module_map;
+   static bool              m_initialized;
 
    static void init( void );
 
-   std::deque< sql::lookup_t > m_sql_lookup;
+   std::deque< sql::module_t > m_sql_module;
 
    void common_constructor( void );
 
@@ -73,7 +73,8 @@ public:
 
    virtual void execute_batch( const std::string & query_key ) override;
 
-   const char * lookup( const std::string & key );
+   const char  * lookup( const std::string & key );
+   sql::keyset_t keys( void );
 };
 
 //-----------------------------------------------------------------------------

@@ -55,6 +55,35 @@ TEST_P( Context, should_perform_lookup )
 
 //-----------------------------------------------------------------------------
 
+TEST_P( Context, should_return_keys )
+{
+   const static ds::db::sql::keyset_t expected =
+   {
+      "test.count_test_rows", 
+      "test.create_schema", 
+      "test.type",
+      "test_table.list_id", 
+      "test_table.insert", 
+      "test_table.query_text_by_id"
+   };
+
+   const char * con_string = GetParam();
+
+   ds::db::context::enroll_sql_path_list( m_sql_module_path );
+
+   ds::db::context ctx( con_string );
+
+   ds::db::sql::keyset_t keyset;
+
+   EXPECT_NO_THROW( keyset = ctx.keys() );
+
+   EXPECT_EQ( keyset, expected );
+
+   ds::db::context::clear_sql_path_list();
+}
+
+//-----------------------------------------------------------------------------
+
 TEST_P( Context, should_insert_test_text )
 {
    const char            * con_string   = GetParam();

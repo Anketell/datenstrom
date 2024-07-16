@@ -25,13 +25,28 @@ const char * lookup( const std::string & key )
 
 //-----------------------------------------------------------------------------
 
+void keys( keyset_t & keyset )
+{
+   for ( auto it : sql_map )
+      keyset.insert( it.first );
 }
 
 //-----------------------------------------------------------------------------
 
-extern "C" void enroll_sql( ds::db::sql::map_t & sql_map )
+}
+
+//-----------------------------------------------------------------------------
+
+extern "C" void enroll_sql( ds::db::sql::module_map_t & module_map )
 {
-   sql_map.insert( { ds::db::sql::module_type, ds::db::sql::lookup } );
+   module_map.insert(
+   {
+      ds::db::sql::module_type,
+      {
+         ds::db::sql::lookup,
+         ds::db::sql::keys
+      }
+   } );
 }
 
 //-----------------------------------------------------------------------------
