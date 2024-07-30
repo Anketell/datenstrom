@@ -22,6 +22,27 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
+static const std::function< bool( int, int )> CmpNoCase = []( int c1, int c2 )
+{
+   return std::tolower( c1 ) == std::tolower( c2 );
+};
+
+//-----------------------------------------------------------------------------
+
+struct insensitive_compare
+{
+   bool operator()( const std::string & s1, const std::string & s2 ) const
+   {
+      return ds::string::cmpignorecase( s1.c_str(), s2.c_str() ) < 0;
+   }
+};
+
+//-----------------------------------------------------------------------------
+
+typedef std::set< std::string, insensitive_compare > nocase_set_t;
+
+//-----------------------------------------------------------------------------
+
 statement_enum::statement_enum( const std::string & statements ) :
 m_statements( statements )
 {
@@ -54,10 +75,28 @@ m_statements( statements )
 
 //-----------------------------------------------------------------------------
 
+static const char * skipeol( const char * c )
+{
+   while ( *c && *c != '\n' )
+      c++;
+
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
 static const char * skipws( const char * c )
 {
-   while ( *c && std::isspace( *c ) )
-      c++;
+   for ( ;; )
+   {
+      while ( *c && ( std::isspace( *c ) ) )
+         c++;
+
+      if ( *c != '-' || *( c + 1 ) != '-' )
+         break;
+
+      c = skipeol( c );
+   }
 
    return c;
 }
@@ -78,46 +117,16 @@ statement_enum::iterator::token_t statement_enum::iterator::next_token( const ch
 
 void statement_enum::iterator::next_statement( void )
 {
-   static const std::string create( "create" );
-
-   static const std::function< bool( int, int )> CmpNoCase = []( int c1, int c2 )
-   {
-      return std::tolower( c1 ) == std::tolower( c2 );
-   };
-
-   struct insensitive_compare
-   {
-      bool operator()( const std::string & s1, const std::string & s2 ) const
-      {
-         return ds::string::cmpignorecase( s1.c_str(), s2.c_str() ) < 0;
-      }
-   };
-
-   static const std::set< std::string, insensitive_compare > db_obj_set = { "function", "view" };
-
    if ( !m_statement.from )
       return;
 
    m_statement.from = skipws( m_statement.from + m_statement.len );
 
-   const char * from = m_statement.from;
-   while ( *from )
+   const char * to = m_statement.from;
+   while ( *to )
    {
-      token_t token = next_token( from );
-
-      if ( std::equal( token.from, token.from + token.len, create.begin(), create.end(), CmpNoCase ) )
-      {
-         token_t object = next_token( token.from + token.len );
-         if ( db_obj_set.find( std::string( object.from, object.len ) ) != db_obj_set.end() )
-         {
-            if ( m_statement.from != token.from )
-            {
-               from = token.from;
-               break;
-            }
-         }
-      }
-      from = token.from + token.len;
+      if ( *to++ == ';' )
+         break;
    }
 
    if ( !*m_statement.from )
@@ -127,7 +136,7 @@ void statement_enum::iterator::next_statement( void )
       return;
    }
 
-   m_statement.len = from - m_statement.from;
+   m_statement.len = to - m_statement.from;
 }
 
 //-----------------------------------------------------------------------------

@@ -70,14 +70,7 @@ const char * named_duplicates = "INSERT INTO Object VALUES ( $signed, $signed, $
 
 const char * batch =
 R"(
-
-CREATE TABLE T1 (
-   field INTEGER
-);
-
-CREATE TABLE T2 (
-   field INTEGER
-);
+------------------------------------------------
 
 CREATE FUNCTION F1()
 RETURNS INT
@@ -86,6 +79,8 @@ BEGIN
    RETURN 123456
 END;
 
+---------------------------------
+
 CREATE FUNCTION F2()
 RETURNS INT
 AS
@@ -93,6 +88,65 @@ BEGIN
    RETURN 234567
 END;
 
+---------------------------------
+
+CREATE TABLE T1 (
+   field INTEGER
+);
+
+---------------------------------
+
+INSERT INTO T1 VALUES ( 47 );
+
+---------------------------------
+
+CREATE TABLE T2 (
+   field INTEGER
+);
+
+---------------------------------
+
+INSERT INTO T1 VALUES ( 23 );
+
+---------------------------------
+
+DROP FUNCTION F1;
+
+---------------------------------
+
+CREATE FUNCTION F1()
+RETURNS INT
+AS
+BEGIN
+   RETURN 654321
+END;
+
+---------------------------------
+
+DROP FUNCTION F2;
+
+---------------------------------
+
+CREATE FUNCTION F2()
+RETURNS INT
+AS
+BEGIN
+   RETURN 765432
+END;
+
+---------------------------------
+
+CREATE VIEW T1_V
+AS
+   SELECT field FROM T1;
+
+---------------------------------
+
+CREATE VIEW T2_V
+AS
+   SELECT field FROM T2;
+
+---------------------------------
 )";
 
 //-----------------------------------------------------------------------------

@@ -25,7 +25,7 @@ namespace mssql
 
 class statement_enum
 {
-   const std::string & m_statements;
+   const std::string m_statements;
 
 public:
 
