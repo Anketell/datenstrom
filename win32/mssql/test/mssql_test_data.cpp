@@ -106,7 +106,14 @@ CREATE TABLE T2 (
 
 ---------------------------------
 
-INSERT INTO T1 VALUES ( 23 );
+INSERT INTO T2 VALUES ( 23 );
+
+---------------------------------
+/*
+CREATE TABLE T2 (
+   field INTEGER
+);
+*/
 
 ---------------------------------
 

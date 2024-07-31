@@ -10,6 +10,7 @@ set( SOURCE
    test_mssql_parameter.cpp
    test_mssql_list.cpp
    test_mssql_context.cpp
+   test_mssql_stmt_enum.cpp
    mssql_test_data.cpp
 )
 
@@ -30,6 +31,7 @@ target_compile_definitions( ${TARGET} PUBLIC
 )
 
 target_link_libraries( ${TARGET}
+   mssql_stmt_enum
    test_db_context
    ds_db
    test_model

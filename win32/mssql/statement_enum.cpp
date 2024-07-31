@@ -75,7 +75,7 @@ m_statements( statements )
 
 //-----------------------------------------------------------------------------
 
-static const char * skipeol( const char * c )
+static const char * skip_eol( const char * c )
 {
    while ( *c && *c != '\n' )
       c++;
@@ -85,17 +85,42 @@ static const char * skipeol( const char * c )
 
 //-----------------------------------------------------------------------------
 
-static const char * skipws( const char * c )
+static const char * skip_block_comment( const char * c )
+{
+   while ( *c )
+   {
+      if ( *c == '*' && *( c + 1 ) == '/' )
+      {
+         c += 2;
+         break;
+      }
+      c++;
+   }
+
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
+static const char * skip_ws( const char * c )
 {
    for ( ;; )
    {
       while ( *c && ( std::isspace( *c ) ) )
          c++;
 
-      if ( *c != '-' || *( c + 1 ) != '-' )
-         break;
+      if ( *c == '-' && *( c + 1 ) == '-' )
+      {
+         c = skip_eol( c );
+         continue;
+      }
 
-      c = skipeol( c );
+      if ( *c == '/' && *( c + 1 ) == '*' )
+      {
+         c = skip_block_comment( c );
+         continue;
+      }
+      break;
    }
 
    return c;
@@ -105,7 +130,7 @@ static const char * skipws( const char * c )
 
 statement_enum::iterator::token_t statement_enum::iterator::next_token( const char * from )
 {
-   token_t token = { skipws( from ), 0 };
+   token_t token = { skip_ws( from ), 0 };
 
    while ( *token.from && !std::isspace( *( token.from + token.len ) ) )
       token.len++;
@@ -120,7 +145,7 @@ void statement_enum::iterator::next_statement( void )
    if ( !m_statement.from )
       return;
 
-   m_statement.from = skipws( m_statement.from + m_statement.len );
+   m_statement.from = skip_ws( m_statement.from + m_statement.len );
 
    const char * to = m_statement.from;
    while ( *to )
