@@ -53,7 +53,10 @@ int result::rows_affected( void ) const
 
 void result::check_column( int index, int type )
 {
-   static constexpr char operation[] = "SQLite result column check";
+   static constexpr char operation[] = "SQLite result get column";
+
+   if ( !m_valid )
+      throw_error( operation, "No row available" );
 
    if ( !m_stmt )
       throw_error( operation, "Bad result" );

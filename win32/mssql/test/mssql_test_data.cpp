@@ -54,7 +54,7 @@ const char * insert = "INSERT INTO Object ( i8, i16, i32, i64, u8, u16, u32, u64
                                                "OUTPUT INSERTED.ID "
                                                "VALUES ( ?, ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ? ,? ,? )";
-const char * result   = "SELECT * FROM Object WHERE hello = ?";
+const char * result   = "SELECT u64 FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";

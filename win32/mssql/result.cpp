@@ -60,9 +60,14 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
+static constexpr char operation[] = "MSSQL result get column";
+
+//-----------------------------------------------------------------------------
+
 void result::check_column( int index )
 {
-   static constexpr char operation[] = "MSSQL result column check";
+   if ( !m_valid )
+      throw_error( operation, "No row available" );
 
    if ( !m_stmt )
       throw_error( operation, "Bad result" );
@@ -104,10 +109,6 @@ time_t result::get_time( int index )
 
    return time::timegm( &tm );
 }
-
-//-----------------------------------------------------------------------------
-
-static constexpr char operation[] = "MSSQL result get column";
 
 //-----------------------------------------------------------------------------
 

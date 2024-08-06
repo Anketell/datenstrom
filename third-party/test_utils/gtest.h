@@ -25,6 +25,23 @@ catch ( ... )                                               \
 
 //-----------------------------------------------------------------------------
 
+#define EXPECT_THROW_ASSESS( statement, type, assessment )  \
+try                                                         \
+{                                                           \
+   statement;                                               \
+   FAIL() << "Expected exception not thrown";               \
+}                                                           \
+catch ( type e )                                            \
+{                                                           \
+   assessment;                                              \
+}                                                           \
+catch ( ... )                                               \
+{                                                           \
+   FAIL() << "Unexpected exception thrown";                 \
+}
+
+//-----------------------------------------------------------------------------
+
 #define NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name) \
   namespace_name##_##test_case_name##_##test_name##_Test
 
