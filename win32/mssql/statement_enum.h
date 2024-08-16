@@ -50,6 +50,7 @@ public:
       };
 
       static token_t next_token( const char * from );
+      static token_t skip_to_end_token( const char * from );
 
       const std::string & m_statements;
       statement_t         m_statement;

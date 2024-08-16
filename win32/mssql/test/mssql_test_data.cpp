@@ -125,7 +125,7 @@ CREATE FUNCTION F1()
 RETURNS INT
 AS
 BEGIN
-   RETURN 654321
+   RETURN 654321;
 END;
 
 ---------------------------------
@@ -135,10 +135,10 @@ DROP FUNCTION F2;
 ---------------------------------
 
 CREATE FUNCTION F2()
-RETURNS INT
+RETURNS VARCHAR( 32 )
 AS
 BEGIN
-   RETURN 765432
+   RETURN '765432;'
 END;
 
 ---------------------------------
