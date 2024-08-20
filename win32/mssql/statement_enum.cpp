@@ -24,13 +24,13 @@ namespace mssql
 
 enum ctype_t
 {
-   null,
-   control,
-   digit,
-   alpha,
-   space,
-   punctuation,
-   quotation
+   null        = 0b00000000,
+   control     = 0b00000001,
+   digit       = 0b00000010,
+   alpha       = 0b00000100,
+   space       = 0b00001000,
+   punctuation = 0b00010000,
+   quotation   = 0b00100000
 };
 
 //-----------------------------------------------------------------------------
@@ -287,9 +287,9 @@ static const char * skip_number( const char * c )
 
 static const char * skip_identifier( const char * c )
 {
-   static const uint32_t ident = ( 1 << digit ) | ( 1 << alpha );
+   static const uint8_t ident = digit | alpha;
 
-   while ( ( ( 1 << ctype[ *c ] ) & ident ) != 0  )
+   while ( ( ctype[ *c ] & ident ) != 0  )
       c++;
 
    return c;
@@ -341,13 +341,14 @@ statement_enum::iterator::token_t statement_enum::iterator::next_token( const ch
 
 statement_enum::iterator::token_t statement_enum::iterator::skip_to_end_token( const char * from )
 {
+   using namespace string;
+
    static const std::string end = "end";
 
    token_t token = next_token( from );
    while ( *token.from )
    {
-      std::string text( token.from, token.len );
-      if ( ds::string::cmpignorecase( text.c_str(), end.c_str() ) == 0 )
+      if ( token.len == end.length() && cmpignorecase( token.from, end.c_str(), token.len ) == 0 )
          break;
 
       token = next_token( token.from + token.len );
@@ -360,6 +361,8 @@ statement_enum::iterator::token_t statement_enum::iterator::skip_to_end_token( c
 
 void statement_enum::iterator::next_statement( void )
 {
+   using namespace string;
+
    static const std::string begin = "begin";
 
    if ( !m_statement.from )
@@ -370,12 +373,9 @@ void statement_enum::iterator::next_statement( void )
    token_t token = next_token( m_statement.from );
    while ( *token.from && *token.from != ';' )
    {
-      if ( std::isalpha( *token.from ) )
-      {
-         std::string text( token.from, token.len );
-         if ( ds::string::cmpignorecase( text.c_str(), begin.c_str() ) == 0 )
-            token = skip_to_end_token( token.from + token.len );
-      }
+      if ( token.len == begin.length() && cmpignorecase( token.from, begin.c_str(), token.len ) == 0 )
+         token = skip_to_end_token( token.from + token.len );
+
       token = next_token( token.from + token.len );
    }
 
