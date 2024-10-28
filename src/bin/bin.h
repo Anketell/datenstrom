@@ -176,24 +176,6 @@ template< typename T > std::streamsize length( const T & t )
 
 //-----------------------------------------------------------------------------
 
-class buffer_underrun : public std::runtime_error
-{
-public:
-
-   buffer_underrun( void );
-};
-
-//-----------------------------------------------------------------------------
-
-class buffer_overrun : public std::runtime_error
-{
-public:
-
-   buffer_overrun( void );
-};
-
-//-----------------------------------------------------------------------------
-
 ds::istream & big_endian( ds::istream & in );
 ds::ostream & big_endian( ds::ostream & out );
 ds::istream & little_endian( ds::istream & in );

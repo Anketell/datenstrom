@@ -41,3 +41,5 @@ EXPORTS
    ?read@istream@ds@@UEAAXPEAX_K@Z
    ?write@ostream@ds@@UEAAXPEBX_K@Z
    ?eof@istream@ds@@UEBA_NXZ
+   ??0stream_underrun@ds@@QEAA@XZ
+   ??0stream_overrun@ds@@QEAA@XZ

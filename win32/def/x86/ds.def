@@ -37,3 +37,5 @@ EXPORTS
    ??6@YAAAVostream@ds@@AAV01@P6AAAV01@0@Z@Z
    ?endr@ds@@YAAAVistream@1@AAV21@@Z
    ?endr@ds@@YAAAVostream@1@AAV21@@Z
+   ??0stream_underrun@ds@@QAE@XZ
+   ??0stream_overrun@ds@@QAE@XZ
