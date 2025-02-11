@@ -18,35 +18,35 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-result::result( void )
+rowset::rowset( void )
 {
    m_column = 0;
 }
 
 //-----------------------------------------------------------------------------
 
-result::result( std::shared_ptr< impl > impl ) : result()
+rowset::rowset( std::shared_ptr< impl > impl ) : rowset()
 {
    m_impl = impl;
 }
 
 //-----------------------------------------------------------------------------
 
-int result::column_count( void ) const
+int rowset::column_count( void ) const
 {
    return m_impl->column_count();
 }
 
 //-----------------------------------------------------------------------------
 
-int result::rows_affected( void ) const
+int rowset::rows_affected( void ) const
 {
    return m_impl->rows_affected();
 }
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( int8_t & i )
+ds::istream & rowset::operator >> ( int8_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -54,7 +54,7 @@ ds::istream & result::operator >> ( int8_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( int16_t & i )
+ds::istream & rowset::operator >> ( int16_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -62,7 +62,7 @@ ds::istream & result::operator >> ( int16_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( int32_t & i )
+ds::istream & rowset::operator >> ( int32_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -70,7 +70,7 @@ ds::istream & result::operator >> ( int32_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( int64_t & i )
+ds::istream & rowset::operator >> ( int64_t & i )
 {
    m_impl->get_column( m_column++, i );
    return *this;
@@ -78,7 +78,7 @@ ds::istream & result::operator >> ( int64_t & i )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( uint8_t & u )
+ds::istream & rowset::operator >> ( uint8_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -86,7 +86,7 @@ ds::istream & result::operator >> ( uint8_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( uint16_t & u )
+ds::istream & rowset::operator >> ( uint16_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -94,7 +94,7 @@ ds::istream & result::operator >> ( uint16_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( uint32_t & u )
+ds::istream & rowset::operator >> ( uint32_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -102,7 +102,7 @@ ds::istream & result::operator >> ( uint32_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( uint64_t & u )
+ds::istream & rowset::operator >> ( uint64_t & u )
 {
    m_impl->get_column( m_column++, u );
    return *this;
@@ -110,7 +110,7 @@ ds::istream & result::operator >> ( uint64_t & u )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( double & d )
+ds::istream & rowset::operator >> ( double & d )
 {
    m_impl->get_column( m_column++, d );
    return *this;
@@ -118,7 +118,7 @@ ds::istream & result::operator >> ( double & d )
 
 //-----------------------------------------------------------------------------
 
-ds::istream & result::operator >> ( std::string & s )
+ds::istream & rowset::operator >> ( std::string & s )
 {
    m_impl->get_column( m_column++, s );
    return *this;
@@ -126,14 +126,14 @@ ds::istream & result::operator >> ( std::string & s )
 
 //-----------------------------------------------------------------------------
 
-void result::endr( void )
+void rowset::endr( void )
 {
    step();
 }
 
 //-----------------------------------------------------------------------------
 
-bool result::step( void )
+bool rowset::step( void )
 {
    m_column = 0;
 
@@ -148,14 +148,14 @@ bool result::step( void )
 
 //-----------------------------------------------------------------------------
 
-bool result::eof( void ) const
+bool rowset::eof( void ) const
 {
    return m_impl == nullptr || m_impl->eof();
 }
 
 //-----------------------------------------------------------------------------
 
-bool result::operator==( const result & r ) const
+bool rowset::operator==( const rowset & r ) const
 {
    return this->eof() && r.eof() || m_impl == r.m_impl;
 }

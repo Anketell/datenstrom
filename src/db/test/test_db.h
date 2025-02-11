@@ -13,13 +13,13 @@
 
 //-----------------------------------------------------------------------------
 
-struct Test_result : public ds::db::result::impl
+struct Test_rowset : public ds::db::rowset::impl
 {
    int m_column_count;
    int m_step_calls;
    int m_row_count;
 
-   Test_result( int column_count = 0, int row_count = 0 )
+   Test_rowset( int column_count = 0, int row_count = 0 )
    {
       m_column_count = column_count;
       m_row_count    = row_count;
@@ -166,10 +166,10 @@ struct Test_statement : public ds::db::statement::impl
       m_execute_calls++;
    }
 
-   virtual ds::db::result result( void ) override
+   virtual ds::db::rowset result( void ) override
    {
       m_result_calls++;
-      return ds::db::result( std::make_shared< Test_result >( m_column_count, m_row_count ) );
+      return ds::db::rowset( std::make_shared< Test_rowset >( m_column_count, m_row_count ) );
    }
 };
 

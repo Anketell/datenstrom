@@ -24,7 +24,7 @@ namespace sqlite
 
 //-----------------------------------------------------------------------------
 
-class result : public db::result::impl
+class rowset : public db::rowset::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
    int                       m_count;
@@ -34,8 +34,8 @@ class result : public db::result::impl
 
 public:
 
-   result( std::shared_ptr< stmt_t > stmt );
-   virtual ~result( void );
+   rowset( std::shared_ptr< stmt_t > stmt );
+   virtual ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

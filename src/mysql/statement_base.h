@@ -42,7 +42,7 @@ public:
 
    virtual void reset( void ) override;
    virtual void execute( void ) override;
-   virtual db::result result( void ) override;
+   virtual db::rowset result( void ) override;
 };
 
 //-----------------------------------------------------------------------------

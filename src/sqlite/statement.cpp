@@ -257,7 +257,7 @@ void statement::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::result statement::result( void )
+db::rowset statement::result( void )
 {
    static constexpr char operation[] = "SQLite statement result";
 
@@ -265,7 +265,7 @@ db::result statement::result( void )
 
    m_stmt->state = stmt_t::Executed;
 
-   return db::result( std::make_shared< sqlite::result >( m_stmt ) );
+   return db::rowset( std::make_shared< sqlite::rowset >( m_stmt ) );
 }
 
 //-----------------------------------------------------------------------------

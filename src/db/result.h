@@ -24,7 +24,7 @@ namespace db
 
 //-----------------------------------------------------------------------------
 
-class result : public ds::istream
+class rowset : public ds::istream
 {
 public:
 
@@ -63,8 +63,8 @@ private:
 
 public:
 
-   result( void );
-   result( std::shared_ptr< impl > impl );
+   rowset( void );
+   rowset( std::shared_ptr< impl > impl );
 
    int column_count( void ) const;
    int rows_affected( void ) const;
@@ -88,7 +88,7 @@ public:
 
    virtual bool eof( void ) const override;
 
-   bool operator==( const result &  ) const;
+   bool operator==( const rowset &  ) const;
 };
 
 //-----------------------------------------------------------------------------

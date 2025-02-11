@@ -219,7 +219,7 @@ NAMESPACE_TEST( sqlite, statement, should_provide_query_result_list )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result result;
+      ds::db::rowset result;
 
       EXPECT_NO_THROW( result = results_test.result() );
 
@@ -292,7 +292,7 @@ NAMESPACE_TEST( sqlite, result, should_provide_query_data )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -331,7 +331,7 @@ NAMESPACE_TEST( sqlite, result, should_support_unixtime )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -392,7 +392,7 @@ NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
    {
       ds::db::statement create_test = test_db( create );
 
-      EXPECT_EQ( ds::db::result(), create_test.result() );
+      EXPECT_EQ( ds::db::rowset(), create_test.result() );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -420,7 +420,7 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -465,7 +465,7 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 

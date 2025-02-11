@@ -25,16 +25,16 @@ NAMESPACE_TEST( db, endr, should_call_db_statement_execute )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( db, endr, should_call_db_result_step )
+NAMESPACE_TEST( db, endr, should_call_db_rowset_step )
 {
-   auto test_result = std::make_shared< Test_result >();
-   ds::db::result result( test_result );
+   auto test_rowset = std::make_shared< Test_rowset >();
+   ds::db::rowset rowset( test_rowset );
 
-   EXPECT_EQ( test_result->m_step_calls, 0 );
+   EXPECT_EQ( test_rowset->m_step_calls, 0 );
 
-   result >> ds::endr;
+   rowset >> ds::endr;
 
-   EXPECT_EQ( test_result->m_step_calls, 1 );
+   EXPECT_EQ( test_rowset->m_step_calls, 1 );
 }
 
 //-----------------------------------------------------------------------------

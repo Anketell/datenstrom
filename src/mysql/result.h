@@ -24,7 +24,7 @@ namespace mysql
 
 //-----------------------------------------------------------------------------
 
-class result : public db::result::impl
+class rowset : public db::rowset::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
    bool                      m_valid;
@@ -39,7 +39,7 @@ class result : public db::result::impl
 
 public:
 
-   result( std::shared_ptr< stmt_t > stmt );
+   rowset( std::shared_ptr< stmt_t > stmt );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;
