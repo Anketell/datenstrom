@@ -52,6 +52,15 @@ static void skip_ws( std::istream & in )
 
 //-----------------------------------------------------------------------------
 
+static void check_istream( std::istream & in )
+{
+   int c = in.peek();
+   if ( in.eof() || c == '\n' || c == '\r' )
+      throw stream_underrun();
+}
+
+//-----------------------------------------------------------------------------
+
  void get_field_separator( std::istream & in )
 {
    if ( !in.eof() )
@@ -61,12 +70,12 @@ static void skip_ws( std::istream & in )
       {
          case ',':
             in.get();
-            break;
+            return;
 
          case '\n':
          case '\r':
          case '\x1a':
-            break;
+            return;
 
          default:
             throw Field_separator_expected();
@@ -100,6 +109,11 @@ static std::string get_quoted_string( std::istream & in )
 
       switch ( c )
       {
+         case '\\':
+            in.get();
+            c = in.peek();
+            break;
+
          case '\r':
          case '\n':
          case '\x1a':
@@ -174,6 +188,7 @@ ds::istream & istream::operator >> ( int8_t & i )
    int16_t i16;
 
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> i16;
    i = static_cast< int8_t >( i16 );
    skip_ws( m_in );
@@ -187,6 +202,7 @@ ds::istream & istream::operator >> ( int8_t & i )
 ds::istream & istream::operator >> ( int16_t & i )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> i;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -199,6 +215,7 @@ ds::istream & istream::operator >> ( int16_t & i )
 ds::istream & istream::operator >> ( int32_t & i )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> i;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -211,6 +228,7 @@ ds::istream & istream::operator >> ( int32_t & i )
 ds::istream & istream::operator >> ( int64_t & i )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> i;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -225,6 +243,7 @@ ds::istream & istream::operator >> ( uint8_t & u )
    uint16_t u16;
 
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> u16;
    u = static_cast< uint8_t >( u16 );
    skip_ws( m_in );
@@ -238,6 +257,7 @@ ds::istream & istream::operator >> ( uint8_t & u )
 ds::istream & istream::operator >> ( uint16_t & u )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> u;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -250,6 +270,7 @@ ds::istream & istream::operator >> ( uint16_t & u )
 ds::istream & istream::operator >> ( uint32_t & u )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> u;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -262,6 +283,7 @@ ds::istream & istream::operator >> ( uint32_t & u )
 ds::istream & istream::operator >> ( uint64_t & u )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> u;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -274,6 +296,7 @@ ds::istream & istream::operator >> ( uint64_t & u )
 ds::istream & istream::operator >> ( double & d )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    m_in >> d;
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -286,6 +309,7 @@ ds::istream & istream::operator >> ( double & d )
 ds::istream & istream::operator >> ( std::string & s )
 {
    skip_ws( m_in );
+   check_istream( m_in );
    s = get_string( m_in );
    skip_ws( m_in );
    get_field_separator( m_in );
@@ -299,20 +323,24 @@ void istream::endr( void )
 {
    while ( !m_in.eof() )
    {
-      int c = m_in.peek();
-      if ( c == '\r' || c == '\n' )
-         break;
-
+      int c = m_in.get();
+      if ( c == '\\' )
+      {
          m_in.get();
-   }
+         continue;
+      }
 
-   while ( !m_in.eof() )
-   {
-      int c = m_in.peek();
-      if ( c != '\r' && c != '\n' )
+      if ( c == '\r' )
+      {
+         c = m_in.peek();
+         if ( c == '\n' )
+            m_in.get();
+
          break;
+      }
 
-         m_in.get();
+      if ( c == '\n' )
+         break;
    }
 }
 

@@ -26,9 +26,16 @@ static void write( std::ostream & out, const char * s )
 
    while ( *s )
    {
-      if ( *s == '"' )
+      switch ( *s )
       {
-         out << *s;
+         case '"':
+            out << *s;
+            break;
+
+         case '\r':
+         case '\n':
+         case '\\':
+            out << '\\';
       }
       out << *s++;
    }

@@ -418,6 +418,7 @@ void statement_base::set_string( int index, uint32_t len, const char * data )
    {
       case SQL_TEXT:
          memcpy( param.sqldata, data, text_len );
+         memset( param.sqldata + text_len, ' ', param.sqllen - text_len );
          break;
 
       case SQL_VARYING:

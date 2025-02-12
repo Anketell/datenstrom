@@ -27,7 +27,7 @@ class istream;
 
 template< typename T > struct has_global_get_from_operator_t
 {
-   template< typename V > static auto test( int ) -> 
+   template< typename V > static auto test( int ) ->
    decltype( operator>>( std::declval< ds::istream & >(), std::declval< V & >() ) );
 
    template< typename... > static auto test( ... ) -> std::false_type;
@@ -139,6 +139,24 @@ public:
 
 istream & endr( istream & in );
 ostream & endr( ostream & out );
+
+//-----------------------------------------------------------------------------
+
+class stream_underrun : public std::runtime_error
+{
+public:
+
+   stream_underrun( void );
+};
+
+//-----------------------------------------------------------------------------
+
+class stream_overrun : public std::runtime_error
+{
+public:
+
+   stream_overrun( void );
+};
 
 //-----------------------------------------------------------------------------
 

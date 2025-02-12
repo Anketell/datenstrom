@@ -29,8 +29,11 @@ CREATE TABLE Object (
    dt DATE,
    tm TIME,
    dttm TIMESTAMP,
-   id INTEGER NOT NULL PRIMARY KEY );
+   ob_id INTEGER NOT NULL PRIMARY KEY );
 
+CREATE TABLE Subject (
+   ob_id INTEGER NOT NULL REFERENCES Object( ob_id ),
+   sub_id INTEGER NOT NULL PRIMARY KEY );
 )";
 
 //-----------------------------------------------------------------------------
@@ -53,25 +56,27 @@ CREATE TABLE Object (
    dt DATE,
    tm TIME,
    dttm TIMESTAMP,
-   id INTEGER NOT NULL PRIMARY KEY )
+   ob_id INTEGER NOT NULL PRIMARY KEY )
 
 )";
 
 //-----------------------------------------------------------------------------
 
-static const std::string test_con = "firebird://127.0.0.1:3050/" + ds::filesys::temp_directory() + "?username=sysdba&password=masterkey";
+static const std::string test_con = "firebird://127.0.0.1:3050/" +
+                                    ds::filesys::temp_directory() +
+                                    "?username=sysdba&password=masterkey";
 
 const char * test_con_str = test_con.c_str();
 const char * test_db_name = "test_db";
 const char * bad_sql      = "THIS IS BAD SQL";
 const char * insert       = "INSERT INTO Object VALUES ( ?, ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ?, ?, ?, "
-                                                        "GEN_ID( ObjectID, 1 ) ) returning id";
+                                                        "GEN_ID( ObjectID, 1 ) ) returning ob_id";
 const char * insert_nulls = "INSERT INTO Object VALUES ( NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
                                                         "NULL, NULL, NULL, NULL, NULL, NULL, NULL, "
-                                                        "GEN_ID( ObjectID, 1 ) ) returning id";
+                                                        "GEN_ID( ObjectID, 1 ) ) returning ob_id";
 
-const char * result   = "SELECT * FROM Object WHERE hello = ?";
+const char * result   = "SELECT u64 FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
@@ -80,12 +85,12 @@ const char * named    = "INSERT INTO Object VALUES ( :i8, :i16, :i32, :i64, "
                                                     ":u8, :u16, :u32, :u64, "
                                                     ":float_, :double_, :string, "
                                                     ":date_, :time_, :datetime_, "
-                                                    "GEN_ID( ObjectID, 1 ) ) returning id";
+                                                    "GEN_ID( ObjectID, 1 ) ) returning ob_id";
 const char * named_duplicates = "INSERT INTO Object VALUES ( :signed, :signed, :signed, :signed, "
                                                             ":unsigned, :unsigned, :unsigned, :unsigned, "
                                                             ":float_, :double_, :string, "
                                                             ":date_, :time_, :datetime_, "
-                                                            "GEN_ID( ObjectID, 1 ) ) returning id";
+                                                            "GEN_ID( ObjectID, 1 ) ) returning ob_id";
 
 
 const char * batch =

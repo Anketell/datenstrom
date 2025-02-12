@@ -235,7 +235,7 @@ NAMESPACE_TEST( mssql, statement, should_fail_query_not_enough_parameters )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, statement, should_provide_query_result_row )
+NAMESPACE_TEST( mssql, statement, should_provide_query_result_list )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -261,6 +261,46 @@ NAMESPACE_TEST( mssql, statement, should_provide_query_result_row )
 
       for ( auto o : data )
          result >> ds::endr;
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( mssql, statement, should_provide_query_result_row )
+{
+   static const char * expected_error = "MSSQL result get column: No row available";
+
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement test_stmt = test_db( result );
+
+      uint64_t u64;
+
+      EXPECT_NO_THROW( u64 = test_stmt( "Hello1" ) );
+      EXPECT_EQ( u64, 64 );
+
+      EXPECT_NO_THROW( u64 = test_stmt( "Hello2" ) );
+      EXPECT_EQ( u64, 128 );
+
+      EXPECT_THROW_ASSESS( u64 = test_stmt( "Hello3" ),
+                           std::runtime_error,
+                           EXPECT_STREQ( e.what(), expected_error ) );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );

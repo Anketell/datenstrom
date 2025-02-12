@@ -54,7 +54,7 @@ const char * insert = "INSERT INTO Object ( i8, i16, i32, i64, u8, u16, u32, u64
                                                "OUTPUT INSERTED.ID "
                                                "VALUES ( ?, ?, ?, ?, ?, ?, ?, "
                                                         "?, ?, ?, ?, ? ,? ,? )";
-const char * result   = "SELECT * FROM Object WHERE hello = ?";
+const char * result   = "SELECT u64 FROM Object WHERE hello = ?";
 const char * results  = "SELECT i8, i16, i32, i64, u8, u16, u32, u64, f, d, hello, dt, tm, dttm "
                           "FROM Object ORDER BY hello";
 const char * num_rows = "SELECT COUNT( * ) FROM Object";
@@ -70,14 +70,7 @@ const char * named_duplicates = "INSERT INTO Object VALUES ( $signed, $signed, $
 
 const char * batch =
 R"(
-
-CREATE TABLE T1 (
-   field INTEGER
-);
-
-CREATE TABLE T2 (
-   field INTEGER
-);
+------------------------------------------------
 
 CREATE FUNCTION F1()
 RETURNS INT
@@ -86,6 +79,8 @@ BEGIN
    RETURN 123456
 END;
 
+---------------------------------
+
 CREATE FUNCTION F2()
 RETURNS INT
 AS
@@ -93,6 +88,72 @@ BEGIN
    RETURN 234567
 END;
 
+---------------------------------
+
+CREATE TABLE T1 (
+   field INTEGER
+);
+
+---------------------------------
+
+INSERT INTO T1 VALUES ( 47 );
+
+---------------------------------
+
+CREATE TABLE T2 (
+   field INTEGER
+);
+
+---------------------------------
+
+INSERT INTO T2 VALUES ( 23 );
+
+---------------------------------
+/*
+CREATE TABLE T2 (
+   field INTEGER
+);
+*/
+
+---------------------------------
+
+DROP FUNCTION F1;
+
+---------------------------------
+
+CREATE FUNCTION F1()
+RETURNS INT
+AS
+BEGIN
+   RETURN 654321;
+END;
+
+---------------------------------
+
+DROP FUNCTION F2;
+
+---------------------------------
+
+CREATE FUNCTION F2()
+RETURNS VARCHAR( 32 )
+AS
+BEGIN
+   RETURN '765432;'
+END;
+
+---------------------------------
+
+CREATE VIEW T1_V
+AS
+   SELECT field FROM T1;
+
+---------------------------------
+
+CREATE VIEW T2_V
+AS
+   SELECT field FROM T2;
+
+---------------------------------
 )";
 
 //-----------------------------------------------------------------------------

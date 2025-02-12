@@ -22,6 +22,174 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
+enum ctype_t
+{
+   null        = 0b00000000,
+   control     = 0b00000001,
+   digit       = 0b00000010,
+   alpha       = 0b00000100,
+   space       = 0b00001000,
+   punctuation = 0b00010000,
+   quotation   = 0b00100000
+};
+
+//-----------------------------------------------------------------------------
+
+static uint8_t ctype[] =
+{
+   null,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   space,
+   space,
+   space,
+   space,
+   space,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   control,
+   space,
+   punctuation,
+   quotation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   quotation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   digit,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   alpha,
+   punctuation,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   alpha,
+   punctuation,
+   punctuation,
+   punctuation,
+   punctuation,
+   control
+};
+
+//-----------------------------------------------------------------------------
+
+static const std::function< bool( int, int )> CmpNoCase = []( int c1, int c2 )
+{
+   return std::tolower( c1 ) == std::tolower( c2 );
+};
+
+//-----------------------------------------------------------------------------
+
+struct insensitive_compare
+{
+   bool operator()( const std::string & s1, const std::string & s2 ) const
+   {
+      return ds::string::cmpignorecase( s1.c_str(), s2.c_str() ) < 0;
+   }
+};
+
+//-----------------------------------------------------------------------------
+
+typedef std::set< std::string, insensitive_compare > nocase_set_t;
+
+//-----------------------------------------------------------------------------
+
 statement_enum::statement_enum( const std::string & statements ) :
 m_statements( statements )
 {
@@ -54,9 +222,9 @@ m_statements( statements )
 
 //-----------------------------------------------------------------------------
 
-static const char * skipws( const char * c )
+static const char * skip_eol( const char * c )
 {
-   while ( *c && std::isspace( *c ) )
+   while ( *c && *c != '\n' )
       c++;
 
    return c;
@@ -64,12 +232,127 @@ static const char * skipws( const char * c )
 
 //-----------------------------------------------------------------------------
 
-statement_enum::iterator::token_t statement_enum::iterator::next_token( const char * from )
+static const char * skip_block_comment( const char * c )
 {
-   token_t token = { skipws( from ), 0 };
+   while ( *c )
+   {
+      if ( *c == '*' && *( c + 1 ) == '/' )
+      {
+         c += 2;
+         break;
+      }
+      c++;
+   }
 
-   while ( *token.from && !std::isspace( *( token.from + token.len ) ) )
-      token.len++;
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
+static const char * skip_ws( const char * c )
+{
+   for ( ;; )
+   {
+      while ( *c && ( std::isspace( *c ) ) )
+         c++;
+
+      if ( *c == '-' && *( c + 1 ) == '-' )
+      {
+         c = skip_eol( c );
+         continue;
+      }
+
+      if ( *c == '/' && *( c + 1 ) == '*' )
+      {
+         c = skip_block_comment( c );
+         continue;
+      }
+      break;
+   }
+
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
+static const char * skip_number( const char * c )
+{
+   while ( std::isdigit( *c ) )
+      c++;
+
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
+static const char * skip_identifier( const char * c )
+{
+   static const uint8_t ident = digit | alpha;
+
+   while ( ( ctype[ *c ] & ident ) != 0  )
+      c++;
+
+   return c;
+}
+
+//-----------------------------------------------------------------------------
+
+static const char * skip_string( const char * c )
+{
+   char q = *c++;
+
+   while ( *c != q )
+      c++;
+
+   return ++c;
+}
+
+//-----------------------------------------------------------------------------
+
+statement_enum::iterator::token_t statement_enum::iterator::next_token( const char * c )
+{
+   token_t token = { skip_ws( c ), 0 };
+
+   switch ( ctype[ *token.from  & 0x7f ] )
+   {
+      case null:
+         break;
+
+      case digit:
+         token.len = skip_number( token.from ) - token.from;
+         break;
+
+      case alpha:
+         token.len = skip_identifier( token.from ) - token.from;
+         break;
+
+      case punctuation:
+         token.len++;
+         break;
+
+      case quotation:
+         token.len = skip_string( token.from ) - token.from;
+   }
+
+   return token;
+}
+
+//-----------------------------------------------------------------------------
+
+statement_enum::iterator::token_t statement_enum::iterator::skip_to_end_token( const char * from )
+{
+   using namespace string;
+
+   static const std::string end = "end";
+
+   token_t token = next_token( from );
+   while ( *token.from )
+   {
+      if ( token.len == end.length() && cmpignorecase( token.from, end.c_str(), token.len ) == 0 )
+         break;
+
+      token = next_token( token.from + token.len );
+   }
 
    return token;
 }
@@ -78,46 +361,22 @@ statement_enum::iterator::token_t statement_enum::iterator::next_token( const ch
 
 void statement_enum::iterator::next_statement( void )
 {
-   static const std::string create( "create" );
+   using namespace string;
 
-   static const std::function< bool( int, int )> CmpNoCase = []( int c1, int c2 )
-   {
-      return std::tolower( c1 ) == std::tolower( c2 );
-   };
-
-   struct insensitive_compare
-   {
-      bool operator()( const std::string & s1, const std::string & s2 ) const
-      {
-         return ds::string::cmpignorecase( s1.c_str(), s2.c_str() ) < 0;
-      }
-   };
-
-   static const std::set< std::string, insensitive_compare > db_obj_set = { "function", "view" };
+   static const std::string begin = "begin";
 
    if ( !m_statement.from )
       return;
 
-   m_statement.from = skipws( m_statement.from + m_statement.len );
+   m_statement.from = skip_ws( m_statement.from + m_statement.len );
 
-   const char * from = m_statement.from;
-   while ( *from )
+   token_t token = next_token( m_statement.from );
+   while ( *token.from && *token.from != ';' )
    {
-      token_t token = next_token( from );
+      if ( token.len == begin.length() && cmpignorecase( token.from, begin.c_str(), token.len ) == 0 )
+         token = skip_to_end_token( token.from + token.len );
 
-      if ( std::equal( token.from, token.from + token.len, create.begin(), create.end(), CmpNoCase ) )
-      {
-         token_t object = next_token( token.from + token.len );
-         if ( db_obj_set.find( std::string( object.from, object.len ) ) != db_obj_set.end() )
-         {
-            if ( m_statement.from != token.from )
-            {
-               from = token.from;
-               break;
-            }
-         }
-      }
-      from = token.from + token.len;
+      token = next_token( token.from + token.len );
    }
 
    if ( !*m_statement.from )
@@ -127,7 +386,7 @@ void statement_enum::iterator::next_statement( void )
       return;
    }
 
-   m_statement.len = from - m_statement.from;
+   m_statement.len = token.from + token.len - m_statement.from;
 }
 
 //-----------------------------------------------------------------------------

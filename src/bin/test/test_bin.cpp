@@ -926,15 +926,15 @@ NAMESPACE_TEST( bin, ostream, should_fail_overrun )
    ds::bin::streamwrap sw( nullptr, 0 );
    ds::bin::ostream    out( &sw );
 
-   EXPECT_THROW( out << ( uint8_t )1,  ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( int8_t )1,   ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( uint16_t )1, ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( int16_t )1,  ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( uint32_t )1, ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( int32_t )1,  ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( uint64_t )1, ds::bin::buffer_overrun );
-   EXPECT_THROW( out << ( int64_t )1,  ds::bin::buffer_overrun );
-   EXPECT_THROW( out << 1.0,           ds::bin::buffer_overrun );
+   EXPECT_THROW( out << ( uint8_t )1,  ds::stream_overrun );
+   EXPECT_THROW( out << ( int8_t )1,   ds::stream_overrun );
+   EXPECT_THROW( out << ( uint16_t )1, ds::stream_overrun );
+   EXPECT_THROW( out << ( int16_t )1,  ds::stream_overrun );
+   EXPECT_THROW( out << ( uint32_t )1, ds::stream_overrun );
+   EXPECT_THROW( out << ( int32_t )1,  ds::stream_overrun );
+   EXPECT_THROW( out << ( uint64_t )1, ds::stream_overrun );
+   EXPECT_THROW( out << ( int64_t )1,  ds::stream_overrun );
+   EXPECT_THROW( out << 1.0,           ds::stream_overrun );
 }
 
 //-----------------------------------------------------------------------------
@@ -944,15 +944,15 @@ NAMESPACE_TEST( bin, istream, should_fail_underrun )
    ds::bin::streamwrap sw( nullptr, 0 );
    ds::bin::istream    in( &sw );
 
-   EXPECT_THROW( { uint8_t  u8;  in >> u8;  }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { int8_t   s8;  in >> s8;  }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { uint16_t u16; in >> u16; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { int16_t  s16; in >> s16; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { uint32_t u32; in >> u32; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { int32_t  s32; in >> s32; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { uint64_t u64; in >> u64; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { int64_t  s64; in >> s64; }, ds::bin::buffer_underrun );
-   EXPECT_THROW( { double   d;   in >> d;   }, ds::bin::buffer_underrun );
+   EXPECT_THROW( { uint8_t  u8;  in >> u8;  }, ds::stream_underrun );
+   EXPECT_THROW( { int8_t   s8;  in >> s8;  }, ds::stream_underrun );
+   EXPECT_THROW( { uint16_t u16; in >> u16; }, ds::stream_underrun );
+   EXPECT_THROW( { int16_t  s16; in >> s16; }, ds::stream_underrun );
+   EXPECT_THROW( { uint32_t u32; in >> u32; }, ds::stream_underrun );
+   EXPECT_THROW( { int32_t  s32; in >> s32; }, ds::stream_underrun );
+   EXPECT_THROW( { uint64_t u64; in >> u64; }, ds::stream_underrun );
+   EXPECT_THROW( { int64_t  s64; in >> s64; }, ds::stream_underrun );
+   EXPECT_THROW( { double   d;   in >> d;   }, ds::stream_underrun );
 }
 
 //-----------------------------------------------------------------------------

@@ -286,7 +286,7 @@ std::streambuf * streamwrap::setbuf( char * s, std::streamsize n )
 int streamwrap::underflow( void )
 {
    if ( !gremaining() )
-      throw buffer_underrun();
+      throw stream_underrun();
 
    return std::streambuf::underflow();
 }
@@ -296,7 +296,7 @@ int streamwrap::underflow( void )
 int streamwrap::overflow( int ch )
 {
    if ( !premaining() )
-      throw buffer_overrun();
+      throw stream_overrun();
 
    auto res = std::streambuf::overflow( ch );
 
@@ -310,7 +310,7 @@ int streamwrap::overflow( int ch )
 std::streamsize streamwrap::xsgetn( char * s, std::streamsize count )
 {
    if ( gremaining() < count )
-      throw buffer_underrun();
+      throw stream_underrun();
 
    return std::streambuf::xsgetn( s, count );
 }
@@ -320,7 +320,7 @@ std::streamsize streamwrap::xsgetn( char * s, std::streamsize count )
 std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
 {
    if ( premaining() < count )
-      throw buffer_overrun();
+      throw stream_overrun();
 
    auto res = std::streambuf::xsputn( s, count );
 
@@ -354,10 +354,10 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       }
 
       if ( new_off < 0 )
-         throw ds::bin::buffer_underrun();
+         throw ds::stream_underrun();
 
       if ( new_off > egptr() - eback() )
-         throw ds::bin::buffer_overrun();
+         throw ds::stream_overrun();
 
       gbump( new_off - ( gptr() - eback() ) );
    }
@@ -381,10 +381,10 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       }
 
       if ( new_off < 0 )
-         throw ds::bin::buffer_underrun();
+         throw ds::stream_underrun();
 
       if ( new_off > epptr() - pbase() )
-         throw ds::bin::buffer_overrun();
+         throw ds::stream_overrun();
 
       pbump( new_off - ( pptr() - pbase() ) );
    }
@@ -497,20 +497,6 @@ std::streamsize lengthcalc::xsputn( const char * s, std::streamsize count )
 {
    pbump( count );
    return count;
-}
-
-//-----------------------------------------------------------------------------
-
-buffer_underrun::buffer_underrun( void ) :
-std::runtime_error( "Binary buffer underrun" )
-{
-}
-
-//-----------------------------------------------------------------------------
-
-buffer_overrun::buffer_overrun( void ) :
-std::runtime_error( "Binary buffer overrun" )
-{
 }
 
 //-----------------------------------------------------------------------------

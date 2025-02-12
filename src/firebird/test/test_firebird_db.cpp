@@ -100,7 +100,7 @@ NAMESPACE_TEST( firebird, statement, should_return_execute_value )
    EXPECT_NO_THROW( test_db.execute_batch( create ) );
 
    {
-      ds::db::statement query_test = test_db( "SELECT hello FROM Object WHERE id = ?" );
+      ds::db::statement query_test = test_db( "SELECT hello FROM Object WHERE ob_id = ?" );
       ds::db::statement insert_test = test_db( insert );
 
       for ( std::string hello : query_test( 1 ) )
@@ -219,7 +219,7 @@ NAMESPACE_TEST( firebird, statement, should_fail_query_not_enough_parameters )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( firebird, statement, should_provide_query_result_row )
+NAMESPACE_TEST( firebird, statement, should_provide_query_result_list )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -248,6 +248,78 @@ NAMESPACE_TEST( firebird, statement, should_provide_query_result_row )
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( firebird, statement, should_provide_query_result_row )
+{
+   static const char * expected_error = "Firebird result get column: No row available";
+
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   {
+      ds::db::statement insert_test = test_db( insert );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::statement test_stmt = test_db( result );
+
+      uint64_t u64;
+
+      EXPECT_NO_THROW( u64 = test_stmt( "Hello1" ) );
+      EXPECT_EQ( u64,  64 );
+
+      EXPECT_NO_THROW( u64 = test_stmt( "Hello2" ) );
+      EXPECT_EQ( u64, 128 );
+
+      EXPECT_THROW_ASSESS( u64 = test_stmt( "Hello3" ),
+                           std::runtime_error,
+                           EXPECT_STREQ( e.what(), expected_error ) );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( firebird, statement, should_support_system_table_queries )
+{
+   constexpr char query[] =
+R"(
+   SELECT R2.RDB$RELATION_NAME
+      FROM RDB$RELATION_CONSTRAINTS R1
+      JOIN RDB$REF_CONSTRAINTS C ON R1.RDB$CONSTRAINT_NAME = C.RDB$CONSTRAINT_NAME
+      JOIN RDB$RELATION_CONSTRAINTS R2 ON C.RDB$CONST_NAME_UQ  = R2.RDB$CONSTRAINT_NAME
+      WHERE UPPER(R1.RDB$RELATION_NAME)=UPPER(:table_name) AND R1.RDB$CONSTRAINT_TYPE = 'FOREIGN KEY'
+)";
+
+   ds::db::connection test_db( test_con_str );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+
+   ds::db::statement test_stmt = test_db( query, { "table_name" } );
+
+   auto res = test_stmt( "Subject" ).result();
+
+   EXPECT_FALSE( res.eof() );
+
+   res = test_stmt( "Object" ).result();
+
+   EXPECT_TRUE( res.eof() );
 }
 
 //-----------------------------------------------------------------------------

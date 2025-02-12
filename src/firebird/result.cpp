@@ -128,9 +128,14 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
+static constexpr char operation[] = "Firebird result get column";
+
+//-----------------------------------------------------------------------------
+
 void result::check_column( int index )
 {
-   static constexpr char operation[] = "Firebird result column check";
+   if ( !m_valid )
+      throw_error( operation, "No row available" );
 
    if ( !m_stmt )
       throw_error( operation, "Bad result" );
@@ -138,10 +143,6 @@ void result::check_column( int index )
    if ( index >= column_count() )
       throw_error( operation, "No column available" );
 }
-
-//-----------------------------------------------------------------------------
-
-static constexpr char operation[] = "Firebird get result column";
 
 //-----------------------------------------------------------------------------
 

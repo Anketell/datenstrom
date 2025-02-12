@@ -22,7 +22,7 @@ namespace sqlite
 
 [[noreturn]] void throw_error( const std::string & operation, const char * error )
 {
-   throw std::runtime_error(  operation + " failed: " + error );
+   throw std::runtime_error(  operation + ": " + error );
 }
 
 //-----------------------------------------------------------------------------
