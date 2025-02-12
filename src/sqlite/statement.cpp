@@ -8,6 +8,7 @@
 #include <sqlite/result.h>
 #include <sqlite/error.h>
 #include <db/simple_result.h>
+#include <dsutil/string.h>
 #include <cassert>
 
 //-----------------------------------------------------------------------------
@@ -196,9 +197,9 @@ void statement::set_parameter( int index, double d )
 
 void statement::set_parameter( int index, const std::string & s )
 {
-   int rc = sqlite3_bind_text( m_stmt->stmt,
+   int rc = sqlite3_bind_blob( m_stmt->stmt,
                                check_parameter( index ),
-                               s.c_str(), -1,
+                               s.data(), s.length(),
                                SQLITE_STATIC );
    if ( rc )
       throw_error( bind_parameter, rc );

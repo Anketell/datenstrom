@@ -37,11 +37,13 @@ if ( UNIX )
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
    add_compile_options( -std=c++17 )
+   add_compile_options( -Wno-error=changes-meaning )
 
 endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
 include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
+include_directories( "${CMAKE_SOURCE_DIR}/third-party/sqlite3/src" )
 
 if ( WIN32 )
    include_directories( "${CMAKE_SOURCE_DIR}/win32" )

@@ -30,7 +30,7 @@ class result : public db::result::impl
    int                       m_count;
    bool                      m_valid;
 
-   void check_column( int index, int type );
+   void check_column( int index, int type_mask );
 
 public:
 

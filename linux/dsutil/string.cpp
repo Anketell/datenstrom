@@ -21,3 +21,16 @@ int cmpignorecase( const char * s1, const char * s2, size_t n )
 //-----------------------------------------------------------------------------
 
 }
+
+//-----------------------------------------------------------------------------
+
+size_t strnlen_s( const char *s, size_t max )
+{
+    const char * end = static_cast< const char * >( memchr( s, '\0', max ) );
+    if ( end == nullptr )
+        return max;
+    else
+        return end - s;
+}
+
+//-----------------------------------------------------------------------------
