@@ -12,6 +12,12 @@ if( WIN32 )
 
 endif( WIN32 )
 
+if( UNIX )
+
+   include_directories( "/usr/include/firebird" )
+
+endif( UNIX )
+
 set( SOURCE
    enroll.cpp
    transactional.cpp

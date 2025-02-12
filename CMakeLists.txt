@@ -37,7 +37,6 @@ if ( UNIX )
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
    add_compile_options( -std=c++17 )
-   add_compile_options( -Wno-error=changes-meaning )
 
 endif ( UNIX )
 
