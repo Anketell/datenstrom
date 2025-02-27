@@ -146,7 +146,7 @@ void statement::execute( void )
 
 //-----------------------------------------------------------------------------
 
-result statement::result( void )
+rowset statement::result( void )
 {
    if ( m_parameter != m_impl->parameter_count() )
       throw std::runtime_error( "Wrong number of parameters" );
@@ -177,34 +177,34 @@ statement::iterator::iterator( void )
 
 //-----------------------------------------------------------------------------
 
-statement::iterator::iterator( db::result result )
+statement::iterator::iterator( db::rowset rowset )
 {
-   m_result = result;
+   m_rowset = rowset;
 }
 
 //-----------------------------------------------------------------------------
 
-result statement::iterator::operator*( void )
+rowset statement::iterator::operator*( void )
 {
-   if ( m_result.eof() )
-      throw std::runtime_error( "No result available" );
+   if ( m_rowset.eof() )
+      throw std::runtime_error( "No rowset available" );
 
-   return m_result;
+   return m_rowset;
 }
 
 //-----------------------------------------------------------------------------
 
-result * statement::iterator::operator->( void )
+rowset * statement::iterator::operator->( void )
 {
-   return &m_result;
+   return &m_rowset;
 }
 
 //-----------------------------------------------------------------------------
 
 statement::iterator & statement::iterator::operator++( void )
 {
-   if ( !m_result.step() )
-      m_result = db::result();
+   if ( !m_rowset.step() )
+      m_rowset = db::rowset();
 
    return *this;
 }
@@ -220,7 +220,7 @@ statement::iterator & statement::iterator::operator++( int )
 
 bool statement::iterator::operator==( const iterator &it ) const
 {
-   return m_result == it.m_result;
+   return m_rowset == it.m_rowset;
 }
 
 //-----------------------------------------------------------------------------

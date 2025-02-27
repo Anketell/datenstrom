@@ -73,17 +73,17 @@ void statement_base::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::result statement_base::result( void )
+db::rowset statement_base::result( void )
 {
    internal_execute();
 
-   db::result result( std::make_shared< mysql::result >( m_stmt ) );
+   db::rowset result( std::make_shared< mysql::rowset >( m_stmt ) );
 
    if ( result.eof() )
    {
       uint64_t value = mysql_stmt_insert_id( m_stmt->stmt );
       if ( value )
-         result = db::result( std::make_shared< db::simple_result >( value ) );
+         result = db::rowset( std::make_shared< db::simple_rowset >( value ) );
    }
       
 

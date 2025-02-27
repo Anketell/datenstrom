@@ -544,7 +544,7 @@ void statement_base::execute( void )
       internal_execute();
       if ( m_stmt->type != isc_info_sql_stmt_ddl )
       {
-         firebird::result result( m_stmt, m_transactional );
+         firebird::rowset result( m_stmt, m_transactional );
          if ( !result.eof() )
             reset();
       }
@@ -555,13 +555,13 @@ void statement_base::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::result statement_base::result( void )
+db::rowset statement_base::result( void )
 {
    begin_tmp_transaction();
 
    internal_execute();
 
-   return db::result( std::make_shared< firebird::result >( m_stmt,
+   return db::rowset( std::make_shared< firebird::rowset >( m_stmt,
                                                             m_transactional,
                                                             std::move( m_tmp_transaction ) ) );
 }

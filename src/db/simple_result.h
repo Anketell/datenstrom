@@ -18,7 +18,7 @@ namespace ds::db
 
 //-----------------------------------------------------------------------------
 
-class simple_result : public result::impl
+class simple_rowset : public rowset::impl
 {
    uint64_t m_value;
    bool     m_valid;
@@ -28,8 +28,8 @@ class simple_result : public result::impl
 
 public:
 
-   simple_result( uint64_t value );
-   ~simple_result( void );
+   simple_rowset( uint64_t value );
+   ~simple_rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

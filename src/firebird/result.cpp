@@ -22,14 +22,14 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-result::result( std::shared_ptr< stmt_t >              stmt,
+rowset::rowset( std::shared_ptr< stmt_t >              stmt,
                 transactional                        & transactional,
                 std::unique_ptr< ds::db::transaction > transaction ) :
 m_stmt( stmt ),
 m_transactional( transactional ),
 m_transaction( std::move( transaction ) )
 {
-   static constexpr char operation[] = "Firebird result prepare";
+   static constexpr char operation[] = "Firebird rowset prepare";
 
    m_valid = m_stmt->xsqlda->sqld;
 
@@ -46,7 +46,7 @@ m_transaction( std::move( transaction ) )
 
 //-----------------------------------------------------------------------------
 
-result::~result( void )
+rowset::~rowset( void )
 {
    if ( m_transaction )
    {
@@ -57,7 +57,7 @@ result::~result( void )
 
 //-----------------------------------------------------------------------------
 
-int result::column_count( void ) const
+int rowset::column_count( void ) const
 {
    return m_stmt->xsqlda->sqld;
 }
@@ -87,7 +87,7 @@ static int isc_info_mask( int32_t type )
 
 //-----------------------------------------------------------------------------
 
-int result::rows_affected( void ) const
+int rowset::rows_affected( void ) const
 {
    static constexpr char operation[] = "Firebird rows affected";
 
@@ -128,17 +128,17 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
-static constexpr char operation[] = "Firebird result get column";
+static constexpr char operation[] = "Firebird rowset get column";
 
 //-----------------------------------------------------------------------------
 
-void result::check_column( int index )
+void rowset::check_column( int index )
 {
    if ( !m_valid )
       throw_error( operation, "No row available" );
 
    if ( !m_stmt )
-      throw_error( operation, "Bad result" );
+      throw_error( operation, "Bad rowset" );
 
    if ( index >= column_count() )
       throw_error( operation, "No column available" );
@@ -146,7 +146,7 @@ void result::check_column( int index )
 
 //-----------------------------------------------------------------------------
 
-template< typename BI > BI result::get_big_int( int index )
+template< typename BI > BI rowset::get_big_int( int index )
 {
    typedef std::numeric_limits< BI > limits;
 
@@ -194,7 +194,7 @@ template< typename BI > BI result::get_big_int( int index )
 
 //-----------------------------------------------------------------------------
 
-template< typename I > I result::get_integer( int index )
+template< typename I > I rowset::get_integer( int index )
 {
    typedef std::numeric_limits< I > limits;
 
@@ -213,63 +213,63 @@ template< typename I > I result::get_integer( int index )
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int8_t & i )
+void rowset::get_column( int index, int8_t & i )
 {
    i = get_integer< int8_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int16_t & i )
+void rowset::get_column( int index, int16_t & i )
 {
    i = get_integer< int16_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int32_t & i )
+void rowset::get_column( int index, int32_t & i )
 {
    i = get_integer< int32_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int64_t & i )
+void rowset::get_column( int index, int64_t & i )
 {
    i = get_big_int< int64_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint8_t & u )
+void rowset::get_column( int index, uint8_t & u )
 {
    u = get_integer< uint8_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint16_t & u )
+void rowset::get_column( int index, uint16_t & u )
 {
    u = get_integer< uint16_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint32_t & u )
+void rowset::get_column( int index, uint32_t & u )
 {
    u = get_integer< uint32_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint64_t & u )
+void rowset::get_column( int index, uint64_t & u )
 {
    u = get_big_int< uint64_t >( index );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, double & d )
+void rowset::get_column( int index, double & d )
 {
    check_column( index );
 
@@ -331,7 +331,7 @@ static uint32_t get_blob_size( isc_blob_handle & bl_handle )
 
 //-----------------------------------------------------------------------------
 
-void result::read_blob( int index, std::string & s )
+void rowset::read_blob( int index, std::string & s )
 {
    static constexpr char operation[] = "Firebird read blob";
 
@@ -375,7 +375,7 @@ void result::read_blob( int index, std::string & s )
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, std::string & s )
+void rowset::get_column( int index, std::string & s )
 {
    check_column( index );
 
@@ -414,7 +414,7 @@ void result::get_column( int index, std::string & s )
 
 //-----------------------------------------------------------------------------
 
-bool result::step( void )
+bool rowset::step( void )
 {
    ISC_STATUS status[ status_vector_length ];
 
@@ -433,7 +433,7 @@ bool result::step( void )
 
 //-----------------------------------------------------------------------------
 
-bool result::eof( void ) const
+bool rowset::eof( void ) const
 {
    return !m_valid;
 }

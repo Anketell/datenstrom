@@ -59,7 +59,7 @@ public:
 
       virtual void reset( void ) = 0;
       virtual void execute( void ) = 0;
-      virtual db::result result( void ) = 0;
+      virtual db::rowset result( void ) = 0;
    };
 
 private:
@@ -73,15 +73,15 @@ public:
    {
    protected:
 
-      result m_result;
+      rowset m_rowset;
 
    public:
 
       iterator( void );
-      iterator( db::result result );
+      iterator( db::rowset rowset );
 
-      db::result operator*( void );
-      db::result * operator->( void );
+      db::rowset operator*( void );
+      db::rowset * operator->( void );
 
       iterator & operator++( void );
       iterator & operator++( int );
@@ -113,7 +113,7 @@ public:
 
    void reset( void );
    void execute( void );
-   db::result result( void );
+   db::rowset result( void );
 
    iterator begin( void );
    iterator end( void );
@@ -132,7 +132,7 @@ public:
    }
 
    template< typename T,
-             std::enable_if_t< ds::has_get_from< T > || std::is_same_v< T, db::result >,
+             std::enable_if_t< ds::has_get_from< T > || std::is_same_v< T, db::rowset >,
                                bool
                              > = false
            >
@@ -159,7 +159,7 @@ template<> class iterator_traits< ds::db::statement::iterator >
 public:
 
    typedef int32_t              difference_type;
-   typedef ds::db::result       value_type;
+   typedef ds::db::rowset       value_type;
    typedef value_type *         pointer;
    typedef value_type &         reference;
    typedef forward_iterator_tag iterator_category;

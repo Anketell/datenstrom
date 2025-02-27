@@ -29,7 +29,7 @@ namespace firebird
 
 //-----------------------------------------------------------------------------
 
-class result : public db::result::impl
+class rowset : public db::rowset::impl
 {
    std::shared_ptr< stmt_t >              m_stmt;
    transactional                        & m_transactional;
@@ -44,10 +44,10 @@ class result : public db::result::impl
 
 public:
 
-   result( std::shared_ptr< stmt_t >              stmt,
+   rowset( std::shared_ptr< stmt_t >              stmt,
            transactional                        & trasnactional,
            std::unique_ptr< ds::db::transaction > transaction = nullptr );
-   ~result( void );
+   ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;
