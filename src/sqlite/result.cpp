@@ -51,7 +51,7 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
-void result::check_column( int index, int type_mask )
+int result::check_column( int index, int type_mask )
 {
    static constexpr char operation[] = "SQLite result get column";
 
@@ -65,15 +65,17 @@ void result::check_column( int index, int type_mask )
       throw_error( operation, "No column available" );
 
    int column_type = sqlite3_column_type( m_stmt->stmt, index );
-   if ( ( ( 1 >> column_type ) | type_mask ) == 0 )
+   if ( ( ( 1 << column_type ) & type_mask ) == 0 )
       throw_error( operation, "Incorrect column type" );
+
+      return column_type;
 }
 
 //-----------------------------------------------------------------------------
 
 void result::get_column( int index, int8_t & i )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -81,7 +83,7 @@ void result::get_column( int index, int8_t & i )
 
 void result::get_column( int index, int16_t & i )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -89,7 +91,7 @@ void result::get_column( int index, int16_t & i )
 
 void result::get_column( int index, int32_t & i )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    i = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -97,7 +99,7 @@ void result::get_column( int index, int32_t & i )
 
 void result::get_column( int index, int64_t & i )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    i = sqlite3_column_int64( m_stmt->stmt, index );
 }
 
@@ -105,7 +107,7 @@ void result::get_column( int index, int64_t & i )
 
 void result::get_column( int index, uint8_t & u )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -113,7 +115,7 @@ void result::get_column( int index, uint8_t & u )
 
 void result::get_column( int index, uint16_t & u )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -121,7 +123,7 @@ void result::get_column( int index, uint16_t & u )
 
 void result::get_column( int index, uint32_t & u )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    u = sqlite3_column_int( m_stmt->stmt, index );
 }
 
@@ -129,7 +131,7 @@ void result::get_column( int index, uint32_t & u )
 
 void result::get_column( int index, uint64_t & u )
 {
-   check_column( index, 1 >> SQLITE_INTEGER );
+   check_column( index, 1 << SQLITE_INTEGER );
    u = sqlite3_column_int64( m_stmt->stmt, index );
 }
 
@@ -137,7 +139,7 @@ void result::get_column( int index, uint64_t & u )
 
 void result::get_column( int index, double & d )
 {
-   check_column( index, 1 >> SQLITE_FLOAT );
+   check_column( index, 1 << SQLITE_FLOAT );
    d = sqlite3_column_double( m_stmt->stmt, index );
 }
 
@@ -145,8 +147,23 @@ void result::get_column( int index, double & d )
 
 void result::get_column( int index, std::string & s )
 {
-   check_column( index, ( 1 >> SQLITE_TEXT ) | ( 1 >> SQLITE_BLOB ) );
-   s = ( const char * )sqlite3_column_blob( m_stmt->stmt, index );
+   int column_mask = ( 1 << SQLITE_TEXT ) | ( 1 << SQLITE_BLOB );
+   int column_type = check_column( index, column_mask );
+
+   const void * p;
+   switch ( column_type )
+   {
+      case SQLITE_TEXT:
+         p = sqlite3_column_text( m_stmt->stmt, index );
+         break;
+
+      case SQLITE_BLOB:
+         p = sqlite3_column_blob( m_stmt->stmt, index );
+         break;
+   }
+
+   int length = sqlite3_column_bytes( m_stmt->stmt, index );
+   s.assign( reinterpret_cast< const char * >( p ), length );
 }
 
 //-----------------------------------------------------------------------------

@@ -197,10 +197,23 @@ void statement::set_parameter( int index, double d )
 
 void statement::set_parameter( int index, const std::string & s )
 {
-   int rc = sqlite3_bind_blob( m_stmt->stmt,
-                               check_parameter( index ),
-                               s.data(), s.length(),
-                               SQLITE_STATIC );
+   int rc;
+
+   int col = check_parameter( index );
+   if ( sqlite3_column_type( m_stmt->stmt, col ) == SQLITE_BLOB )
+   {
+      rc = sqlite3_bind_blob( m_stmt->stmt,
+                              col,
+                              s.data(), s.length(),
+                              SQLITE_STATIC );
+   }
+   else
+   {
+      rc = sqlite3_bind_text( m_stmt->stmt,
+                              col,
+                              s.data(), s.length(),
+                              SQLITE_STATIC );
+   }
    if ( rc )
       throw_error( bind_parameter, rc );
 }

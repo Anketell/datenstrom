@@ -18,6 +18,170 @@ const sql_map_t sql_map =
 
 //-----------------------------------------------------------------------------
 
+{ "test.create",
+
+R"(
+   CREATE TABLE Object 
+   (
+      i8          INTEGER,
+      i16         INTEGER,
+      i32         INTEGER,
+      i64         INTEGER,
+      u8          INTEGER,
+      u16         INTEGER,
+      u32         INTEGER,
+      u64         INTEGER,
+      f           FLOAT,
+      d           FLOAT,
+      hello       VARCHAR( 10 ),
+      dt          DATE,
+      tm          DATETIME,
+      dttm        DATETIME,
+      id          INTEGER NOT NULL PRIMARY KEY
+   )   
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.batch",
+
+R"(
+   CREATE TABLE T1 (
+      field INTEGER
+   );
+   
+   CREATE TABLE T2 (
+      field INTEGER
+   );
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_id",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+   RETURNING id;
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.result",
+
+R"(
+   SELECT u64 FROM Object WHERE hello = ?
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results",
+
+R"(
+   SELECT i8, 
+            i16, 
+            i32, 
+            i64, 
+            u8, 
+            u16, 
+            u32, 
+            u64, 
+            f, 
+            d, 
+            hello, 
+            dt, 
+            tm, 
+            dttm
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.num_rows",
+
+R"(
+   SELECT COUNT( * ) FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.del_rows",
+
+R"(
+   DELETE FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.named",
+
+R"(
+   INSERT INTO Object VALUES ( @i8, 
+                                 @i16, 
+                                 @i32, 
+                                 @i64,
+                                 @u8, 
+                                 @u16, 
+                                 @u32, 
+                                 @u64, 
+                                 @float, 
+                                 @double, 
+                                 @string,
+                                 @date, @time, @datetime, NULL )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
 { "test_table.list_id",
 
 R"(
