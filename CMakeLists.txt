@@ -42,6 +42,7 @@ endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
 include_directories( "${CMAKE_SOURCE_DIR}/third-party" )
+include_directories( "${CMAKE_SOURCE_DIR}/third-party/sqlite3/src" )
 
 if ( WIN32 )
    include_directories( "${CMAKE_SOURCE_DIR}/win32" )

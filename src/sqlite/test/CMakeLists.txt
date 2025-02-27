@@ -95,6 +95,10 @@ if ( MSVC )
 
 else( MSVC )
 
+   target_compile_definitions( ${TARGET} PUBLIC DS_MODULE_PATH 
+      DS_MODULE_PATH="${CMAKE_BINARY_DIR}/src/sqlite"
+   )
+
    target_link_options( sqlite_sql_module PRIVATE "--entry=enroll_sql" )
    target_link_options( sqlite_test_module PRIVATE "--entry=enroll_sql" )
 
