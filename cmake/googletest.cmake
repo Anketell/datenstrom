@@ -20,9 +20,9 @@ add_library( gtest_main IMPORTED STATIC GLOBAL )
 
 ExternalProject_Get_Property( googletest source_dir binary_dir )
 
-set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtestd.lib" )
+set_target_properties( gtest PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtest.lib" )
 
-set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtest_maind.lib" )
+set_target_properties( gtest_main PROPERTIES "IMPORTED_LOCATION" "${binary_dir}/lib/Debug/gtest_main.lib" )
 
 link_directories( "${binary_dir}/lib/Debug" )
 

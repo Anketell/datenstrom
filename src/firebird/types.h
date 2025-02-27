@@ -9,7 +9,7 @@
 
 //-----------------------------------------------------------------------------
 
-#include <firebird/ibase.h>
+#include <ibase.h>
 #include <firebird/error.h>
 #include <vector>
 #include <malloc.h>

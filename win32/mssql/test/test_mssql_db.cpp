@@ -20,44 +20,6 @@ NAMESPACE_TEST( mssql, db, should_return_type )
 }
 
 //-----------------------------------------------------------------------------
-/*
-NAMESPACE_TEST( mssql, db, should_SQL_authenticate )
-{
-   ds::db::connection test_db( tester_con_str );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-   EXPECT_NO_THROW( test_db.create( test_db_name ) );
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-}
-
-//-----------------------------------------------------------------------------
-
-NAMESPACE_TEST( mssql, db, should_Azure_create_good_path )
-{
-   ds::db::connection test_db( azure_con_str );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-   EXPECT_NO_THROW( test_db.create( test_db_name ) );
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-}
-
-//-----------------------------------------------------------------------------
-
-NAMESPACE_TEST( mssql, db, should_Azure_execute_batch )
-{
-   ds::db::connection test_db( azure_con_str );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-   EXPECT_NO_THROW( test_db.create( test_db_name ) );
-
-   EXPECT_NO_THROW( test_db.use( test_db_name ) );
-
-   EXPECT_NO_THROW( test_db.execute_batch( batch ) );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-}
-*/
-//-----------------------------------------------------------------------------
 
 NAMESPACE_TEST( mssql, db, should_create_good_path )
 {

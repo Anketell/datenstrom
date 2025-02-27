@@ -11,8 +11,7 @@ REM cd build
 REM "C:\Program Files\CMake\bin\cmake.exe" ..
 REM popd
 
-"C:\Program Files\CMake\bin\cmake.exe" -A x64 -DMSSQL_TEST=%MSSQL_TEST% ^
-                                              -DDS_BIN=YES              ^
+"C:\Program Files\CMake\bin\cmake.exe" -A x64 -DDS_BIN=YES              ^
                                               -DDS_CSV=YES              ^
                                               -DDS_DB=YES               ^
                                               -DDS_FIREBIRD=YES         ^
@@ -21,8 +20,7 @@ REM popd
 
 if NOT EXIST build\x86 mkdir build\x86
 
-"C:\Program Files\CMake\bin\cmake.exe" -A Win32 -DMSSQL_TEST=%MSSQL_TEST% ^
-                                                -DDS_BIN=YES              ^
+"C:\Program Files\CMake\bin\cmake.exe" -A Win32 -DDS_BIN=YES              ^
                                                 -DDS_CSV=YES              ^
                                                 -DDS_DB=YES               ^
                                                 -DDS_FIREBIRD=YES         ^

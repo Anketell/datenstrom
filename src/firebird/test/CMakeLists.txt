@@ -35,6 +35,17 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
+if( DEFINED ENV{DS_FIREBIRD_TEST} )
+   set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} )
+else()
+   set( FIREBIRD_TEST "firebird://localhost/$ENV{TEMP}" )
+endif()
+
+target_compile_definitions( ${TARGET} PUBLIC
+   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+   FIREBIRD_TEST="${FIREBIRD_TEST}"
+)
+
 add_dependencies( ${TARGET} ds_firebird_module )
 
 add_test( ${TARGET} ${TARGET} )

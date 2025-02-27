@@ -25,6 +25,12 @@ add_executable( ${TARGET}
 
 add_dependencies( ${TARGET} googletest )
 
+if( DEFINED ENV{DS_MSSQL_TEST} )
+   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} )
+else()
+   set( MSSQL_TEST "mssql://(local)")
+endif()
+
 target_compile_definitions( ${TARGET} PUBLIC
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
    MSSQL_TEST="${MSSQL_TEST}"

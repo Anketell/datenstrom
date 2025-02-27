@@ -6,8 +6,6 @@ set( TARGET ds_firebird_module )
 
 if( WIN32 )
 
-   include( firebird )
-
    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451 /wd6011 /wd6385 /wd4244 /wd4267" )
 
 endif( WIN32 )
@@ -44,9 +42,32 @@ add_library( ${TARGET} MODULE
    ${HEADERS}
 )
 
+if( DEFINED ENV{DS_FB_INC_PATH} )
+
+   target_include_directories( ${TARGET} PUBLIC $ENV{DS_FB_INC_PATH} )
+
+endif()
+
+
+if( DEFINED ENV{DS_FB_LIB_PATH} )
+
+   target_link_directories( ${TARGET} PUBLIC $ENV{DS_FB_LIB_PATH} )
+
+endif()
+
+if( DEFINED ENV{DS_FB_CLIENT_LIB} )
+
+   set( FB_CLIENT_LIB $ENV{DS_FB_CLIENT_LIB} )
+
+else()
+
+   set( FB_CLIENT_LIB fbclient)
+
+endif()
+
 target_link_libraries( ${TARGET}
    ds_db
-   fbclient
+   ${FB_CLIENT_LIB}
 )
 
 if ( WIN32 )
