@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/connection.h>
+#include <db/context.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 
@@ -34,14 +34,16 @@ NAMESPACE_TEST( sqlite, db, should_create_good_path )
 
 NAMESPACE_TEST( sqlite, db, should_execute_batch )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
 
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( batch ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.batch" ) );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -58,13 +60,15 @@ NAMESPACE_TEST( sqlite, db, should_fail_create_bad_path )
 
 NAMESPACE_TEST( sqlite, statement, should_execute_simple )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db( create ).execute() );
+   EXPECT_NO_THROW( test_db( "test.create" ).execute() );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
@@ -88,16 +92,18 @@ NAMESPACE_TEST( sqlite, statement, should_fail_execute_bad_sql )
 
 NAMESPACE_TEST( sqlite, statement, should_execute_query_parameters )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] << ds::endr );
 
@@ -115,16 +121,18 @@ NAMESPACE_TEST( sqlite, statement, should_execute_query_parameters )
 
 NAMESPACE_TEST( sqlite, statement, should_return_execute_value )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert_id );
+      ds::db::statement insert_test = test_db( "test.insert_id" );
 
       EXPECT_NO_THROW( insert_test << data[ 0 ] );
       EXPECT_EQ( static_cast< int >( insert_test.result() ), 1 );
@@ -132,7 +140,7 @@ NAMESPACE_TEST( sqlite, statement, should_return_execute_value )
       EXPECT_NO_THROW( insert_test << data[ 1 ] );
       EXPECT_EQ( static_cast< int >( insert_test.result() ), 2 );
 
-      ds::db::statement value_test = test_db( num_rows );
+      ds::db::statement value_test = test_db( "test.num_rows" );
 
       EXPECT_EQ( static_cast< int >( value_test.result() ), 2 );
    }
@@ -144,16 +152,18 @@ NAMESPACE_TEST( sqlite, statement, should_return_execute_value )
 
 NAMESPACE_TEST( sqlite, statement, should_fail_query_too_many_parameters )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       insert_test << data[ 0 ];
 
@@ -180,16 +190,18 @@ NAMESPACE_TEST( sqlite, statement, should_fail_query_too_many_parameters )
 
 NAMESPACE_TEST( sqlite, statement, should_fail_query_not_enough_parameters )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       EXPECT_THROW( insert_test.execute(), std::runtime_error );
    }
@@ -201,23 +213,25 @@ NAMESPACE_TEST( sqlite, statement, should_fail_query_not_enough_parameters )
 
 NAMESPACE_TEST( sqlite, statement, should_provide_query_result_list )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       ds::db::result result;
 
@@ -236,23 +250,25 @@ NAMESPACE_TEST( sqlite, statement, should_provide_query_result_row )
 {
    static const char * expected_error = "SQLite result get column: No row available";
 
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement test_stmt = test_db( result );
+      ds::db::statement test_stmt = test_db( "test.result" );
 
       uint64_t u64;
 
@@ -263,8 +279,8 @@ NAMESPACE_TEST( sqlite, statement, should_provide_query_result_row )
       EXPECT_EQ( u64, 128 );
 
       EXPECT_THROW_ASSESS( u64 = test_stmt( "Hello3" ),
-         std::runtime_error,
-         EXPECT_STREQ( e.what(), expected_error ) );
+                           std::runtime_error,
+                           EXPECT_STREQ( e.what(), expected_error ) );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -274,23 +290,25 @@ NAMESPACE_TEST( sqlite, statement, should_provide_query_result_row )
 
 NAMESPACE_TEST( sqlite, result, should_provide_query_data )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
          EXPECT_NO_THROW( insert_test << o <<ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       ds::db::result row;
 
@@ -313,23 +331,25 @@ NAMESPACE_TEST( sqlite, result, should_provide_query_data )
 
 NAMESPACE_TEST( sqlite, result, should_support_unixtime )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data_alt )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       ds::db::result row;
 
@@ -352,16 +372,18 @@ NAMESPACE_TEST( sqlite, result, should_support_unixtime )
 
 NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
       {
@@ -371,7 +393,7 @@ NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
    }
 
    {
-      ds::db::statement delete_test = test_db( del_rows );
+      ds::db::statement delete_test = test_db( "test.del_rows" );
 
       EXPECT_EQ( delete_test.result().rows_affected(), 2 );
    }
@@ -383,14 +405,16 @@ NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
 
 NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
    {
-      ds::db::statement create_test = test_db( create );
+      ds::db::statement create_test = test_db( "test.create" );
 
       EXPECT_EQ( ds::db::result(), create_test.result() );
    }
@@ -402,23 +426,25 @@ NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
 
 NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       ds::db::result row;
 
@@ -447,23 +473,25 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
 
 NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       ds::db::result row;
 

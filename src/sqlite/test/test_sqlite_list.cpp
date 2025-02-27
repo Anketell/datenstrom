@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/connection.h>
+#include <db/context.h>
 #include <db/transaction.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
@@ -15,16 +15,18 @@
 
 NAMESPACE_TEST( sqlite, list, should_provide_iterator )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
       {
@@ -35,7 +37,7 @@ NAMESPACE_TEST( sqlite, list, should_provide_iterator )
 
    {
       int i = 0;
-      for ( Object o : test_db( results ) )
+      for ( Object o : test_db( "test.results" ) )
          EXPECT_EQ( o, data[ i++ ] );
    }
 
@@ -46,16 +48,18 @@ NAMESPACE_TEST( sqlite, list, should_provide_iterator )
 
 NAMESPACE_TEST( sqlite, list, should_manage_cursor_within_transaction )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
       {
@@ -68,7 +72,7 @@ NAMESPACE_TEST( sqlite, list, should_manage_cursor_within_transaction )
       ds::db::transaction txn( test_db );
       int i = 0;
 
-      ds::db::statement list = test_db( results );
+      ds::db::statement list = test_db( "test.results" );
       for ( Object o : list )
       {
          EXPECT_EQ( o, data[ i++ ] );
@@ -89,16 +93,18 @@ NAMESPACE_TEST( sqlite, list, should_manage_cursor_within_transaction )
 
 NAMESPACE_TEST( sqlite, list, should_manage_cursor_without_transaction )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
       {
@@ -110,7 +116,7 @@ NAMESPACE_TEST( sqlite, list, should_manage_cursor_without_transaction )
    {
       int i = 0;
 
-      ds::db::statement list = test_db( results );
+      ds::db::statement list = test_db( "test.results" );
       for ( Object o : list )
       {
          EXPECT_EQ( o, data[ i++ ] );

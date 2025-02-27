@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/connection.h>
+#include <db/context.h>
 #include <db/transaction.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
@@ -15,16 +15,18 @@
 
 NAMESPACE_TEST( sqlite, transaction, should_commit_on_destruction )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       ds::db::transaction transaction( test_db );
 
@@ -33,7 +35,7 @@ NAMESPACE_TEST( sqlite, transaction, should_commit_on_destruction )
    }
 
    {
-      ds::db::statement results_test = test_db( num_rows );
+      ds::db::statement results_test = test_db( "test.num_rows" );
 
       int count = results_test.result();
 
@@ -47,17 +49,19 @@ NAMESPACE_TEST( sqlite, transaction, should_commit_on_destruction )
 
 NAMESPACE_TEST( sqlite, transaction, should_rollback_on_exception )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    try
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       ds::db::transaction transaction( test_db );
 
@@ -71,7 +75,7 @@ NAMESPACE_TEST( sqlite, transaction, should_rollback_on_exception )
    }
 
    {
-      ds::db::statement results_test = test_db( num_rows );
+      ds::db::statement results_test = test_db( "test.num_rows" );
 
       int count = results_test.result();
 
@@ -85,16 +89,18 @@ NAMESPACE_TEST( sqlite, transaction, should_rollback_on_exception )
 
 NAMESPACE_TEST( sqlite, transaction, should_fail_nested )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       ds::db::transaction transaction1( test_db );
 
@@ -108,13 +114,15 @@ NAMESPACE_TEST( sqlite, transaction, should_fail_nested )
 
 NAMESPACE_TEST( sqlite, transaction, should_fail_lone_commit )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    EXPECT_THROW( test_db.commit_transaction(), std::runtime_error );
 
@@ -125,13 +133,15 @@ NAMESPACE_TEST( sqlite, transaction, should_fail_lone_commit )
 
 NAMESPACE_TEST( sqlite, transaction, should_fail_lone_rollback )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    EXPECT_THROW( test_db.rollback_transaction(), std::runtime_error );
 
@@ -142,16 +152,18 @@ NAMESPACE_TEST( sqlite, transaction, should_fail_lone_rollback )
 
 NAMESPACE_TEST( sqlite, savepoint, should_release_on_destruction )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       ds::db::transaction transaction( test_db );
 
@@ -164,7 +176,7 @@ NAMESPACE_TEST( sqlite, savepoint, should_release_on_destruction )
    }
 
    {
-      ds::db::statement results_test = test_db( num_rows );
+      ds::db::statement results_test = test_db( "test.num_rows" );
 
       int count = results_test.result();
 
@@ -178,16 +190,18 @@ NAMESPACE_TEST( sqlite, savepoint, should_release_on_destruction )
 
 NAMESPACE_TEST( sqlite, savepoint, should_rollback_on_exception )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( insert );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
       ds::db::transaction transaction( test_db );
 
@@ -208,7 +222,7 @@ NAMESPACE_TEST( sqlite, savepoint, should_rollback_on_exception )
    }
 
    {
-      ds::db::statement results_test = test_db( num_rows );
+      ds::db::statement results_test = test_db( "test.num_rows" );
 
       int count = results_test.result();
 
@@ -222,7 +236,9 @@ NAMESPACE_TEST( sqlite, savepoint, should_rollback_on_exception )
 
 NAMESPACE_TEST( sqlite, savepoint, should_fail_no_name  )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -240,7 +256,9 @@ NAMESPACE_TEST( sqlite, savepoint, should_fail_no_name  )
 
 NAMESPACE_TEST( sqlite, savepoint, should_fail_bad_release_name  )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -260,7 +278,9 @@ NAMESPACE_TEST( sqlite, savepoint, should_fail_bad_release_name  )
 
 NAMESPACE_TEST( sqlite, savepoint, should_fail_bad_rollback_name  )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

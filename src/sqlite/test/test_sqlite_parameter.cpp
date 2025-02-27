@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/connection.h>
+#include <db/context.h>
 #include <sqlite/test/sqlite_test_data.h>
 #include <test_model/object_serialise.h>
 #include <string>
@@ -35,16 +35,18 @@ const ds::db::name_list_t named_parameters =
 
 NAMESPACE_TEST( sqlite, parameter, should_insert_named )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( named, named_parameters );
+      ds::db::statement insert_test = test_db( "test.named", named_parameters );
 
       EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
                                    << "14:05:20"
@@ -70,16 +72,18 @@ NAMESPACE_TEST( sqlite, parameter, should_insert_named )
 
 NAMESPACE_TEST( sqlite, parameter, should_retrieve_named )
 {
-   ds::db::connection test_db( test_con_str );
+   ds::db::context::enroll_sql_path_list( "." );
+
+   ds::db::context test_db( test_con_str );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( create ) );
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( named, named_parameters );
+      ds::db::statement insert_test = test_db( "test.named", named_parameters );
 
       EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
                                    << "14:05:20"
@@ -101,7 +105,7 @@ NAMESPACE_TEST( sqlite, parameter, should_retrieve_named )
    Object o;
 
    {
-      ds::db::statement results_test = test_db( results );
+      ds::db::statement results_test = test_db( "test.results" );
 
       auto row = results_test.result();
 
