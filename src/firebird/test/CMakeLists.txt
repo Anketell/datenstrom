@@ -38,7 +38,11 @@ target_link_libraries( ${TARGET}
 if( DEFINED ENV{DS_FIREBIRD_TEST} )
    set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} )
 else()
-   set( FIREBIRD_TEST "firebird://localhost/$ENV{TEMP}" )
+   if ( MSVC )
+      set( FIREBIRD_TEST "firebird://localhost/$ENV{TEMP}" )
+   else()
+   set( FIREBIRD_TEST "firebird://localhost//tmp" )
+   endif()
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
