@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <sqlite/statement.h>
-#include <sqlite/result.h>
+#include <sqlite/rowset.h>
 #include <sqlite/error.h>
 #include <db/simple_result.h>
 #include <dsutil/string.h>

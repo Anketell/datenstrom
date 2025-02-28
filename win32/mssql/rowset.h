@@ -4,13 +4,13 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_RESULT_H
-#define DS_MYSQL_RESULT_H
+#ifndef DS_MSSQL_RESULT_H
+#define DS_MSSQL_RESULT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/result.h>
-#include <mysql/types.h>
+#include <db/rowset.h>
+#include <mssql/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace mysql
+namespace mssql
 {
 
 //-----------------------------------------------------------------------------
@@ -29,17 +29,16 @@ class rowset : public db::rowset::impl
    std::shared_ptr< stmt_t > m_stmt;
    bool                      m_valid;
 
-   void configure_buffer( void );
+   void check_column( int index );
 
-   void get_column( int              index,
-                    enum_field_types type,
-                    void           * p,
-                    size_t           length,
-                    int              is_unsigned = 0 );
+   time_t get_time( int index );
+
+   template< typename T > void get_column( int index, int c_type, T & t );
 
 public:
 
    rowset( std::shared_ptr< stmt_t > stmt );
+   ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

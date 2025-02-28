@@ -8,14 +8,14 @@ set( SOURCE
    enroll.cpp
    connection.cpp
    statement.cpp
-   result.cpp
+   rowset.cpp
    error.cpp
 )
 
 set( HEADERS
    connection.h
    statement.h
-   result.h
+   rowset.h
    error.h
    types.h
 )

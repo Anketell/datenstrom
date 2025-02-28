@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <firebird/statement_base.h>
-#include <firebird/result.h>
+#include <firebird/rowset.h>
 #include <firebird/error.h>
 #include <firebird/guard.h>
 

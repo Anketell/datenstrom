@@ -4,13 +4,14 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MSSQL_RESULT_H
-#define DS_MSSQL_RESULT_H
+#ifndef DS_FIREBIRD_RESULT_H
+#define DS_FIREBIRD_RESULT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/result.h>
-#include <mssql/types.h>
+#include <db/rowset.h>
+#include <db/transaction.h>
+#include <firebird/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -19,26 +20,34 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace mssql
+namespace firebird
 {
 
 //-----------------------------------------------------------------------------
 
-class result : public db::result::impl
-{
-   std::shared_ptr< stmt_t > m_stmt;
-   bool                      m_valid;
+   struct transactional;
 
+//-----------------------------------------------------------------------------
+
+class rowset : public db::rowset::impl
+{
+   std::shared_ptr< stmt_t >              m_stmt;
+   transactional                        & m_transactional;
+   std::unique_ptr< ds::db::transaction > m_transaction;
+   bool                                   m_valid;
+
+   void read_blob( int index, std::string & s );
    void check_column( int index );
 
-   time_t get_time( int index );
-
-   template< typename T > void get_column( int index, int c_type, T & t );
+   template< typename BI > BI get_big_int( int index );
+   template< typename I > I get_integer( int index );
 
 public:
 
-   result( std::shared_ptr< stmt_t > stmt );
-   ~result( void );
+   rowset( std::shared_ptr< stmt_t >              stmt,
+           transactional                        & trasnactional,
+           std::unique_ptr< ds::db::transaction > transaction = nullptr );
+   ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

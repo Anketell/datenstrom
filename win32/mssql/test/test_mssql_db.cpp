@@ -217,7 +217,7 @@ NAMESPACE_TEST( mssql, statement, should_provide_query_result_list )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result result;
+      ds::db::rowset result;
 
       EXPECT_NO_THROW( result = results_test.result() );
 
@@ -232,7 +232,7 @@ NAMESPACE_TEST( mssql, statement, should_provide_query_result_list )
 
 NAMESPACE_TEST( mssql, statement, should_provide_query_result_row )
 {
-   static const char * expected_error = "MSSQL result get column: No row available";
+   static const char * expected_error = "MSSQL rowset get column: No row available";
 
    ds::db::connection test_db( test_con_str );
 
@@ -270,7 +270,7 @@ NAMESPACE_TEST( mssql, statement, should_provide_query_result_row )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_provide_query_data )
+NAMESPACE_TEST( mssql, rowset, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -290,7 +290,7 @@ NAMESPACE_TEST( mssql, result, should_provide_query_data )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -309,7 +309,7 @@ NAMESPACE_TEST( mssql, result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_support_unixtime )
+NAMESPACE_TEST( mssql, rowset, should_support_unixtime )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -329,7 +329,7 @@ NAMESPACE_TEST( mssql, result, should_support_unixtime )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -348,7 +348,7 @@ NAMESPACE_TEST( mssql, result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_support_sub_second_time )
+NAMESPACE_TEST( mssql, rowset, should_support_sub_second_time )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -368,7 +368,7 @@ NAMESPACE_TEST( mssql, result, should_support_sub_second_time )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result result;
+      ds::db::rowset result;
 
       EXPECT_NO_THROW( result = results_test.result() );
 
@@ -387,7 +387,7 @@ NAMESPACE_TEST( mssql, result, should_support_sub_second_time )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_provide_rows_affected )
+NAMESPACE_TEST( mssql, rowset, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -418,7 +418,7 @@ NAMESPACE_TEST( mssql, result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_return_query_data_not_available )
+NAMESPACE_TEST( mssql, rowset, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -429,7 +429,7 @@ NAMESPACE_TEST( mssql, result, should_return_query_data_not_available )
    {
       ds::db::statement create_test = test_db( create );
 
-      EXPECT_EQ( ds::db::result(), create_test.result() );
+      EXPECT_EQ( ds::db::rowset(), create_test.result() );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -437,7 +437,7 @@ NAMESPACE_TEST( mssql, result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_return_eof_after_last_row )
+NAMESPACE_TEST( mssql, rowset, should_return_eof_after_last_row )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -459,7 +459,7 @@ NAMESPACE_TEST( mssql, result, should_return_eof_after_last_row )
       }
    }
 
-   ds::db::result res = test_db( results ).result();
+   ds::db::rowset res = test_db( results ).result();
 
    int query_count = 0;
 
@@ -474,7 +474,7 @@ NAMESPACE_TEST( mssql, result, should_return_eof_after_last_row )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( mssql, rowset, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -494,7 +494,7 @@ NAMESPACE_TEST( mssql, result, should_fail_query_wrong_column_count )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 
@@ -519,7 +519,7 @@ NAMESPACE_TEST( mssql, result, should_fail_query_wrong_column_count )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mssql, result, should_fail_query_wrong_column_type )
+NAMESPACE_TEST( mssql, rowset, should_fail_query_wrong_column_type )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -539,7 +539,7 @@ NAMESPACE_TEST( mssql, result, should_fail_query_wrong_column_type )
    {
       ds::db::statement results_test = test_db( results );
 
-      ds::db::result row;
+      ds::db::rowset row;
 
       EXPECT_NO_THROW( row = results_test.result() );
 

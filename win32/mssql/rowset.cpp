@@ -4,7 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <mssql/result.h>
+#include <mssql/rowset.h>
 #include <mssql/error.h>
 #include <dsutil/time.h>
 #include <sqlext.h>
@@ -25,7 +25,7 @@ namespace mssql
 
 //-----------------------------------------------------------------------------
 
-result::result( std::shared_ptr< stmt_t > stmt ) :
+rowset::rowset( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
    step();
@@ -33,23 +33,23 @@ m_stmt( stmt )
 
 //-----------------------------------------------------------------------------
 
-result::~result( void )
+rowset::~rowset( void )
 {
    m_stmt->reset();
 }
 
 //-----------------------------------------------------------------------------
 
-int result::column_count( void ) const
+int rowset::column_count( void ) const
 {
    return static_cast< int >( m_stmt->columns.size() );
 }
 
 //-----------------------------------------------------------------------------
 
-int result::rows_affected( void ) const
+int rowset::rows_affected( void ) const
 {
-   static constexpr char operation[] = "MSSQL result rows affeected";
+   static constexpr char operation[] = "MSSQL rowset rows affeected";
 
    SQLLEN count = 0;
    RETCODE rc = SQLRowCount( m_stmt->hstmt, &count );
@@ -60,17 +60,17 @@ int result::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
-static constexpr char operation[] = "MSSQL result get column";
+static constexpr char operation[] = "MSSQL rowset get column";
 
 //-----------------------------------------------------------------------------
 
-void result::check_column( int index )
+void rowset::check_column( int index )
 {
    if ( !m_valid )
       throw_error( operation, "No row available" );
 
    if ( !m_stmt )
-      throw_error( operation, "Bad result" );
+      throw_error( operation, "Bad rowset" );
 
    if ( index >= column_count() )
       throw_error( operation, "No column available" );
@@ -79,7 +79,7 @@ void result::check_column( int index )
 
 //-----------------------------------------------------------------------------
 
-time_t result::get_time( int index )
+time_t rowset::get_time( int index )
 {
    std::string time;
 
@@ -112,7 +112,7 @@ time_t result::get_time( int index )
 
 //-----------------------------------------------------------------------------
 
-template< typename T > void result::get_column( int index, int c_type, T & t )
+template< typename T > void rowset::get_column( int index, int c_type, T & t )
 {
    check_column( index );
 
@@ -129,7 +129,7 @@ template< typename T > void result::get_column( int index, int c_type, T & t )
 
 //-----------------------------------------------------------------------------
 
-template<> void result::get_column< std::string >( int index, int c_type, std::string & t )
+template<> void rowset::get_column< std::string >( int index, int c_type, std::string & t )
 {
    check_column( index );
 
@@ -173,77 +173,77 @@ template<> void result::get_column< std::string >( int index, int c_type, std::s
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int8_t & i )
+void rowset::get_column( int index, int8_t & i )
 {
    get_column< int8_t >( index, SQL_C_STINYINT, i );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int16_t & i )
+void rowset::get_column( int index, int16_t & i )
 {
    get_column< int16_t >( index, SQL_C_SSHORT, i );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int32_t & i )
+void rowset::get_column( int index, int32_t & i )
 {
    get_column< int32_t >( index, SQL_C_SLONG, i );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, int64_t & i )
+void rowset::get_column( int index, int64_t & i )
 {
    get_column< int64_t >( index, SQL_C_SBIGINT, i );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint8_t & u )
+void rowset::get_column( int index, uint8_t & u )
 {
    get_column< uint8_t >( index, SQL_C_UTINYINT, u );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint16_t & u )
+void rowset::get_column( int index, uint16_t & u )
 {
    get_column< uint16_t >( index, SQL_C_USHORT, u );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint32_t & u )
+void rowset::get_column( int index, uint32_t & u )
 {
    get_column< uint32_t >( index, SQL_C_ULONG, u );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, uint64_t & u )
+void rowset::get_column( int index, uint64_t & u )
 {
    get_column< uint64_t >( index, SQL_C_UBIGINT, u );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, double & d )
+void rowset::get_column( int index, double & d )
 {
    get_column< double >( index, SQL_C_DOUBLE, d );
 }
 
 //-----------------------------------------------------------------------------
 
-void result::get_column( int index, std::string & s )
+void rowset::get_column( int index, std::string & s )
 {
    get_column< std::string >( index, SQL_C_CHAR, s );
 }
 
 //-----------------------------------------------------------------------------
 
-bool result::step( void )
+bool rowset::step( void )
 {
    m_valid = SQLFetch( m_stmt->hstmt ) == SQL_SUCCESS;
 
@@ -252,7 +252,7 @@ bool result::step( void )
 
 //-----------------------------------------------------------------------------
 
-bool result::eof( void ) const
+bool rowset::eof( void ) const
 {
    return !m_valid;
 }

@@ -4,7 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <sqlite/result.h>
+#include <sqlite/rowset.h>
 #include <sqlite/error.h>
 
 //-----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ int rowset::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
-int result::check_column( int index, int type_mask )
+int rowset::check_column( int index, int type_mask )
 {
    static constexpr char operation[] = "SQLite result get column";
 

@@ -4,14 +4,13 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_FIREBIRD_RESULT_H
-#define DS_FIREBIRD_RESULT_H
+#ifndef DS_SQLITE_RESULT_H
+#define DS_SQLITE_RESULT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/result.h>
-#include <db/transaction.h>
-#include <firebird/types.h>
+#include <db/rowset.h>
+#include <sqlite/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -20,34 +19,23 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace firebird
+namespace sqlite
 {
-
-//-----------------------------------------------------------------------------
-
-   struct transactional;
 
 //-----------------------------------------------------------------------------
 
 class rowset : public db::rowset::impl
 {
-   std::shared_ptr< stmt_t >              m_stmt;
-   transactional                        & m_transactional;
-   std::unique_ptr< ds::db::transaction > m_transaction;
-   bool                                   m_valid;
+   std::shared_ptr< stmt_t > m_stmt;
+   int                       m_count;
+   bool                      m_valid;
 
-   void read_blob( int index, std::string & s );
-   void check_column( int index );
-
-   template< typename BI > BI get_big_int( int index );
-   template< typename I > I get_integer( int index );
+   int check_column( int index, int type_mask );
 
 public:
 
-   rowset( std::shared_ptr< stmt_t >              stmt,
-           transactional                        & trasnactional,
-           std::unique_ptr< ds::db::transaction > transaction = nullptr );
-   ~rowset( void );
+   rowset( std::shared_ptr< stmt_t > stmt );
+   virtual ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;

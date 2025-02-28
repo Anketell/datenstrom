@@ -8,10 +8,10 @@ EXPORTS
    ??_R0?AVNot_found_exception@factory@db@ds@@@8                        DATA
    ??_R0?AVconnection@db@ds@@@8                                         DATA
    ??_R0?AVimpl@db@ds@@@8                                               DATA
-   ??_R0?AVresult@db@ds@@@8                                             DATA
+   ??_R0?AVrowset@db@ds@@@8                                             DATA
    ??_R0?AVstatement@db@ds@@@8                                          DATA
    ??_R0?AVtransactional@db@ds@@@8                                      DATA
-   ??0result@db@ds@@QEAA@V?$shared_ptr@Vimpl@result@db@ds@@@std@@@Z
+   ??0rowset@db@ds@@QEAA@V?$shared_ptr@Vimpl@rowset@db@ds@@@std@@@Z
    ??0statement@db@ds@@QEAA@V?$shared_ptr@Vimpl@statement@db@ds@@@std@@@Z
    ??0transaction@db@ds@@QEAA@AEAVtransactional@12@@Z
    ?commit_transaction@connection@db@ds@@UEAAXXZ
@@ -19,33 +19,33 @@ EXPORTS
    ??1transaction@db@ds@@QEAA@XZ
    ??0savepoint@db@ds@@QEAA@AEAVimpl@12@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??1savepoint@db@ds@@QEAA@XZ
-   ?rows_affected@result@db@ds@@QEBAHXZ
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAC@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAF@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAH@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEA_J@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAE@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAG@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAI@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEA_K@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAN@Z
-   ??5result@db@ds@@UEAAAEAVistream@2@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
-   ?endr@result@db@ds@@UEAAXXZ
-   ??Diterator@statement@db@ds@@QEAA?AVresult@23@XZ
-   ??Citerator@statement@db@ds@@QEAAPEAVresult@23@XZ
+   ?rows_affected@rowset@db@ds@@QEBAHXZ
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAC@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAF@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAH@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEA_J@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAE@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAG@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAI@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEA_K@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAN@Z
+   ??5rowset@db@ds@@UEAAAEAVistream@2@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+   ?endr@rowset@db@ds@@UEAAXXZ
+   ??Diterator@statement@db@ds@@QEAA?AVrowset@23@XZ
+   ??Citerator@statement@db@ds@@QEAAPEAVrowset@23@XZ
    ??Eiterator@statement@db@ds@@QEAAAEAV0123@XZ
    ??9iterator@statement@db@ds@@QEBA_NAEBV0123@@Z
    ??Eiterator@statement@db@ds@@QEAAAEAV0123@H@Z
    ??0iterator@statement@db@ds@@QEAA@XZ
    ?begin@statement@db@ds@@QEAA?AViterator@123@XZ
    ?end@statement@db@ds@@QEAA?AViterator@123@XZ
-   ??0result@db@ds@@QEAA@XZ
-   ?column_count@result@db@ds@@QEBAHXZ
-   ?step@result@db@ds@@QEAA_NXZ
-   ?eof@result@db@ds@@UEBA_NXZ
-   ??8result@db@ds@@QEBA_NAEBV012@@Z
+   ??0rowset@db@ds@@QEAA@XZ
+   ?column_count@rowset@db@ds@@QEBAHXZ
+   ?step@rowset@db@ds@@QEAA_NXZ
+   ?eof@rowset@db@ds@@UEBA_NXZ
+   ??8rowset@db@ds@@QEBA_NAEBV012@@Z
    ?execute@statement@db@ds@@QEAAXXZ
-   ?result@statement@db@ds@@QEAA?AV023@XZ
+   ?result@statement@db@ds@@QEAA?AVrowset@23@XZ
    ??8iterator@statement@db@ds@@QEBA_NAEBV0123@@Z
    ?enroll_db_path_list@connection@db@ds@@SAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?clear_db_path_list@connection@db@ds@@SAXXZ
@@ -88,5 +88,5 @@ EXPORTS
    ?execute_batch@context@db@ds@@UEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?lookup@context@db@ds@@QEAAPEBDAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?keys@context@db@ds@@QEAA?AV?$set@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@XZ
-   ??0simple_result@db@ds@@QEAA@_K@Z
+   ??0simple_rowset@db@ds@@QEAA@_K@Z
 

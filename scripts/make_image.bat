@@ -38,7 +38,7 @@ xcopy /y /f src\db\context.h                                               build
 xcopy /y /f src\db\factory_helper.h                                        build\image\include\db
 xcopy /y /f src\db\factory.h                                               build\image\include\db
 xcopy /y /f src\db\impl.h                                                  build\image\include\db
-xcopy /y /f src\db\result.h                                                build\image\include\db
+xcopy /y /f src\db\rowset.h                                                build\image\include\db
 xcopy /y /f src\db\sql_map.h                                               build\image\include\db
 xcopy /y /f src\db\statement.h                                             build\image\include\db
 xcopy /y /f src\db\sql_module_harness.h                                    build\image\include\db

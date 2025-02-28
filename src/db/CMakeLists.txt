@@ -9,7 +9,7 @@ set( SOURCE
    connection.cpp
    context.cpp
    statement.cpp
-   result.cpp
+   rowset.cpp
    simple_result.cpp
    transaction.cpp
    parameter.cpp
@@ -21,7 +21,7 @@ set( HEADERS
    connection.h
    context.h
    statement.h
-   result.h
+   rowset.h
    simple_result.h
    transaction.h
    factory.h

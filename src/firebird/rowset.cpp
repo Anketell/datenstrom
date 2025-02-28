@@ -4,7 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <firebird/result.h>
+#include <firebird/rowset.h>
 #include <firebird/error.h>
 #include <firebird/transactional.h>
 #include <limits>

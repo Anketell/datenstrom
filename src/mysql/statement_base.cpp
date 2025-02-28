@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mysql/statement_base.h>
-#include <mysql/result.h>
+#include <mysql/rowset.h>
 #include <mysql/error.h>
 #include <db/simple_result.h>
 

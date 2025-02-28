@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mysql/positional_statement.h>
-#include <mysql/result.h>
+#include <mysql/rowset.h>
 #include <mysql/error.h>
 
 #include <sstream>

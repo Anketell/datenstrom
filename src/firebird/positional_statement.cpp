@@ -6,7 +6,7 @@
 
 #include <db/transaction.h>
 #include <firebird/positional_statement.h>
-#include <firebird/result.h>
+#include <firebird/rowset.h>
 #include <firebird/error.h>
 #include <firebird/guard.h>
 

@@ -288,7 +288,7 @@ NAMESPACE_TEST( sqlite, statement, should_provide_query_result_row )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_provide_query_data )
+NAMESPACE_TEST( sqlite, rowset, should_provide_query_data )
 {
    ds::db::context::enroll_sql_path_list( "." );
 
@@ -329,7 +329,7 @@ NAMESPACE_TEST( sqlite, result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_support_unixtime )
+NAMESPACE_TEST( sqlite, rowset, should_support_unixtime )
 {
    ds::db::context::enroll_sql_path_list( "." );
 
@@ -370,7 +370,7 @@ NAMESPACE_TEST( sqlite, result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
+NAMESPACE_TEST( sqlite, rowset, should_provide_rows_affected )
 {
    ds::db::context::enroll_sql_path_list( "." );
 
@@ -403,7 +403,7 @@ NAMESPACE_TEST( sqlite, result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
+NAMESPACE_TEST( sqlite, rowset, should_return_query_data_not_available )
 {
    ds::db::context::enroll_sql_path_list( "." );
 
@@ -424,7 +424,7 @@ NAMESPACE_TEST( sqlite, result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( sqlite, rowset, should_fail_query_wrong_column_count )
 {
    ds::db::context::enroll_sql_path_list( "." );
 
@@ -471,7 +471,7 @@ NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_count )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, result, should_fail_query_wrong_column_type )
+NAMESPACE_TEST( sqlite, rowset, should_fail_query_wrong_column_type )
 {
    ds::db::context::enroll_sql_path_list( "." );
 

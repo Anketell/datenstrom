@@ -5,7 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <mssql/statement_base.h>
-#include <mssql/result.h>
+#include <mssql/rowset.h>
 #include <mssql/error.h>
 #include <dsutil/time.h>
 #include <sqlext.h>
@@ -322,11 +322,11 @@ void statement_base::execute( void )
 
 //-----------------------------------------------------------------------------
 
-db::result statement_base::result( void )
+db::rowset statement_base::result( void )
 {
    m_stmt->execute();
 
-   return std::make_shared< mssql::result >( m_stmt );
+   return std::make_shared< mssql::rowset >( m_stmt );
 }
 
 //-----------------------------------------------------------------------------

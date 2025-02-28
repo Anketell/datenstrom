@@ -251,7 +251,7 @@ NAMESPACE_TEST( mysql, statement, should_fail_bad_query )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mysql, result, should_provide_query_data )
+NAMESPACE_TEST( mysql, rowset, should_provide_query_data )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -290,7 +290,7 @@ NAMESPACE_TEST( mysql, result, should_provide_query_data )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mysql, result, should_support_unixtime )
+NAMESPACE_TEST( mysql, rowset, should_support_unixtime )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -329,7 +329,7 @@ NAMESPACE_TEST( mysql, result, should_support_unixtime )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mysql, result, should_provide_rows_affected )
+NAMESPACE_TEST( mysql, rowset, should_provide_rows_affected )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -358,7 +358,7 @@ NAMESPACE_TEST( mysql, result, should_provide_rows_affected )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mysql, result, should_return_query_data_not_available )
+NAMESPACE_TEST( mysql, rowset, should_return_query_data_not_available )
 {
    ds::db::connection test_db( test_con_str );
 
@@ -375,7 +375,7 @@ NAMESPACE_TEST( mysql, result, should_return_query_data_not_available )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( mysql, result, should_fail_query_wrong_column_count )
+NAMESPACE_TEST( mysql, rowset, should_fail_query_wrong_column_count )
 {
    ds::db::connection test_db( test_con_str );
 

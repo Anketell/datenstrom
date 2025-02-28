@@ -25,7 +25,7 @@ set( SOURCE
    statement_base.cpp
    positional_statement.cpp
    named_statement.cpp
-   result.cpp
+   rowset.cpp
    error.cpp
    types.cpp
 )
@@ -38,7 +38,7 @@ set( HEADERS
    statement_base.h
    positional_statement.h
    named_statement.h
-   result.h
+   rowset.h
    error.h
    types.h
 )

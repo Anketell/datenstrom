@@ -4,13 +4,13 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_SQLITE_RESULT_H
-#define DS_SQLITE_RESULT_H
+#ifndef DS_MYSQL_RESULT_H
+#define DS_MYSQL_RESULT_H
 
 //-----------------------------------------------------------------------------
 
-#include <db/result.h>
-#include <sqlite/types.h>
+#include <db/rowset.h>
+#include <mysql/types.h>
 
 //-----------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ namespace ds
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
+namespace mysql
 {
 
 //-----------------------------------------------------------------------------
@@ -27,15 +27,19 @@ namespace sqlite
 class rowset : public db::rowset::impl
 {
    std::shared_ptr< stmt_t > m_stmt;
-   int                       m_count;
    bool                      m_valid;
 
-   int check_column( int index, int type_mask );
+   void configure_buffer( void );
+
+   void get_column( int              index,
+                    enum_field_types type,
+                    void           * p,
+                    size_t           length,
+                    int              is_unsigned = 0 );
 
 public:
 
    rowset( std::shared_ptr< stmt_t > stmt );
-   virtual ~rowset( void );
 
    virtual int column_count( void ) const override;
    virtual int rows_affected( void ) const override;
