@@ -10,7 +10,7 @@ set( SOURCE
    context.cpp
    statement.cpp
    rowset.cpp
-   simple_result.cpp
+   simple_rowset.cpp
    transaction.cpp
    parameter.cpp
    sql_map.cpp
@@ -22,7 +22,7 @@ set( HEADERS
    context.h
    statement.h
    rowset.h
-   simple_result.h
+   simple_rowset.h
    transaction.h
    factory.h
    factory_helper.h

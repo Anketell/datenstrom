@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 #include <test_utils/gtest.h>
-#include <db/simple_result.h>
+#include <db/simple_rowset.h>
 #include <limits>
 
 //-----------------------------------------------------------------------------
