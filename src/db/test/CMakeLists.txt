@@ -9,7 +9,7 @@ set( SOURCE
    test_transaction.cpp
    test_list.cpp
    test_factory.cpp
-   test_simple_result.cpp
+   test_simple_rowset.cpp
 )
 
 set( HEADERS
