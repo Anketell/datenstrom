@@ -5,17 +5,10 @@
 set( TARGET test_ds_mysql )
 
 set( SOURCE
-   test_mysql_db.cpp
-   test_mysql_list.cpp
-   test_mysql_parameter.cpp
-   test_mysql_transaction.cpp
-   test_mysql_blob.cpp
-   test_mysql_context.cpp
-   mysql_test_data.cpp
+   test_mysql.cpp
 )
 
 set( HEADERS
-   mysql_test_data.h
 )
 
 add_executable( ${TARGET}
@@ -24,10 +17,23 @@ add_executable( ${TARGET}
 )
 
 target_link_libraries( ${TARGET}
+   test_db_module
    ds_db
    test_model
    gtest
    gtest_main
+)
+
+if( DEFINED ENV{DS_MYSQL_TEST} )
+   set( MYSQL_TEST $ENV{DS_MYSQL_TEST} )
+else()
+   set( MYSQL_TEST "mysql://localhost?username=root" )
+endif()
+
+target_compile_definitions( ${TARGET} PUBLIC  
+   DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
+   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
+   MYSQL_TEST="${MYSQL_TEST}"
 )
 
 add_dependencies( ${TARGET} ds_mysql_module )
@@ -43,15 +49,6 @@ target_link_libraries( mysql_sql_module
    ds_util
 )
 
-add_library( mysql_test_module MODULE
-   mysql_test_module.cpp
-)
-
-target_link_libraries( mysql_test_module
-   sql_module_harness
-   ds_util
-)
-
 if ( MSVC )
 
    set_target_properties( ${TARGET}
@@ -62,14 +59,9 @@ if ( MSVC )
       PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
    )
 
-   set_target_properties( mysql_test_module
-      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
-   )
-
    target_link_options( mysql_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
-   target_link_options( mysql_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
-   target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
+   target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_module" )
 
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
@@ -93,11 +85,10 @@ if ( MSVC )
 else( MSVC )
 
    target_link_options( mysql_sql_module PRIVATE "--entry=enroll_sql" )
-   target_link_options( mysql_test_module PRIVATE "--entry=enroll_sql" )
 
    target_link_options( ${TARGET} PRIVATE "-Wl,-L${CMAKE_BINARY_DIR}/src/db/test;"
                                           "-Wl,--whole-archive;"
-                                          "-Wl,-ltest_db_context;"
+                                          "-Wl,-ltest_db_module;"
                                           "-Wl,--no-whole-archive" )
 
 endif( MSVC )

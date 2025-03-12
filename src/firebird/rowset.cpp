@@ -50,8 +50,13 @@ rowset::~rowset( void )
 {
    if ( m_transaction )
    {
-      m_stmt->state = stmt_t::Preparing;
       m_transaction.reset();
+      m_stmt->state = stmt_t::Preparing;
+   }
+   else
+   {
+      if ( m_stmt->type == isc_info_sql_stmt_insert )
+      m_stmt->state = stmt_t::Preparing;
    }
 }
 

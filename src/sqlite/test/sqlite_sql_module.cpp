@@ -18,6 +18,15 @@ const sql_map_t sql_map =
 
 //-----------------------------------------------------------------------------
 
+{ "test.simple",
+
+R"(
+   SELECT 0;
+)"
+},
+   
+//-----------------------------------------------------------------------------
+
 { "test.create",
 
 R"(
@@ -112,6 +121,32 @@ R"(
 
 //-----------------------------------------------------------------------------
 
+{ "test.insert_alt",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
 { "test.result",
 
 R"(
@@ -121,23 +156,55 @@ R"(
 
 //-----------------------------------------------------------------------------
 
+{ "test.no_result",
+
+R"(
+   PRAGMA full_column_names = 1
+)"
+},
+
+//-----------------------------------------------------------------------------
+
 { "test.results",
 
 R"(
    SELECT i8, 
-            i16, 
-            i32, 
-            i64, 
-            u8, 
-            u16, 
-            u32, 
-            u64, 
-            f, 
-            d, 
-            hello, 
-            dt, 
-            tm, 
-            dttm
+          i16, 
+          i32, 
+          i64, 
+          u8, 
+          u16, 
+          u32, 
+          u64, 
+          f, 
+          d, 
+          hello, 
+          dt, 
+          tm, 
+          dttm
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results_alt",
+
+R"(
+   SELECT i8, 
+          i16, 
+          i32, 
+          i64, 
+          u8, 
+          u16, 
+          u32, 
+          u64, 
+          f, 
+          d, 
+          hello, 
+          dt, 
+          tm, 
+          dttm 
       FROM Object ORDER BY hello
 )"
 },
@@ -165,46 +232,81 @@ R"(
 { "test.named",
 
 R"(
-   INSERT INTO Object VALUES ( @i8, 
-                                 @i16, 
-                                 @i32, 
-                                 @i64,
-                                 @u8, 
-                                 @u16, 
-                                 @u32, 
-                                 @u64, 
-                                 @float, 
-                                 @double, 
-                                 @string,
-                                 @date, @time, @datetime, NULL )
+   INSERT INTO Object 
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm
+   )
+   VALUES 
+   ( 
+      @i8, 
+      @i16, 
+      @i32, 
+      @i64,
+      @u8, 
+      @u16, 
+      @u32, 
+      @u64, 
+      @float_, 
+      @double_, 
+      @string,
+      @date_, 
+      @time_, 
+      @datetime_ 
+   )
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.list_id",
+{ "test.bad_sql",
 
 R"(
-SELECT id FROM test_table ORDER BY id
+   THIS IS BAD SQL
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.insert",
+{ "test.create_blob",
 
 R"(
-INSERT INTO test_table ( text ) VALUES( @text ) RETURNING id
+   CREATE TABLE Object (
+   data BLOB )
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.query_text_by_id",
+{ "test.insert_blob",
 
-R"(
-SELECT text FROM test_table WHERE id=@id
-)"
+"INSERT INTO Object VALUES( ? )"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.select_blob",
+
+"SELECT * FROM Object"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.type",
+
+"sqlite"
 },
 };
 

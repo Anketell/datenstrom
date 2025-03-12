@@ -44,7 +44,6 @@ END;
 
 //-----------------------------------------------------------------------------
 
-const char * test_db_name   = "test_db";
 const char * test_con_str   = MSSQL_TEST;
 const char * tester_con_str = MSSQL_TEST"?username=tester&password=tester";
 const char * azure_con_str  = "mssql://pryda-pm-analytics.database.windows.net:1433?username=PMA_admin&password=Gumpti0n";

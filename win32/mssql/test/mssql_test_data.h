@@ -18,7 +18,6 @@ extern const char * create_add2;
 
 //-----------------------------------------------------------------------------
 
-extern const char * test_db_name;
 extern const char * test_con_str;
 extern const char * tester_con_str;
 extern const char * azure_con_str;

@@ -6,6 +6,8 @@
 
 #include <sqlite/rowset.h>
 #include <sqlite/error.h>
+#include <map>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 
@@ -53,22 +55,29 @@ int rowset::rows_affected( void ) const
 
 int rowset::check_column( int index, int type_mask )
 {
-   static constexpr char operation[] = "SQLite result get column";
+   static constexpr char operation[] = "SQLite rowset get column";
 
    if ( !m_valid )
       throw_error( operation, "No row available" );
 
    if ( !m_stmt )
-      throw_error( operation, "Bad result" );
+      throw_error( operation, "Bad rowset" );
 
    if ( index >= m_count )
       throw_error( operation, "No column available" );
 
    int column_type = sqlite3_column_type( m_stmt->stmt, index );
+   if ( column_type == SQLITE_TEXT )
+   {
+      const char * decl_type = sqlite3_column_decltype( m_stmt->stmt, index );
+      if ( std::strcmp( decl_type, "BLOB" ) == 0 )
+         column_type = SQLITE_BLOB;
+   }
+
    if ( ( ( 1 << column_type ) & type_mask ) == 0 )
       throw_error( operation, "Incorrect column type" );
 
-      return column_type;
+   return column_type;
 }
 
 //-----------------------------------------------------------------------------

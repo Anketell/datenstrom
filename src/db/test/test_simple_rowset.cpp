@@ -20,9 +20,9 @@ NAMESPACE_TEST( db, simple_rowset, should_return_single_value )
 
    EXPECT_EQ( static_cast< int >( res ), 123 );
 
-   EXPECT_THROW_VALUE( static_cast< int >( res ), 
-                       std::runtime_error, 
-                       strcmp( e.what(), "Get simple rowset column: No column available" ) == 0 );
+   EXPECT_THROW_MESSAGE( static_cast< int >( res ), 
+                         std::runtime_error, 
+                         "Get simple rowset column: No column available" );
 
    EXPECT_EQ( res.eof(), false );
    EXPECT_EQ( res.step(), false );
@@ -82,51 +82,37 @@ NAMESPACE_TEST( db, simple_rowset, should_error_value_too_big )
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< int8_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< int8_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< int16_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< int16_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< int32_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< int32_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< int64_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< int64_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< uint8_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< uint8_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< uint16_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< uint16_t >( res ), std::runtime_error, message );
    }
    {
       ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( uint64_limits::max() ) );
 
-      EXPECT_THROW_VALUE( static_cast< uint32_t >( res ), 
-                        std::runtime_error, 
-                        strcmp( e.what(), message ) == 0 );
+      EXPECT_THROW_MESSAGE( static_cast< uint32_t >( res ), std::runtime_error, message );
    }
 }
 
@@ -135,9 +121,9 @@ NAMESPACE_TEST( db, simple_rowset, should_error_value_too_big )
 NAMESPACE_TEST( db, simple_rowset, should_error_not_character_type )
 {
    ds::db::rowset res( std::make_shared< ds::db::simple_rowset >( 123 ) );
-   EXPECT_THROW_VALUE( res.operator std::string (), 
-                     std::runtime_error, 
-                     strcmp( e.what(), "Get simple rowset column: Not character type" ) == 0 );
+   EXPECT_THROW_MESSAGE( res.operator std::string (), 
+                         std::runtime_error, 
+                         "Get simple rowset column: Not character type" );
 }
 
 //-----------------------------------------------------------------------------

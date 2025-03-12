@@ -27,6 +27,7 @@ namespace mysql
 class connection : public db::impl
 {
   MYSQL m_mysql;
+  bool  m_transaction = false;
 
 public:
 

@@ -18,29 +18,304 @@ const sql_map_t sql_map =
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.list_id",
+{ "test.simple",
 
 R"(
-SELECT id FROM test_table ORDER BY id
+   CREATE TABLE T1 (
+      field INTEGER
+   )
+)"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.create",
+
+R"(
+   CREATE GENERATOR ObjectID;
+
+   CREATE TABLE Object (
+      i8 SMALLINT,
+      i16 SMALLINT,
+      i32 INTEGER,
+      i64 BIGINT,
+      u8 SMALLINT,
+      u16 SMALLINT,
+      u32 INTEGER,
+      u64 BIGINT,
+      f FLOAT,
+      d DOUBLE PRECISION,
+      hello VARCHAR( 10 ),
+      dt DATE,
+      tm TIME,
+      dttm TIMESTAMP,
+      ob_id INTEGER NOT NULL PRIMARY KEY );
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.insert",
+{ "test.batch",
 
 R"(
-INSERT INTO test_table VALUES( GEN_ID( TTID, 1 ), :text ) RETURNING id
+   CREATE TABLE T1 (
+      field INTEGER
+   );
+   
+   CREATE TABLE T2 (
+      field INTEGER
+   );
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.query_text_by_id",
+{ "test.insert",
 
 R"(
-SELECT text FROM test_table WHERE id=:id
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm, 
+      ob_id
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GEN_ID( ObjectID, 1 ) )
 )"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_id",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm, 
+      ob_id
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GEN_ID( ObjectID, 1 ) )
+   RETURNING ob_id;
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_alt",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm, 
+      ob_id
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GEN_ID( ObjectID, 1 ) )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.result",
+
+R"(
+   SELECT u64 FROM Object WHERE hello = ?
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.no_result",
+
+R"(
+   CREATE TABLE T1 (
+      field INTEGER
+)
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results",
+
+R"(
+   SELECT i8, 
+          i16, 
+          i32, 
+          i64, 
+          u8, 
+          u16, 
+          u32, 
+          u64, 
+          f, 
+          d, 
+          hello, 
+          dt, 
+          tm, 
+          dttm
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results_alt",
+
+R"(
+   SELECT i8, 
+          i16, 
+          i32, 
+          i64, 
+          u8, 
+          u16, 
+          u32, 
+          u64, 
+          f, 
+          d, 
+          hello, 
+          dt, 
+          tm, 
+          dttm 
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.num_rows",
+
+R"(
+   SELECT COUNT( * ) FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.del_rows",
+
+R"(
+   DELETE FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.named",
+
+R"(
+   INSERT INTO Object 
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm,
+      ob_id
+   )
+   VALUES 
+   ( 
+      :i8, 
+      :i16, 
+      :i32, 
+      :i64,
+      :u8, 
+      :u16, 
+      :u32, 
+      :u64, 
+      :float_, 
+      :double_, 
+      :string,
+      :date_, 
+      :time_, 
+      :datetime_,
+      GEN_ID( ObjectID, 1 )
+   )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.bad_sql",
+
+R"(
+   THIS IS BAD SQL
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.create_blob",
+
+R"(
+   CREATE TABLE Object (
+   data BLOB )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_blob",
+
+"INSERT INTO Object VALUES( ? )"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.select_blob",
+
+"SELECT * FROM Object"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.type",
+
+"firebird"
 },
 };
 

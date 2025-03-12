@@ -5,17 +5,10 @@
 set( TARGET test_ds_firebird )
 
 set( SOURCE
-   test_firebird_db.cpp
-   test_firebird_list.cpp
-   test_firebird_parameter.cpp
-   test_firebird_transaction.cpp
-   test_firebird_blob.cpp
-   test_firebird_context.cpp
-   firebird_test_data.cpp
+   test_firebird.cpp
 )
 
 set( HEADERS
-   firebird_test_data.h
 )
 
 add_executable( ${TARGET}
@@ -28,7 +21,7 @@ if ( WIN32 )
 endif ( WIN32 )
 
 target_link_libraries( ${TARGET}
-   test_db_context
+   test_db_module
    ds_db
    test_model
    gtest
@@ -38,17 +31,15 @@ target_link_libraries( ${TARGET}
 if( DEFINED ENV{DS_FIREBIRD_TEST} )
    set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} )
 else()
-   if ( MSVC )
-      set( FIREBIRD_TEST "firebird://localhost/$ENV{TEMP}" )
-   else()
-   set( FIREBIRD_TEST "firebird://localhost//tmp" )
-   endif()
+   set( FIREBIRD_TEST "firebird://localhost/${TEMP}?username=sysdba&password=masterkey" )
 endif()
 
-target_compile_definitions( ${TARGET} PUBLIC
-   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+target_compile_definitions( ${TARGET} PUBLIC  
+   DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
+   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    FIREBIRD_TEST="${FIREBIRD_TEST}"
 )
+
 
 add_dependencies( ${TARGET} ds_firebird_module )
 
@@ -63,15 +54,6 @@ target_link_libraries( firebird_sql_module
    ds_util
 )
 
-add_library( firebird_test_module MODULE
-   firebird_test_module.cpp
-)
-
-target_link_libraries( firebird_test_module
-   sql_module_harness
-   ds_util
-)
-
 if ( MSVC )
 
    set_target_properties( ${TARGET}
@@ -82,14 +64,9 @@ if ( MSVC )
       PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
    )
 
-   set_target_properties( firebird_test_module
-      PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
-   )
-
    target_link_options( firebird_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
-   target_link_options( firebird_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
-   target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
+   target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_module" )
 
    set( DLL_LIST
       "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
@@ -113,11 +90,10 @@ if ( MSVC )
 else( MSVC )
 
    target_link_options( firebird_sql_module PRIVATE "--entry=enroll_sql" )
-   target_link_options( firebird_test_module PRIVATE "--entry=enroll_sql" )
 
    target_link_options( ${TARGET} PRIVATE "-Wl,-L${CMAKE_BINARY_DIR}/src/db/test;"
                                           "-Wl,--whole-archive;"
-                                          "-Wl,-ltest_db_context;"
+                                          "-Wl,-ltest_db_module;"
                                           "-Wl,--no-whole-archive" )
 
 endif( MSVC )

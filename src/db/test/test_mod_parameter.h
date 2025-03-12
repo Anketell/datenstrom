@@ -4,26 +4,16 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef TEST_CONTEXT_H
-#define TEST_CONTEXT_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
+#include <db/test/init_module_paths.h>
 
 //-----------------------------------------------------------------------------
 
-class Context : public testing::TestWithParam< const char * >
+class Parameter : public init_module_paths
 {
-protected:
-
-   std::string m_sql_module_path;
-
-public:
-
-   Context( void );
 };
 
 //-----------------------------------------------------------------------------
-
-#endif

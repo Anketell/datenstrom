@@ -4,23 +4,22 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-#include <test_utils/gtest.h>
 #include <db/context.h>
-#include <sqlite/test/sqlite_test_data.h>
+#include <test_model/object.h>
+#include <db/test/test_mod_parameter.h>
+#include <db/test/test_mod_config.h>
 #include <test_model/object_serialise.h>
-#include <string>
 
 //-----------------------------------------------------------------------------
 
 const ds::db::name_list_t named_parameters =
 {
-   "datetime",
-   "time",
-   "date",
+   "datetime_",
+   "time_",
+   "date_",
    "string",
-   "double",
-   "float",
+   "double_",
+   "float_",
    "u64",
    "u32",
    "u16",
@@ -33,11 +32,9 @@ const ds::db::name_list_t named_parameters =
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, parameter, should_insert_named )
+TEST_P( Parameter, should_insert_named )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( test_con_str );
+   ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -70,11 +67,9 @@ NAMESPACE_TEST( sqlite, parameter, should_insert_named )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, parameter, should_retrieve_named )
+TEST_P( Parameter, should_retrieve_named )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( test_con_str );
+   ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

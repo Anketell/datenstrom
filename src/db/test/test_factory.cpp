@@ -99,10 +99,7 @@ constexpr char connection::TYPE[];
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-namespace db
+namespace ds::db
 {
 
 //-----------------------------------------------------------------------------
@@ -119,7 +116,7 @@ template<> impl * factory_helper< derived_db_2::connection >::construct( const c
    return new derived_db_2::connection( location );
 }
 
-}
+//-----------------------------------------------------------------------------
 
 }
 

@@ -138,10 +138,10 @@ int rowset::rows_affected( void ) const
                           size_t           length,
                           int              is_unsigned )
  {
-   static constexpr char operation[] = "MySQL get result column";
+   static constexpr char operation[] = "MySQL rowset get column";
 
    if ( !m_stmt )
-      throw_error( operation, "Bad result" );
+      throw_error( operation, "Bad rowset" );
 
    MYSQL_BIND  column = { 0 };
    bind_info_t info   = { 0 };
@@ -155,8 +155,17 @@ int rowset::rows_affected( void ) const
    column.error         = &info.error;
 
    int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
-   if ( rc )
-      throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
+   switch ( rc )
+   {
+      case 0:
+         break;
+
+      case 1:
+         throw_error( operation, "No row available" );
+
+      default:
+         throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -226,13 +235,15 @@ void rowset::get_column( int index, double & d )
 
 void rowset::get_column( int index, std::string & s )
 {
-   static constexpr char operation[] = "MySQL get rowset column";
+   static constexpr char operation[] = "MySQL rowset get column";
 
    if ( !m_stmt )
       throw_error( operation, "Bad rowset" );
 
    MYSQL_BIND  column = { 0 };
    bind_info_t info   = { 0 };
+
+   
 
    column.buffer_type   = MYSQL_TYPE_VAR_STRING;
    column.buffer_length = 0;

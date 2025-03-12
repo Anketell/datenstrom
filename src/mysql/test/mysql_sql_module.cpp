@@ -18,29 +18,299 @@ const sql_map_t sql_map =
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.list_id",
+{ "test.simple",
 
 R"(
-SELECT id FROM test_table ORDER BY id
+   SELECT 0;
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.insert",
+{ "test.no_result",
 
 R"(
-INSERT INTO test_table ( text ) VALUES( @text )
+   SET @A = 0;
 )"
 },
 
 //-----------------------------------------------------------------------------
 
-{ "test_table.query_text_by_id",
+{ "test.create",
 
 R"(
-SELECT text FROM test_table WHERE id=@id
+   set @@time_zone = '+00:00';
+
+   CREATE TABLE Object 
+   (
+      i8          INTEGER,
+      i16         INTEGER,
+      i32         INTEGER,
+      i64         INTEGER,
+      u8          INTEGER,
+      u16         INTEGER,
+      u32         INTEGER,
+      u64         INTEGER,
+      f           DOUBLE,
+      d           DOUBLE,
+      hello       VARCHAR( 10 ),
+      dt          DATE,
+      tm          TIME,
+      dttm        DATETIME,
+      id          INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
+   )
 )"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.batch",
+
+R"(
+   CREATE TABLE T1 (
+      field INTEGER
+   );
+   
+   CREATE TABLE T2 (
+      field INTEGER
+   );
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_id",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_alt",
+
+   R"(
+      INSERT INTO Object
+      (
+         i8, 
+         i16, 
+         i32, 
+         i64, 
+         u8, 
+         u16, 
+         u32, 
+         u64, 
+         f, 
+         d, 
+         hello, 
+         dt, 
+         tm, 
+         dttm 
+      )      
+      VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+   )"
+   },
+   
+//-----------------------------------------------------------------------------
+   
+
+{ "test.result",
+
+R"(
+   SELECT u64 FROM Object WHERE hello = ?
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results",
+
+R"(
+   SELECT i8, 
+           i16, 
+           i32, 
+           i64, 
+           u8, 
+           u16, 
+           u32, 
+           u64, 
+           f, 
+           d, 
+           hello, 
+           dt, 
+           tm, 
+           dttm
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.results_alt",
+
+R"(
+   SELECT i8, 
+          i16, 
+          i32, 
+          i64, 
+          u8, 
+          u16, 
+          u32, 
+          u64, 
+          f, 
+          d, 
+          hello, 
+          dt, 
+          tm, 
+          dttm 
+      FROM Object ORDER BY hello
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.num_rows",
+
+R"(
+   SELECT COUNT( * ) FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.del_rows",
+
+R"(
+   DELETE FROM Object
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.named",
+
+R"(
+   INSERT INTO Object 
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES 
+   (
+      @i8, 
+      @i16, 
+      @i32, 
+      @i64,
+      @u8, 
+      @u16, 
+      @u32, 
+      @u64, 
+      @float_, 
+      @double_, 
+      @string,
+      @date_, 
+      @time_, 
+      @datetime_
+   )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.bad_sql",
+
+R"(
+   THIS IS BAD SQL
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.create_blob",
+
+R"(
+   CREATE TABLE Object 
+   (
+      data        BLOB 
+   )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_blob",
+
+"INSERT INTO Object VALUES( ? )"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.select_blob",
+
+"SELECT * FROM Object"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.type",
+
+"mysql"
 },
 };
 

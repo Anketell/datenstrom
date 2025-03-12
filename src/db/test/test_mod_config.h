@@ -4,15 +4,19 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <db/test/test_context.h>
-#include <test_utils/gtest.h>
-#include <firebird/test/firebird_test_data.h>
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-INSTANTIATE_NAMESPACE_TEST_SUITE_P( firebird,
-                                    SQL_Module,
-                                    Context,
-                                    testing::Values( test_con_str ) );
+struct test_config_t
+{
+   const char * constr;
+   const char * ds_module_path;
+   const char * sql_module_path;
+};
+
+//-----------------------------------------------------------------------------
+
+constexpr const char * test_db_name = "test_db";
 
 //-----------------------------------------------------------------------------

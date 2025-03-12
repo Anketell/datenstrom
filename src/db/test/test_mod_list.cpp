@@ -4,20 +4,20 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <gtest/gtest.h>
-#include <test_utils/gtest.h>
+// #include <gtest/gtest.h>
+// #include <test_utils/gtest.h>
 #include <db/context.h>
 #include <db/transaction.h>
-#include <sqlite/test/sqlite_test_data.h>
+#include <test_model/object.h>
+#include <db/test/test_mod_list.h>
+#include <db/test/test_mod_config.h>
 #include <test_model/object_serialise.h>
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, list, should_provide_iterator )
+TEST_P( List, should_provide_iterator )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( test_con_str );
+   ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -46,11 +46,9 @@ NAMESPACE_TEST( sqlite, list, should_provide_iterator )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, list, should_manage_cursor_within_transaction )
+TEST_P( List, should_manage_cursor_within_transaction )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( test_con_str );
+   ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
@@ -91,11 +89,9 @@ NAMESPACE_TEST( sqlite, list, should_manage_cursor_within_transaction )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, list, should_manage_cursor_without_transaction )
+TEST_P( List, should_manage_cursor_without_transaction )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( test_con_str );
+   ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );

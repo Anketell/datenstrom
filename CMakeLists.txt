@@ -23,6 +23,8 @@ if ( WIN32 )
 
    include( runsettings )
 
+   SET( TEMP "$ENV{TEMP}" )
+
 endif ( WIN32 )
 
 if ( UNIX )
@@ -33,6 +35,8 @@ if ( UNIX )
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
    add_compile_options( -std=c++17 )
+
+   SET( TEMP "/tmp" )
 
 endif ( UNIX )
 

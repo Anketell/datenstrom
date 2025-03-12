@@ -137,33 +137,54 @@ void connection::execute_batch( const std::string & query )
 
 void connection::begin_transaction( void )
 {
+   static constexpr char operation[] = "MySQL begin transaction";
+
+   if ( m_transaction )
+      throw_error( operation, "nested transaction unsupported" );
+
    std::string sql = "BEGIN";
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL begin transaction", mysql_error( &m_mysql ) );
+      throw_error( operation, mysql_error( &m_mysql ) );
+
+   m_transaction = true;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::commit_transaction( void )
 {
+   static constexpr char operation[] = "MySQL commit transaction";
+   
+   if ( !m_transaction )
+      throw_error( operation, "no transaction to commit" );
+
    std::string sql = "COMMIT";
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL commit transaction", mysql_error( &m_mysql ) );
+      throw_error( operation, mysql_error( &m_mysql ) );
+
+   m_transaction = false;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_transaction( void )
 {
+   static constexpr char operation[] = "MySQL rollback transaction";
+   
+   if ( !m_transaction )
+      throw_error( operation, "no transaction to rollback" );
+
    std::string sql = "ROLLBACK";
 
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
-      throw_error( "MySQL rollback transaction", mysql_error( &m_mysql ) );
+      throw_error( operation, mysql_error( &m_mysql ) );
+
+   m_transaction = false;
 }
 
 //-----------------------------------------------------------------------------

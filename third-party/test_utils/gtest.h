@@ -42,6 +42,11 @@ catch ( ... )                                               \
 
 //-----------------------------------------------------------------------------
 
+#define EXPECT_THROW_MESSAGE( statement, type, message )    \
+EXPECT_THROW_ASSESS( statement, type, EXPECT_STREQ( e.what(), message ) )
+
+//-----------------------------------------------------------------------------
+
 #define NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name) \
   namespace_name##_##test_case_name##_##test_name##_Test
 
@@ -105,7 +110,7 @@ void NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name)
                   GTEST_STRINGIFY_(test_suite_name),                          \
                   ::testing::internal::CodeLocation(__FILE__, __LINE__))      \
               ->AddTestSuiteInstantiation(                                    \
-                  #namespace_name "." #prefix,                         \
+                  #namespace_name "." #prefix,                                \
                   &gtest_##prefix##test_suite_name##_EvalGenerator_,          \
                   &gtest_##prefix##test_suite_name##_EvalGenerateName_,       \
                   __FILE__, __LINE__)

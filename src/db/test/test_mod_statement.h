@@ -4,15 +4,16 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <db/test/test_context.h>
-#include <test_utils/gtest.h>
-#include <mysql/test/mysql_test_data.h>
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-INSTANTIATE_NAMESPACE_TEST_SUITE_P( mysql,
-                                    SQL_Module,
-                                    Context,
-                                    testing::Values( test_con_str ) );
+#include <db/test/init_module_paths.h>
+
+//-----------------------------------------------------------------------------
+
+class Statement : public init_module_paths
+{
+};
 
 //-----------------------------------------------------------------------------

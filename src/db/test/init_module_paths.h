@@ -4,20 +4,29 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef SQLITE_TEST_DATA_H
-#define SQLITE_TEST_DATA_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
-#include <test_model/object.h>
+#include <gtest/gtest.h>
+#include <db/context.h>
 
 //-----------------------------------------------------------------------------
 
-extern const char * test_db_name;
-extern const char * test_con_str;
-extern const char * bad_con_str;
-extern const char * bad_sql;
+struct test_config_t;
 
 //-----------------------------------------------------------------------------
 
-#endif
+class init_module_paths : public testing::TestWithParam< const test_config_t * >
+{
+protected:
+
+   const test_config_t * config;
+
+public:
+
+   virtual void SetUp( void ) override;
+   virtual void TearDown( void ) override;
+};
+
+//-----------------------------------------------------------------------------

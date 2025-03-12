@@ -75,6 +75,8 @@ void statement_base::execute( void )
 
 db::rowset statement_base::result( void )
 {
+   m_stmt->stmt->mysql->insert_id = 0;
+   
    internal_execute();
 
    db::rowset result( std::make_shared< mysql::rowset >( m_stmt ) );

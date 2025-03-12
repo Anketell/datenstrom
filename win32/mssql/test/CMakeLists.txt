@@ -38,7 +38,7 @@ target_compile_definitions( ${TARGET} PUBLIC
 
 target_link_libraries( ${TARGET}
    mssql_stmt_enum
-   test_db_context
+   test_db_module
    ds_db
    test_model
    gtest
@@ -82,7 +82,7 @@ set_target_properties( mssql_test_module
 target_link_options( mssql_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 target_link_options( mssql_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
-target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_context" )
+target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_module" )
 
 set( DLL_LIST
    "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
