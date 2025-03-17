@@ -125,33 +125,6 @@ R"(
 
 //-----------------------------------------------------------------------------
 
-{ "test.insert_alt",
-
-R"(
-   INSERT INTO Object
-   (
-      i8, 
-      i16, 
-      i32, 
-      i64, 
-      u8, 
-      u16, 
-      u32, 
-      u64, 
-      f, 
-      d, 
-      hello, 
-      dt, 
-      tm, 
-      dttm, 
-      ob_id
-   )      
-   VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, GEN_ID( ObjectID, 1 ) )
-)"
-},
-
-//-----------------------------------------------------------------------------
-
 { "test.result",
 
 R"(
@@ -189,29 +162,6 @@ R"(
           dt, 
           tm, 
           dttm
-      FROM Object ORDER BY hello
-)"
-},
-
-//-----------------------------------------------------------------------------
-
-{ "test.results_alt",
-
-R"(
-   SELECT i8, 
-          i16, 
-          i32, 
-          i64, 
-          u8, 
-          u16, 
-          u32, 
-          u64, 
-          f, 
-          d, 
-          hello, 
-          dt, 
-          tm, 
-          dttm 
       FROM Object ORDER BY hello
 )"
 },
@@ -267,12 +217,12 @@ R"(
       :u16, 
       :u32, 
       :u64, 
-      :float_, 
-      :double_, 
+      :float, 
+      :double, 
       :string,
-      :date_, 
-      :time_, 
-      :datetime_,
+      :date, 
+      :time, 
+      :datetime,
       GEN_ID( ObjectID, 1 )
    )
 )"

@@ -17,7 +17,7 @@
 
 //-----------------------------------------------------------------------------
 
-TEST_P( Context, should_construct_context )
+TEST_P( Context, should_construct )
 {
    EXPECT_NO_THROW( ds::db::context ctx( config->constr ) );
    EXPECT_NO_THROW( { ds::db::connection con( config->constr );  ds::db::context ctx( con ); } );
@@ -45,7 +45,6 @@ TEST_P( Context, should_return_keys )
       "test.create_blob", 
       "test.del_rows", 
       "test.insert", 
-      "test.insert_alt",
       "test.insert_blob", 
       "test.insert_id", 
       "test.named", 
@@ -53,7 +52,6 @@ TEST_P( Context, should_return_keys )
       "test.num_rows", 
       "test.result", 
       "test.results", 
-      "test.results_alt", 
       "test.select_blob", 
       "test.simple",
       "test.type"

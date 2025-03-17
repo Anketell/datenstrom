@@ -169,30 +169,45 @@ void connection::rollback_transaction( void )
 
 void connection::savepoint( const std::string & name )
 {
-   std::string command( "SAVEPOINT " );
-   int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
+   constexpr char operation[] = "SQLite create savepoint";
+
+   if ( name.empty() )
+      throw_error( operation, "savepoint name not specified" );
+
+   std::string command = "SAVEPOINT \"" + name + "\"";
+   int rc = sqlite3_exec( m_db, command.c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-      throw_error( "SQLite create savepoint " + name, rc );
+      throw_error( operation + ( " " + name ), rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::release_savepoint( const std::string & name )
 {
-   std::string command( "RELEASE SAVEPOINT " );
-   int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
+   constexpr char operation[] = "SQLite release savepoint";
+
+   if ( name.empty() )
+      throw_error(operation, "savepoint name not specified");
+
+   std::string command = "RELEASE SAVEPOINT \"" + name + "\"";
+   int rc = sqlite3_exec( m_db, command.c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-       throw_error( "SQLite release savepoint " + name, rc );
+       throw_error( operation + ( " " + name ), rc );
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_to_savepoint( const std::string & name )
 {
-   std::string command( "ROLLBACK TO SAVEPOINT " );
-   int rc = sqlite3_exec( m_db, ( command + name ).c_str(), NULL, NULL, NULL );
+   constexpr char operation[] = "SQLite rollback to savepoint";
+
+   if ( name.empty() )
+      throw_error( operation, "savepoint name not specified" );
+
+   std::string command = "ROLLBACK TO SAVEPOINT \"" + name + "\"";
+   int rc = sqlite3_exec( m_db, command.c_str(), NULL, NULL, NULL );
    if ( rc != SQLITE_OK )
-      throw_error( "SQLite rollback to savepoint " + name, rc );
+      throw_error( operation + ( " " + name ), rc );
 }
 
 //-----------------------------------------------------------------------------

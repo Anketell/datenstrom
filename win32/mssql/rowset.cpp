@@ -129,18 +129,18 @@ template< typename T > void rowset::get_column( int index, int c_type, T & t )
 
 //-----------------------------------------------------------------------------
 
-template<> void rowset::get_column< std::string >( int index, int c_type, std::string & t )
+void rowset::get_text_column( int index, std::string & t )
 {
    check_column( index );
 
    SQLLEN count = 0;
 
-   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, t.data(), 0, &count );
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), 0, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    t.resize( count + 1 );
 
-   rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, t.data(), count + 1, nullptr );
+   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
@@ -169,6 +169,23 @@ template<> void rowset::get_column< std::string >( int index, int c_type, std::s
    }
 
    t.resize( std::max( 0LL, static_cast< int64_t >( count ) ) );
+}
+
+//-----------------------------------------------------------------------------
+
+void rowset::get_blob_column( int index, std::string & t )
+{
+   check_column( index );
+
+   SQLLEN count = 0;
+
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_BINARY, t.data(), 0, &count );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   t.resize( count );
+
+   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_BINARY, t.data(), count, nullptr );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 }
 
 //-----------------------------------------------------------------------------
@@ -238,7 +255,22 @@ void rowset::get_column( int index, double & d )
 
 void rowset::get_column( int index, std::string & s )
 {
-   get_column< std::string >( index, SQL_C_CHAR, s );
+   check_column( index );
+
+   stmt_t::desc_t & desc = m_stmt->columns[ index ];
+
+   switch ( desc.type )
+   {
+      case SQL_BINARY :
+      case SQL_VARBINARY :
+      case SQL_LONGVARBINARY :
+         get_blob_column( index, s );
+         break;
+
+      default :
+         get_text_column( index, s );
+         break;
+   }
 }
 
 //-----------------------------------------------------------------------------

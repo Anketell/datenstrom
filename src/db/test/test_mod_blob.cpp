@@ -11,11 +11,11 @@
 
 //-----------------------------------------------------------------------------
 
-constexpr char blob_data[] = "The quick brown fox jumps over the lazy dog";
+constexpr char data[] = "\0\1\2\3\4\5\6\7\0\1\2\3\4\5\6\7\0\1\2\3\4\5\6\7";
 
 //-----------------------------------------------------------------------------
 
-TEST_P( BLOB, should_create_and_read_blob )
+TEST_P( BLOB, should_write_and_read )
 {
    ds::db::context test_db( config->constr );
 
@@ -25,9 +25,11 @@ TEST_P( BLOB, should_create_and_read_blob )
 
    EXPECT_NO_THROW( test_db.execute_batch( "test.create_blob" ) );
 
+   std::string blob_data( data, sizeof( data ) );
+
    {
       ds::db::statement insert = test_db( "test.insert_blob" );
-      EXPECT_NO_THROW( insert << std::string( blob_data ) << ds::endr );
+      EXPECT_NO_THROW( insert << blob_data << ds::endr );
 
       std::string value;
 

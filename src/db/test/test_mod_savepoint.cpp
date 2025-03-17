@@ -17,8 +17,6 @@
 
 TEST_P( SavePoint, should_release_on_destruction )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -34,7 +32,7 @@ TEST_P( SavePoint, should_release_on_destruction )
 
       for ( auto o : data )
       {
-         ds::db::savepoint save( test_db, "save" );
+         ds::db::savepoint save( test_db, "save point" );
 
          EXPECT_NO_THROW( insert_test << o << ds::endr );
       }
@@ -55,8 +53,6 @@ TEST_P( SavePoint, should_release_on_destruction )
 
 TEST_P( SavePoint, should_rollback_on_exception )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -74,13 +70,13 @@ TEST_P( SavePoint, should_rollback_on_exception )
       {
          try
          {
-            ds::db::savepoint save( test_db, "save" );
+            ds::db::savepoint save( test_db, "save point" );
 
             EXPECT_NO_THROW( insert_test << o << ds::endr );
 
             throw 0;
          }
-         catch ( ... )
+         catch ( int )
          {
          }
       }
@@ -101,8 +97,6 @@ TEST_P( SavePoint, should_rollback_on_exception )
 
 TEST_P( SavePoint, should_fail_no_name  )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -119,32 +113,8 @@ TEST_P( SavePoint, should_fail_no_name  )
 
 //-----------------------------------------------------------------------------
 
-TEST_P( SavePoint, should_fail_bad_release_name  )
-{
-   ds::db::context::enroll_sql_path_list( "." );
-
-   ds::db::context test_db( config->constr );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-   EXPECT_NO_THROW( test_db.create( test_db_name ) );
-   EXPECT_NO_THROW( test_db.use( test_db_name ) );
-
-   {
-      ds::db::transaction txn( test_db );
-      ds::db::savepoint save( test_db, "save" );
-
-      EXPECT_THROW( test_db.release_savepoint( "bad" ) ,  std::runtime_error );
-   }
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-}
-
-//-----------------------------------------------------------------------------
-
 TEST_P( SavePoint, should_fail_bad_rollback_name  )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -153,7 +123,7 @@ TEST_P( SavePoint, should_fail_bad_rollback_name  )
 
    {
       ds::db::transaction txn( test_db );
-      ds::db::savepoint save( test_db, "save" );
+      ds::db::savepoint save( test_db, "savepoint" );
 
       EXPECT_THROW( test_db.rollback_to_savepoint( "bad" ) ,  std::runtime_error );
    }

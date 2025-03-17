@@ -45,6 +45,10 @@ class statement_base : public db::statement::impl
 
    void bind_time( int index, time_t t );
 
+   void bind_text_parameter( int index, const std::string & t );
+   void bind_blob_parameter( int index, const std::string & t );
+   void bind_parameter( int index, const std::string & t );
+
    template< typename T > void bind_parameter( int index, int c_type, const T & t );
 
    void prepare_parameter_desc( void );

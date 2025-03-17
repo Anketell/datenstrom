@@ -23,7 +23,7 @@ if ( WIN32 )
 
    include( runsettings )
 
-   SET( TEMP "$ENV{TEMP}" )
+   cmake_path( CONVERT "$ENV{TEMP}" TO_CMAKE_PATH_LIST TEMP )
 
 endif ( WIN32 )
 

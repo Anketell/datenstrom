@@ -39,6 +39,7 @@ struct stmt_t
         SQLULEN     size;
         SQLSMALLINT digits;
         SQLSMALLINT nullable;
+        SQLLEN      ind_len;
     };
 
    SQLHSTMT              hstmt = nullptr;

@@ -305,7 +305,7 @@ void connection::savepoint( const std::string & name )
 {
    ISC_STATUS status[ status_vector_length ];
 
-   std::string statement = "SAVEPOINT " + name;
+   std::string statement = "SAVEPOINT \"" + name + "\"";
 
    isc_dsql_execute_immediate( status,
                                &m_transactional.db_handle,
@@ -322,7 +322,7 @@ void connection::release_savepoint( const std::string & name )
 {
    ISC_STATUS status[ status_vector_length ];
 
-   std::string statement = "RELEASE SAVEPOINT " + name;
+   std::string statement = "RELEASE SAVEPOINT \"" + name + "\"";
 
    isc_dsql_execute_immediate( status,
                                &m_transactional.db_handle,
@@ -339,7 +339,7 @@ void connection::rollback_to_savepoint( const std::string & name )
 {
    ISC_STATUS status[ status_vector_length ];
 
-   std::string statement = "ROLLBACK TO " + name;
+   std::string statement = "ROLLBACK TO \"" + name + "\"";
 
    isc_dsql_execute_immediate( status,
                                &m_transactional.db_handle,

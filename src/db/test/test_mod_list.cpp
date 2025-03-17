@@ -4,8 +4,6 @@
 //
 //-----------------------------------------------------------------------------
 
-// #include <gtest/gtest.h>
-// #include <test_utils/gtest.h>
 #include <db/context.h>
 #include <db/transaction.h>
 #include <test_model/object.h>

@@ -14,12 +14,12 @@
 
 const ds::db::name_list_t named_parameters =
 {
-   "datetime_",
-   "time_",
-   "date_",
+   "datetime",
+   "time",
+   "date",
    "string",
-   "double_",
-   "float_",
+   "double",
+   "float",
    "u64",
    "u32",
    "u16",

@@ -5,17 +5,10 @@
 set( TARGET test_ds_mssql )
 
 set( SOURCE
-   test_mssql_db.cpp
-   test_mssql_transaction.cpp
-   test_mssql_parameter.cpp
-   test_mssql_list.cpp
-   test_mssql_context.cpp
-   test_mssql_stmt_enum.cpp
-   mssql_test_data.cpp
+   test_mssql.cpp
 )
 
 set( HEADERS
-   mssql_test_data.h
 )
 
 add_executable( ${TARGET}
@@ -32,7 +25,8 @@ else()
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
-   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/Debug"
+   DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
+   SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    MSSQL_TEST="${MSSQL_TEST}"
 )
 
@@ -58,15 +52,6 @@ target_link_libraries( mssql_sql_module
    ds_util
 )
 
-add_library( mssql_test_module MODULE
-   mssql_test_module.cpp
-)
-
-target_link_libraries( mssql_test_module
-   sql_module_harness
-   ds_util
-)
-
 set_target_properties( ${TARGET}
    PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
 )
@@ -75,12 +60,7 @@ set_target_properties( mssql_sql_module
    PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
 )
 
-set_target_properties( mssql_test_module
-   PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1
-)
-
 target_link_options( mssql_sql_module  PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
-target_link_options( mssql_test_module PRIVATE "/DEF:${CMAKE_SOURCE_DIR}/win32/def/sql_module.def" )
 
 target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_module" )
 
@@ -99,6 +79,6 @@ foreach( dll ${DLL_LIST} )
    )
 endforeach( dll )
 
-set_target_properties( ${TARGET} PROPERTIES
-   VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
-)
+# set_target_properties( ${TARGET} PROPERTIES
+#    VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
+# )

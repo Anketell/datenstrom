@@ -128,32 +128,86 @@ statement_base::buffer & statement_base::check_parameter( int index )
 
 //-----------------------------------------------------------------------------
 
-template<> void statement_base::bind_parameter< std::string >( int index, int c_type, const std::string & t )
+void statement_base::bind_text_parameter( int index, const std::string & t )
 {
-   static constexpr char operation[] = "MSSQL statement parameter bind";
+   static constexpr char operation[] = "MSSQL statement text parameter bind";
 
    buffer & buffer = check_parameter( index );
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
-   size_t size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
+   SQLLEN size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
 
-   buffer.resize( desc.size + 1 );
+   buffer.resize( size );
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
                                   SQL_PARAM_INPUT,
-                                  c_type,
+                                  SQL_C_CHAR,
                                   desc.type,
                                   desc.size,
                                   desc.digits,
                                   buffer.data< void >(),
                                   size,
                                   nullptr );
-
+   
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-
+   
    strncpy_s( buffer.data< char >(), size, t.c_str(), size );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::bind_blob_parameter( int index, const std::string & t )
+{
+   static constexpr char operation[] = "MSSQL statement BLOB parameter bind";
+
+   buffer& buffer = check_parameter( index );
+
+   stmt_t::desc_t& desc( m_parameters[ index ] );
+
+   int size = std::min( t.length(), static_cast< size_t >( desc.size ) );
+
+   buffer.resize( size );
+
+   desc.ind_len = size;
+
+   RETCODE rc = SQLBindParameter( m_stmt->hstmt,
+                                  index + 1,
+                                  SQL_PARAM_INPUT,
+                                  SQL_C_BINARY,
+                                  desc.type,
+                                  desc.size,
+                                  desc.digits,
+                                  buffer.data< void >(),
+                                  size,
+                                  &desc.ind_len );
+   
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+   
+   memcpy( buffer.data< char >(), t.data(), size );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::bind_parameter( int index, const std::string & t )
+{
+   check_parameter( index );
+
+   stmt_t::desc_t & desc( m_parameters[ index ] );
+
+   switch (desc.type)
+   {
+      case SQL_BINARY:
+      case SQL_VARBINARY:
+      case SQL_LONGVARBINARY:
+         bind_blob_parameter( index, t );
+         break;
+
+      default :
+         bind_text_parameter( index, t );
+         break;
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -288,14 +342,14 @@ void statement_base::set_parameter( int index, double d )
 
 void statement_base::set_parameter( int index, const std::string & s )
 {
-   bind_parameter< std::string >( index, SQL_C_CHAR, s );
+   bind_parameter( index, s );
 }
 
 //-----------------------------------------------------------------------------
 
 void statement_base::set_parameter( int index, const char * s )
 {
-   bind_parameter< std::string >( index, SQL_C_CHAR, s );
+   bind_text_parameter( index, s );
 }
 
 //-----------------------------------------------------------------------------

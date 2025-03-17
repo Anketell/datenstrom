@@ -15,8 +15,6 @@
 
 TEST_P( Transaction, should_commit_on_destruction )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -49,8 +47,6 @@ TEST_P( Transaction, should_commit_on_destruction )
 
 TEST_P( Transaction, should_rollback_on_exception )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -89,8 +85,6 @@ TEST_P( Transaction, should_rollback_on_exception )
 
 TEST_P( Transaction, should_fail_nested )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -114,8 +108,6 @@ TEST_P( Transaction, should_fail_nested )
 
 TEST_P( Transaction, should_fail_lone_commit )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -133,8 +125,6 @@ TEST_P( Transaction, should_fail_lone_commit )
 
 TEST_P( Transaction, should_fail_lone_rollback )
 {
-   ds::db::context::enroll_sql_path_list( "." );
-
    ds::db::context test_db( config->constr );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -149,4 +139,3 @@ TEST_P( Transaction, should_fail_lone_rollback )
 }
 
 //-----------------------------------------------------------------------------
-

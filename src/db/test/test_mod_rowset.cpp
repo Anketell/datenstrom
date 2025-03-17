@@ -51,36 +51,36 @@ TEST_P( RowSet, should_provide_query_data )
 }
 
 //-----------------------------------------------------------------------------
-/*
-TEST_P( RowSet, should_support_unixtime )
+
+TEST_P( RowSet, should_support_sub_second_time )
 {
-   ds::db::context test_db( config->constr );
+   ds::db::context test_db(config->constr);
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
    EXPECT_NO_THROW( test_db.create( test_db_name ) );
    EXPECT_NO_THROW( test_db.use( test_db_name ) );
 
-   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
+   EXPECT_NO_THROW( test_db.execute_batch("test.create" ) );
 
    {
-      ds::db::statement insert_test = test_db( "test.insert_alt" );
+      ds::db::statement insert_test = test_db( "test.insert" );
 
-      for ( auto o : data_alt )
+      for ( auto o : data_hires )
          EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
-      ds::db::statement results_test = test_db( "test.results_alt" );
+      ds::db::statement results_test = test_db( "test.results" );
 
-      ds::db::rowset row;
+      ds::db::rowset result;
 
-      EXPECT_NO_THROW( row = results_test.result() );
+      EXPECT_NO_THROW( result = results_test.result() );
 
-      for ( auto o : data_alt )
+      for ( auto o : data_hires )
       {
-         Object_alt o_db = {};
+         Object o_db = {};
 
-         row >> o_db >> ds::endr;
+         result >> o_db >> ds::endr;
 
          EXPECT_EQ( o, o_db );
       }
@@ -88,7 +88,7 @@ TEST_P( RowSet, should_support_unixtime )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-*/
+
 //-----------------------------------------------------------------------------
 
 TEST_P( RowSet, should_provide_rows_affected )
@@ -184,38 +184,4 @@ TEST_P( RowSet, should_fail_query_wrong_column_count )
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
 
-//-----------------------------------------------------------------------------
-/*
-TEST_P( RowSet, should_fail_query_wrong_column_type )
-{
-   ds::db::context test_db( config->constr );
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-   EXPECT_NO_THROW( test_db.create( test_db_name ) );
-   EXPECT_NO_THROW( test_db.use( test_db_name ) );
-
-   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
-
-   {
-      ds::db::statement insert_test = test_db( "test.insert" );
-
-      for ( auto o : data )
-         EXPECT_NO_THROW( insert_test << o << ds::endr );
-   }
-
-   {
-      ds::db::statement results_test = test_db( "test.results" );
-
-      ds::db::rowset row;
-
-      EXPECT_NO_THROW( row = results_test.result() );
-
-      std::string hello;
-
-      EXPECT_THROW( row >> hello, std::runtime_error );
-   }
-
-   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
-}
-*/
 //-----------------------------------------------------------------------------

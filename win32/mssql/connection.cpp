@@ -300,7 +300,7 @@ void connection::rollback_transaction( void )
 
 void connection::savepoint( const std::string & name )
 {
-   std::string query = "SAVE TRANSACTION " + name;
+   std::string query = "SAVE TRANSACTION \"" + name + "\"";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
    check_status( "MSSQL savepoint", m_stmt, SQL_HANDLE_STMT, rc );
@@ -317,7 +317,7 @@ void connection::release_savepoint( const std::string & name )
 
 void connection::rollback_to_savepoint( const std::string & name )
 {
-   std::string query = "ROLLBACK TRANSACTION " + name;
+   std::string query = "ROLLBACK TRANSACTION \"" + name + "\"";
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
    check_status( "MSSQL rollback savepoint", m_stmt, SQL_HANDLE_STMT, rc );
