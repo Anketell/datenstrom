@@ -55,8 +55,8 @@ R"(
       d           DOUBLE,
       hello       VARCHAR( 10 ),
       dt          DATE,
-      tm          TIME,
-      dttm        DATETIME,
+      tm          TIME( 3 ),
+      dttm        DATETIME( 3 ),
       id          INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
    )
 )"

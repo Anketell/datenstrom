@@ -78,10 +78,6 @@ if ( MSVC )
       )
    endforeach( dll )
 
-#   set_target_properties( ${TARGET} PROPERTIES
-#      VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
-#   )
-
 else( MSVC )
 
    target_link_options( mysql_sql_module PRIVATE "--entry=enroll_sql" )

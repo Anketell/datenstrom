@@ -243,8 +243,6 @@ void rowset::get_column( int index, std::string & s )
    MYSQL_BIND  column = { 0 };
    bind_info_t info   = { 0 };
 
-   
-
    column.buffer_type   = MYSQL_TYPE_VAR_STRING;
    column.buffer_length = 0;
    column.length        = &info.length;

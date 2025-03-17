@@ -78,7 +78,3 @@ foreach( dll ${DLL_LIST} )
          "${CMAKE_CURRENT_BINARY_DIR}/Debug/"
    )
 endforeach( dll )
-
-# set_target_properties( ${TARGET} PROPERTIES
-#    VS_DEBUGGER_ENVIRONMENT "DS_MODULE_PATH=${CMAKE_CURRENT_BINARY_DIR}/Debug/"
-# )

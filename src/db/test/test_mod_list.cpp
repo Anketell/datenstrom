@@ -35,8 +35,15 @@ TEST_P( List, should_provide_iterator )
 
    {
       int i = 0;
-      for ( Object o : test_db( "test.results" ) )
-         EXPECT_EQ( o, data[ i++ ] );
+      for ( Object o_db : test_db( "test.results" ) )
+      {
+         Object o = data[ i++ ];
+
+         o_db.m_time     = canonical_time( o_db.m_time );
+         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
+
+         EXPECT_EQ( o, o_db );
+      }
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -69,16 +76,26 @@ TEST_P( List, should_manage_cursor_within_transaction )
       int i = 0;
 
       ds::db::statement list = test_db( "test.results" );
-      for ( Object o : list )
+      for ( Object o_db : list )
       {
-         EXPECT_EQ( o, data[ i++ ] );
+         Object o = data[ i++ ];
+
+         o_db.m_time     = canonical_time( o_db.m_time );
+         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
+
+         EXPECT_EQ( o, o_db );
          break;
       }
 
       i = 0;
-      for ( Object o : list )
+      for ( Object o_db : list )
       {
-         EXPECT_EQ( o, data[ i++ ] );
+         Object o = data[ i++ ];
+
+         o_db.m_time     = canonical_time( o_db.m_time );
+         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
+
+         EXPECT_EQ( o, o_db );
       }
    }
 
@@ -111,16 +128,26 @@ TEST_P( List, should_manage_cursor_without_transaction )
       int i = 0;
 
       ds::db::statement list = test_db( "test.results" );
-      for ( Object o : list )
+      for ( Object o_db : list )
       {
-         EXPECT_EQ( o, data[ i++ ] );
+         Object o = data[ i++ ];
+
+         o_db.m_time     = canonical_time( o_db.m_time );
+         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
+
+         EXPECT_EQ( o, o_db );
          break;
       }
 
       i = 0;
-      for ( Object o : list )
+      for ( Object o_db : list )
       {
-         EXPECT_EQ( o, data[ i++ ] );
+         Object o = data[ i++ ];
+
+         o_db.m_time     = canonical_time( o_db.m_time );
+         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
+
+         EXPECT_EQ( o, o_db );
       }
    }
 

@@ -5,7 +5,43 @@
 //-----------------------------------------------------------------------------
 
 #include <test_model/object.h>
+#include <dsutil/timestamp.h>
 #include <cmath>
+#include <cstring>
+
+//-----------------------------------------------------------------------------
+
+std::string canonical_time( const std::string & s )
+{
+   ds::time::stamp ts;
+
+   ds::time::parse_iso_8601_time( s.c_str(), &ts );
+
+   std::string res( ds::time::hires_time_len, ' ' );
+
+   ds::time::format_iso_8601_time( &ts, res.data() );
+
+   res.resize( std::strlen( res.data() ) );
+
+   return res;
+}
+
+//-----------------------------------------------------------------------------
+
+std::string canonical_datetime( const std::string & s )
+{
+   ds::time::stamp ts;
+
+   ds::time::parse_iso_8601( s.c_str(), &ts );
+
+   std::string res( ds::time::hires_datetime_len, ' ' );
+
+   ds::time::format_iso_8601( &ts, res.data() );
+
+   res.resize( std::strlen( res.data() ) );
+
+   return res;
+}
 
 //-----------------------------------------------------------------------------
 
@@ -81,7 +117,7 @@ Object data_hires[] =
 {
    {
       -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78,
-      "Hello1", "2017-05-10", "13:05:20.123", "2020-05-13 13:05:20.456"
+      "Hello1", "2017-05-10", "13:05:20.123", "2020-05-13 13:05:20.4"
    },
    {
       -16, -32, -64, -128, 16, 32, 64, 128, 24.68, 113.56,

@@ -32,7 +32,7 @@ TEST_P( SavePoint, should_release_on_destruction )
 
       for ( auto o : data )
       {
-         ds::db::savepoint save( test_db, "save point" );
+         ds::db::savepoint save( test_db, "savepoint" );
 
          EXPECT_NO_THROW( insert_test << o << ds::endr );
       }
@@ -70,7 +70,7 @@ TEST_P( SavePoint, should_rollback_on_exception )
       {
          try
          {
-            ds::db::savepoint save( test_db, "save point" );
+            ds::db::savepoint save( test_db, "savepoint" );
 
             EXPECT_NO_THROW( insert_test << o << ds::endr );
 
