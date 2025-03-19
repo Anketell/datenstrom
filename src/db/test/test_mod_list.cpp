@@ -39,9 +39,6 @@ TEST_P( List, should_provide_iterator )
       {
          Object o = data[ i++ ];
 
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
-
          EXPECT_EQ( o, o_db );
       }
    }
@@ -80,9 +77,6 @@ TEST_P( List, should_manage_cursor_within_transaction )
       {
          Object o = data[ i++ ];
 
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
-
          EXPECT_EQ( o, o_db );
          break;
       }
@@ -91,9 +85,6 @@ TEST_P( List, should_manage_cursor_within_transaction )
       for ( Object o_db : list )
       {
          Object o = data[ i++ ];
-
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
 
          EXPECT_EQ( o, o_db );
       }
@@ -132,9 +123,6 @@ TEST_P( List, should_manage_cursor_without_transaction )
       {
          Object o = data[ i++ ];
 
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
-
          EXPECT_EQ( o, o_db );
          break;
       }
@@ -143,9 +131,6 @@ TEST_P( List, should_manage_cursor_without_transaction )
       for ( Object o_db : list )
       {
          Object o = data[ i++ ];
-
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
 
          EXPECT_EQ( o, o_db );
       }

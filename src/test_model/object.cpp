@@ -11,40 +11,6 @@
 
 //-----------------------------------------------------------------------------
 
-std::string canonical_time( const std::string & s )
-{
-   ds::time::stamp ts;
-
-   ds::time::parse_iso_8601_time( s.c_str(), &ts );
-
-   std::string res( ds::time::hires_time_len, ' ' );
-
-   ds::time::format_iso_8601_time( &ts, res.data() );
-
-   res.resize( std::strlen( res.data() ) );
-
-   return res;
-}
-
-//-----------------------------------------------------------------------------
-
-std::string canonical_datetime( const std::string & s )
-{
-   ds::time::stamp ts;
-
-   ds::time::parse_iso_8601( s.c_str(), &ts );
-
-   std::string res( ds::time::hires_datetime_len, ' ' );
-
-   ds::time::format_iso_8601( &ts, res.data() );
-
-   res.resize( std::strlen( res.data() ) );
-
-   return res;
-}
-
-//-----------------------------------------------------------------------------
-
 bool Object::operator==( const Object & o ) const
 {
    return m_i8        == o.m_i8    &&

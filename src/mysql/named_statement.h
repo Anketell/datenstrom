@@ -4,35 +4,31 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MYSQL_NAMED_STATEMENT_H
-#define DS_MYSQL_NAMED_STATEMENT_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
 #include <mysql/statement_base.h>
-#include <sstream>
+#include <map>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace mysql
+namespace ds::mysql
 {
 
 //-----------------------------------------------------------------------------
 
 class named_statement : public statement_base
 {
-   MYSQL               & m_mysql;
-   const db::name_list_t m_names;
-   std::stringstream     m_values;
+   const db::name_list_t     m_names;
+   std::multimap< int, int > m_param_map;
 
-   const char * check_parameter( int index );
-   void set_parameter( int index, const char * s, size_t length );
-   void internal_execute( void );
+   std::string get_pos_sql( const std::string     & sql,
+                            const db::name_list_t & parameters );
+
+   void check_parameter( int index );
+
+   template< typename T > void internal_set_parameter( int index, T t );
 
 public:
 
@@ -40,7 +36,7 @@ public:
                     const std::string     & sql,
                     const db::name_list_t & parameters );
 
-   ~named_statement( void );
+   virtual ~named_statement( void );
 
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;
@@ -58,18 +54,8 @@ public:
    virtual void set_parameter( int index, const std::string & ) override;
 
    virtual int parameter_count( void ) override;
-
-   virtual void reset( void ) override;
 };
 
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-}
-
-//-----------------------------------------------------------------------------
-
-#endif

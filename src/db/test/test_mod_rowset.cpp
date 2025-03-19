@@ -43,9 +43,6 @@ TEST_P( RowSet, should_provide_query_data )
 
          row >> o_db >> ds::endr;
 
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
-
          EXPECT_EQ( o, o_db );
       }
    }
@@ -84,9 +81,6 @@ TEST_P( RowSet, should_support_sub_second_time )
          Object o_db = {};
 
          result >> o_db >> ds::endr;
-
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
 
          EXPECT_EQ( o, o_db );
       }
@@ -180,9 +174,6 @@ TEST_P( RowSet, should_fail_query_wrong_column_count )
             EXPECT_NO_THROW( row >> o_db );
             EXPECT_THROW( row >> o_db, std::runtime_error );
          }
-
-         o_db.m_time     = canonical_time( o_db.m_time );
-         o_db.m_datetime = canonical_datetime( o_db.m_datetime );
 
          EXPECT_EQ( o, o_db );
 

@@ -119,7 +119,7 @@ NAMESPACE_TEST( sqlite, Connection, should_fail_create_bad_path )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( sqlite, RowSet, should_fail_query_wrong_column_type )
+NAMESPACE_TEST( sqlite, RowSet, may_fail_query_wrong_column_type )
 {
     ds::db::connection::enroll_db_path_list( DS_MODULE_PATH );
     ds::db::context::enroll_sql_path_list( SQL_MODULE_PATH );

@@ -4,8 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MSSQL_TYPES_H
-#define DS_MSSQL_TYPES_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
@@ -15,12 +14,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace mssql
+namespace ds::mssql
 {
 
 //-----------------------------------------------------------------------------
@@ -34,13 +28,13 @@ struct stmt_t
    enum state_t { Preparing, Executed };
 
    struct desc_t
-    {
-        SQLSMALLINT type;
-        SQLULEN     size;
-        SQLSMALLINT digits;
-        SQLSMALLINT nullable;
-        SQLLEN      ind_len;
-    };
+   {
+      SQLSMALLINT type;
+      SQLULEN     size;
+      SQLSMALLINT digits;
+      SQLSMALLINT nullable;
+      SQLLEN      ind_len;
+   };
 
    SQLHSTMT              hstmt = nullptr;
    std::vector< desc_t > columns;
@@ -80,11 +74,3 @@ inline SQLINTEGER sql_int( size_t size )
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-}
-
-//-----------------------------------------------------------------------------
-
-#endif

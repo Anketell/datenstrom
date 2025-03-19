@@ -4,8 +4,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#ifndef DS_MSSQL_NAMED_STATEMENT_H
-#define DS_MSSQL_NAMED_STATEMENT_H
+#pragma once
 
 //-----------------------------------------------------------------------------
 
@@ -14,12 +13,7 @@
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace mssql
+namespace ds::mssql
 {
 
 //-----------------------------------------------------------------------------
@@ -29,8 +23,8 @@ class named_statement : public statement_base
    const db::name_list_t     m_names;
    std::multimap< int, int > m_param_map;
 
-   std::string get_pos_sql( const std::string     & sql,
-                            const db::name_list_t & parameters );
+   void get_pos_sql( const std::string     & sql,
+                     const db::name_list_t & parameters );
 
    void check_parameter( int index );
 
@@ -65,11 +59,3 @@ public:
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-}
-
-//-----------------------------------------------------------------------------
-
-#endif

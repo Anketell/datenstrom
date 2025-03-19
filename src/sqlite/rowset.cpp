@@ -6,17 +6,18 @@
 
 #include <sqlite/rowset.h>
 #include <sqlite/error.h>
-#include <map>
+#include <unordered_map>
 #include <cstring>
+#include <dsutil/timestamp.h>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
+#define SQLITE_TIME     ( SQLITE_NULL + 1 )
+#define SQLITE_DATETIME ( SQLITE_NULL + 2 )
 
 //-----------------------------------------------------------------------------
 
-namespace sqlite
+namespace ds::sqlite
 {
 
 //-----------------------------------------------------------------------------
@@ -57,6 +58,13 @@ int rowset::check_column( int index, int type_mask )
 {
    static constexpr char operation[] = "SQLite rowset get column";
 
+   static std::unordered_map< std::string, int > type_map =
+   {
+      { "BLOB",     SQLITE_BLOB     },
+      { "TIME",     SQLITE_TIME     },
+      { "DATETIME", SQLITE_DATETIME }
+   };
+
    if ( !m_valid )
       throw_error( operation, "No row available" );
 
@@ -70,8 +78,10 @@ int rowset::check_column( int index, int type_mask )
    if ( column_type == SQLITE_TEXT )
    {
       const char * decl_type = sqlite3_column_decltype( m_stmt->stmt, index );
-      if ( std::strcmp( decl_type, "BLOB" ) == 0 )
-         column_type = SQLITE_BLOB;
+
+      auto it = type_map.find( decl_type );
+      if ( it != type_map.end() )
+         column_type = it->second;
    }
 
    if ( ( ( 1 << column_type ) & type_mask ) == 0 )
@@ -156,23 +166,40 @@ void rowset::get_column( int index, double & d )
 
 void rowset::get_column( int index, std::string & s )
 {
-   int column_mask = ( 1 << SQLITE_TEXT ) | ( 1 << SQLITE_BLOB );
+   static constexpr int column_mask = ( 1 << SQLITE_TEXT ) | 
+                                      ( 1 << SQLITE_BLOB ) | 
+                                      ( 1 << SQLITE_TIME ) |
+                                      ( 1 << SQLITE_DATETIME );
+
    int column_type = check_column( index, column_mask );
+
+   int length = sqlite3_column_bytes( m_stmt->stmt, index );
 
    const void * p;
    switch ( column_type )
    {
       case SQLITE_TEXT:
          p = sqlite3_column_text( m_stmt->stmt, index );
+         s.assign( reinterpret_cast< const char * >( p ), length );
          break;
 
       case SQLITE_BLOB:
          p = sqlite3_column_blob( m_stmt->stmt, index );
+         s.assign( reinterpret_cast< const char * >( p ), length );
+         break;
+
+      case SQLITE_TIME:
+         p = sqlite3_column_text( m_stmt->stmt, index );
+         s.assign( reinterpret_cast< const char * >( p ), length );
+         ds::time::reformat_iso_8601_time( s );
+         break;
+
+      case SQLITE_DATETIME:
+         p = sqlite3_column_text( m_stmt->stmt, index );
+         s.assign( reinterpret_cast< const char * >( p ), length );
+         ds::time::reformat_iso_8601( s );
          break;
    }
-
-   int length = sqlite3_column_bytes( m_stmt->stmt, index );
-   s.assign( reinterpret_cast< const char * >( p ), length );
 }
 
 //-----------------------------------------------------------------------------
@@ -189,10 +216,6 @@ bool rowset::step( void )
 bool rowset::eof( void ) const
 {
    return !m_valid;
-}
-
-//-----------------------------------------------------------------------------
-
 }
 
 //-----------------------------------------------------------------------------

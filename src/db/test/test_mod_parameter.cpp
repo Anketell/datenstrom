@@ -45,20 +45,20 @@ TEST_P( Parameter, should_insert_named )
    {
       ds::db::statement insert_test = test_db( "test.named", named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
-                                   << "14:05:20"
-                                   << "2020-05-14"
-                                   << "hello2"
-                                   << 10
-                                   <<  9
-                                   <<  8
-                                   <<  7
-                                   <<  6
-                                   <<  5
-                                   <<  4
-                                   <<  3
-                                   <<  2
-                                   <<  1
+      EXPECT_NO_THROW( insert_test << data[ 0 ].m_datetime
+                                   << data[ 0 ].m_time
+                                   << data[ 0 ].m_date
+                                   << data[ 0 ].m_hello
+                                   << data[ 0 ].m_d
+                                   << data[ 0 ].m_f
+                                   << data[ 0 ].m_u64
+                                   << data[ 0 ].m_u32
+                                   << data[ 0 ].m_u16
+                                   << data[ 0 ].m_u8
+                                   << data[ 0 ].m_i64
+                                   << data[ 0 ].m_i32
+                                   << data[ 0 ].m_i16
+                                   << data[ 0 ].m_i8
                                    << ds::endr );
    }
 
@@ -80,20 +80,20 @@ TEST_P( Parameter, should_retrieve_named )
    {
       ds::db::statement insert_test = test_db( "test.named", named_parameters );
 
-      EXPECT_NO_THROW( insert_test << "2020-05-14 14:05:20"
-                                   << "14:05:20"
-                                   << "2020-05-14"
-                                   << "hello2"
-                                   << 10
-                                   <<  9
-                                   <<  8
-                                   <<  7
-                                   <<  6
-                                   <<  5
-                                   <<  4
-                                   <<  3
-                                   <<  2
-                                   <<  1
+      EXPECT_NO_THROW( insert_test << data[ 0 ].m_datetime
+                                   << data[ 0 ].m_time
+                                   << data[ 0 ].m_date
+                                   << data[ 0 ].m_hello
+                                   << data[ 0 ].m_d
+                                   << data[ 0 ].m_f
+                                   << data[ 0 ].m_u64
+                                   << data[ 0 ].m_u32
+                                   << data[ 0 ].m_u16
+                                   << data[ 0 ].m_u8
+                                   << data[ 0 ].m_i64
+                                   << data[ 0 ].m_i32
+                                   << data[ 0 ].m_i16
+                                   << data[ 0 ].m_i8
                                    << ds::endr );
    }
 
@@ -107,20 +107,20 @@ TEST_P( Parameter, should_retrieve_named )
       EXPECT_NO_THROW( row >> o );
    }
 
-   EXPECT_EQ( o.m_i8, 1 );
-   EXPECT_EQ( o.m_i16, 2 );
-   EXPECT_EQ( o.m_i32, 3 );
-   EXPECT_EQ( o.m_i64, 4 );
-   EXPECT_EQ( o.m_u8, 5 );
-   EXPECT_EQ( o.m_u16, 6 );
-   EXPECT_EQ( o.m_u32, 7 );
-   EXPECT_EQ( o.m_u64, 8 );
-   EXPECT_EQ( o.m_f, 9 );
-   EXPECT_EQ( o.m_d, 10 );
-   EXPECT_EQ( o.m_hello, "hello2" );
-   EXPECT_EQ( o.m_date, "2020-05-14" );
-   EXPECT_EQ( o.m_time, "14:05:20" );
-   EXPECT_EQ( o.m_datetime, "2020-05-14 14:05:20" );
+   EXPECT_EQ( o.m_i8,       data[ 0 ].m_i8 );
+   EXPECT_EQ( o.m_i16,      data[ 0 ].m_i16 );
+   EXPECT_EQ( o.m_i32,      data[ 0 ].m_i32 );
+   EXPECT_EQ( o.m_i64,      data[ 0 ].m_i64 );
+   EXPECT_EQ( o.m_u8,       data[ 0 ].m_u8 );
+   EXPECT_EQ( o.m_u16,      data[ 0 ].m_u16 );
+   EXPECT_EQ( o.m_u32,      data[ 0 ].m_u32 );
+   EXPECT_EQ( o.m_u64,      data[ 0 ].m_u64 );
+   EXPECT_EQ( o.m_f,        data[ 0 ].m_f );
+   EXPECT_EQ( o.m_d,        data[ 0 ].m_d );
+   EXPECT_EQ( o.m_hello,    data[ 0 ].m_hello );
+   EXPECT_EQ( o.m_date,     data[ 0 ].m_date );
+   EXPECT_EQ( o.m_time,     data[ 0 ].m_time );
+   EXPECT_EQ( o.m_datetime, data[ 0 ].m_datetime );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }

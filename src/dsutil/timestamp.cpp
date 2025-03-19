@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <dsutil/timestamp.h>
+#include <stdexcept>
 #include <cctype>
 
 //-----------------------------------------------------------------------------
@@ -94,7 +95,7 @@ void format_iso_8601_date( const stamp * ts, char * s )
 
 //-----------------------------------------------------------------------------
 
-void set_nano_sec( char * s, uint32_t nano_sec )
+static void set_nano_sec( char * s, uint32_t nano_sec )
 {
    if ( !nano_sec )
       return;
@@ -127,6 +128,127 @@ void format_iso_8601( const stamp * ts, char * s )
 {
    format_iso_8601( static_cast< const struct tm * >( ts ), s );
    set_nano_sec( s + datetime_len, ts->nano_sec );
+}
+
+//-----------------------------------------------------------------------------
+
+static void set_nano_sec( char * s, uint32_t nano_sec, uint8_t decimals )
+{
+   if ( !decimals )
+      return;
+
+   *s++ = '.';
+
+   uint32_t power = 100000000;
+
+   while ( power && decimals > 1 )
+   {
+      *s++      = nano_sec / power + '0';
+      nano_sec %= power;
+      power    /= 10;
+      decimals--;
+   };
+
+   if ( power && decimals == 1 )
+   {
+      *s++ = nano_sec / power + ( ( nano_sec % power ) + power / 2 ) / power + '0';
+      decimals--;
+   }
+
+   while ( decimals-- )
+   {
+      *s++ = '0';
+   }
+
+   *s = '\0';
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601_time( const stamp * ts, char * s, uint8_t decimals )
+{
+   format_iso_8601_time( static_cast< const struct tm * >( ts ), s );
+   set_nano_sec( s + time_len, ts->nano_sec, decimals );
+}
+
+//-----------------------------------------------------------------------------
+
+void format_iso_8601( const stamp * ts, char * s, uint8_t decimals )
+{
+   format_iso_8601( static_cast< const struct tm * >( ts ), s );
+   set_nano_sec( s + datetime_len, ts->nano_sec, decimals );
+}
+
+//-----------------------------------------------------------------------------
+
+bool reformat_iso_8601_time( std::string & s )
+{
+   stamp ts;
+
+   if ( !parse_iso_8601_time( s.c_str(), &ts ) )
+      return false;
+
+   char res[ hires_time_len + 1 ];
+
+   format_iso_8601_time( &ts, res );
+
+   s = res;
+
+   return true;
+}
+
+//-----------------------------------------------------------------------------
+
+bool reformat_iso_8601_time( std::string & s, uint8_t decimals )
+{
+   stamp ts;
+   
+   if ( !parse_iso_8601_time( s.c_str(), &ts ) )
+      return false;
+
+   char res[ hires_time_len + 257 ];
+
+   format_iso_8601_time( &ts, res, decimals );
+
+   s = res;
+
+   return true;
+};
+
+//-----------------------------------------------------------------------------
+
+bool reformat_iso_8601( std::string & s )
+{
+   stamp ts;
+
+   if ( !parse_iso_8601( s.c_str(), &ts ) )
+      return false;
+
+   char res[ hires_time_len + 1 ];
+
+   format_iso_8601( &ts, res );
+
+   s = res;
+
+   return true;
+}
+
+//-----------------------------------------------------------------------------
+
+bool reformat_iso_8601( std::string & s, uint8_t decimals )
+{
+   stamp ts;
+
+   if ( !parse_iso_8601( s.c_str(), &ts ) )
+      return false;
+
+   char res[ hires_time_len + 257 ];
+
+   format_iso_8601( &ts, res, decimals );
+
+   s = res;
+
+   return true;
 }
 
 //-----------------------------------------------------------------------------

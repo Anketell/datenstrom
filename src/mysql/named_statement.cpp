@@ -7,18 +7,14 @@
 #include <mysql/named_statement.h>
 #include <mysql/rowset.h>
 #include <mysql/error.h>
+#include <db/parameter.h>
+#include <algorithm>
 #include <sstream>
 #include <cstring>
-#include <cassert>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace mysql
+namespace ds::mysql
 {
 
 //-----------------------------------------------------------------------------
@@ -26,10 +22,11 @@ namespace mysql
 named_statement::named_statement( MYSQL                 & mysql,
                                   const std::string     & sql,
                                   const db::name_list_t & parameters ) :
-statement_base( mysql, sql ),
-m_mysql( mysql ),
+statement_base( mysql ),
 m_names( parameters )
 {
+   std::string pos_sql = get_pos_sql( sql, m_names );
+   prepare( pos_sql );
 }
 
 //-----------------------------------------------------------------------------
@@ -40,7 +37,57 @@ named_statement::~named_statement( void )
 
 //-----------------------------------------------------------------------------
 
-const char * named_statement::check_parameter( int index )
+std::string named_statement::get_pos_sql( const std::string     & sql,
+                                          const db::name_list_t & parameters )
+{
+   static constexpr char operation[] = "MySQL prepare named statement";
+
+   std::string pos_sql;
+
+   int unique = 0;
+   int param  = 0;
+
+   uint32_t from = 0;
+   for ( auto parameter : db::parameter::enumerator( sql, ":$" ) )
+   {
+      std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
+
+      pos_sql += sql.substr( from, parameter.from - from ) + '?';
+
+      auto it = std::find( parameters.begin(), parameters.end(), name );
+      if ( it == parameters.end() )
+      {
+         std::stringstream ss;
+
+         ss << std::endl
+            << sql << std::endl
+            << "Parameter mismatch: " << name;
+
+         throw_error( operation, ss.str().c_str() );
+      }
+
+      int j = static_cast< int >( it - parameters.begin() );
+
+      auto it2 = m_param_map.lower_bound( j );
+      if ( it2 == m_param_map.end() || it2->first != j )
+         unique++;
+
+      m_param_map.insert( { j, param++ } );
+
+      from = parameter.from + parameter.len;
+   }
+
+   pos_sql += sql.substr( from );
+
+   if ( unique != parameters.size() )
+      throw_error( operation, "Wrong number of parameters" );
+
+   return pos_sql;
+}
+
+//-----------------------------------------------------------------------------
+
+void named_statement::check_parameter( int index )
 {
    static constexpr char operation[] = "MySQL named statement parameter check";
 
@@ -52,44 +99,47 @@ const char * named_statement::check_parameter( int index )
 
    if ( index >= m_names.size() )
       throw_error( operation, "Too many parameters" );
-
-   return m_names[ index ].c_str();
 }
 
 //-----------------------------------------------------------------------------
 
-static constexpr char SET_AT[] = "SET @";
+template< typename T > void named_statement::internal_set_parameter( int index, T t )
+{
+   check_parameter( index );
+
+   auto begin = m_param_map.lower_bound( index );
+   auto end   = m_param_map.upper_bound( index );
+
+   for ( auto it = begin; it != end; it++ )
+      statement_base::set_parameter( it->second, t );
+}
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, int8_t i )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << static_cast< int >( i ) << ";" << std::endl;
+   internal_set_parameter< int8_t >( index, i );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, int16_t i )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << i << ";" << std::endl;
+   internal_set_parameter< int16_t >( index, i );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, int32_t i )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << i << ";" << std::endl;
+   internal_set_parameter< int32_t >( index, i );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, int64_t i )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << i << ";" << std::endl;
+   internal_set_parameter< int64_t >( index, i );
 }
 
 //-----------------------------------------------------------------------------
@@ -97,110 +147,56 @@ void named_statement::set_parameter( int index, int64_t i )
 
 void named_statement::set_parameter( int index, uint8_t u )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << static_cast< uint32_t > ( u  )<< ";" << std::endl;
+   internal_set_parameter< uint8_t >( index, u );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, uint16_t u )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << u << ";" << std::endl;
+   internal_set_parameter< uint16_t >( index, u );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, uint32_t u )
 {
-   m_values << SET_AT << check_parameter( index ) << " = " << u << ";" << std::endl;
+   internal_set_parameter< uint32_t >( index, u );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, uint64_t u )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << u << ";" << std::endl;
+   internal_set_parameter< uint64_t >( index, u );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, double d )
 {
-   m_values << SET_AT << check_parameter( index )
-            << " = " << d << ";" << std::endl;
-}
-
-//-----------------------------------------------------------------------------
-
-void named_statement::set_parameter( int index, const char * s, size_t length )
-{
-   std::string escaped;
-
-   escaped.resize( length * 2 + 1 );
-   length = mysql_real_escape_string( &m_mysql, const_cast< char * >( escaped.data() ), s, length );
-   escaped.resize( length );
-
-   m_values << SET_AT << check_parameter( index )
-            << " = \"" << escaped << "\";" << std::endl;
+   internal_set_parameter< double >( index, d );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, const char * s )
 {
-   set_parameter( index, s, strlen( s ) );
+   internal_set_parameter< const char * >( index, s );
 }
 
 //-----------------------------------------------------------------------------
 
 void named_statement::set_parameter( int index, const std::string & s )
 {
-   set_parameter( index, s.data(), s.length() );
+   internal_set_parameter< const std::string & >( index, s );
 }
 
 //-----------------------------------------------------------------------------
 
 int named_statement::parameter_count( void )
 {
-   return m_names.size();
-}
-
-//-----------------------------------------------------------------------------
-
-void named_statement::reset( void )
-{
-   statement_base::reset();
-
-   m_values.str().clear();
-}
-
-//-----------------------------------------------------------------------------
-
-void named_statement::internal_execute( void )
-{
-   static constexpr char operation[] = "MySQL named statement parameter binding";
-
-   std::string values = m_values.str();
-
-   int rc = mysql_real_query( &m_mysql, values.c_str(), values.length() );
-   if ( rc )
-      throw_error( operation, mysql_error( &m_mysql ) );
-
-   do
-   {
-      rc = mysql_next_result( &m_mysql );
-      if ( rc > 0 )
-         throw_error( operation, mysql_error( &m_mysql ) );
-   }
-   while ( rc == 0 );
-
-   statement_base::internal_execute();
-}
-
-//-----------------------------------------------------------------------------
-
+   return static_cast< int >( m_names.size() );
 }
 
 //-----------------------------------------------------------------------------

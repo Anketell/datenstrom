@@ -152,7 +152,7 @@ NAMESPACE_TEST( util, time, should_format_iso_datetime )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( util, time, should_transform_iso_hires_time )
+NAMESPACE_TEST( util, time, should_transform_iso_hires_time_canonical )
 {
    constexpr char expected[] = "01:01:01.123456789";
 
@@ -180,7 +180,7 @@ NAMESPACE_TEST( util, time, should_transform_iso_hires_time )
 
 //-----------------------------------------------------------------------------
 
-NAMESPACE_TEST( util, time, should_transform_iso_hires_date_time )
+NAMESPACE_TEST( util, time, should_transform_iso_hires_datetime_canonical )
 {
    constexpr char expected[] = "1970-02-01 01:01:01.123456789";
 
@@ -204,6 +204,118 @@ NAMESPACE_TEST( util, time, should_transform_iso_hires_date_time )
 
    EXPECT_STREQ( timestamp, expected );
 
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( util, time, should_transform_iso_hires_time_fixed )
+{
+   constexpr char source[] = "01:01:01.123456789";
+
+   ds::time::stamp ts;
+
+   EXPECT_TRUE( ds::time::parse_iso_8601_time( source, &ts ) );
+
+   EXPECT_EQ( ts.tm_sec, 1 );
+   EXPECT_EQ( ts.tm_min, 1 );
+   EXPECT_EQ( ts.tm_hour, 1 );
+
+   EXPECT_EQ( ts.tm_mday, 0 );
+   EXPECT_EQ( ts.tm_mon, 0 );
+   EXPECT_EQ( ts.tm_year, 0 );
+
+   EXPECT_EQ( ts.nano_sec, 123456789 );
+
+   char timestamp[ ds::time::time_len + 12 ];
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 10 );
+   EXPECT_STREQ( timestamp, "01:01:01.1234567890" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 9 );
+   EXPECT_STREQ( timestamp, "01:01:01.123456789" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 8 );
+   EXPECT_STREQ( timestamp, "01:01:01.12345679" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 7 );
+   EXPECT_STREQ( timestamp, "01:01:01.1234568" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 6 );
+   EXPECT_STREQ( timestamp, "01:01:01.123457" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 5 );
+   EXPECT_STREQ( timestamp, "01:01:01.12346" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 4 );
+   EXPECT_STREQ( timestamp, "01:01:01.1235" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 3 );
+   EXPECT_STREQ( timestamp, "01:01:01.123" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 2 );
+   EXPECT_STREQ( timestamp, "01:01:01.12" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 1 );
+   EXPECT_STREQ( timestamp, "01:01:01.1" );
+
+   ds::time::format_iso_8601_time( &ts, timestamp, 0 );
+   EXPECT_STREQ( timestamp, "01:01:01" );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( util, time, should_transform_iso_hires_datetime_fixed )
+{
+   constexpr char source[] = "1970-02-01 01:01:01.123456789";
+
+   ds::time::stamp ts;
+
+   EXPECT_TRUE( ds::time::parse_iso_8601( source, &ts ) );
+
+   EXPECT_EQ( ts.tm_sec, 1 );
+   EXPECT_EQ( ts.tm_min, 1 );
+   EXPECT_EQ( ts.tm_hour, 1 );
+
+   EXPECT_EQ( ts.tm_mday, 1 );
+   EXPECT_EQ( ts.tm_mon, 1 );
+   EXPECT_EQ( ts.tm_year, 70 );
+
+   EXPECT_EQ( ts.nano_sec, 123456789 );
+
+   char timestamp[ ds::time::datetime_len + 12 ];
+
+   ds::time::format_iso_8601( &ts, timestamp, 10 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.1234567890" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 9 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.123456789" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 8 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.12345679" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 7 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.1234568" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 6 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.123457" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 5 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.12346" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 4 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.1235" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 3 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.123" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 2 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.12" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 1 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01.1" );
+
+   ds::time::format_iso_8601( &ts, timestamp, 0 );
+   EXPECT_STREQ( timestamp, "1970-02-01 01:01:01" );
 }
 
 //-----------------------------------------------------------------------------

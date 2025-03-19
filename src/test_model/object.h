@@ -14,11 +14,6 @@
 
 //-----------------------------------------------------------------------------
 
-std::string canonical_time( const std::string & s );
-std::string canonical_datetime( const std::string & s );
-
-//-----------------------------------------------------------------------------
-
 struct Object
 {
    int8_t      m_i8;

@@ -6,16 +6,12 @@
 
 #include <mysql/rowset.h>
 #include <mysql/error.h>
+#include <dsutil/timestamp.h>
 #include <limits>
 
 //-----------------------------------------------------------------------------
 
-namespace ds
-{
-
-//-----------------------------------------------------------------------------
-
-namespace mysql
+namespace ds::mysql
 {
 
 //-----------------------------------------------------------------------------
@@ -262,6 +258,17 @@ void rowset::get_column( int index, std::string & s )
 
    if ( rc )
       throw_error( operation, mysql_stmt_error( m_stmt->stmt ) );
+
+   switch ( m_stmt->mysql_bind[ index ].buffer_type )
+   {
+      case MYSQL_TYPE_TIME:
+         ds::time::reformat_iso_8601_time( s );
+         break;
+
+      case MYSQL_TYPE_DATETIME:
+         ds::time::reformat_iso_8601( s );
+         break;
+   }
 }
 
 //-----------------------------------------------------------------------------
@@ -278,10 +285,6 @@ bool rowset::step( void )
 bool rowset::eof( void ) const
 {
    return !m_valid;
-}
-
-//-----------------------------------------------------------------------------
-
 }
 
 //-----------------------------------------------------------------------------

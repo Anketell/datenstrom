@@ -10,6 +10,7 @@
 
 #include <dsutil/time.h>
 #include <cstdint>
+#include <string>
 
 //-----------------------------------------------------------------------------
 
@@ -36,7 +37,15 @@ bool parse_iso_8601_time( const char * s, stamp * ts );
 bool parse_iso_8601( const char * s, stamp * ts );
 void format_iso_8601_date( const stamp * ts, char * s );
 void format_iso_8601_time( const stamp * ts, char * s );
+void format_iso_8601_time( const stamp * ts, char * s, uint8_t decimals );
 void format_iso_8601( const stamp * ts, char * s );
+void format_iso_8601( const stamp * ts, char * s, uint8_t decimals );
+
+bool reformat_iso_8601_time( std::string & s );
+bool reformat_iso_8601_time( std::string & s, uint8_t decimals );
+
+bool reformat_iso_8601( std::string & s );
+bool reformat_iso_8601( std::string & s, uint8_t decimals );
 
 //-----------------------------------------------------------------------------
 

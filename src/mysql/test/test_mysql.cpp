@@ -106,7 +106,7 @@ NAMESPACE_TEST( mysql, Connection, should_return_type )
 
 NAMESPACE_TEST( mysql, Connection, should_fail_create_bad_path )
 {
-   ds::db::connection::enroll_db_path_list( MYSQL_TEST );
+   ds::db::connection::enroll_db_path_list( DS_MODULE_PATH );
 
    EXPECT_THROW( ds::db::connection test_db( "mysql://" ), std::invalid_argument );
 

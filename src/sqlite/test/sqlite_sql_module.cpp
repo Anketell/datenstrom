@@ -44,7 +44,7 @@ R"(
       d           FLOAT,
       hello       VARCHAR( 10 ),
       dt          DATE,
-      tm          DATETIME,
+      tm          TIME,
       dttm        DATETIME,
       id          INTEGER NOT NULL PRIMARY KEY
    )   
