@@ -38,4 +38,9 @@ target_link_libraries( ${TARGET}
    ${MYSQL_LIBRARY}
 )
 
+if ( WIN32 )
+   include( dll_funcs )
+   db_module_def( TARGET ${TARGET} )
+endif( WIN32 )
+
 add_subdirectory( test )

@@ -10,17 +10,33 @@ IF (MYSQL_INCLUDE_DIR)
   SET(MYSQL_FIND_QUIETLY TRUE)
 ENDIF (MYSQL_INCLUDE_DIR)
 
-FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
-  /usr/local/include/mysql
-  /usr/include/mysql
-)
+if (UNIX)
 
-SET(MYSQL_NAMES mysqlclient mysqlclient_r)
-FIND_LIBRARY(MYSQL_LIBRARY
-  NAMES ${MYSQL_NAMES}
-  PATHS /usr/lib /usr/local/lib
-  PATH_SUFFIXES mysql
-)
+  FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
+    /usr/local/include/mysql
+    /usr/include/mysql
+  )
+
+  SET(MYSQL_NAMES mysqlclient mysqlclient_r)
+  FIND_LIBRARY(MYSQL_LIBRARY
+    NAMES ${MYSQL_NAMES}
+    PATHS /usr/lib /usr/local/lib
+    PATH_SUFFIXES mysql
+  )
+
+elseif(MSVC)
+
+  FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
+    "$ENV{PROGRAMFILES}/MariaDB */include"
+  )
+
+  SET(MYSQL_NAMES mariadb )
+  FIND_LIBRARY(MYSQL_LIBRARY
+    NAMES ${MYSQL_NAMES}
+    PATHS "$ENV{PROGRAMFILES}/MariaDB */lib"
+  )
+
+endif( UNIX)
 
 IF (MYSQL_INCLUDE_DIR AND MYSQL_LIBRARY)
   SET(MYSQL_FOUND TRUE)
@@ -44,4 +60,5 @@ ENDIF (MYSQL_FOUND)
 MARK_AS_ADVANCED(
   MYSQL_LIBRARY
   MYSQL_INCLUDE_DIR
-  )
+)
+
