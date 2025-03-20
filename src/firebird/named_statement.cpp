@@ -26,32 +26,33 @@ static constexpr char operation[] = "Firebird prepare named statement";
 named_statement::named_statement( transactional         & transactional,
                                   const std::string     & sql,
                                   const db::name_list_t & parameters ) :
-statement_base( transactional )
+statement_base( transactional ),
+m_names( parameters )
 {
-   int32_t type;
+   std::string pos_sql = get_pos_sql( sql, parameters );
+   prepare( pos_sql );
+}
 
-   std::string wrapped_sql = wrap_sql( sql, parameters, &type );
-   prepare( wrapped_sql );
+//-----------------------------------------------------------------------------
 
-   m_stmt->type = type;
+named_statement::~named_statement( void )
+{
 }
 
 //-----------------------------------------------------------------------------
 
 std::string named_statement::get_pos_sql( const std::string     & sql,
-                                          const db::name_list_t & parameters,
-                                          int                   * index )
+                                          const db::name_list_t & parameters )
 {
-   for ( int i = 0; i < parameters.size(); i++ )
-      index[ i ] = -1;
+   static constexpr char operation[] = "Firebird prepare named statement";
 
    std::string pos_sql;
 
    int unique = 0;
-   int param = 0;
+   int param  = 0;
 
    uint32_t from = 0;
-   for ( auto parameter : db::parameter::enumerator( sql, ":" ) )
+   for ( auto parameter : db::parameter::enumerator( sql, "@$" ) )
    {
       std::string name = sql.substr( parameter.from + 1, parameter.len - 1 );
 
@@ -59,16 +60,24 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
       auto it = std::find( parameters.begin(), parameters.end(), name );
       if ( it == parameters.end() )
-         throw_error( operation, "Parameter mismatch" );
-
-      int j = it - parameters.begin();
-      if ( index[ j ] == -1 )
       {
-         index[ j ] = param;
-         unique++;
+         std::stringstream ss;
+
+         ss << std::endl
+            << sql << std::endl
+            << "Parameter mismatch: " << name;
+
+         throw_error( operation, ss.str().c_str() );
       }
 
-      param++;
+      int j = static_cast< int >( it - parameters.begin() );
+
+      auto it2 = m_param_map.lower_bound( j );
+      if ( it2 == m_param_map.end() || it2->first != j )
+         unique++;
+
+      m_param_map.insert( { j, param++ } );
+
       from = parameter.from + parameter.len;
    }
 
@@ -82,186 +91,116 @@ std::string named_statement::get_pos_sql( const std::string     & sql,
 
 //-----------------------------------------------------------------------------
 
-void named_statement::get_stmt_meta( const std::string     & sql,
-                                     const db::name_list_t & parameters,
-                                     stmt_meta_t           * meta )
+void named_statement::check_parameter( int index )
 {
-   std::string pos_sql = get_pos_sql( sql, parameters, meta->index );
+   static constexpr char operation[] = "Firebird named statement parameter check";
 
-   ISC_STATUS status[ status_vector_length ];
+   if ( m_stmt->state == stmt_t::Executed )
+      reset();
 
-   isc_stmt_handle stmt = 0;
+   if ( index < 0 )
+      throw_error( operation, "Bad parameter" );
 
-   isc_dsql_allocate_statement( status, &m_transactional.db_handle, &stmt );
-
-   check_status( operation, status );
-
-   guard( m_transactional, [ & ]( void ) -> void
-   {
-      isc_dsql_prepare( status,
-                        &m_transactional.tr_handle,
-                        &stmt,
-                        pos_sql.length(),
-                        pos_sql.data(), 3, nullptr );
-   } );
-
-   check_status( operation, status );
-
-   meta->type = get_statement_type( stmt );
-   meta->in   = prepare_parameter_xsqlda( stmt );
-   meta->out  = prepare_result_xqslda( stmt );
-
-   isc_dsql_free_statement( status, &stmt, DSQL_drop );
-
-   check_status( operation, status );
+   if ( index >= m_names.size() )
+      throw_error( operation, "Too many parameters" );
 }
 
 //-----------------------------------------------------------------------------
 
-std::string data_type( const XSQLVAR & xsqlvar )
+template< typename T > void named_statement::internal_set_parameter( int index, T t )
 {
-   std::string type;
+   check_parameter( index );
 
-   switch ( xsqlvar.sqltype & ~1 )
-   {
-      case SQL_TEXT:
-         type = "CHAR( " + std::to_string( xsqlvar.sqllen ) + " )";
-         break;
+   auto begin = m_param_map.lower_bound( index );
+   auto end   = m_param_map.upper_bound( index );
 
-      case SQL_VARYING:
-         type = "VARCHAR( " + std::to_string( xsqlvar.sqllen ) + " )";
-         break;
-
-      case SQL_SHORT:
-         type = "SMALLINT";
-         break;
-
-      case SQL_LONG:
-         type = "INTEGER";
-         break;
-
-      case SQL_FLOAT:
-         type = "FLOAT";
-         break;
-
-      case SQL_DOUBLE:
-         type = "DOUBLE PRECISION";
-         break;
-
-      case SQL_INT64:
-         type = "BIGINT";
-         break;
-
-      case SQL_TYPE_DATE:
-         type = "DATE";
-         break;
-
-      case SQL_TYPE_TIME:
-         type = "TIME";
-         break;
-
-      case SQL_TIMESTAMP:
-         type = "TIMESTAMP";
-         break;
-
-      case SQL_BLOB:
-         type = "BLOB";
-         break;
-
-      default:
-         throw_error( operation, "Unsupported data type" );
-   }
-
-   return type;
+   for ( auto it = begin; it != end; it++ )
+      statement_base::set_parameter( it->second, t );
 }
 
 //-----------------------------------------------------------------------------
 
-std::string named_statement::wrap_sql( const std::string     & sql,
-                                       const db::name_list_t & parameters,
-                                       int32_t               * type )
+void named_statement::set_parameter( int index, int8_t i )
 {
-   static constexpr char suffix[] = "_ds_helper";
+   internal_set_parameter< int8_t >( index, i );
+}
 
-   int32_t * index = new int32_t[ parameters.size() ];
+//-----------------------------------------------------------------------------
 
-   stmt_meta_t meta = { index, nullptr, nullptr, 0 };
+void named_statement::set_parameter( int index, int16_t i )
+{
+   internal_set_parameter< int16_t >( index, i );
+}
 
-   get_stmt_meta( sql, parameters, &meta );
+//-----------------------------------------------------------------------------
 
-   std::stringstream wrapped_sql;
+void named_statement::set_parameter( int index, int32_t i )
+{
+   internal_set_parameter< int32_t >( index, i );
+}
 
-   wrapped_sql << "EXECUTE BLOCK";
+//-----------------------------------------------------------------------------
 
-   if ( meta.in->sqld )
-   {
-      wrapped_sql << " ( ";
+void named_statement::set_parameter( int index, int64_t i )
+{
+   internal_set_parameter< int64_t >( index, i );
+}
 
-      int i = 0;
-      for ( auto name : parameters )
-      {
-         if ( i )
-            wrapped_sql << ", ";
+//-----------------------------------------------------------------------------
 
-         wrapped_sql << name << " "
-                     << data_type( meta.in->sqlvar[ index[ i++ ] ] ) << " = ?";
-      }
-      wrapped_sql << " )";
-   }
 
-   wrapped_sql << std::endl;
+void named_statement::set_parameter( int index, uint8_t u )
+{
+   internal_set_parameter< uint8_t >( index, u );
+}
 
-   if ( meta.out->sqld )
-   {
-      wrapped_sql << "RETURNS ( ";
-      for ( int i = 0; i < meta.out->sqld; i++ )
-      {
-         if ( i )
-            wrapped_sql << ", ";
+//-----------------------------------------------------------------------------
 
-         wrapped_sql << "t_" << meta.out->sqlvar[ i ].sqlname << "_" << i << " "
-                     << data_type( meta.out->sqlvar[ i ] );
-      }
-      wrapped_sql << " )" << std::endl;
-   }
+void named_statement::set_parameter( int index, uint16_t u )
+{
+   internal_set_parameter< uint16_t >( index, u );
+}
 
-   wrapped_sql << "AS" << std::endl
-               << "BEGIN" << std::endl;
+//-----------------------------------------------------------------------------
 
-   if ( meta.type == isc_info_sql_stmt_select )
-      wrapped_sql << "FOR" << std::endl;
+void named_statement::set_parameter( int index, uint32_t u )
+{
+   internal_set_parameter< uint32_t >( index, u );
+}
 
-   wrapped_sql << sql;
+//-----------------------------------------------------------------------------
 
-   if ( meta.out->sqld )
-   {
-      wrapped_sql << std::endl << "INTO ";
-      for ( int i = 0; i < meta.out->sqld; i++ )
-      {
-         if ( i )
-            wrapped_sql << ", ";
+void named_statement::set_parameter( int index, uint64_t u )
+{
+   internal_set_parameter< uint64_t >( index, u );
+}
 
-         wrapped_sql << ":t_" << meta.out->sqlvar[ i ].sqlname << "_" << i;
-      }
+//-----------------------------------------------------------------------------
 
-      if ( meta.type == isc_info_sql_stmt_select )
-         wrapped_sql << std::endl << "DO ";
-      else
-         wrapped_sql << ";" << std::endl;
+void named_statement::set_parameter( int index, double d )
+{
+   internal_set_parameter< double >( index, d );
+}
 
-      wrapped_sql << "SUSPEND";
-   }
+//-----------------------------------------------------------------------------
 
-   wrapped_sql << ";" << std::endl << "END" << std::endl;
+void named_statement::set_parameter( int index, const char * s )
+{
+   internal_set_parameter< const char * >( index, s );
+}
 
-   free( meta.in );
-   free( meta.out );
+//-----------------------------------------------------------------------------
 
-   delete [] index;
+void named_statement::set_parameter( int index, const std::string & s )
+{
+   internal_set_parameter< const std::string & >( index, s );
+}
 
-   *type = meta.type;
+//-----------------------------------------------------------------------------
 
-   return wrapped_sql.str();
+int named_statement::parameter_count( void )
+{
+   return static_cast< int >( m_names.size() );
 }
 
 //-----------------------------------------------------------------------------

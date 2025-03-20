@@ -107,20 +107,7 @@ TEST_P( Parameter, should_retrieve_named )
       EXPECT_NO_THROW( row >> o );
    }
 
-   EXPECT_EQ( o.m_i8,       data[ 0 ].m_i8 );
-   EXPECT_EQ( o.m_i16,      data[ 0 ].m_i16 );
-   EXPECT_EQ( o.m_i32,      data[ 0 ].m_i32 );
-   EXPECT_EQ( o.m_i64,      data[ 0 ].m_i64 );
-   EXPECT_EQ( o.m_u8,       data[ 0 ].m_u8 );
-   EXPECT_EQ( o.m_u16,      data[ 0 ].m_u16 );
-   EXPECT_EQ( o.m_u32,      data[ 0 ].m_u32 );
-   EXPECT_EQ( o.m_u64,      data[ 0 ].m_u64 );
-   EXPECT_EQ( o.m_f,        data[ 0 ].m_f );
-   EXPECT_EQ( o.m_d,        data[ 0 ].m_d );
-   EXPECT_EQ( o.m_hello,    data[ 0 ].m_hello );
-   EXPECT_EQ( o.m_date,     data[ 0 ].m_date );
-   EXPECT_EQ( o.m_time,     data[ 0 ].m_time );
-   EXPECT_EQ( o.m_datetime, data[ 0 ].m_datetime );
+   EXPECT_EQ( o, data[ 0 ] );
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }

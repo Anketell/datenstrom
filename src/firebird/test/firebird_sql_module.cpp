@@ -209,20 +209,20 @@ R"(
    )
    VALUES 
    ( 
-      :i8, 
-      :i16, 
-      :i32, 
-      :i64,
-      :u8, 
-      :u16, 
-      :u32, 
-      :u64, 
-      :float, 
-      :double, 
-      :string,
-      :date, 
-      :time, 
-      :datetime,
+      $i8, 
+      $i16, 
+      $i32, 
+      $i64,
+      $u8, 
+      $u16, 
+      $u32, 
+      $u64, 
+      $float, 
+      $double, 
+      $string,
+      $date, 
+      $time, 
+      $datetime,
       GEN_ID( ObjectID, 1 )
    )
 )"

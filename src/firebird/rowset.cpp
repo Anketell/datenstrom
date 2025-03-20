@@ -51,7 +51,7 @@ rowset::~rowset( void )
    else
    {
       if ( m_stmt->type == isc_info_sql_stmt_insert )
-      m_stmt->state = stmt_t::Preparing;
+         m_stmt->state = stmt_t::Preparing;
    }
 }
 
