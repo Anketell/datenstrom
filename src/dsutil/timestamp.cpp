@@ -224,7 +224,7 @@ bool reformat_iso_8601( std::string & s )
    if ( !parse_iso_8601( s.c_str(), &ts ) )
       return false;
 
-   char res[ hires_time_len + 1 ];
+   char res[ hires_datetime_len + 1 ];
 
    format_iso_8601( &ts, res );
 
@@ -242,7 +242,7 @@ bool reformat_iso_8601( std::string & s, uint8_t decimals )
    if ( !parse_iso_8601( s.c_str(), &ts ) )
       return false;
 
-   char res[ hires_time_len + 257 ];
+   char res[ hires_datetime_len + 257 ];
 
    format_iso_8601( &ts, res, decimals );
 

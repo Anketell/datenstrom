@@ -23,8 +23,8 @@ class named_statement : public statement_base
    const db::name_list_t     m_names;
    std::multimap< int, int > m_param_map;
 
-   void get_pos_sql( const std::string     & sql,
-                     const db::name_list_t & parameters );
+   std::string  get_pos_sql( const std::string     & sql,
+                             const db::name_list_t & parameters );
 
    void check_parameter( int index );
 
