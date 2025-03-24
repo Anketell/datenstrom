@@ -6,9 +6,9 @@
 
 #include <sqlite/rowset.h>
 #include <sqlite/error.h>
+#include <dsutil/timestamp.h>
 #include <unordered_map>
 #include <cstring>
-#include <dsutil/timestamp.h>
 
 //-----------------------------------------------------------------------------
 

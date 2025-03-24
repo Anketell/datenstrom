@@ -6,9 +6,8 @@
 
 #include <mssql/rowset.h>
 #include <mssql/error.h>
-#include <dsutil/time.h>
+#include <dsutil/timestamp.h>
 #include <sqlext.h>
-#include <algorithm>
 
 #undef max
 #undef min
@@ -69,7 +68,6 @@ void rowset::check_column( int index )
 
    if ( index >= column_count() )
       throw_error( operation, "No column available" );
-
 }
 
 //-----------------------------------------------------------------------------
@@ -141,26 +139,16 @@ void rowset::get_text_column( int index, std::string & t )
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
    if ( desc.type == sql_time_type )
    {
-      std::string::reverse_iterator it;
-      for ( it = t.rbegin(); it != t.rend(); it++ )
+      switch ( desc.size )
       {
-         if ( *it != '\0' )
-         {
-            t.resize( t.length() - ( it - t.rbegin() ) );
+         case 16:
+            ds::time::reformat_iso_8601_time( t );
             break;
-         }
+
+         case 27:
+            ds::time::reformat_iso_8601( t );
+            break;
       }
-
-      if ( t.find_last_of( '.' ) == std::string::npos )
-         return;
-
-      for ( it = t.rbegin(); *it == '0'; it++ )
-         ;
-
-      if ( *it == '.' )
-         it++;
-
-      count = t.length() - ( it - t.rbegin() );
    }
 
    t.resize( std::max( 0LL, static_cast< int64_t >( count ) ) );
