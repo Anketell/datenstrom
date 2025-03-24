@@ -36,9 +36,10 @@ std::string connection::create_connection_string( const std::string & server,
    if ( !instance.empty() )
       ss << "\\" << instance;
 
-   ss << "," << port << "; "
-      << "TrustServerCertificate=yes; "
-      << "Trusted_Connection=yes;";
+   if ( port != 1433 )
+      ss << "," << port;
+
+    ss << "; Trusted_Connection=yes;";
 
    return ss.str();
 }
@@ -53,14 +54,25 @@ std::string connection::create_connection_string( const std::string & user_id,
 {
    std::stringstream ss;
 
-   ss << "Driver={SQL Server}; "
+   ss << "Driver=FreeTDS; "
       << "Server=" << server;
+
+//   ss << "Driver={ODBC Driver 18 for SQL Server}; "
+//      << "Server=" << server;
 
    if ( !instance.empty() )
       ss << "\\" << instance;
 
-   ss << "," << port << "; "
-      << "TrustServerCertificate=yes; "
+//   if ( port != 1433 )
+//      ss << "," << port;
+
+//   ss << "; port=1433; DS_Version=8.0; Driver=/usr/lib64/libtdsodbc.so";
+   ss << "; port=1433";
+
+//   ss << "; TrustServerCertificate=yes";
+
+
+   ss << "; "
       << "UID=" << user_id << "; "
       << "PWD=" << password << "; ";
 

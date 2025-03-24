@@ -4,28 +4,21 @@
 //
 //-----------------------------------------------------------------------------
 
-#pragma once
+#include <mssql/positional_statement.h>
 
 //-----------------------------------------------------------------------------
 
-#include <cstring>
-
-//-----------------------------------------------------------------------------
-
-namespace ds::string
+namespace ds::mssql
 {
 
 //-----------------------------------------------------------------------------
 
-int cmpignorecase( const char * s1, const char * s2, size_t n );
-int cmpignorecase( const char * s1, const char * s2 );
-
-//-----------------------------------------------------------------------------
-
+positional_statement::positional_statement( SQLHDBC hdbc, const std::string & sql   ) :
+statement_base( hdbc )
+{
+   prepare( sql );
 }
 
 //-----------------------------------------------------------------------------
 
-size_t strnlen_s( const char * s, size_t max );
-
-//-----------------------------------------------------------------------------
+}

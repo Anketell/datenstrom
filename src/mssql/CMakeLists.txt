@@ -35,13 +35,23 @@ add_library( ${TARGET} MODULE
    ${HEADERS}
 )
 
+if ( MSVC )
+   set( ODBC_LIBRARY odbc32 )
+else()
+   set( ODBC_LIBRARY odbc )
+endif()
+
 target_link_libraries( ${TARGET}
    mssql_stmt_enum
    ds_db
-   odbc32
+   ${ODBC_LIBRARY}
 )
 
-include( dll_funcs )
-db_module_def( TARGET ${TARGET} )
+if ( MSVC )
+   include( dll_funcs )
+   db_module_def( TARGET ${TARGET} )
+else()
+   target_compile_options( mssql_stmt_enum PRIVATE "-fPIC" )
+endif ( MSVC )
 
 add_subdirectory( test )

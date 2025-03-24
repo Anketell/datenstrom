@@ -15,7 +15,8 @@ cmake -DCMAKE_BUILD_TYPE=Debug \
       -DDS_DB=YES \
       -DDS_FIREBIRD=YES \
       -DDS_MYSQL=YES \
-      -DDS_SQLITE=YES ..
+      -DDS_SQLITE=YES \
+      -DDS_MSSQL=YES ..
 popd
 
 mkdir -p ${root}/release
@@ -27,7 +28,8 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DDS_DB=YES \
       -DDS_FIREBIRD=YES \
       -DDS_MYSQL=YES \
-      -DDS_SQLITE=YES ..
+      -DDS_SQLITE=YES \
+      -DDS_MSSQL=YES ..
 popd
 
 mkdir -p ${root}/coverage
@@ -39,5 +41,6 @@ cmake -DCMAKE_BUILD_TYPE=Coverage \
       -DDS_DB=YES \
       -DDS_FIREBIRD=YES \
       -DDS_MYSQL=YES \
-      -DDS_SQLITE=YES ..
+      -DDS_SQLITE=YES \
+      -DDS_MSSQL=YES ..
 popd >/dev/null

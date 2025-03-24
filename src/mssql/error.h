@@ -8,24 +8,20 @@
 
 //-----------------------------------------------------------------------------
 
-#include <cstring>
+// #include <windows.h>
+#include <sql.h>
+#include <string>
 
 //-----------------------------------------------------------------------------
 
-namespace ds::string
+namespace ds::mssql
 {
 
 //-----------------------------------------------------------------------------
 
-int cmpignorecase( const char * s1, const char * s2, size_t n );
-int cmpignorecase( const char * s1, const char * s2 );
+[[noreturn]] void throw_error( const std::string & operation, const char * error );
+void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, RETCODE rc );
 
 //-----------------------------------------------------------------------------
 
 }
-
-//-----------------------------------------------------------------------------
-
-size_t strnlen_s( const char * s, size_t max );
-
-//-----------------------------------------------------------------------------
