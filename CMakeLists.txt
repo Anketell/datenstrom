@@ -48,12 +48,12 @@ if ( DS_DB AND DS_SQLITE )
 endif ( DS_DB AND DS_SQLITE )
 
 if ( WIN32 )
-   include_directories( "${CMAKE_SOURCE_DIR}/win32" )
+   include_directories( BEFORE "${CMAKE_SOURCE_DIR}/win32" )
    add_subdirectory( win32 )
 endif ( WIN32 )
 
 if ( UNIX )
-   include_directories( "${CMAKE_SOURCE_DIR}/linux" )
+   include_directories( BEFORE "${CMAKE_SOURCE_DIR}/linux" )
    add_subdirectory( linux )
 endif ( UNIX )
 
