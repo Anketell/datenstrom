@@ -25,39 +25,9 @@ mkdir -p  %{buildroot}
 cp -a * %{buildroot}
 
 %files
-/usr/lib64/libds_util.so
-/usr/lib64/libds.so
-/usr/lib64/libds_csv.so
-/usr/lib64/libds_db.so
-/usr/lib64/libsql_module_harness.a
-/usr/lib64/libds_bin.so
-/usr/include/datenstrom/dsutil/url_encode.h
-/usr/include/datenstrom/dsutil/connect_params.h
-/usr/include/datenstrom/dsutil/connect_string.h
-/usr/include/datenstrom/dsutil/timestamp.h
-/usr/include/datenstrom/dsutil/endian.h
-/usr/include/datenstrom/dsutil/env.h
-/usr/include/datenstrom/dsutil/filesys.h
-/usr/include/datenstrom/dsutil/module.h
-/usr/include/datenstrom/dsutil/string.h
-/usr/include/datenstrom/dsutil/time.h
-/usr/include/datenstrom/ds/ds.h
-/usr/include/datenstrom/ds/factory.h
-/usr/include/datenstrom/csv/csv.h
-/usr/include/datenstrom/db/connection.h
-/usr/include/datenstrom/db/context.h
-/usr/include/datenstrom/db/factory_helper.h
-/usr/include/datenstrom/db/factory.h
-/usr/include/datenstrom/db/impl.h
-/usr/include/datenstrom/db/rowset.h
-/usr/include/datenstrom/db/sql_map.h
-/usr/include/datenstrom/db/statement.h
-/usr/include/datenstrom/db/sql_module_harness.h
-/usr/include/datenstrom/db/transaction.h
-/usr/include/datenstrom/db/transactional.h
-/usr/include/datenstrom/bin/bin.h
-/usr/share/datenstrom/module/libds_firebird_module.so
-/usr/share/datenstrom/module/libds_mysql_module.so
-/usr/share/datenstrom/module/libds_sqlite_module.so
+${FILES}
 
 %changelog
+* Thu Mar 27 2025 Matt Henderson <matt.henderson@lucidsw.com.au>
+
+- Initial rpm implementation
