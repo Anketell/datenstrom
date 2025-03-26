@@ -33,6 +33,29 @@
    },
    {
       "group": {
+         "kind": "build",
+         "isDefault": true
+      },
+      "type": "shell",
+      "label": "make release",
+      "command": "time make -C release",
+      "problemMatcher": {
+         "owner": "cpp",
+         "fileLocation": [
+            "absolute"
+         ],
+         "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(info|warning|error|fatal error):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+         }
+      }
+   },
+   {
+      "group": {
          "kind": "test",
          "isDefault": true
       },
@@ -57,7 +80,7 @@
    {
       "type": "shell",
       "label": "clean",
-      "command": "make -C debug clean; make -C coverage clean",
+      "command": "make -C debug clean; make -C coverage clean; make -C release clean",
       "problemMatcher": []
    }
 ]

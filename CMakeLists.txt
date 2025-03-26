@@ -38,6 +38,10 @@ if ( UNIX )
 
    SET( TEMP "/tmp" )
 
+   if(CMAKE_BUILD_TYPE STREQUAL "Release")
+      set(CMAKE_SKIP_RPATH TRUE)
+   endif(CMAKE_BUILD_TYPE STREQUAL "Release")
+   
 endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )
