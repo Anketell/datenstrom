@@ -4,12 +4,8 @@ pushd $(dirname $0)/.. >/dev/null
 
 rm -rf ./release/image
 
+mkdir -p ./release/image/usr/include/datenstrom/{dsutil,ds,csv,db,bin}
 mkdir -p ./release/image/usr/lib64
-mkdir -p ./release/image/usr/include/datenstrom/dsutil
-mkdir -p ./release/image/usr/include/datenstrom/ds
-mkdir -p ./release/image/usr/include/datenstrom/csv
-mkdir -p ./release/image/usr/include/datenstrom/db
-mkdir -p ./release/image/usr/include/datenstrom/bin
 mkdir -p ./release/image/usr/share/datenstrom/module
 
 cp ./src/dsutil/url_encode.h                         ./release/image/usr/include/datenstrom/dsutil
