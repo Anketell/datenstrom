@@ -5,7 +5,7 @@ pushd $(dirname $0)/.. >/dev/null
 rm -rf ./release/image
 
 mkdir -p ./release/image/usr/include/datenstrom/{dsutil,ds,csv,db,bin}
-mkdir -p ./release/image/usr/lib64
+mkdir -p ./release/image/usr/lib64/datenstrom
 mkdir -p ./release/image/usr/share/datenstrom/module
 
 cp ./src/dsutil/url_encode.h                         ./release/image/usr/include/datenstrom/dsutil
@@ -38,12 +38,12 @@ cp ./src/db/transactional.h                          ./release/image/usr/include
 
 cp ./src/bin/bin.h                                   ./release/image/usr/include/datenstrom/bin
 
-cp ./release/linux/dsutil/libds_util.so              ./release/image/usr/lib64
-cp ./release/src/ds/libds.so                         ./release/image/usr/lib64
-cp ./release/src/csv/libds_csv.so                    ./release/image/usr/lib64
-cp ./release/src/db/libds_db.so                      ./release/image/usr/lib64
-cp ./release/src/db/libsql_module_harness.a          ./release/image/usr/lib64
-cp ./release/src/bin/libds_bin.so                    ./release/image/usr/lib64
+cp ./release/linux/dsutil/libds_util.so              ./release/image/usr/lib64/datenstrom
+cp ./release/src/ds/libds.so                         ./release/image/usr/lib64/datenstrom
+cp ./release/src/csv/libds_csv.so                    ./release/image/usr/lib64/datenstrom
+cp ./release/src/db/libds_db.so                      ./release/image/usr/lib64/datenstrom
+cp ./release/src/db/libsql_module_harness.a          ./release/image/usr/lib64/datenstrom
+cp ./release/src/bin/libds_bin.so                    ./release/image/usr/lib64/datenstrom
 
 cp ./release/src/firebird/libds_firebird_module.so   ./release/image/usr/share/datenstrom/module
 cp ./release/src/mysql/libds_mysql_module.so         ./release/image/usr/share/datenstrom/module
