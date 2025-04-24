@@ -11,6 +11,8 @@
 #undef max
 #undef min
 
+#include <algorithm>
+
 //-----------------------------------------------------------------------------
 
 namespace ds::mssql
@@ -125,7 +127,7 @@ void rowset::get_datetime_column( int index, std::string & t )
 
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
 
-   SQLLEN count = desc.size;;
+   SQLLEN count = std::max( static_cast< int >( desc.size ), 20 );
 
    t.resize( count + 1 );
 
@@ -235,10 +237,7 @@ void rowset::get_column( int index, std::string & s )
          get_blob_column( index, s );
          break;
 
-      case sql_datetime_type_1:
-      case sql_datetime_type_2:
-      case sql_datetime_type_3:
-      case sql_datetime_type_4:
+      case sql_datetime_type:
          get_datetime_column( index, s );
          break;
 

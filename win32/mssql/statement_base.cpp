@@ -133,7 +133,7 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
 
    SQLLEN size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
 
-   buffer.resize( size );
+   buffer.resize( size + 1 );
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
@@ -148,7 +148,7 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
 
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   strncpy( buffer.data< char >(), t.c_str(), size );
+   strncpy_s( buffer.data< char >(), size, t.c_str(), size );
 }
 
 //-----------------------------------------------------------------------------

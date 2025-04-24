@@ -30,7 +30,7 @@ if ( DS_DB )
       add_subdirectory( sqlite )
    endif()
 
-   if ( DS_MSSQL)
+   if ( DS_MSSQL AND UNIX )
       add_subdirectory( mssql )
    endif()
 
