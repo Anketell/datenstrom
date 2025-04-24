@@ -41,6 +41,8 @@ target_link_libraries( ${TARGET}
 if ( WIN32 )
    include( dll_funcs )
    db_module_def( TARGET ${TARGET} )
+else()
+   set_target_properties( ${TARGET} PROPERTIES PREFIX "" )
 endif( WIN32 )
 
 add_subdirectory( test )

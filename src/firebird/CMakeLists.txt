@@ -49,26 +49,18 @@ add_library( ${TARGET} MODULE
 )
 
 if( DEFINED ENV{DS_FB_INC_PATH} )
-
    target_include_directories( ${TARGET} PUBLIC $ENV{DS_FB_INC_PATH} )
-
 endif()
 
 
 if( DEFINED ENV{DS_FB_LIB_PATH} )
-
    target_link_directories( ${TARGET} PUBLIC $ENV{DS_FB_LIB_PATH} )
-
 endif()
 
 if( DEFINED ENV{DS_FB_CLIENT_LIB} )
-
    set( FB_CLIENT_LIB $ENV{DS_FB_CLIENT_LIB} )
-
 else()
-
    set( FB_CLIENT_LIB fbclient)
-
 endif()
 
 target_link_libraries( ${TARGET}
@@ -79,6 +71,8 @@ target_link_libraries( ${TARGET}
 if ( WIN32 )
    include( dll_funcs )
    db_module_def( TARGET ${TARGET} )
+else()
+   set_target_properties( ${TARGET} PROPERTIES PREFIX "" )
 endif( WIN32 )
 
 add_subdirectory( test )
