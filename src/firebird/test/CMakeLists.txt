@@ -34,7 +34,7 @@ else()
    set( FIREBIRD_TEST "firebird://localhost/${TEMP}?username=sysdba&password=masterkey" )
 endif()
 
-target_compile_definitions( ${TARGET} PUBLIC  
+target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    FIREBIRD_TEST="${FIREBIRD_TEST}"
@@ -84,6 +84,8 @@ if ( MSVC )
    endforeach( dll )
 
 else( MSVC )
+
+   set_target_properties( firebird_sql_module PROPERTIES PREFIX "" )
 
    target_link_options( firebird_sql_module PRIVATE "--entry=enroll_sql" )
 

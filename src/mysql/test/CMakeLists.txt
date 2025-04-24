@@ -30,7 +30,7 @@ else()
    set( MYSQL_TEST "mysql://localhost?username=root" )
 endif()
 
-target_compile_definitions( ${TARGET} PUBLIC  
+target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    MYSQL_TEST="${MYSQL_TEST}"
@@ -79,6 +79,8 @@ if ( MSVC )
    endforeach( dll )
 
 else( MSVC )
+
+   set_target_properties( mysql_sql_module PROPERTIES PREFIX "" )
 
    target_link_options( mysql_sql_module PRIVATE "--entry=enroll_sql" )
 
