@@ -25,10 +25,9 @@ class rowset : public db::rowset::impl
 
    void check_column( int index );
 
-   time_t get_time( int index );
-
    void get_text_column( int index, std::string & t );
    void get_blob_column( int index, std::string & t );
+   void get_datetime_column( int index, std::string & t );
 
    template< typename T > void get_column( int index, int c_type, T & t );
 

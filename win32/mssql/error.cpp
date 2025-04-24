@@ -25,7 +25,7 @@ namespace ds::mssql
 
 void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, RETCODE rc )
 {
-   if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO )
+   if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO && rc != SQL_NO_DATA )
    {
       std::stringstream message;
 
@@ -37,7 +37,7 @@ void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, R
          SQLCHAR     state[ SQL_SQLSTATE_SIZE + 1 ];
          SQLLEN      count = 0;
 
-         SQLGetDiagField( SQL_HANDLE_STMT, handle, 0, SQL_DIAG_NUMBER, &count, 0, 0 );
+         SQLGetDiagField( type, handle, 0, SQL_DIAG_NUMBER, &count, 0, 0 );
 
          if ( count )
          {

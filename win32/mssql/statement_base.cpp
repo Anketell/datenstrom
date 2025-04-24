@@ -133,7 +133,7 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
 
    SQLLEN size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
 
-   buffer.resize( size + 1 );
+   buffer.resize( size );
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
@@ -145,10 +145,10 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
                                   buffer.data< void >(),
                                   size,
                                   nullptr );
-   
+
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-   
-   strncpy_s( buffer.data< char >(), size, t.c_str(), size );
+
+   strncpy( buffer.data< char >(), t.c_str(), size );
 }
 
 //-----------------------------------------------------------------------------
@@ -157,9 +157,9 @@ void statement_base::bind_blob_parameter( int index, const std::string & t )
 {
    static constexpr char operation[] = "MSSQL statement BLOB parameter bind";
 
-   buffer& buffer = check_parameter( index );
+   buffer & buffer = check_parameter( index );
 
-   stmt_t::desc_t& desc( m_parameters[ index ] );
+   stmt_t::desc_t & desc( m_parameters[ index ] );
 
    int size = std::min( t.length(), static_cast< size_t >( desc.size ) );
 
@@ -177,9 +177,9 @@ void statement_base::bind_blob_parameter( int index, const std::string & t )
                                   buffer.data< void >(),
                                   size,
                                   &desc.ind_len );
-   
+
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-   
+
    memcpy( buffer.data< char >(), t.data(), size );
 }
 
@@ -191,7 +191,7 @@ void statement_base::bind_parameter( int index, const std::string & t )
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
 
-   switch (desc.type)
+   switch ( desc.type )
    {
       case SQL_BINARY:
       case SQL_VARBINARY:
@@ -246,9 +246,6 @@ template< typename T > void statement_base::bind_parameter( int index, int c_typ
    buffer & buffer = check_parameter( index );
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
-
-   if ( desc.type == sql_time_type )
-      return bind_time( index, static_cast< time_t >( t ) );
 
    int size = sizeof( T );
 
@@ -375,7 +372,7 @@ db::rowset statement_base::result( void )
 {
    m_stmt->execute();
 
-   return std::make_shared< mssql::rowset >( m_stmt );
+   return db::rowset( std::make_shared< mssql::rowset >( m_stmt ) );
 }
 
 //-----------------------------------------------------------------------------

@@ -19,7 +19,10 @@ namespace ds::mssql
 
 //-----------------------------------------------------------------------------
 
-constexpr SQLSMALLINT sql_time_type = -9;
+constexpr SQLSMALLINT sql_datetime_type_1 = -154;
+constexpr SQLSMALLINT sql_datetime_type_2 = -9;
+constexpr SQLSMALLINT sql_datetime_type_3 = 91;
+constexpr SQLSMALLINT sql_datetime_type_4 = 93;
 
 //-----------------------------------------------------------------------------
 

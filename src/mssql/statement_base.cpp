@@ -11,9 +11,6 @@
 #include <sqlext.h>
 #include <cstring>
 
-// #undef min
-// #undef max
-
 //-----------------------------------------------------------------------------
 
 namespace ds::mssql
@@ -146,9 +143,9 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
                                   buffer.data< void >(),
                                   size,
                                   nullptr );
-   
+
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-   
+
    strncpy( buffer.data< char >(), t.c_str(), size );
 }
 
@@ -178,9 +175,9 @@ void statement_base::bind_blob_parameter( int index, const std::string & t )
                                   buffer.data< void >(),
                                   size,
                                   &desc.ind_len );
-   
+
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
-   
+
    memcpy( buffer.data< char >(), t.data(), size );
 }
 
@@ -247,9 +244,6 @@ template< typename T > void statement_base::bind_parameter( int index, int c_typ
    buffer & buffer = check_parameter( index );
 
    stmt_t::desc_t & desc( m_parameters[ index ] );
-
-   if ( desc.type == sql_time_type )
-      return bind_time( index, static_cast< time_t >( t ) );
 
    int size = sizeof( T );
 

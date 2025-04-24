@@ -9,9 +9,6 @@
 //-----------------------------------------------------------------------------
 
 #include <db/impl.h>
-// #include <windows.h>
-// #include <tchar.h>
-// #include <sal.h>
 #include <sql.h>
 
 #include <functional>

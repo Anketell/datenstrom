@@ -6,7 +6,6 @@
 
 #include <mssql/rowset.h>
 #include <mssql/error.h>
-#include <dsutil/timestamp.h>
 #include <sqlext.h>
 
 #undef max
@@ -72,49 +71,11 @@ void rowset::check_column( int index )
 
 //-----------------------------------------------------------------------------
 
-time_t rowset::get_time( int index )
-{
-   std::string time;
-
-   get_column( index, time );
-
-   struct tm tm;
-
-   switch ( time.length() )
-   {
-      case time::time_len:
-         time::parse_iso_8601_time( time.c_str(), &tm );
-         tm.tm_year = 70;
-         tm.tm_mday = 1;
-         break;
-
-      case time::date_len:
-         time::parse_iso_8601_date( time.c_str(), &tm );
-         break;
-
-      case time::datetime_len:
-         time::parse_iso_8601( time.c_str(), &tm );
-         break;
-
-      default:
-         return 0;
-   }
-
-   return time::timegm( &tm );
-}
-
-//-----------------------------------------------------------------------------
-
 template< typename T > void rowset::get_column( int index, int c_type, T & t )
 {
    check_column( index );
 
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
-   if ( desc.type == sql_time_type )
-   {
-      t = static_cast< T >( get_time( index ) );
-      return;
-   }
 
    RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, &t, sizeof( T ), nullptr  );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
@@ -136,22 +97,7 @@ void rowset::get_text_column( int index, std::string & t )
    rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   t.resize( std::strlen( t.c_str() ) );
-
-   stmt_t::desc_t & desc = m_stmt->columns[ index ];
-   if ( desc.type == sql_time_type )
-   {
-      switch ( desc.size )
-      {
-         case 16:
-            ds::time::reformat_iso_8601_time( t );
-            break;
-
-         case 27:
-            ds::time::reformat_iso_8601( t );
-            break;
-      }
-   }
+   t.resize( std::max( 0LL, static_cast< long long >( count ) ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -169,6 +115,45 @@ void rowset::get_blob_column( int index, std::string & t )
 
    rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_BINARY, t.data(), count, nullptr );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+}
+
+//-----------------------------------------------------------------------------
+
+void rowset::get_datetime_column( int index, std::string & t )
+{
+   check_column( index );
+
+   stmt_t::desc_t & desc = m_stmt->columns[ index ];
+
+   SQLLEN count = desc.size;;
+
+   t.resize( count + 1 );
+
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   std::string::reverse_iterator it;
+   for ( it = t.rbegin(); it != t.rend(); it++ )
+   {
+      if ( *it != '\0' )
+      {
+         t.resize( t.length() - ( it - t.rbegin() ) );
+         break;
+      }
+   }
+
+   if ( t.find_last_of( '.' ) == std::string::npos )
+      return;
+
+   for ( it = t.rbegin(); *it == '0'; it++ )
+      ;
+
+   if ( *it == '.' )
+      it++;
+
+   count = t.length() - ( it - t.rbegin() );
+
+   t.resize( std::max( 0LL, static_cast< long long >( count ) ) );
 }
 
 //-----------------------------------------------------------------------------
@@ -248,6 +233,13 @@ void rowset::get_column( int index, std::string & s )
       case SQL_VARBINARY :
       case SQL_LONGVARBINARY :
          get_blob_column( index, s );
+         break;
+
+      case sql_datetime_type_1:
+      case sql_datetime_type_2:
+      case sql_datetime_type_3:
+      case sql_datetime_type_4:
+         get_datetime_column( index, s );
          break;
 
       default :
