@@ -20,6 +20,7 @@ namespace ds::mysql
 struct bind_info_t
 {
    unsigned long length;
+   uint64_t      value;
    my_bool       is_null;
    my_bool       error;
 };
