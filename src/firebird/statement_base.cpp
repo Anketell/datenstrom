@@ -213,8 +213,6 @@ void statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "Firebird statement parameter check";
 
-   reset();
-
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
@@ -245,7 +243,7 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
       {
          typedef std::numeric_limits< SI > limits;
 
-         if ( bi < limits::min() || bi > limits::max() )
+         if ( bi < limits::lowest() || bi > limits::max() )
             throw_error( bind_parameter, "Out of numeric range of SQL_SHORT" );
 
          *reinterpret_cast< SI * >( param.sqldata ) = static_cast< SI >( bi );
@@ -256,7 +254,7 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
       {
          typedef std::numeric_limits< LI > limits;
 
-         if ( bi < limits::min() || bi > limits::max() )
+         if ( bi < limits::lowest() || bi > limits::max() )
             throw_error( bind_parameter, "Out of numeric range of SQL_LONG" );
 
          *reinterpret_cast< LI * >( param.sqldata ) = static_cast< LI >( bi );
@@ -474,7 +472,7 @@ void statement_base::reset( void )
 
    isc_dsql_free_statement( status, &m_stmt->stmt, DSQL_close );
 
-   check_status( "Fierbird drop statement", status );
+   check_status( "Firebird drop statement", status );
 
    m_stmt->state = stmt_t::Preparing;
 }

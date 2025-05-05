@@ -52,7 +52,6 @@ if( DEFINED ENV{DS_FB_INC_PATH} )
    target_include_directories( ${TARGET} PUBLIC $ENV{DS_FB_INC_PATH} )
 endif()
 
-
 if( DEFINED ENV{DS_FB_LIB_PATH} )
    target_link_directories( ${TARGET} PUBLIC $ENV{DS_FB_LIB_PATH} )
 endif()
