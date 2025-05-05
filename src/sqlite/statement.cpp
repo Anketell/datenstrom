@@ -17,11 +17,11 @@ namespace ds::sqlite
 
 //-----------------------------------------------------------------------------
 
-int statement::authorizor( void       * stmt, 
-                           int          action, 
-                           const char *, 
-                           const char *, 
-                           const char *, 
+int statement::authorizor( void       * stmt,
+                           int          action,
+                           const char *,
+                           const char *,
+                           const char *,
                            const char * )
 {
    int & stmt_action( reinterpret_cast< statement * >( stmt )->m_stmt->action );
@@ -88,7 +88,7 @@ int statement::check_parameter( int index )
 {
    static constexpr char operation[] = "SQLite statement parameter check";
 
-   reset();
+//   reset();
 
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
@@ -231,9 +231,8 @@ void statement::execute( void )
 {
    static constexpr char operation[] = "SQLite statement execute";
 
-   reset();
-
    int rc = sqlite3_step( m_stmt->stmt );
+
    switch ( rc )
    {
       case SQLITE_OK:
@@ -255,8 +254,6 @@ void statement::execute( void )
 db::rowset statement::result( void )
 {
    static constexpr char operation[] = "SQLite statement result";
-
-   reset();
 
    m_stmt->state = stmt_t::Executed;
 

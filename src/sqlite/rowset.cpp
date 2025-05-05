@@ -166,8 +166,8 @@ void rowset::get_column( int index, double & d )
 
 void rowset::get_column( int index, std::string & s )
 {
-   static constexpr int column_mask = ( 1 << SQLITE_TEXT ) | 
-                                      ( 1 << SQLITE_BLOB ) | 
+   static constexpr int column_mask = ( 1 << SQLITE_TEXT ) |
+                                      ( 1 << SQLITE_BLOB ) |
                                       ( 1 << SQLITE_TIME ) |
                                       ( 1 << SQLITE_DATETIME );
 
