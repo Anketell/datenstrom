@@ -44,7 +44,7 @@ savepoint::savepoint( impl & db, const std::string & name ) :
 m_db( db )
 {
    m_name = name;
-   m_db.savepoint( name.c_str() );
+   m_db.savepoint( name );
 
 #ifdef __cpp_lib_uncaught_exceptions
    m_uncaught_count = std::uncaught_exceptions();
@@ -60,9 +60,9 @@ savepoint::~savepoint( void )
 #else
    if ( std::uncaught_exception() )
 #endif
-      m_db.rollback_to_savepoint( m_name.c_str() );
+      m_db.rollback_to_savepoint( m_name );
    else
-      m_db.release_savepoint( m_name.c_str() );
+      m_db.release_savepoint( m_name );
 }
 
 //-----------------------------------------------------------------------------
