@@ -37,8 +37,6 @@ class statement_base : public db::statement::impl
 
    buffer & check_parameter( int index );
 
-   void bind_time( int index, time_t t );
-
    void bind_text_parameter( int index, const std::string & t );
    void bind_blob_parameter( int index, const std::string & t );
    void bind_parameter( int index, const std::string & t );

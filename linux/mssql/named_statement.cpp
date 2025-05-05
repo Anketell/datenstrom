@@ -90,8 +90,6 @@ void named_statement::check_parameter( int index )
 {
    static constexpr char operation[] = "MSSQL named statement parameter check";
 
-   m_stmt->reset();
-
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 

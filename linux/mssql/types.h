@@ -8,7 +8,6 @@
 
 //-----------------------------------------------------------------------------
 
-// #include <windows.h>
 #include <sql.h>
 #include <vector>
 
@@ -43,13 +42,10 @@ struct stmt_t
    state_t               state = Preparing;
 
    void execute( void );
+   void prepare_result_desc( void );
    void reset( void );
 
    ~stmt_t( void );
-
-private:
-
-   void prepare_result_desc( void );
 };
 
 //-----------------------------------------------------------------------------

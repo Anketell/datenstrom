@@ -128,7 +128,7 @@ void connection::init( const std::string& connection_string )
       check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
 
       rc = SQLAllocHandle( SQL_HANDLE_STMT, m_hdbc, &m_stmt );
-      check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
+      check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
    }
    catch (...)
    {

@@ -108,8 +108,6 @@ statement_base::buffer & statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "MSSQL statement parameter check";
 
-   reset();
-
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
@@ -201,38 +199,6 @@ void statement_base::bind_parameter( int index, const std::string & t )
          bind_text_parameter( index, t );
          break;
    }
-}
-
-//-----------------------------------------------------------------------------
-
-void statement_base::bind_time( int index, time_t t )
-{
-   std::string time;
-
-   struct tm tm;
-
-   time::gmtime( &t, &tm );
-
-   if ( t < 60 * 60 * 24 )
-   {
-      time.resize( 9 );
-      time::format_iso_8601_time( &tm, const_cast< char * >( time.c_str() ) );
-   }
-   else
-   {
-      if ( t % ( 60 * 60 * 24 ) == 0 )
-      {
-         time.resize( 11 );
-         time::format_iso_8601_date( &tm, const_cast< char * >( time.c_str() ) );
-      }
-      else
-      {
-         time.resize( 20 );
-         time::format_iso_8601( &tm, const_cast< char * >( time.c_str() ) );
-      }
-   }
-
-   set_parameter( index, time );
 }
 
 //-----------------------------------------------------------------------------

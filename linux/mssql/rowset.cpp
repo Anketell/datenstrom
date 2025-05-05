@@ -19,6 +19,7 @@ namespace ds::mssql
 rowset::rowset( std::shared_ptr< stmt_t > stmt ) :
 m_stmt( stmt )
 {
+   m_stmt->prepare_result_desc();
    step();
 }
 

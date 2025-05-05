@@ -50,14 +50,10 @@ void stmt_t::execute( void )
 {
    static constexpr char operation[] = "MSSQL statement execute";
 
-   reset();
-
    RETCODE rc = SQLExecute( hstmt );
    check_status( operation, hstmt, SQL_HANDLE_STMT, rc );
 
    state = Executed;
-
-   prepare_result_desc();
 }
 
 //-----------------------------------------------------------------------------
