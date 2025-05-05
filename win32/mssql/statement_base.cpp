@@ -110,8 +110,6 @@ statement_base::buffer & statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "MSSQL statement parameter check";
 
-   reset();
-
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 

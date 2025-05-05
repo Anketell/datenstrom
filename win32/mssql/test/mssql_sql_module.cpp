@@ -139,8 +139,8 @@ R"(
         tm           TIME,
         dttm         DATETIME2,
         id           INT IDENTITY( 1, 1 ) PRIMARY KEY
-)
-   )"
+   )
+)"
 },
 
 //-----------------------------------------------------------------------------
@@ -314,7 +314,7 @@ R"(
 
    R"(
       CREATE TABLE Object (
-      data VARBINARY( MAX ) )
+      data VARBINARY( 8000 ) )
    )"
    },
    
