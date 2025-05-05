@@ -31,12 +31,6 @@ m_names( parameters )
 
 //-----------------------------------------------------------------------------
 
-named_statement::~named_statement( void )
-{
-}
-
-//-----------------------------------------------------------------------------
-
 std::string named_statement::get_pos_sql( const std::string     & sql,
                                           const db::name_list_t & parameters )
 {
@@ -91,9 +85,6 @@ void named_statement::check_parameter( int index )
 {
    static constexpr char operation[] = "MySQL named statement parameter check";
 
-   if ( m_state == Executed )
-      reset();
-
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
 
@@ -143,7 +134,6 @@ void named_statement::set_parameter( int index, int64_t i )
 }
 
 //-----------------------------------------------------------------------------
-
 
 void named_statement::set_parameter( int index, uint8_t u )
 {

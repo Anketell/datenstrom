@@ -36,8 +36,6 @@ public:
                     const std::string     & sql,
                     const db::name_list_t & parameters );
 
-   virtual ~named_statement( void );
-
    virtual void set_parameter( int index, int8_t ) override;
    virtual void set_parameter( int index, int16_t ) override;
    virtual void set_parameter( int index, int32_t ) override;

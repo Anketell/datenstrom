@@ -28,7 +28,6 @@ statement_base::statement_base( MYSQL & mysql )
 
 statement_base::~statement_base( void )
 {
-   cleanup_parameters();
    delete [] m_mysql_bind;
    delete [] m_bind_info;
 }
@@ -95,28 +94,9 @@ void statement_base::prepare_parameter_binding( void )
 
 //-----------------------------------------------------------------------------
 
-void statement_base::cleanup_parameters( void )
-{
-   for ( int i = 0; i < m_bind_count; i++ )
-   {
-      MYSQL_BIND & param( m_mysql_bind[ i ] );
-
-      if ( param.buffer )
-      {
-         free( param.buffer );
-         param.buffer = nullptr;
-      }
-   }
-}
-
-//-----------------------------------------------------------------------------
-/**/
 void statement_base::check_parameter( int index )
 {
    static constexpr char operation[] = "MySQL statement parameter check";
-
-   if ( m_state == Executed )
-      reset();
 
    if ( index < 0 )
       throw_error( operation, "Bad parameter" );
@@ -131,19 +111,19 @@ void statement_base::set_parameter( int index, int8_t i )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( i );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_TINY;
-   param.buffer_length = sizeof( i );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -152,19 +132,19 @@ void statement_base::set_parameter( int index, int16_t i )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( i );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_SHORT;
-   param.buffer_length = sizeof( i );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -173,19 +153,19 @@ void statement_base::set_parameter( int index, int32_t i )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( i );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONG;
-   param.buffer_length = sizeof( i );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy(  param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -194,19 +174,19 @@ void statement_base::set_parameter( int index, int64_t i )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( i );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONGLONG;
-   param.buffer_length = sizeof( i );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &i, param.buffer_length );
    param.is_unsigned   = 0;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -215,19 +195,19 @@ void statement_base::set_parameter( int index, uint8_t u )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( u );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_TINY;
-   param.buffer_length = sizeof( u );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy(  param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -236,19 +216,19 @@ void statement_base::set_parameter( int index, uint16_t u )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( u );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_SHORT;
-   param.buffer_length = sizeof( u );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -257,19 +237,19 @@ void statement_base::set_parameter( int index, uint32_t u )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( u );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONG;
-   param.buffer_length = sizeof( u );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -278,19 +258,19 @@ void statement_base::set_parameter( int index, uint64_t u )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( u );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_LONGLONG;
-   param.buffer_length = sizeof( u );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &u, param.buffer_length );
    param.is_unsigned   = 1;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -299,19 +279,19 @@ void statement_base::set_parameter( int index, double d )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = sizeof( d );
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_DOUBLE;
-   param.buffer_length = sizeof( d );
-   param.buffer        = malloc( param.buffer_length );
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
    memcpy( param.buffer, &d, param.buffer_length );
    param.is_unsigned   = 0;
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -320,18 +300,17 @@ void statement_base::set_parameter( int index, const char * s, size_t length )
 {
    check_parameter( index );
 
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = length;
+   info.is_null = 0;
+   info.error   = 0;
+
    MYSQL_BIND & param( m_mysql_bind[ index ] );
 
    param.buffer_type   = MYSQL_TYPE_STRING;
-   param.buffer_length = length;
-   param.buffer        = malloc( param.buffer_length );
-   memcpy( param.buffer, s, param.buffer_length );
-
-   bind_info_t & info( m_bind_info[ index ] );
-
-   info.length  = param.buffer_length;
-   info.is_null = 0;
-   info.error   = 0;
+   param.buffer_length = info.length ;
+   param.buffer        = const_cast< char * >( s );
 }
 
 //-----------------------------------------------------------------------------
@@ -359,11 +338,12 @@ int statement_base::parameter_count( void )
 
 void statement_base::reset( void )
 {
+   if ( m_state == Preparing )
+      return;
+
    int rc = mysql_stmt_reset( m_stmt->stmt );
    if ( rc )
       throw_error( "MySQL statement reset", mysql_stmt_error( m_stmt->stmt ) );
-
-   cleanup_parameters();
 
    m_state = Preparing;
 }
@@ -383,7 +363,7 @@ void statement_base::execute( void )
 db::rowset statement_base::result( void )
 {
    m_stmt->stmt->mysql->insert_id = 0;
-   
+
    internal_execute();
 
    db::rowset result( std::make_shared< mysql::rowset >( m_stmt ) );

@@ -27,7 +27,6 @@ class statement_base : public db::statement::impl
 
    void prepare_parameter_binding( void );
 
-   void cleanup_parameters( void );
    void check_parameter( int index );
    void set_parameter( int index, const char * s, size_t length );
 
