@@ -30,7 +30,11 @@ if ( DS_DB )
       add_subdirectory( sqlite )
    endif()
 
-endif()
+   if ( DS_POSTGRESQL )
+      add_subdirectory( postgresql )
+   endif()
+
+ endif()
 
 add_subdirectory( dsutil )
 add_subdirectory( test_model )
