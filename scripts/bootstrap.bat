@@ -17,7 +17,8 @@ REM popd
                                               -DDS_FIREBIRD=YES         ^
                                               -DDS_SQLITE=YES           ^
                                               -DDS_MYSQL=YES            ^
-                                              -DDS_MSSQL=YES -S . -B build\x64
+                                              -DDS_MSSQL=YES            ^
+                                              -DDS_POSTGRESQL=YES -S . -B build\x64
 
 if NOT EXIST build\x86 mkdir build\x86
 
@@ -27,4 +28,5 @@ if NOT EXIST build\x86 mkdir build\x86
                                                 -DDS_FIREBIRD=YES         ^
                                                 -DDS_SQLITE=YES           ^
                                                 -DDS_MYSQL=YES            ^
-                                                -DDS_MSSQL=YES -S . -B build\x86
+                                                -DDS_MSSQL=YES            ^
+                                                -DDS_POSTGRESQL=YES -S . -B build\x86
