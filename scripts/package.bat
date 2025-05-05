@@ -11,6 +11,8 @@ cd build\image
 
 rmdir /q/s output
 
-for /F %%V in (VERSION) DO ( nuget pack datenstrom.nuspec -Version %%V -OutputDirectory output )
+set /P VERSION=<%~dp0\VERSION
+
+nuget pack datenstrom.nuspec -Version %VERSION% -OutputDirectory output
 
 popd

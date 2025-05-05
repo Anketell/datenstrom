@@ -1,6 +1,7 @@
 debug
 release
 coverage
+profile
 build
 build32
 build64

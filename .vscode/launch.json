@@ -132,10 +132,6 @@
          "args": [],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}",
-         "environment": [
-            {"name": "DS_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"},
-            {"name": "SQL_MODULE_PATH", "value": "${workspaceFolder}/debug/src/mysql"}
-        ],
          "externalConsole": true,
          "MIMode": "gdb",
          "setupCommands": [
@@ -145,6 +141,25 @@
                  "ignoreFailures": true
              }
          ]
-      }
+      },
+      {
+        "name": "test_ds_mssql",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/debug/linux/mssql/test/test_ds_mssql",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+     }
+
    ]
 }

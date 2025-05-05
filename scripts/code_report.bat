@@ -2,6 +2,7 @@
 
 pushd %~dp0\..\build
 
+set /P VERSION=<%~dp0\VERSION
 set DS_MODULE_PATH=./x64/win32/mssql/test/Debug
 set SQL_MODULE_PATH=./x64/win32/mssql/test/Debug
 
@@ -86,7 +87,7 @@ rd /s /q code_report
 
 pryda_code_report.exe ^
 -s test_ds.cov ^
--p "Lucid Datenstrom" ^
+-p "Lucid Datenstrom v%VERSION%" ^
 -j .. ^
 -r code_report
 

@@ -34,6 +34,10 @@ if ( UNIX )
       include("coverage")
    endif(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 
+   if(CMAKE_BUILD_TYPE STREQUAL "Profile")
+      include("profile")
+   endif(CMAKE_BUILD_TYPE STREQUAL "Profile")
+
    add_compile_options( -std=c++17 )
 
    SET( TEMP "/tmp" )
@@ -41,7 +45,7 @@ if ( UNIX )
    if(CMAKE_BUILD_TYPE STREQUAL "Release")
       set(CMAKE_SKIP_RPATH TRUE)
    endif(CMAKE_BUILD_TYPE STREQUAL "Release")
-   
+
 endif ( UNIX )
 
 include_directories( "${CMAKE_SOURCE_DIR}/src" )

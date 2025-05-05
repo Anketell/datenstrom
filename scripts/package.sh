@@ -20,12 +20,12 @@ bash -c "echo \"$(cat ${root}/scripts/datenstrom-devel.spec.tmpl)"\" > \
          ${root}/release/rpmbuild/SPECS/datenstrom-devel.spec
 
 cd release/rpmbuild/BUILD
-tar czf ${root}/release/rpmbuild/SOURCES/datenstrom-devel.tar.gz \
+tar czf ${root}/release/rpmbuild/SOURCES/datenstrom-devel-${VERSION}-${RELEASE}.tar.gz \
         datenstrom-devel-${VERSION}
 
 cd ${root}
 
-rpmbuild --define "_topdir ${root}/release/rpmbuild/" -vvv -bb \
+rpmbuild --define "_topdir ${root}/release/rpmbuild/" -bb \
          ${root}/release/rpmbuild/SPECS/datenstrom-devel.spec
 
 popd >/dev/null
