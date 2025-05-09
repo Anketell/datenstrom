@@ -182,18 +182,26 @@ template< typename BI > void statement_base::set_big_int( int index, BI bi )
          break;
 
       case PG_FLOAT:
-         reinterpret_cast< float & >( m_param_data[ index ] ) = static_cast< float >( bi );
+      {
+         float    f = static_cast< float >( bi );
+         uint32_t u = ds::endian::htob( *reinterpret_cast< uint32_t * >( &f ) );
+         reinterpret_cast< uint32_t & >( m_param_data[ index ] ) = u;
          m_param_values[ index ]  = reinterpret_cast< char * >( &m_param_data[ index ] );
          m_param_lengths[ index ] = sizeof( float );
          m_param_formats[ index ] = 1;
          break;
+      }
 
       case PG_DOUBLE:
+      {
+         double   d = static_cast< double >( bi );
+         uint64_t u = ds::endian::htob( *reinterpret_cast< uint64_t * >( &d ) );
          reinterpret_cast< double & >( m_param_data[ index ] ) = static_cast< double >( bi );
          m_param_values[ index ]  = reinterpret_cast< char * >( &m_param_data[ index ] );
          m_param_lengths[ index ] = sizeof( double );
          m_param_formats[ index ] = 1;
          break;
+      }
 
       default:
          throw_error( operation, "Not numeric type" );
@@ -269,18 +277,25 @@ void statement_base::set_parameter( int index, double d )
    switch ( type )
    {
       case PG_FLOAT:
-         reinterpret_cast< float & >( m_param_data[ index ] ) = static_cast< float >( d );
+      {
+         float    f = static_cast< float >( d );
+         uint32_t u = ds::endian::htob( *reinterpret_cast< uint32_t * >( &f ) );
+         reinterpret_cast< uint32_t & >( m_param_data[ index ] ) = u;
          m_param_values[ index ]  = reinterpret_cast< char * >( &m_param_data[ index ] );
          m_param_lengths[ index ] = sizeof( float );
          m_param_formats[ index ] = 1;
          break;
+      }
 
       case PG_DOUBLE:
-         reinterpret_cast< double & >( m_param_data[ index ] ) = d;
+      {
+         uint64_t u = ds::endian::htob(  *reinterpret_cast< uint64_t * >( &d ) );
+         reinterpret_cast< uint64_t & >( m_param_data[ index ] ) = u;
          m_param_values[ index ]  = reinterpret_cast< char * >( &m_param_data[ index ] );
          m_param_lengths[ index ] = sizeof( double );
          m_param_formats[ index ] = 1;
          break;
+      }
 
       default:
          throw_error( operation, "Not floating point type" );

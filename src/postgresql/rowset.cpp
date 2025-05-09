@@ -236,12 +236,18 @@ void rowset::get_column( int index, double & d )
          break;
 
       case PG_FLOAT:
-         d = *reinterpret_cast< const float * >( value );
+      {
+         uint32_t u = endian::btoh( *reinterpret_cast< const uint32_t * >( value ) );
+         d = *reinterpret_cast< const float * >( &u );
          return;
+      }
 
       case PG_DOUBLE:
-         d = *reinterpret_cast< const double * >( value );
+      {
+         uint64_t u = endian::btoh( *reinterpret_cast< const uint64_t * >( value ) );
+         d = *reinterpret_cast< const double * >( &u );
          break;
+      }
 
       default:
          throw_error( "PostgreSQL get double precision", "not numeric type" );
