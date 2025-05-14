@@ -465,16 +465,7 @@ int statement_base::parameter_count( void )
 
 void statement_base::reset( void )
 {
-   if ( m_stmt->state == stmt_t::Preparing )
-      return;
-
-   ISC_STATUS status[ status_vector_length ];
-
-   isc_dsql_free_statement( status, &m_stmt->stmt, DSQL_close );
-
-   check_status( "Firebird drop statement", status );
-
-   m_stmt->state = stmt_t::Preparing;
+   m_stmt->reset();
 }
 
 //-----------------------------------------------------------------------------

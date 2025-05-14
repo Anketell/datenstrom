@@ -33,6 +33,8 @@ struct stmt_t
    int32_t         type;
    state_t         state;
 
+   void reset( void );
+
    ~stmt_t( void );
 };
 

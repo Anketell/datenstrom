@@ -14,6 +14,22 @@ namespace ds::firebird
 
 //-----------------------------------------------------------------------------
 
+void stmt_t::reset( void )
+{
+   if ( state == stmt_t::Preparing )
+      return;
+
+   ISC_STATUS status[ status_vector_length ];
+
+   isc_dsql_free_statement( status, &stmt, DSQL_close );
+
+   check_status( "Firebird close statement", status );
+
+   state = stmt_t::Preparing;
+}
+
+//-----------------------------------------------------------------------------
+
 stmt_t::~stmt_t( void )
 {
    if ( stmt && ( xsqlda == nullptr || xsqlda->sqld != 0 ) )
