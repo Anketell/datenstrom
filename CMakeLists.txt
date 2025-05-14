@@ -14,9 +14,16 @@ set( CMAKE_CXX_STANDARD 17 )
 
 if ( WIN32 )
 
-   include( architecture )
+   set( NUGET_REPO "nuget.org" )
+   set( NUGET_OUTPUT_DIR "${CMAKE_BINARY_DIR}/third-party" )
 
+   include( architecture )
    include( googletest )
+   include( nuget )
+
+   set( NUGET_VER 1,2.0 )
+
+   nuget( NpgsqlBuilkCopy ${NUGET_VER} )
 
    add_compile_options( /Zc:__cplusplus )
    add_link_options( /Brepro )
