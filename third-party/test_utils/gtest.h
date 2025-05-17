@@ -58,7 +58,7 @@ class NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name
   NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name)() {}\
  private:\
   virtual void TestBody();\
-  static ::testing::TestInfo* const test_info_ GTEST_ATTRIBUTE_UNUSED_;\
+  static ::testing::TestInfo* const test_info_;\
 };\
 \
 ::testing::TestInfo* const NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name)\
@@ -103,7 +103,7 @@ void NAMESPACE_GTEST_TEST_CLASS_NAME_(namespace_name, test_case_name, test_name)
         DUMMY_PARAM_))))(info);                                               \
   }                                                                           \
   static int gtest_##prefix##test_suite_name##_dummy_                         \
-      GTEST_ATTRIBUTE_UNUSED_ =                                               \
+       =                                               \
           ::testing::UnitTest::GetInstance()                                  \
               ->parameterized_test_registry()                                 \
               .GetTestSuitePatternHolder<test_suite_name>(                    \
