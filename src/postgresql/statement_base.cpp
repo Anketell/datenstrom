@@ -82,10 +82,10 @@ void statement_base::prepare( const std::string & sql )
 
    PQclear( res );
 
-   m_param_values.reserve( m_param_count );
-   m_param_data.reserve( m_param_count );
-   m_param_lengths.reserve( m_param_count );
-   m_param_formats.reserve( m_param_count );
+   m_param_values.resize( m_param_count );
+   m_param_data.resize( m_param_count );
+   m_param_lengths.resize( m_param_count );
+   m_param_formats.resize( m_param_count );
 }
 
 //-----------------------------------------------------------------------------
