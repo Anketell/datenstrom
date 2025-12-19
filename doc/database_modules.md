@@ -15,7 +15,7 @@ To this end, the following areas are addressed:
 
 ### 1.1 Connection State
 
-Broadly speaking, connections to RDBMS implementations come in two flavours. Servic based RDBMS implementations typically support the idea that a service can be connection can occur without need to specify a database. Others require the database name and other still require a full file path.
+Broadly speaking, connections to RDBMS implementations come in two flavours. Service based RDBMS implementations typically support the idea that a service connection can occur without need to specify a database. Others require the database name and other still require a full file path.
 
 Datenstrom has a logical distinction between a database's location and its name. All database connection implementations MUST support the ability to be constructed with a database location with or without a database name.
 
