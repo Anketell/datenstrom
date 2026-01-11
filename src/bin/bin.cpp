@@ -335,9 +335,9 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
                                     std::ios_base::seekdir   way,
                                     std::ios_base::openmode  which )
 {
+   std::streamoff new_off;
    if ( which & std::ios::in )
    {
-      std::streamoff new_off;
       switch ( way )
       {
          case std::ios::beg :
@@ -359,12 +359,12 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       if ( new_off > egptr() - eback() )
          throw ds::stream_overrun();
 
+      std::streamoff adj = gptr() - eback();
       gbump( new_off - ( gptr() - eback() ) );
    }
 
    if ( which & std::ios::out )
    {
-      std::streamoff new_off;
       switch ( way )
       {
          case std::ios::beg :
@@ -389,7 +389,7 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       pbump( new_off - ( pptr() - pbase() ) );
    }
 
-   return -1;
+   return new_off;
 }
 
 //-----------------------------------------------------------------------------

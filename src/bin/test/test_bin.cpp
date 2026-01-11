@@ -917,6 +917,9 @@ NAMESPACE_TEST( bin, streamwrap, should_seek_buffer )
 
    EXPECT_EQ( sw.glength(), 10 );
    EXPECT_EQ( sw.plength(), 10 );
+
+   std::istream in( &sw );
+   EXPECT_EQ( in.seekg( 1, std::ios::cur ).tellg(), 11 );
 }
 
 //-----------------------------------------------------------------------------
