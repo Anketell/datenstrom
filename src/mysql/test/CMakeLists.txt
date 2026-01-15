@@ -24,10 +24,12 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
-if( DEFINED ENV{DS_MYSQL_TEST} )
-   set( MYSQL_TEST $ENV{DS_MYSQL_TEST} )
-else()
-   set( MYSQL_TEST "mysql://localhost?username=root" )
+if( NOT DEFINED MYSQL_TEST )
+   if( NOT DEFINED ENV{DS_MYSQL_TEST} )
+      message( SEND_ERROR "DS_MYSQL_TEST is undefined - MySQL test will not be built" )
+      return()
+   endif()
+   set( MYSQL_TEST $ENV{DS_MYSQL_TEST} CACHE STRING "MySQL test connect string" )
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC

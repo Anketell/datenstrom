@@ -24,10 +24,12 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
-if( DEFINED ENV{DS_POSTGRESQL_TEST} )
-   set( POSTGRESQL_TEST $ENV{DS_POSTGRESQL_TEST} )
-else()
-   set( POSTGRESQL_TEST "postgresql://localhost?username=root" )
+if( NOT DEFINED POSTGRESQL_TEST)
+   if( NOT DEFINED ENV{DS_POSTGRESQL_TEST} )
+      message( SEND_ERROR "DS_POSTGRESQL_TEST is undefined - PostgeSQL test will not be built" )
+      return()
+   endif()
+   set( POSTGRESQL_TEST $ENV{DS_POSTGRESQL_TEST} CACHE STRING "PostgeSQL test connect string" )
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC

@@ -6,6 +6,14 @@ popd >/dev/null
 
 echo ${root}
 
+env=${root}/scripts/.bootstrap_env
+
+if [ -f ${env} ]; then
+   set -o allexport
+   . ${env}
+   set +o allexport
+fi
+
 mkdir -p ${root}/debug
 
 pushd ${root}/debug >/dev/null

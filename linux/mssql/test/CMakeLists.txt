@@ -16,10 +16,12 @@ add_executable( ${TARGET}
    ${HEADERS}
 )
 
-if( DEFINED ENV{DS_MSSQL_TEST} )
-   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} )
-else()
-   set( MSSQL_TEST "mssql://(local)")
+if( NOT DEFINED MSSQL_TEST )
+   if( NOT DEFINED ENV{DS_MSSQL_TEST} )
+      message( SEND_ERROR "DS_MSSQL_TEST is undefined - SQL Server test will not be built" )
+      return()
+   endif()
+   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} CACHE STRING "SQL Server test connect string" )
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC

@@ -28,10 +28,12 @@ target_link_libraries( ${TARGET}
    gtest_main
 )
 
-if( DEFINED ENV{DS_FIREBIRD_TEST} )
-   set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} )
-else()
-   set( FIREBIRD_TEST "firebird://localhost/${TEMP}?username=sysdba&password=masterkey" )
+if( NOT DEFINED FIREBIRD_TEST )
+   if( NOT DEFINED ENV{DS_FIREBIRD_TEST} )
+      message( SEND_ERROR "DS_FIREBIRD_TEST is undefined - Firebird test will not be built" )
+      return()
+   endif()
+   set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} CACHE STRING "Firebird test connect string" )
 endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
@@ -39,7 +41,6 @@ target_compile_definitions( ${TARGET} PUBLIC
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
    FIREBIRD_TEST="${FIREBIRD_TEST}"
 )
-
 
 add_dependencies( ${TARGET} ds_firebird_module )
 
