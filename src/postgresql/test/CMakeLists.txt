@@ -4,6 +4,15 @@
 
 set( TARGET test_ds_postgresql )
 
+if( DEFINED ENV{DS_POSTGRESQL_TEST} )
+   set( POSTGRESQL_TEST $ENV{DS_POSTGRESQL_TEST} CACHE STRING "PostgeSQL test connect string" FORCE )
+endif()
+
+if( NOT DEFINED POSTGRESQL_TEST)
+   message( SEND_ERROR "DS_POSTGRESQL_TEST is undefined - PostgeSQL test will not be built" )
+   return()
+endif()
+
 set( SOURCE
    test_postgresql.cpp
 )
@@ -23,14 +32,6 @@ target_link_libraries( ${TARGET}
    gtest
    gtest_main
 )
-
-if( NOT DEFINED POSTGRESQL_TEST)
-   if( NOT DEFINED ENV{DS_POSTGRESQL_TEST} )
-      message( SEND_ERROR "DS_POSTGRESQL_TEST is undefined - PostgeSQL test will not be built" )
-      return()
-   endif()
-   set( POSTGRESQL_TEST $ENV{DS_POSTGRESQL_TEST} CACHE STRING "PostgeSQL test connect string" )
-endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"

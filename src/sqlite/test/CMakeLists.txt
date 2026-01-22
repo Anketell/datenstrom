@@ -4,6 +4,15 @@
 
 set( TARGET test_ds_sqlite )
 
+if( DEFINED ENV{DS_SQLITE_TEST} )
+   set( SQLITE_TEST $ENV{DS_SQLITE_TEST} CACHE STRING "SQLite test connect string" FORCE )
+endif()
+
+if( NOT DEFINED SQLITE_TEST )
+   message( SEND_ERROR "DS_SQLITE_TEST is undefined - SQLite test will not be built" )
+   return()
+endif()
+
 set( SOURCE
    test_sqlite.cpp
 )
@@ -27,12 +36,6 @@ target_link_libraries( ${TARGET}
    gtest
    gtest_main
 )
-
-if( DEFINED ENV{DS_SQLITE_TEST} )
-   set( SQLITE_TEST $ENV{DS_SQLITE_TEST} )
-else()
-   set( SQLITE_TEST "sqlite:///${TEMP}" )
-endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"

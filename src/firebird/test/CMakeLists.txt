@@ -4,6 +4,16 @@
 
 set( TARGET test_ds_firebird )
 
+if( DEFINED ENV{DS_FIREBIRD_TEST} )
+   set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} CACHE STRING "Firebird test connect string" FORCE )
+endif()
+
+
+if( NOT DEFINED FIREBIRD_TEST )
+   message( SEND_ERROR "DS_FIREBIRD_TEST is undefined - Firebird test will not be built" )
+   return()
+endif()
+
 set( SOURCE
    test_firebird.cpp
 )
@@ -27,14 +37,6 @@ target_link_libraries( ${TARGET}
    gtest
    gtest_main
 )
-
-if( NOT DEFINED FIREBIRD_TEST )
-   if( NOT DEFINED ENV{DS_FIREBIRD_TEST} )
-      message( SEND_ERROR "DS_FIREBIRD_TEST is undefined - Firebird test will not be built" )
-      return()
-   endif()
-   set( FIREBIRD_TEST $ENV{DS_FIREBIRD_TEST} CACHE STRING "Firebird test connect string" )
-endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
