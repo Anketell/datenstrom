@@ -21,3 +21,17 @@ TEST_P( Connection, should_create_good_path )
 
 //-----------------------------------------------------------------------------
 
+TEST_P( Connection, should_fail_unknown_database )
+{
+   ds::db::connection test_db( config->constr );
+
+   EXPECT_THROW( test_db.use( "Unknown_db" ), std::runtime_error );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+
+}
+
+//-----------------------------------------------------------------------------
+
