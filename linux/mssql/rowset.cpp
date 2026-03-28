@@ -91,9 +91,15 @@ void rowset::get_text_column( int index, std::string & t )
    RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), 0, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
+   if ( count == SQL_NO_TOTAL )
+   {
+      rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_UNICODE, t.data(), 0, &count );
+      check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+   }
+
    t.resize( count + 1 );
 
-   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
+   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    t.resize( std::max( 0LL, static_cast< long long >( count ) ) );
