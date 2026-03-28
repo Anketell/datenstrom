@@ -48,6 +48,7 @@ cp ./release/src/bin/libds_bin.so                    ./release/image/usr/lib64/d
 cp ./release/src/firebird/ds_firebird_module.so      ./release/image/usr/share/datenstrom/module
 cp ./release/src/mysql/ds_mysql_module.so            ./release/image/usr/share/datenstrom/module
 cp ./release/src/sqlite/ds_sqlite_module.so          ./release/image/usr/share/datenstrom/module
+cp ./release/src/postgresql/ds_postgresql_module.so  ./release/image/usr/share/datenstrom/module
 cp ./release/linux/mssql/ds_mssql_module.so          ./release/image/usr/share/datenstrom/module
 
 popd >/dev/null
