@@ -17,7 +17,7 @@ To this end, the following areas are addressed:
 
 Broadly speaking, connections to RDBMS implementations come in two flavours. Service based RDBMS implementations typically support the idea that a service connection can occur without need to specify a database. Others require the database name and other still require a full file path.
 
-Datenstrom has a logical distinction between a database's location and its name. All database connection implementations MUST support the ability to be constructed with a database location with or without a database name.
+Datenstrom makes a logical distinction between a database's location and its name. All database connection implementations MUST support the ability to be constructed with a database location with or without a database name.
 
 
 
