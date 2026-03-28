@@ -82,7 +82,7 @@ void context::common_constructor( void )
    for ( auto it = it_begin; it != it_end; it++ )
       m_sql_module.push_front( it->second );
 
-   if ( m_module_map.empty() )
+   if ( m_sql_module.empty() )
       throw unsupported_db_type( type() );
 }
 
