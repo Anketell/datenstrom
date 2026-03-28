@@ -26,7 +26,8 @@ constexpr char connection::TYPE[];
 
 std::string connection::create_connection_string( const std::string & server,
                                                   const std::string & instance,
-                                                  int                 port )
+                                                  int                 port,
+                                                  int                 timeout )
 {
    std::stringstream ss;
 
@@ -38,7 +39,8 @@ std::string connection::create_connection_string( const std::string & server,
 
    ss << "," << port << "; "
       << "TrustServerCertificate=yes; "
-      << "Trusted_Connection=yes;";
+      << "Trusted_Connection=yes; "
+      << "Connect Timeout=" << timeout << ";";
 
    return ss.str();
 }
@@ -49,7 +51,8 @@ std::string connection::create_connection_string( const std::string & user_id,
                                                   const std::string & password,
                                                   const std::string & server,
                                                   const std::string & instance,
-                                                  int                 port )
+                                                  int                 port,
+                                                  int                 timeout )
 {
    std::stringstream ss;
 
@@ -61,6 +64,7 @@ std::string connection::create_connection_string( const std::string & user_id,
 
    ss << "," << port << "; "
       << "TrustServerCertificate=yes; "
+      << "Connect Timeout=" << timeout << "; "
       << "UID=" << user_id << "; "
       << "PWD=" << password << "; ";
 
@@ -69,9 +73,12 @@ std::string connection::create_connection_string( const std::string & user_id,
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const std::string & server, const std::string & instance, int port )
+connection::connection( const std::string & server, 
+                        const std::string & instance, 
+                        int                 port,
+                        int                 timeout )
 {
-   m_connection_string = create_connection_string( server, instance, port );
+   m_connection_string = create_connection_string( server, instance, port, timeout );
    init( m_connection_string );
 }
 
@@ -79,9 +86,17 @@ connection::connection( const std::string & server, const std::string & instance
 
 connection::connection( const std::string & user_id,
                         const std::string & password,
-                        const std::string & server, const std::string & instance, int port )
+                        const std::string & server, 
+                        const std::string & instance, 
+                        int                 port,
+                        int                 timeout )
 {
-   m_connection_string = create_connection_string( user_id, password, server, instance, port );
+   m_connection_string = create_connection_string( user_id, 
+                                                   password, 
+                                                   server, 
+                                                   instance, 
+                                                   port, 
+                                                   timeout );
    init( m_connection_string );
 }
 
@@ -194,8 +209,8 @@ void connection::use( const std::string & name )
    std::string query = "USE " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
-   check_status( "MSSQL create database", m_hdbc, SQL_HANDLE_DBC, rc );
-/*
+//   check_status( "MSSQL create database", m_hdbc, SQL_HANDLE_DBC, rc );
+
    // Auzre doesn't support using a database not specified in the
    // connection string so try to reconnect to the database.
 
@@ -204,7 +219,7 @@ void connection::use( const std::string & name )
       cleanup();
       init( m_connection_string + " Database=" + name + ";" );
    }
-*/
+
    m_database = name;
 }
 

@@ -29,13 +29,15 @@ class connection : public db::impl
 
    static std::string create_connection_string( const std::string & server,
                                                 const std::string & instance,
-                                                int                 port );
+                                                int                 port,
+                                                int                 timeout );
 
    static std::string create_connection_string( const std::string & user_id,
                                                 const std::string & password,
                                                 const std::string & server,
                                                 const std::string & instance,
-                                                int                 port );
+                                                int                 port,
+                                                int                 timeout );
 
    SQLHENV  m_henv = SQL_NULL_HENV;
    SQLHDBC  m_hdbc = SQL_NULL_HDBC;
@@ -55,10 +57,17 @@ public:
 
    static constexpr char TYPE[] = "mssql";
 
-   connection( const std::string & server, const std::string & instance, int port );
+   connection( const std::string & server, 
+               const std::string & instance, 
+               int                 port, 
+               int                 timeout );
+
    connection( const std::string & user_id,
                const std::string & password,
-               const std::string & server, const std::string & instance, int port );
+               const std::string & server, 
+               const std::string & instance, 
+               int                 port,
+               int                 timeout );
 
    virtual ~connection( void );
 
