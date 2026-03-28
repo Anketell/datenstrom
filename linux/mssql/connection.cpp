@@ -26,7 +26,8 @@ constexpr char connection::TYPE[];
 
 std::string connection::create_connection_string( const std::string & server,
                                                   const std::string & instance,
-                                                  int                 port )
+                                                  int                 port,
+                                                  int                 timeout )
 {
    std::stringstream ss;
 
@@ -38,7 +39,8 @@ std::string connection::create_connection_string( const std::string & server,
 
    ss << "," << port << "; "
       << "TrustServerCertificate=yes; "
-      << "Trusted_Connection=yes;";
+      << "Trusted_Connection=yes; "
+      << "Connect Timeout=" << timeout << ";";
 
    return ss.str();
 }
@@ -49,7 +51,8 @@ std::string connection::create_connection_string( const std::string & user_id,
                                                   const std::string & password,
                                                   const std::string & server,
                                                   const std::string & instance,
-                                                  int                 port )
+                                                  int                 port,
+                                                  int                 timeout )
 {
    std::stringstream ss;
 
@@ -61,6 +64,7 @@ std::string connection::create_connection_string( const std::string & user_id,
 
    ss << "," << port << "; "
       << "TrustServerCertificate=yes; "
+      << "Connect Timeout=" << timeout << "; "
       << "UID=" << user_id << "; "
       << "PWD=" << password << "; ";
 
@@ -69,9 +73,14 @@ std::string connection::create_connection_string( const std::string & user_id,
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const std::string & server, const std::string & instance, int port )
+connection::connection( const std::string & server, 
+                        const std::string & instance, 
+                        const std::string & variant,
+                        int                 port,
+                        int                 timeout )
 {
-   m_connection_string = create_connection_string( server, instance, port );
+   m_connection_string = create_connection_string( server, instance, port, timeout );
+   set_variant( variant );
    init( m_connection_string );
 }
 
@@ -79,9 +88,19 @@ connection::connection( const std::string & server, const std::string & instance
 
 connection::connection( const std::string & user_id,
                         const std::string & password,
-                        const std::string & server, const std::string & instance, int port )
+                        const std::string & server, 
+                        const std::string & instance, 
+                        const std::string & variant,
+                        int                 port,
+                        int                 timeout )
 {
-   m_connection_string = create_connection_string( user_id, password, server, instance, port );
+   m_connection_string = create_connection_string( user_id, 
+                                                   password, 
+                                                   server, 
+                                                   instance, 
+                                                   port, 
+                                                   timeout );
+   set_variant( variant );
    init( m_connection_string );
 }
 
@@ -101,7 +120,32 @@ const char * connection::type( void ) const
 
 //-----------------------------------------------------------------------------
 
-void connection::init( const std::string& connection_string )
+void connection::set_variant( std::string version )
+{
+   static const std::map< const std::string, use_variant_t > variant_map =
+   {
+      { "server", &connection::use_server },
+      { "azure",  &connection::use_azure  }
+   };
+
+   for ( auto it = version.begin(); it != version.end(); it++ )
+      *it = std::tolower( *it );
+
+   m_use_variant = &connection::use_unknown;
+
+   for ( auto it = variant_map.begin(); it != variant_map.end(); it++ )
+   {
+      if ( version.find( it->first ) != std::string::npos )
+      {
+         m_use_variant = it->second;
+         break;
+      }
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::init( const std::string & connection_string )
 {
    static constexpr char operation[] = "MSSQL initializing connection";
 
@@ -113,24 +157,9 @@ void connection::init( const std::string& connection_string )
       rc = SQLSetEnvAttr( m_henv, SQL_ATTR_ODBC_VERSION, ( SQLPOINTER )SQL_OV_ODBC3, 0 );
       check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
 
-      rc = SQLAllocHandle( SQL_HANDLE_DBC, m_henv, &m_hdbc );
-      check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
-
-      rc = SQLDriverConnect( m_hdbc,
-                             nullptr,
-                             sql_char( connection_string.c_str() ),
-                             sql_smint( connection_string.length() ),
-                             nullptr,
-                             0,
-                             nullptr,
-                             SQL_DRIVER_NOPROMPT );
-
-      check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
-
-      rc = SQLAllocHandle( SQL_HANDLE_STMT, m_hdbc, &m_stmt );
-      check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
+      init_connection( connection_string );
    }
-   catch (...)
+   catch ( ... )
    {
       cleanup();
       throw;
@@ -139,7 +168,44 @@ void connection::init( const std::string& connection_string )
 
 //-----------------------------------------------------------------------------
 
+void connection::init_connection( const std::string & connection_string )
+{
+   static constexpr char operation[] = "MSSQL initializing connection";
+
+   RETCODE rc = SQLAllocHandle( SQL_HANDLE_DBC, m_henv, &m_hdbc );
+   check_status( operation, m_henv, SQL_HANDLE_ENV, rc );
+
+   rc = SQLDriverConnect( m_hdbc,
+                           nullptr,
+                           sql_char( connection_string.c_str() ),
+                           sql_smint( connection_string.length() ),
+                           nullptr,
+                           0,
+                           nullptr,
+                           SQL_DRIVER_NOPROMPT );
+
+   check_status( operation, m_hdbc, SQL_HANDLE_DBC, rc );
+
+   rc = SQLAllocHandle( SQL_HANDLE_STMT, m_hdbc, &m_stmt );
+   check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
+}
+
+//-----------------------------------------------------------------------------
+
 void connection::cleanup( void )
+{
+   cleanup_connection();
+
+   if ( m_henv )
+   {
+      SQLFreeHandle( SQL_HANDLE_ENV, m_henv );
+      m_henv = nullptr;
+   }
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::cleanup_connection( void )
 {
    if ( m_stmt )
    {
@@ -152,12 +218,6 @@ void connection::cleanup( void )
       SQLDisconnect( m_hdbc );
       SQLFreeHandle( SQL_HANDLE_DBC, m_hdbc );
       m_hdbc = nullptr;
-   }
-
-   if ( m_henv )
-   {
-      SQLFreeHandle( SQL_HANDLE_ENV, m_henv );
-      m_henv = nullptr;
    }
 }
 
@@ -191,20 +251,47 @@ void connection::use( const std::string & name )
    if ( name == m_database )
       return;
 
+   ( this->*m_use_variant )( name );
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::use_unknown( const std::string & name )
+{
+   std::string version = operator()( "SELECT @@VERSION" );
+   set_variant( version );
+
+   use( name );
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::use_server( const std::string & name )
+{
    std::string query = "USE " + name;
 
    RETCODE rc = SQLExecDirect( m_stmt, sql_char( query.c_str() ), sql_int( query.length() ) );
    check_status( "MSSQL create database", m_hdbc, SQL_HANDLE_DBC, rc );
-/*
-   // Auzre doesn't support using a database not specified in the
-   // connection string so try to reconnect to the database.
 
-   if ( rc != SQL_SUCCESS && rc != SQL_SUCCESS_WITH_INFO )
-   {
-      cleanup();
-      init( m_connection_string + " Database=" + name + ";" );
+   m_database = name;
+}
+
+//-----------------------------------------------------------------------------
+
+void connection::use_azure( const std::string & name )
+{
+   try
+   {  
+      cleanup_connection();
+      init_connection( m_connection_string + " Database=" + name + ";" );
    }
-*/
+   catch ( ... )
+   {
+      cleanup_connection();
+      init_connection( m_connection_string );
+      throw;
+   }
+
    m_database = name;
 }
 
