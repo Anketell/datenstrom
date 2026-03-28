@@ -85,7 +85,7 @@ ds::istream & istream::operator >> ( int64_t & i )
 
 ds::istream & istream::operator >> ( uint8_t & u )
 {
-   m_sb->sgetn( reinterpret_cast< char * >( &u ), sizeof( u ) );
+   read( &u, sizeof( u ) );
    return *this;
 }
 
@@ -94,7 +94,7 @@ ds::istream & istream::operator >> ( uint8_t & u )
 ds::istream & istream::operator >> ( uint16_t & u )
 {
    uint16_t tmp;
-   m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   read( &tmp, sizeof( u ) );
    u = ( *m_filter )( tmp );
    return *this;
 }
@@ -104,7 +104,7 @@ ds::istream & istream::operator >> ( uint16_t & u )
 ds::istream & istream::operator >> ( uint32_t & u )
 {
    uint32_t tmp;
-   m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   read( &tmp, sizeof( u ) );
    u = ( *m_filter )( tmp );
    return *this;
 }
@@ -114,7 +114,7 @@ ds::istream & istream::operator >> ( uint32_t & u )
 ds::istream & istream::operator >> ( uint64_t & u )
 {
    uint64_t tmp;
-   m_sb->sgetn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   read( &tmp, sizeof( u ) );
    u = ( *m_filter )( tmp );
    return *this;
 }
@@ -124,6 +124,7 @@ ds::istream & istream::operator >> ( uint64_t & u )
 ds::istream & istream::operator >> ( double & d )
 {
    m_sb->sgetn( reinterpret_cast< char * >( &d ), sizeof( d ) );
+   read( &d, sizeof( d ) );
    return *this;
 }
 
@@ -131,7 +132,9 @@ ds::istream & istream::operator >> ( double & d )
 
 void istream::read( void * data, size_t size )
 {
-   m_sb->sgetn( reinterpret_cast< char * >( data ), size );
+   size_t read = m_sb->sgetn( reinterpret_cast< char * >( data ), size );
+   if ( read < size )
+      throw stream_underrun();
 }
 
 //-----------------------------------------------------------------------------
@@ -196,7 +199,7 @@ ds::ostream & ostream::operator << ( int64_t i )
 
 ds::ostream & ostream::operator << ( uint8_t u )
 {
-   m_sb->sputn( reinterpret_cast< char * >( &u ), sizeof( u ) );
+   write( &u, sizeof( u ) );
    return *this;
 }
 
@@ -205,7 +208,7 @@ ds::ostream & ostream::operator << ( uint8_t u )
 ds::ostream & ostream::operator << ( uint16_t u )
 {
    auto tmp = ( *m_filter )( u );
-   m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   write( &tmp, sizeof( u ) );
    return *this;
 }
 
@@ -214,7 +217,7 @@ ds::ostream & ostream::operator << ( uint16_t u )
 ds::ostream & ostream::operator << ( uint32_t u )
 {
    auto tmp = ( *m_filter )( u );
-   m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   write( &tmp, sizeof( u ) );
    return *this;
 }
 
@@ -223,7 +226,7 @@ ds::ostream & ostream::operator << ( uint32_t u )
 ds::ostream & ostream::operator << ( uint64_t u )
 {
    auto tmp = ( *m_filter )( u );
-   m_sb->sputn( reinterpret_cast< char * >( &tmp ), sizeof( u ) );
+   write( &tmp, sizeof( u ) );
    return *this;
 }
 
@@ -232,7 +235,7 @@ ds::ostream & ostream::operator << ( uint64_t u )
 
 ds::ostream & ostream::operator << ( double d )
 {
-   m_sb->sputn( reinterpret_cast< char * >( &d ), sizeof( d ) );
+   write( &d, sizeof( d ) );
    return *this;
 }
 
@@ -240,7 +243,9 @@ ds::ostream & ostream::operator << ( double d )
 
 void ostream::write( const void * data, size_t size )
 {
-   m_sb->sputn( reinterpret_cast< const char * >( data ), size );
+   size_t written = m_sb->sputn( reinterpret_cast< const char * >( data ), size );
+   if ( written < size )
+      throw stream_overrun();
 }
 
 //-----------------------------------------------------------------------------
@@ -285,9 +290,6 @@ std::streambuf * streamwrap::setbuf( char * s, std::streamsize n )
 
 int streamwrap::underflow( void )
 {
-   if ( !gremaining() )
-      throw stream_underrun();
-
    return std::streambuf::underflow();
 }
 
@@ -295,9 +297,6 @@ int streamwrap::underflow( void )
 
 int streamwrap::overflow( int ch )
 {
-   if ( !premaining() )
-      throw stream_overrun();
-
    auto res = std::streambuf::overflow( ch );
 
    setg( eback(), gptr(), pptr() );
@@ -309,9 +308,6 @@ int streamwrap::overflow( int ch )
 
 std::streamsize streamwrap::xsgetn( char * s, std::streamsize count )
 {
-   if ( gremaining() < count )
-      throw stream_underrun();
-
    return std::streambuf::xsgetn( s, count );
 }
 
@@ -319,9 +315,6 @@ std::streamsize streamwrap::xsgetn( char * s, std::streamsize count )
 
 std::streamsize streamwrap::xsputn( const char * s, std::streamsize count )
 {
-   if ( premaining() < count )
-      throw stream_overrun();
-
    auto res = std::streambuf::xsputn( s, count );
 
    setg( eback(), gptr(), pptr() );
