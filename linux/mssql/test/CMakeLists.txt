@@ -16,18 +16,10 @@ add_executable( ${TARGET}
    ${HEADERS}
 )
 
-if( NOT DEFINED MSSQL_TEST )
-   if( NOT DEFINED ENV{DS_MSSQL_TEST} )
-      message( SEND_ERROR "DS_MSSQL_TEST is undefined - SQL Server test will not be built" )
-      return()
-   endif()
-   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} CACHE STRING "SQL Server test connect string" )
-endif()
-
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
-   MSSQL_TEST="${MSSQL_TEST}"
+   MSSQL_TEST="${DS_MSSQL_TEST}"
 )
 
 target_link_libraries( ${TARGET}

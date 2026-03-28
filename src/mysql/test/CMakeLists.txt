@@ -4,15 +4,6 @@
 
 set( TARGET test_ds_mysql )
 
-if( DEFINED ENV{DS_MYSQL_TEST} )
-   set( MYSQL_TEST $ENV{DS_MYSQL_TEST} CACHE STRING "MySQL test connect string" FORCE )
-endif()
-
-   if( NOT DEFINED MYSQL_TEST )
-   message( SEND_ERROR "DS_MYSQL_TEST is undefined - MySQL test will not be built" )
-   return()
-endif()
-
 set( SOURCE
    test_mysql.cpp
 )
@@ -36,7 +27,7 @@ target_link_libraries( ${TARGET}
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
    SQL_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}"
-   MYSQL_TEST="${MYSQL_TEST}"
+   MYSQL_TEST="${DS_MYSQL_TEST}"
 )
 
 add_dependencies( ${TARGET} ds_mysql_module )

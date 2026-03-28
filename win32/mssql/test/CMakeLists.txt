@@ -4,6 +4,16 @@
 
 set( TARGET test_ds_mssql )
 
+if( DEFINED ENV{DS_MSSQL_TEST} )
+   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} CACHE STRING "SQL Server test connect string" FORCE )
+endif()
+
+if( NOT DEFINED MSSQL_TEST )
+   message( SEND_ERROR "DS_MSSQL_TEST is undefined - SQL Server test will not be built" )
+   return()
+endif()
+
+
 set( SOURCE
    test_mssql.cpp
 )
@@ -17,12 +27,6 @@ add_executable( ${TARGET}
 )
 
 add_dependencies( ${TARGET} googletest )
-
-if( DEFINED ENV{DS_MSSQL_TEST} )
-   set( MSSQL_TEST $ENV{DS_MSSQL_TEST} )
-else()
-   set( MSSQL_TEST "mssql://(local)")
-endif()
 
 target_compile_definitions( ${TARGET} PUBLIC
    DS_MODULE_PATH="${CMAKE_CURRENT_BINARY_DIR}/../"
