@@ -184,3 +184,46 @@ NAMESPACE_TEST( sqlite, SavePoint, should_fail_bad_release_name  )
 }
 
 //-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( sqlite, Statement, should_reset_failed_statement  )
+{
+   static const char create_index[] = "CREATE UNIQUE INDEX object_hello_index ON Object( Hello )";
+
+
+   ds::db::connection::enroll_db_path_list( DS_MODULE_PATH );
+   ds::db::context::enroll_sql_path_list( SQL_MODULE_PATH );
+
+   ds::db::context test_db( SQLITE_TEST );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
+   EXPECT_NO_THROW( test_db.connection::execute_batch( create_index ) );
+
+   ds::db::statement insert_test = test_db( "test.insert" );
+
+   EXPECT_NO_THROW( insert_test << data[ 0 ] << ds::endr );
+   
+   for ( auto o : data )
+   {
+      try
+      {
+         insert_test << o << ds::endr;
+      }
+      catch ( std::exception & e )
+      {
+         EXPECT_NO_THROW( insert_test.reset() );
+      }
+   }
+
+   EXPECT_EQ( static_cast< int >( test_db( "test.num_rows" ).result() ), 2 );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+
+   ds::db::context::clear_sql_path_list();
+   ds::db::connection::clear_db_path_list();
+}
+
+//-----------------------------------------------------------------------------

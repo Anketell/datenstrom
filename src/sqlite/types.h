@@ -28,12 +28,10 @@ struct stmt_t
 
    void reset( void )
    {
-      int rc = sqlite3_reset( stmt );
+      sqlite3_reset( stmt );
+      int rc = sqlite3_clear_bindings( stmt );
       if ( rc != SQLITE_OK )
-         throw_error( "SQLite statement reset", rc );
-
-      rc = sqlite3_clear_bindings( stmt );
-      assert( rc == SQLITE_OK );
+         throw_error( "SQLite clear bindings", rc );
 
       state = stmt_t::Preparing;
    }
