@@ -28,9 +28,6 @@ struct stmt_t
 
    void reset( void )
    {
-      if ( state == Preparing )
-         return;
-
       int rc = sqlite3_reset( stmt );
       if ( rc != SQLITE_OK )
          throw_error( "SQLite statement reset", rc );
