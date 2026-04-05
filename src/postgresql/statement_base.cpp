@@ -120,7 +120,7 @@ void statement_base::internal_execute( void )
       char * error = PQresultVerboseErrorMessage( m_stmt->result, PQERRORS_DEFAULT, PQSHOW_CONTEXT_ALWAYS );
       std::string message = error;
       PQfreemem( error );
-      PQclear( m_stmt->result );
+      reset();
       throw_error( operation, message.c_str() );
    }
 

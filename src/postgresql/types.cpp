@@ -20,7 +20,11 @@ void stmt_t::reset( void )
    if ( state == Preparing )
       return;
 
-   PQclear( result );
+   if ( result )
+   {
+      PQclear( result );
+      result = nullptr;
+   }
 
    state = Preparing;
 }
@@ -37,12 +41,6 @@ stmt_t::~stmt_t( void )
       return;
 
    PGresult * res = PQexec( conn, ( "DEALLOCATE \"" + name + "\"" ).c_str() );
-   if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
-   {
-      std::string message = PQerrorMessage( conn );
-      PQclear( res );
-      throw_error( operation, message.c_str() );
-   }
    PQclear( res );
 }
 

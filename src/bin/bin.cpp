@@ -123,7 +123,6 @@ ds::istream & istream::operator >> ( uint64_t & u )
 
 ds::istream & istream::operator >> ( double & d )
 {
-   m_sb->sgetn( reinterpret_cast< char * >( &d ), sizeof( d ) );
    read( &d, sizeof( d ) );
    return *this;
 }

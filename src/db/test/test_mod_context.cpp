@@ -43,6 +43,7 @@ TEST_P( Context, should_return_keys )
       "test.batch", 
       "test.create", 
       "test.create_blob", 
+      "test.create_index",
       "test.del_rows", 
       "test.insert", 
       "test.insert_blob", 
