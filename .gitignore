@@ -13,5 +13,5 @@ output
 *.log
 *.cov
 .vscode/ipch
-.bootstrap_env
+.env
 

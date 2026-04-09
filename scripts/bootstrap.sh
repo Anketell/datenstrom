@@ -7,7 +7,7 @@ popd >/dev/null
 
 echo ${root}
 
-env=${root}/scripts/.bootstrap_env
+env=${root}/scripts/.env
 
 if [ -f ${env} ]; then
    set -o allexport
