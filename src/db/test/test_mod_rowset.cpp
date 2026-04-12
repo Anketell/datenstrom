@@ -37,14 +37,10 @@ TEST_P( RowSet, should_provide_query_data )
 
       EXPECT_NO_THROW( row = results_test.result() );
 
-      for ( auto o : data )
-      {
-         Object o_db = {};
+      test::Object_list_t list = row;
 
-         row >> o_db >> ds::endr;
-
-         EXPECT_EQ( o, o_db );
-      }
+      for ( int i = 0; i < list.size(); i++ )
+         EXPECT_EQ( data[ i ], list[ i ] );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -76,14 +72,10 @@ TEST_P( RowSet, should_support_sub_second_time )
 
       EXPECT_NO_THROW( result = results_test.result() );
 
-      for ( auto o : data_hires )
-      {
-         Object o_db = {};
+      test::Object_list_t list = result;
 
-         result >> o_db >> ds::endr;
-
-         EXPECT_EQ( o, o_db );
-      }
+      for ( int i = 0; i < list.size(); i++ )
+         EXPECT_EQ( data_hires[ i ], list[ i ] );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
@@ -167,7 +159,7 @@ TEST_P( RowSet, should_fail_query_wrong_column_count )
 
       for ( auto o : data )
       {
-         Object o_db = {};
+         test::Object o_db = {};
 
          if ( !row.eof() )
          {

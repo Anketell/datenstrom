@@ -46,7 +46,7 @@ NAMESPACE_TEST( db, cast, should_support_statement_cast_operator )
 
    EXPECT_EQ( test_stmt->m_result_calls, 0 );
 
-   Object o;
+   test::Object o;
 
    o.m_i8       = stmt;
    o.m_i16      = stmt;
@@ -62,7 +62,7 @@ NAMESPACE_TEST( db, cast, should_support_statement_cast_operator )
    o.m_date     = stmt;
    o.m_time     = stmt;
    o.m_datetime = stmt;
-      
+
    EXPECT_EQ( test_stmt->m_result_calls, 14 );
 }
 

@@ -95,7 +95,8 @@ public:
 
    virtual bool eof( void ) const;
 
-   template< typename T, std::enable_if_t< has_get_from< T >, bool > = false >
+//   template< typename T, std::enable_if_t< has_get_from< T >, bool > = true >
+   template< typename T >
    operator T ( void )
    {
       T t;
@@ -159,11 +160,10 @@ public:
 
 //-----------------------------------------------------------------------------
 
+istream & operator >> ( istream &, istream::manip_t fn );
+ostream & operator << ( ostream &, ostream::manip_t fn );
+
+//-----------------------------------------------------------------------------
+
 }
 
-//-----------------------------------------------------------------------------
-
-ds::istream & operator >> ( ds::istream &, ds::istream::manip_t fn );
-ds::ostream & operator << ( ds::ostream &, ds::ostream::manip_t fn );
-
-//-----------------------------------------------------------------------------

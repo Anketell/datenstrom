@@ -52,7 +52,7 @@ NAMESPACE_TEST( csv, istream, should_read_comma_separated_values )
 {
    std::stringstream ss( line );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -80,7 +80,7 @@ NAMESPACE_TEST( csv, istream, should_skip_end_of_record )
 {
    std::stringstream ss( line );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -93,7 +93,7 @@ NAMESPACE_TEST( csv, istream, should_read_unquoted_strings )
 {
   std::stringstream ss( unquoted_strings );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -121,7 +121,7 @@ NAMESPACE_TEST( csv, istream, should_ignore_whitespace )
 {
      std::stringstream ss( whitespace );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -149,7 +149,7 @@ NAMESPACE_TEST( csv, istream, should_support_embeded_quotes )
 {
    std::stringstream ss( embedded_quotes );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -177,7 +177,7 @@ NAMESPACE_TEST( csv, istream, should_ignore_extra_fields )
 {
    std::stringstream ss( extra_field );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -205,7 +205,7 @@ NAMESPACE_TEST( csv, istream, should_fail_missing_separator )
 {
    std::stringstream ss( missing_separator );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -218,7 +218,7 @@ NAMESPACE_TEST( csv, istream, should_fail_unterminated_quotes )
 {
    std::stringstream ss( unterminated_quotes );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -231,7 +231,7 @@ NAMESPACE_TEST( csv, istream, should_fail_quotes_in_unquoted_strings )
 {
    std::stringstream ss( "-8,-16,-32,-64,8,16,32,64,12.34,56.78,Hello\"\n" );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -246,7 +246,7 @@ NAMESPACE_TEST( csv, istream, should_fail_stream_underrun )
 
    ss << line << std::endl << std::endl;
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -276,7 +276,7 @@ NAMESPACE_TEST( csv, istream, should_read_multiline_string )
 {
    std::stringstream ss( multiline );
 
-   Object o;
+   test::Object o;
 
    ds::csv::istream in( ss );
 
@@ -304,7 +304,7 @@ NAMESPACE_TEST( csv, ostream, should_write_comma_separated_values )
 {
    std::stringstream ss;
 
-   Object o =
+   test::Object o =
    {
       -8, -16, -32, -64, 8, 16, 32, 64, 12.34, 56.78,
       "Hello \"you\"", "2020-05-13", "13:05:20", "2020-05-13 13:05:20"

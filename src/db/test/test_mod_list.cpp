@@ -35,9 +35,9 @@ TEST_P( List, should_provide_iterator )
 
    {
       int i = 0;
-      for ( Object o_db : test_db( "test.results" ) )
+      for ( test::Object o_db : test_db( "test.results" ) )
       {
-         Object o = data[ i++ ];
+         test::Object o = data[ i++ ];
 
          EXPECT_EQ( o, o_db );
       }
@@ -73,18 +73,18 @@ TEST_P( List, should_manage_cursor_within_transaction )
       int i = 0;
 
       ds::db::statement list = test_db( "test.results" );
-      for ( Object o_db : list )
+      for ( test::Object o_db : list )
       {
-         Object o = data[ i++ ];
+         test::Object o = data[ i++ ];
 
          EXPECT_EQ( o, o_db );
          break;
       }
 
       i = 0;
-      for ( Object o_db : list )
+      for ( test::Object o_db : list )
       {
-         Object o = data[ i++ ];
+         test::Object o = data[ i++ ];
 
          EXPECT_EQ( o, o_db );
       }
@@ -119,18 +119,18 @@ TEST_P( List, should_manage_cursor_without_transaction )
       int i = 0;
 
       ds::db::statement list = test_db( "test.results" );
-      for ( Object o_db : list )
+      for ( test::Object o_db : list )
       {
-         Object o = data[ i++ ];
+         test::Object o = data[ i++ ];
 
          EXPECT_EQ( o, o_db );
          break;
       }
 
       i = 0;
-      for ( Object o_db : list )
+      for ( test::Object o_db : list )
       {
-         Object o = data[ i++ ];
+         test::Object o = data[ i++ ];
 
          EXPECT_EQ( o, o_db );
       }

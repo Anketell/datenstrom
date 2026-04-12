@@ -11,6 +11,12 @@
 
 #include <string>
 #include <cstdint>
+#include <vector>
+
+//-----------------------------------------------------------------------------
+
+namespace test
+{
 
 //-----------------------------------------------------------------------------
 
@@ -31,7 +37,7 @@ struct Object
    std::string m_time;
    std::string m_datetime;
 
-   bool operator==( const Object & o ) const;
+   bool operator==( const  Object & o ) const;
 };
 
 //-----------------------------------------------------------------------------
@@ -58,9 +64,17 @@ struct Object_alt
 
 //-----------------------------------------------------------------------------
 
-extern Object     data[ 2 ];
-extern Object_alt data_alt[ 2 ];
-extern Object     data_hires[ 2 ];
+typedef std::vector< Object > Object_list_t;
+
+//-----------------------------------------------------------------------------
+
+}
+
+//-----------------------------------------------------------------------------
+
+extern test::Object     data[ 2 ];
+extern test::Object_alt data_alt[ 2 ];
+extern test::Object     data_hires[ 2 ];
 
 //-----------------------------------------------------------------------------
 

@@ -97,7 +97,7 @@ TEST_P( Parameter, should_retrieve_named )
                                    << ds::endr );
    }
 
-   Object o;
+   test::Object o;
 
    {
       ds::db::statement results_test = test_db( "test.results" );

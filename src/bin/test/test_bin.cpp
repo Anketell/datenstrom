@@ -30,6 +30,23 @@ public:
 
 //-----------------------------------------------------------------------------
 
+class test_istream : public ds::bin::istream
+{
+public:
+
+   test_istream( std::streambuf * sb = nullptr ) : ds::bin::istream( sb ) {}
+
+   virtual ds::istream & operator >> ( std::string & s ) override
+   {
+      uint32_t length = *this;
+      s.resize( length );
+      m_sb->sgetn( s.data(), s.length() );
+      return *this;
+   }
+};
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( bin, length, should_calculate_data_length )
 {
    uint32_t data_0_length = sizeof( int8_t   ) +
@@ -956,6 +973,25 @@ NAMESPACE_TEST( bin, istream, should_fail_underrun )
    EXPECT_THROW( { uint64_t u64; in >> u64; }, ds::stream_underrun );
    EXPECT_THROW( { int64_t  s64; in >> s64; }, ds::stream_underrun );
    EXPECT_THROW( { double   d;   in >> d;   }, ds::stream_underrun );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( bin, string_overload, should_read_write )
+{
+   const std::string otest = "The quick brown fox jumps over the lazy dog";
+
+   ds::bin::streambuf sw( 100 );
+
+   test_ostream out( &sw );
+
+   out << otest;
+
+   test_istream in( &sw );
+
+   std::string itest = static_cast< ds::istream & >( in );
+
+   EXPECT_EQ( otest, itest );
 }
 
 //-----------------------------------------------------------------------------

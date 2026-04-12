@@ -244,20 +244,19 @@ std::runtime_error( "Stream overrun" )
 
 //-----------------------------------------------------------------------------
 
-}
-
-//-----------------------------------------------------------------------------
-
-ds::istream & operator >> ( ds::istream & in, ds::istream::manip_t manip )
+istream & operator >> ( istream & in, istream::manip_t manip )
 {
    return manip( in );
 }
 
 //-----------------------------------------------------------------------------
 
-ds::ostream & operator << ( ds::ostream & out, ds::ostream::manip_t manip )
+ostream & operator << ( ostream & out, ostream::manip_t manip )
 {
    return manip( out );
 }
 
 //-----------------------------------------------------------------------------
+
+}
+
