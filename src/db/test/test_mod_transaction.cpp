@@ -83,7 +83,7 @@ TEST_P( Transaction, should_rollback_on_exception )
 
 //-----------------------------------------------------------------------------
 
-TEST_P( Transaction, should_fail_nested )
+TEST_P( Transaction, should_support_nested )
 {
    ds::db::context test_db( config->constr );
 
@@ -98,7 +98,7 @@ TEST_P( Transaction, should_fail_nested )
 
       ds::db::transaction transaction1( test_db );
 
-      EXPECT_THROW( ds::db::transaction transaction2( test_db ), std::runtime_error );
+      EXPECT_NO_THROW( ds::db::transaction transaction2( test_db ) );
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );

@@ -108,21 +108,28 @@ void connection::execute_batch( const std::string & query )
 
 void connection::begin_transaction( void )
 {
-   m_impl->begin_transaction();
+   if ( !in_transaction() )
+      m_impl->begin_transaction();
+
+   transactional::begin_transaction();
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::commit_transaction( void )
 {
-   m_impl->commit_transaction();
+   transactional::commit_transaction();
+   if ( !in_transaction() )
+      m_impl->commit_transaction();
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_transaction( void )
 {
-   m_impl->rollback_transaction();
+   transactional::rollback_transaction();
+   if ( !in_transaction() )
+      m_impl->rollback_transaction();
 }
 
 //-----------------------------------------------------------------------------
