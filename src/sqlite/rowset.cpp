@@ -78,10 +78,14 @@ int rowset::check_column( int index, int type_mask )
    if ( column_type == SQLITE_TEXT )
    {
       const char * decl_type = sqlite3_column_decltype( m_stmt->stmt, index );
-
-      auto it = type_map.find( decl_type );
-      if ( it != type_map.end() )
-         column_type = it->second;
+      if ( decl_type )
+      {
+         auto it = type_map.find( decl_type );
+         if ( it != type_map.end() )
+            column_type = it->second;
+      }
+      else
+         column_type = sqlite3_column_type( m_stmt->stmt, index );
    }
 
    if ( ( ( 1 << column_type ) & type_mask ) == 0 )

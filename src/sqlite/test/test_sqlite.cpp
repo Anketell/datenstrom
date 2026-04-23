@@ -159,6 +159,47 @@ NAMESPACE_TEST( sqlite, RowSet, may_fail_query_wrong_column_type )
 
 //-----------------------------------------------------------------------------
 
+NAMESPACE_TEST( sqlite, RowSet, should_query_min_max )
+{
+   ds::db::connection::enroll_db_path_list( DS_MODULE_PATH );
+   ds::db::context::enroll_sql_path_list( SQL_MODULE_PATH );
+
+   ds::db::context test_db( SQLITE_TEST );
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
+
+   {
+      ds::db::statement insert_test = test_db( "test.insert" );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      static const char query[] = "SELECT MIN( hello ), MAX( hello ) FROM Object";
+
+      ds::db::statement min_max_test = test_db.connection::operator()( query );
+
+      std::string min;
+      std::string max;
+
+      ds::db::rowset result = min_max_test.result();
+
+      result >> min 
+             >> max;
+
+      EXPECT_LT( min, max );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
 NAMESPACE_TEST( sqlite, SavePoint, should_fail_bad_release_name  )
 {
    ds::db::connection::enroll_db_path_list( DS_MODULE_PATH );
