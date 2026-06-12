@@ -11,6 +11,7 @@
 #include <ds/ds.h>
 #include <streambuf>
 #include <ios>
+#include <memory>
 
 //-----------------------------------------------------------------------------
 
@@ -171,6 +172,21 @@ std::streamsize length( const T & t, const Rest & ... rest )
 template< typename T > std::streamsize length( const T & t )
 {
    return length< ostream, T >( t );
+}
+
+//-----------------------------------------------------------------------------
+
+typedef std::unique_ptr< streambuf > streambuf_ptr;
+
+//-----------------------------------------------------------------------------
+
+template< typename S, typename ... Data >
+streambuf_ptr make_sb( const Data & ... data )
+{
+   streambuf_ptr sb = std::make_unique< streambuf >( length< S >( data... ) );
+   S out( sb.get() );
+   out( data... );
+   return sb;
 }
 
 //-----------------------------------------------------------------------------

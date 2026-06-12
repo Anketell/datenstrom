@@ -151,6 +151,10 @@ int rowset::rows_affected( void ) const
    column.error         = &info.error;
 
    int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+
+   if ( info.is_null )
+      throw null_value();
+
    switch ( rc )
    {
       case 0:
@@ -246,6 +250,10 @@ void rowset::get_column( int index, std::string & s )
    column.error         = &info.error;
 
    int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+
+   if ( info.is_null )
+      throw null_value();
+
    if ( rc == 0 )
    {
       s.resize( info.length );
@@ -269,6 +277,29 @@ void rowset::get_column( int index, std::string & s )
          ds::time::reformat_iso_8601( s );
          break;
    }
+}
+
+//-----------------------------------------------------------------------------
+
+bool rowset::get_column_null( int index )
+{
+   static constexpr char operation[] = "MySQL rowset get column null";
+
+   if ( !m_stmt )
+      throw_error( operation, "Bad rowset" );
+
+   MYSQL_BIND  column = { 0 };
+   bind_info_t info   = { 0 };
+
+   column.buffer_type   = MYSQL_TYPE_VAR_STRING;
+   column.buffer_length = 0;
+   column.length        = &info.length;
+   column.is_null       = &info.is_null;
+   column.error         = &info.error;
+
+   int rc = mysql_stmt_fetch_column( m_stmt->stmt, &column, index, 0 );
+
+   return info.is_null;
 }
 
 //-----------------------------------------------------------------------------

@@ -24,6 +24,7 @@ class rowset : public db::rowset::impl
    int                       m_count;
    bool                      m_valid;
 
+   int get_column_type( int index ) const;
    int check_column( int index, int type_mask );
 
 public:
@@ -46,6 +47,8 @@ public:
 
    virtual void get_column( int index, double & ) override;
    virtual void get_column( int index, std::string & ) override;
+
+   virtual bool get_column_null( int index ) override;
 
    virtual bool step( void ) override;
 

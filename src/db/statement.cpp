@@ -116,6 +116,13 @@ ds::ostream & statement::operator << ( const std::string & s )
 
 //-----------------------------------------------------------------------------
 
+void statement::put_null( void )
+{
+//   m_impl->set_null_parameter( m_parameter++ );
+}
+
+//-----------------------------------------------------------------------------
+
 void statement::endr( void )
 {
    execute();

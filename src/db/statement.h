@@ -49,6 +49,8 @@ public:
       virtual void set_parameter( int index, const char * ) = 0;
       virtual void set_parameter( int index, const std::string & ) = 0;
 
+//      virtual void set_null_parameter( int index ) = 0;
+
       virtual int parameter_count( void ) = 0;
 
       virtual void reset( void ) = 0;
@@ -103,6 +105,8 @@ public:
    virtual ds::ostream & operator << ( const char * ) override;
    virtual ds::ostream & operator << ( const std::string & ) override;
 
+   virtual void put_null( void ) override;
+
    virtual void endr( void ) override;
 
    void reset( void );
@@ -125,11 +129,9 @@ public:
       return operator()( rest... );
    }
 
-   template< typename T,
-             std::enable_if_t< ds::has_get_from< T > || std::is_same_v< T, db::rowset >,
-                               bool
-                             > = false
-           >
+   template< typename T, std::enable_if_t< ds::has_get_from< T >        || 
+                                           std::is_same_v< T, db::rowset >, bool
+                                         > = true >
    operator T ( void )
    {
       return result();

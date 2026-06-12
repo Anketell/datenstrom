@@ -132,7 +132,7 @@ static constexpr char operation[] = "Firebird rowset get column";
 
 //-----------------------------------------------------------------------------
 
-void rowset::check_column( int index )
+void rowset::verify_column( int index )
 {
    if ( !m_valid )
       throw_error( operation, "No row available" );
@@ -142,6 +142,18 @@ void rowset::check_column( int index )
 
    if ( index >= column_count() )
       throw_error( operation, "No column available" );
+}
+
+//-----------------------------------------------------------------------------
+
+void rowset::check_column( int index )
+{
+   verify_column( index );
+
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
+
+   if ( ( column.sqltype & 1 ) && ( *column.sqlind < 0 ) )
+      throw null_value();
 }
 
 //-----------------------------------------------------------------------------
@@ -341,6 +353,9 @@ void rowset::read_blob( int index, std::string & s )
 
    XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
 
+   if ( ( column.sqltype & 1 ) && ( *column.sqlind < 0 ) )
+      throw null_value();
+
    isc_open_blob2( status, &m_transactional.db_handle,
                            &m_transactional.tr_handle,
                            &bl_handle,
@@ -410,6 +425,17 @@ void rowset::get_column( int index, std::string & s )
       default:
          throw_error( operation, "Not character type" );
    }
+}
+
+//-----------------------------------------------------------------------------
+
+bool rowset::get_column_null( int index )
+{
+   verify_column( index );
+
+   XSQLVAR & column( m_stmt->xsqlda->sqlvar[ index ] );
+
+   return ( column.sqltype & 1 ) && ( *column.sqlind < 0 );
 }
 
 //-----------------------------------------------------------------------------

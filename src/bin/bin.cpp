@@ -346,10 +346,10 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       }
 
       if ( new_off < 0 )
-         throw ds::stream_underrun();
+         throw stream_underrun();
 
       if ( new_off > egptr() - eback() )
-         throw ds::stream_overrun();
+         throw stream_overrun();
 
       std::streamoff adj = gptr() - eback();
       gbump( new_off - ( gptr() - eback() ) );
@@ -373,10 +373,10 @@ std::streampos streamwrap::seekoff( std::streambuf::off_type off,
       }
 
       if ( new_off < 0 )
-         throw ds::stream_underrun();
+         throw stream_underrun();
 
       if ( new_off > epptr() - pbase() )
-         throw ds::stream_overrun();
+         throw stream_overrun();
 
       pbump( new_off - ( pptr() - pbase() ) );
    }

@@ -52,6 +52,8 @@ public:
    virtual void get_column( int index, double & ) override;
    virtual void get_column( int index, std::string & ) override;
 
+   virtual bool get_column_null( int index );
+
    virtual bool step( void ) override;
 
    virtual bool eof( void ) const override;

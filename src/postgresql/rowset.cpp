@@ -88,6 +88,9 @@ int64_t rowset::get_int( int index )
 {
    check_column( index );
 
+   if ( PQgetisnull( m_stmt->result, m_cursor, index ) )
+      throw null_value();
+
    const char * value = PQgetvalue( m_stmt->result, m_cursor, index );
 
    switch ( m_column_types[ index ] )
@@ -219,6 +222,9 @@ void rowset::get_column( int index, double & d )
 {
    check_column( index );
 
+   if ( PQgetisnull( m_stmt->result, m_cursor, index ) )
+      throw null_value();
+
    const char * value = PQgetvalue( m_stmt->result, m_cursor, index );
 
    switch ( m_column_types[ index ] )
@@ -323,6 +329,9 @@ void rowset::get_column( int index, std::string & s )
 {
    check_column( index );
 
+   if ( PQgetisnull( m_stmt->result, m_cursor, index ) )
+      throw null_value();
+
    int length = PQgetlength( m_stmt->result, m_cursor, index ) ;
 
    const char * value = PQgetvalue( m_stmt->result, m_cursor, index );
@@ -348,6 +357,14 @@ void rowset::get_column( int index, std::string & s )
       default:
          throw_error( "PostgreSQL get text", "not text type" );
    }
+}
+
+//-----------------------------------------------------------------------------
+
+bool rowset::get_column_null( int index )
+{
+   check_column( index );
+   return PQgetisnull( m_stmt->result, m_cursor, index );
 }
 
 //-----------------------------------------------------------------------------

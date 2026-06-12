@@ -159,7 +159,24 @@
                 "ignoreFailures": true
             }
         ]
-     }
-
+      },
+      {
+        "name": "test_ds_postgresql",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/debug/src/postgresql/test/test_ds_postgresql",
+        "args": [],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "externalConsole": true,
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+      }
    ]
 }

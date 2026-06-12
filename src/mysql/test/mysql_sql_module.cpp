@@ -105,6 +105,33 @@ R"(
 
 //-----------------------------------------------------------------------------
 
+{ "test.insert_null",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
 { "test.insert_id",
 
 R"(
@@ -248,6 +275,13 @@ R"(
 { "test.insert_blob",
 
 "INSERT INTO Object VALUES( ? )"
+},
+   
+//-----------------------------------------------------------------------------
+
+{ "test.insert_null_blob",
+
+"INSERT INTO Object VALUES( NULL )"
 },
    
 //-----------------------------------------------------------------------------

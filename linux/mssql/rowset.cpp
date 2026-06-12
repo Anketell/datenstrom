@@ -76,8 +76,13 @@ template< typename T > void rowset::get_column( int index, int c_type, T & t )
 
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
 
-   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, &t, sizeof( T ), nullptr  );
+   SQLLEN ind = 0;
+
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, c_type, &t, sizeof( T ), &ind );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   if ( ind == SQL_NULL_DATA )
+      throw null_value();     
 }
 
 //-----------------------------------------------------------------------------
@@ -90,6 +95,9 @@ void rowset::get_text_column( int index, std::string & t )
 
    RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), 0, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   if ( count == SQL_NULL_DATA )
+      throw null_value();
 
    if ( count == SQL_NO_TOTAL )
    {
@@ -116,6 +124,9 @@ void rowset::get_blob_column( int index, std::string & t )
    RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_BINARY, t.data(), 0, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
+   if ( count == SQL_NULL_DATA )
+      throw null_value();
+      
    t.resize( count );
 
    rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_BINARY, t.data(), count, nullptr );
@@ -134,9 +145,12 @@ void rowset::get_datetime_column( int index, std::string & t )
 
    t.resize( count + 1 );
 
-   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, &count );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
+   if ( count == SQL_NULL_DATA )
+      throw null_value();
+      
    std::string::reverse_iterator it;
    for ( it = t.rbegin(); it != t.rend(); it++ )
    {
@@ -250,6 +264,55 @@ void rowset::get_column( int index, std::string & s )
          get_text_column( index, s );
          break;
    }
+}
+
+//-----------------------------------------------------------------------------
+
+bool rowset::get_column_null( int index )
+{
+   check_column( index );
+
+   stmt_t::desc_t & desc = m_stmt->columns[ index ];
+
+   char ch[ 20 ];
+
+   SQLSMALLINT type   = desc.type;
+   size_t      length = sizeof( ch );
+
+   switch ( type )
+   {
+      case SQL_BIGINT:
+         if ( desc.size == 19 )
+            type = SQL_C_SBIGINT;
+         else
+            type = SQL_C_UBIGINT;
+         break;
+
+      case SQL_FLOAT:
+         type = SQL_C_DOUBLE;
+         break;
+
+      case SQL_BINARY :
+      case SQL_VARBINARY :
+      case SQL_LONGVARBINARY :
+         type   = SQL_C_BINARY;
+         length = 0;
+         break;
+
+      case sql_datetime_type_1:
+      case sql_datetime_type_2:
+      case sql_datetime_type_3:
+      case SQL_VARCHAR:
+         type = SQL_C_CHAR;
+         break;
+   }
+
+   SQLLEN ind = 0;
+
+   RETCODE rc = SQLGetData( m_stmt->hstmt, index + 1, type, &ch, length, &ind );
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+
+   return ind == SQL_NULL_DATA;
 }
 
 //-----------------------------------------------------------------------------

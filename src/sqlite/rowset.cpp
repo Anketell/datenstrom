@@ -54,6 +54,24 @@ int rowset::rows_affected( void ) const
 
 //-----------------------------------------------------------------------------
 
+int rowset::get_column_type( int index ) const
+{
+   static constexpr char operation[] = "SQLite rowset get column";
+
+   if ( !m_valid )
+      throw_error( operation, "No row available" );
+
+   if ( !m_stmt )
+      throw_error( operation, "Bad rowset" );
+
+   if ( index >= m_count )
+      throw_error( operation, "No column available" );
+
+   return sqlite3_column_type( m_stmt->stmt, index );
+}
+
+//-----------------------------------------------------------------------------
+
 int rowset::check_column( int index, int type_mask )
 {
    static constexpr char operation[] = "SQLite rowset get column";
@@ -65,16 +83,11 @@ int rowset::check_column( int index, int type_mask )
       { "DATETIME", SQLITE_DATETIME }
    };
 
-   if ( !m_valid )
-      throw_error( operation, "No row available" );
+   int column_type = get_column_type( index );
+   
+   if ( column_type == SQLITE_NULL )
+      throw null_value();
 
-   if ( !m_stmt )
-      throw_error( operation, "Bad rowset" );
-
-   if ( index >= m_count )
-      throw_error( operation, "No column available" );
-
-   int column_type = sqlite3_column_type( m_stmt->stmt, index );
    if ( column_type == SQLITE_TEXT )
    {
       const char * decl_type = sqlite3_column_decltype( m_stmt->stmt, index );
@@ -84,8 +97,6 @@ int rowset::check_column( int index, int type_mask )
          if ( it != type_map.end() )
             column_type = it->second;
       }
-      else
-         column_type = sqlite3_column_type( m_stmt->stmt, index );
    }
 
    if ( ( ( 1 << column_type ) & type_mask ) == 0 )
@@ -204,6 +215,14 @@ void rowset::get_column( int index, std::string & s )
          ds::time::reformat_iso_8601( s );
          break;
    }
+}
+
+//-----------------------------------------------------------------------------
+
+bool rowset::get_column_null( int index )
+{
+   int column_type = get_column_type( index );
+   return column_type == SQLITE_NULL;
 }
 
 //-----------------------------------------------------------------------------

@@ -48,6 +48,8 @@ TEST_P( Context, should_return_keys )
       "test.insert", 
       "test.insert_blob", 
       "test.insert_id", 
+      "test.insert_null",
+      "test.insert_null_blob",
       "test.named", 
       "test.no_result", 
       "test.num_rows", 

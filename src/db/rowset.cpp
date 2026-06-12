@@ -121,6 +121,18 @@ ds::istream & rowset::operator >> ( std::string & s )
 
 //-----------------------------------------------------------------------------
 
+bool rowset::get_null( void )
+{
+   if ( !m_impl->get_column_null( m_column ) )
+      return false;
+
+   m_column++;
+
+   return true;
+}
+
+//-----------------------------------------------------------------------------
+
 void rowset::endr( void )
 {
    step();

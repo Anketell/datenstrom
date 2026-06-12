@@ -46,6 +46,8 @@ public:
       virtual void get_column( int index, double & ) = 0;
       virtual void get_column( int index, std::string & ) = 0;
 
+      virtual bool get_column_null( int index ) { return false; }
+
       virtual bool step( void ) = 0;
       virtual bool eof( void ) const = 0;
    };
@@ -75,6 +77,8 @@ public:
 
    virtual ds::istream & operator >> ( double & ) override;
    virtual ds::istream & operator >> ( std::string & ) override;
+
+   virtual bool get_null( void ) override;
 
    virtual void endr( void ) override;
 

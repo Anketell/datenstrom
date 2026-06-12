@@ -27,7 +27,7 @@ TEST_P( RowSet, should_provide_query_data )
       ds::db::statement insert_test = test_db( "test.insert" );
 
       for ( auto o : data )
-         EXPECT_NO_THROW( insert_test << o <<ds::endr );
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
    }
 
    {
@@ -41,6 +41,135 @@ TEST_P( RowSet, should_provide_query_data )
 
       for ( int i = 0; i < list.size(); i++ )
          EXPECT_EQ( data[ i ], list[ i ] );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST_P( RowSet, should_throw_null_value_when_invalid )
+{
+   ds::db::context test_db(config->constr);
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch("test.create" ) );
+   EXPECT_NO_THROW( test_db.execute_batch("test.insert_null" ) );
+
+   {
+      ds::db::rowset result = test_db( "test.results" ).result();
+
+      test::Object o;
+
+      EXPECT_THROW( o.m_i8       = result, ds::null_value );
+      EXPECT_THROW( o.m_i16      = result, ds::null_value );
+      EXPECT_THROW( o.m_i32      = result, ds::null_value );
+      EXPECT_THROW( o.m_i64      = result, ds::null_value );
+      EXPECT_THROW( o.m_u8       = result, ds::null_value );
+      EXPECT_THROW( o.m_u16      = result, ds::null_value );
+      EXPECT_THROW( o.m_u32      = result, ds::null_value );
+      EXPECT_THROW( o.m_u64      = result, ds::null_value );
+      EXPECT_THROW( o.m_f        = result, ds::null_value );
+      EXPECT_THROW( o.m_d        = result, ds::null_value );
+      EXPECT_THROW( o.m_hello    = result, ds::null_value );
+      EXPECT_THROW( o.m_date     = result, ds::null_value );
+      EXPECT_THROW( o.m_time     = result, ds::null_value );
+      EXPECT_THROW( o.m_datetime = result, ds::null_value );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST_P( RowSet, should_get_null_when_invalid )
+{
+   ds::db::context test_db(config->constr);
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch("test.create" ) );
+   EXPECT_NO_THROW( test_db.execute_batch("test.insert_null" ) );
+
+   {
+      ds::db::rowset result = test_db( "test.results" ).result();
+
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_TRUE( result.get_null() );
+   }
+   
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
+TEST_P( RowSet, should_not_get_null_when_valid )
+{
+   ds::db::context test_db(config->constr);
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch("test.create" ) );
+
+   {
+      ds::db::statement insert_test = test_db( "test.insert" );
+
+      for ( auto o : data )
+         EXPECT_NO_THROW( insert_test << o << ds::endr );
+   }
+
+   {
+      ds::db::rowset result = test_db( "test.results" ).result();
+
+      test::Object o;
+
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i8;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i16;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i32;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i64;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u8;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u16;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u32;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u64;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_f;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_d;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_hello;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_date;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_time;
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_datetime;
    }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );

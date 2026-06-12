@@ -41,14 +41,14 @@ R"(
 R"(
    CREATE TABLE Object
    (
-      i8          SMALLSERIAL,
-      i16         SMALLSERIAL,
-      i32         SERIAL,
-      i64         BIGSERIAL,
-      u8          SMALLINT,
-      u16         SMALLINT,
-      u32         INTEGER,
-      u64         BIGINT,
+      i8          SMALLINT,
+      i16         SMALLINT,
+      i32         INTEGER,
+      i64         BIGINT,
+      u8          SMALLINT CHECK( u8 >= 0 ),
+      u16         SMALLINT CHECK( u16 >= 0 ),
+      u32         INTEGER CHECK( u32 >= 0 ),
+      u64         BIGINT CHECK( u64 >= 0 ),
       f           REAL,
       d           DOUBLE PRECISION,
       hello       VARCHAR( 10 ),
@@ -98,6 +98,33 @@ R"(
       dttm
    )
    VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14 )
+)"
+},
+
+//-----------------------------------------------------------------------------
+
+{ "test.insert_null",
+
+R"(
+   INSERT INTO Object
+   (
+      i8, 
+      i16, 
+      i32, 
+      i64, 
+      u8, 
+      u16, 
+      u32, 
+      u64, 
+      f, 
+      d, 
+      hello, 
+      dt, 
+      tm, 
+      dttm 
+   )      
+   VALUES ( NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+            NULL, NULL, NULL, NULL, NULL, NULL, NULL )
 )"
 },
 
@@ -249,6 +276,13 @@ R"(
 "INSERT INTO Object VALUES( $1 )"
 },
 
+//-----------------------------------------------------------------------------
+
+{ "test.insert_null_blob",
+
+"INSERT INTO Object VALUES( NULL )"
+},
+   
 //-----------------------------------------------------------------------------
 
 { "test.select_blob",

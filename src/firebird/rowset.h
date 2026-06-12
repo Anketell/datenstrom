@@ -31,6 +31,7 @@ class rowset : public db::rowset::impl
    bool                                   m_valid;
 
    void read_blob( int index, std::string & s );
+   void verify_column( int index );
    void check_column( int index );
 
    template< typename BI > BI get_big_int( int index );
@@ -58,6 +59,8 @@ public:
 
    virtual void get_column( int index, double & ) override;
    virtual void get_column( int index, std::string & ) override;
+
+   virtual bool get_column_null( int index ) override;
 
    virtual bool step( void ) override;
 

@@ -91,12 +91,13 @@ public:
 
    virtual void read( void *, size_t );
 
+   virtual bool get_null( void );
+
    virtual void endr( void );
 
    virtual bool eof( void ) const;
 
-//   template< typename T, std::enable_if_t< has_get_from< T >, bool > = true >
-   template< typename T >
+   template< typename T, std::enable_if_t< has_get_from< T >, bool > = true >
    operator T ( void )
    {
       T t;
@@ -132,7 +133,22 @@ public:
 
    virtual void write( const void *, size_t );
 
+   virtual void put_null( void );
+
    virtual void endr( void );
+
+   template< typename T > ostream & operator()( const T & t )
+   {
+      *this << t;
+      return *this;
+   }
+
+   template< typename T, typename ... Rest >
+   ostream & operator()( const T & t, const Rest & ... rest )
+   {
+      *this << t;
+      return operator()( rest... );
+   }
 };
 
 //-----------------------------------------------------------------------------
@@ -142,7 +158,17 @@ ostream & endr( ostream & out );
 
 //-----------------------------------------------------------------------------
 
-class stream_underrun : public std::runtime_error
+class exception : public std::runtime_error
+{
+protected:
+
+   exception( const std::string & what );
+   exception( const char        * what );
+};
+
+//-----------------------------------------------------------------------------
+
+class stream_underrun : public exception
 {
 public:
 
@@ -151,11 +177,20 @@ public:
 
 //-----------------------------------------------------------------------------
 
-class stream_overrun : public std::runtime_error
+class stream_overrun : public exception
 {
 public:
 
    stream_overrun( void );
+};
+
+//-----------------------------------------------------------------------------
+
+class null_value : public exception
+{
+public:
+
+   null_value( void );
 };
 
 //-----------------------------------------------------------------------------

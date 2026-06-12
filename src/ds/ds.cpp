@@ -103,6 +103,13 @@ void istream::read( void *, size_t )
 
 //-----------------------------------------------------------------------------
 
+bool istream::get_null( void )
+{
+   throw Not_implemented();
+}
+
+//-----------------------------------------------------------------------------
+
 void istream::endr( void )
 {
    throw Not_implemented();
@@ -200,6 +207,13 @@ void ostream::write( const void *, size_t )
 
 //-----------------------------------------------------------------------------
 
+void ostream::put_null( void )
+{
+   throw Not_implemented();
+}
+
+//-----------------------------------------------------------------------------
+
 void ostream::endr( void )
 {
    throw Not_implemented();
@@ -230,15 +244,36 @@ ostream & endr( ostream & out )
 
 //-----------------------------------------------------------------------------
 
+exception::exception( const std::string & what ) :
+std::runtime_error( what )
+{
+}
+
+//-----------------------------------------------------------------------------
+
+exception::exception( const char * what ) :
+std::runtime_error( what )
+{
+}
+
+//-----------------------------------------------------------------------------
+
 stream_underrun::stream_underrun( void ) :
-std::runtime_error( "Stream underrun" )
+exception( "Stream underrun" )
 {
 }
 
 //-----------------------------------------------------------------------------
 
 stream_overrun::stream_overrun( void ) :
-std::runtime_error( "Stream overrun" )
+exception( "Stream overrun" )
+{
+}
+
+//-----------------------------------------------------------------------------
+
+null_value::null_value( void ) :
+exception( "Null value" )
 {
 }
 
