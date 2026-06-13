@@ -218,6 +218,8 @@ void statement_base::check_parameter( int index )
 
    if ( index >= m_xsqlda->sqld )
       throw_error( operation, "Too many parameters" );
+
+   *m_xsqlda->sqlvar[ index ].sqlind = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -452,6 +454,14 @@ void statement_base::set_parameter( int index, const std::string & s )
 void statement_base::set_parameter( int index, const char * s )
 {
    set_string( index, strlen( s ), s );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::set_parameter_null( int index )
+{
+   check_parameter( index );
+   *m_xsqlda->sqlvar[ index ].sqlind = -1;
 }
 
 //-----------------------------------------------------------------------------

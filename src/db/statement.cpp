@@ -118,7 +118,7 @@ ds::ostream & statement::operator << ( const std::string & s )
 
 void statement::put_null( void )
 {
-//   m_impl->set_null_parameter( m_parameter++ );
+   m_impl->set_parameter_null( m_parameter++ );
 }
 
 //-----------------------------------------------------------------------------

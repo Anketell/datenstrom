@@ -326,6 +326,17 @@ void statement_base::set_parameter( int index, const std::string & s )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::set_parameter_null( int index )
+{
+   check_parameter( index );
+
+   m_param_values[ index ]  = nullptr;
+   m_param_lengths[ index ] = 0;
+   m_param_formats[ index ] = m_param_types[ index ] == PG_BLOB;
+}
+
+//-----------------------------------------------------------------------------
+
 int statement_base::parameter_count( void )
 {
    return m_param_count;

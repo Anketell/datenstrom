@@ -190,6 +190,19 @@ void named_statement::set_parameter( int index, const std::string & s )
 
 //-----------------------------------------------------------------------------
 
+void named_statement::set_parameter_null( int index )
+{
+   check_parameter( index );
+
+   auto begin = m_param_map.lower_bound( index );
+   auto end   = m_param_map.upper_bound( index );
+
+   for ( auto it = begin; it != end; it++ )
+      statement_base::set_parameter_null( it->second );
+}
+
+//-----------------------------------------------------------------------------
+
 int named_statement::parameter_count( void )
 {
    return static_cast< int >( m_names.size() );

@@ -49,7 +49,7 @@ public:
       virtual void set_parameter( int index, const char * ) = 0;
       virtual void set_parameter( int index, const std::string & ) = 0;
 
-//      virtual void set_null_parameter( int index ) = 0;
+      virtual void set_parameter_null( int index ) {}
 
       virtual int parameter_count( void ) = 0;
 

@@ -76,6 +76,11 @@ struct Test_rowset : public ds::db::rowset::impl
    {
    }
 
+   bool get_column_null( int index )
+   {
+      return false;
+   }
+
    virtual bool step( void ) override
    {
        ++m_step_calls;

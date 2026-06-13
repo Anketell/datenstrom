@@ -310,6 +310,32 @@ void statement_base::set_parameter( int index, const char * s )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::set_parameter_null( int index )
+{
+   static constexpr char operation[] = "MSSQL statement text parameter bind";
+
+   buffer & buffer = check_parameter( index );
+
+   stmt_t::desc_t & desc( m_parameters[ index ] );
+
+   desc.ind_len = SQL_NULL_DATA;
+
+   RETCODE rc = SQLBindParameter( m_stmt->hstmt,
+                                  index + 1,
+                                  SQL_PARAM_INPUT,
+                                  SQL_C_DEFAULT,
+                                  desc.type,
+                                  0,
+                                  0,
+                                  nullptr,
+                                  0,
+                                  &desc.ind_len );
+
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
+}
+
+//-----------------------------------------------------------------------------
+
 int statement_base::parameter_count( void )
 {
    return static_cast< int >( m_parameters.size() );

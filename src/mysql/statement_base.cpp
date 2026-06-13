@@ -329,6 +329,25 @@ void statement_base::set_parameter( int index, const std::string & s )
 
 //-----------------------------------------------------------------------------
 
+void statement_base::set_parameter_null( int index )
+{
+   check_parameter( index );
+
+   bind_info_t & info( m_bind_info[ index ] );
+
+   info.length  = 0;
+   info.is_null = 1;
+   info.error   = 0;
+
+   MYSQL_BIND & param( m_mysql_bind[ index ] );
+
+   param.buffer_type   = MYSQL_TYPE_LONG;
+   param.buffer_length = info.length;
+   param.buffer        = &info.value;
+}
+
+//-----------------------------------------------------------------------------
+
 int statement_base::parameter_count( void )
 {
    return m_bind_count;

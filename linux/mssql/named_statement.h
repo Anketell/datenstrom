@@ -53,6 +53,8 @@ public:
    virtual void set_parameter( int index, const char * ) override;
    virtual void set_parameter( int index, const std::string & ) override;
 
+   virtual void set_parameter_null( int index ) override;
+
    virtual int parameter_count( void ) override;
 };
 

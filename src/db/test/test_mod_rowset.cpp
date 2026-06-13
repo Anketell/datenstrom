@@ -177,6 +177,74 @@ TEST_P( RowSet, should_not_get_null_when_valid )
 
 //-----------------------------------------------------------------------------
 
+TEST_P( RowSet, should_get_null_not_null )
+{
+   ds::db::context test_db(config->constr);
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+   EXPECT_NO_THROW( test_db.create( test_db_name ) );
+   EXPECT_NO_THROW( test_db.use( test_db_name ) );
+
+   EXPECT_NO_THROW( test_db.execute_batch("test.create" ) );
+
+   {
+      ds::db::statement insert_test = test_db( "test.insert" );
+
+      auto o = data[ 0 ];
+
+      insert_test << o.m_i8;
+      insert_test.put_null();
+      insert_test << o.m_i32;
+      insert_test.put_null();
+      insert_test << o.m_u8;
+      insert_test.put_null();
+      insert_test << o.m_u32;
+      insert_test.put_null();
+      insert_test << o.m_f;
+      insert_test.put_null();
+      insert_test << o.m_hello;
+      insert_test.put_null();
+      insert_test << o.m_time;
+      insert_test.put_null();
+      insert_test << ds::endr;
+
+      insert_test << data[ 1 ] << ds::endr;
+
+   ds::db::rowset result = test_db( "test.results" ).result();
+
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i8;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_i32;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u8;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_u32;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_f;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_hello;
+      EXPECT_TRUE( result.get_null() );
+      EXPECT_FALSE( result.get_null() );
+      result >> o.m_time;
+      EXPECT_TRUE( result.get_null() );
+      result >> ds::endr;
+
+      EXPECT_NO_THROW( result >> o >> ds::endr );
+
+      EXPECT_EQ( o, data[ 1 ] );
+   }
+
+   EXPECT_NO_THROW( test_db.drop( test_db_name ) );
+}
+
+//-----------------------------------------------------------------------------
+
 TEST_P( RowSet, should_support_sub_second_time )
 {
    ds::db::context test_db(config->constr);

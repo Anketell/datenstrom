@@ -136,6 +136,13 @@ void simple_rowset::get_column( int index, std::string & s )
 
 //-----------------------------------------------------------------------------
 
+bool simple_rowset::get_column_null( int index )
+{
+   return false;
+}
+
+//-----------------------------------------------------------------------------
+
 bool simple_rowset::step( void )
 {
    m_valid = false;

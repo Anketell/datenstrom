@@ -46,7 +46,7 @@ public:
       virtual void get_column( int index, double & ) = 0;
       virtual void get_column( int index, std::string & ) = 0;
 
-      virtual bool get_column_null( int index ) { return false; }
+      virtual bool get_column_null( int index ) = 0;
 
       virtual bool step( void ) = 0;
       virtual bool eof( void ) const = 0;

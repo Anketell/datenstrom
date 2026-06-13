@@ -213,6 +213,16 @@ void statement::set_parameter( int index, const char * s )
 
 //-----------------------------------------------------------------------------
 
+void statement::set_parameter_null( int index )
+{
+   int rc = sqlite3_bind_null( m_stmt->stmt, check_parameter( index ) );
+
+   if ( rc )
+      throw_error( "SQLite statement bind null", rc );
+}
+
+//-----------------------------------------------------------------------------
+
 int statement::parameter_count( void )
 {
    return m_count;
