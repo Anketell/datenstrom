@@ -257,6 +257,7 @@ void rowset::get_column( int index, std::string & s )
       case sql_datetime_type_1:
       case sql_datetime_type_2:
       case sql_datetime_type_3:
+      case sql_datetime_type_4:
          get_datetime_column( index, s );
          break;
 
@@ -302,6 +303,7 @@ bool rowset::get_column_null( int index )
       case sql_datetime_type_1:
       case sql_datetime_type_2:
       case sql_datetime_type_3:
+      case sql_datetime_type_4:
       case SQL_VARCHAR:
          type = SQL_C_CHAR;
          break;
