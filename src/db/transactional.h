@@ -15,15 +15,11 @@ namespace ds::db
 
 class transactional
 {
-   int m_txn_count = 0;
-
 public:
 
-   virtual void begin_transaction( void );
-   virtual void commit_transaction( void );
-   virtual void rollback_transaction( void );
-
-   bool in_transaction( void ) const;
+   virtual void begin_transaction( void )    = 0;
+   virtual void commit_transaction( void )   = 0;
+   virtual void rollback_transaction( void ) = 0;
 };
 
 //-----------------------------------------------------------------------------

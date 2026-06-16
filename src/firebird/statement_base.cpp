@@ -7,7 +7,7 @@
 #include <firebird/statement_base.h>
 #include <firebird/rowset.h>
 #include <firebird/error.h>
-#include <firebird/guard.h>
+#include <firebird/transactional.h>
 
 #include <cstring>
 #include <limits>
@@ -54,14 +54,11 @@ void statement_base::prepare( const std::string & sql )
 
    check_status( operation, status );
 
-   guard( m_transactional, [ & ]( void ) -> void
-   {
-      isc_dsql_prepare( status,
-                        &m_transactional.tr_handle,
-                        &m_stmt->stmt,
-                        sql.length(),
-                        sql.c_str(), 3, nullptr );
-   } );
+   isc_dsql_prepare( status,
+                     &m_transactional.tr_handle,
+                     &m_stmt->stmt,
+                     sql.length(),
+                     sql.c_str(), 3, nullptr );
 
    check_status( operation, status );
 
@@ -533,8 +530,8 @@ void statement_base::execute( void )
 {
    static constexpr char operation[] = "Firebird statement execute";
 
-   guard( m_transactional, [ & ]( void ) -> void
-   {
+   ds::db::transaction txn( m_transactional );
+
       internal_execute();
       if ( m_stmt->type != isc_info_sql_stmt_ddl )
       {
@@ -542,7 +539,6 @@ void statement_base::execute( void )
          if ( !result.eof() )
             reset();
       }
-   } );
 
    m_tmp_transaction.reset();
 }

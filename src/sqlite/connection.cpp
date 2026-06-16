@@ -46,7 +46,8 @@ void connection::close( void )
    if ( m_db )
    {
       sqlite3_close( m_db );
-      m_db = nullptr;
+      m_db        = nullptr;
+      m_txn_count = 0;
    }
 }
 
@@ -137,27 +138,39 @@ void connection::execute_batch( const std::string & query )
 
 void connection::begin_transaction( void )
 {
-   int rc = sqlite3_exec( m_db, "BEGIN TRANSACTION", NULL, NULL, NULL );
-   if ( rc != SQLITE_OK )
-      throw_error( "SQLite begin transaction", rc );
+   if ( m_txn_count == 0 )
+   {
+      int rc = sqlite3_exec( m_db, "BEGIN TRANSACTION", NULL, NULL, NULL );
+      if ( rc != SQLITE_OK )
+         throw_error( "SQLite begin transaction", rc );
+   }
+   m_txn_count++;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::commit_transaction( void )
 {
-   int rc = sqlite3_exec( m_db, "COMMIT TRANSACTION", NULL, NULL, NULL );
-   if ( rc != SQLITE_OK )
-      throw_error( "SQLite commit transaction", rc );
+   if ( m_txn_count < 2 )
+   {
+      int rc = sqlite3_exec( m_db, "COMMIT TRANSACTION", NULL, NULL, NULL );
+      if ( rc != SQLITE_OK )
+         throw_error( "SQLite commit transaction", rc );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------
 
 void connection::rollback_transaction( void )
 {
-   int rc = sqlite3_exec( m_db, "ROLLBACK TRANSACTION", NULL, NULL, NULL );
-   if ( rc != SQLITE_OK )
-      throw_error( "SQLite rollback transaction", rc );
+   if ( m_txn_count < 2 )
+   {
+      int rc = sqlite3_exec( m_db, "ROLLBACK TRANSACTION", NULL, NULL, NULL );
+      if ( rc != SQLITE_OK )
+         throw_error( "SQLite rollback transaction", rc );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------

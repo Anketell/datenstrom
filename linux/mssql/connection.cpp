@@ -73,8 +73,8 @@ std::string connection::create_connection_string( const std::string & user_id,
 
 //-----------------------------------------------------------------------------
 
-connection::connection( const std::string & server, 
-                        const std::string & instance, 
+connection::connection( const std::string & server,
+                        const std::string & instance,
                         const std::string & variant,
                         int                 port,
                         int                 timeout )
@@ -88,17 +88,17 @@ connection::connection( const std::string & server,
 
 connection::connection( const std::string & user_id,
                         const std::string & password,
-                        const std::string & server, 
-                        const std::string & instance, 
+                        const std::string & server,
+                        const std::string & instance,
                         const std::string & variant,
                         int                 port,
                         int                 timeout )
 {
-   m_connection_string = create_connection_string( user_id, 
-                                                   password, 
-                                                   server, 
-                                                   instance, 
-                                                   port, 
+   m_connection_string = create_connection_string( user_id,
+                                                   password,
+                                                   server,
+                                                   instance,
+                                                   port,
                                                    timeout );
    set_variant( variant );
    init( m_connection_string );
@@ -225,7 +225,7 @@ void connection::cleanup_connection( void )
 
 void connection::guard( guarded_fn fn )
 {
-   if ( !m_transactions )
+   if ( !m_txn_count )
    {
       db::transaction transaction( *this );
       fn();
@@ -281,7 +281,7 @@ void connection::use_server( const std::string & name )
 void connection::use_azure( const std::string & name )
 {
    try
-   {  
+   {
       cleanup_connection();
       init_connection( m_connection_string + " Database=" + name + ";" );
    }
@@ -340,15 +340,14 @@ void connection::begin_transaction( void )
 {
    static constexpr char operation[] = "MSSQL begin transaction";
 
-   if ( m_transactions )
-      throw_error( operation, "failed nested transactions" );
+   if ( m_txn_count == 0 )
+   {
+      static constexpr char query[] = "BEGIN TRANSACTION";
 
-   static constexpr char query[] = "BEGIN TRANSACTION";
-
-   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
-
-   m_transactions++;
+      RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+      check_status( operation, m_stmt, SQL_HANDLE_STMT, rc );
+   }
+   m_txn_count++;
 }
 
 //-----------------------------------------------------------------------------
@@ -357,10 +356,12 @@ void connection::commit_transaction( void )
 {
    static constexpr char query[] = "COMMIT";
 
-   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( "MSSQL commit transaction", m_stmt, SQL_HANDLE_STMT, rc );
-
-   m_transactions--;
+   if ( m_txn_count < 2 )
+   {
+      RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+      check_status( "MSSQL commit transaction", m_stmt, SQL_HANDLE_STMT, rc );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------
@@ -369,10 +370,12 @@ void connection::rollback_transaction( void )
 {
    static constexpr char query[] = "ROLLBACK TRANSACTION";
 
-   RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
-   check_status( "MSSQL rollback transaction", m_stmt, SQL_HANDLE_STMT, rc );
-
-   m_transactions--;
+   if ( m_txn_count < 2 )
+   {
+      RETCODE rc = SQLExecDirect( m_stmt, sql_char( query ), SQL_NTS );
+      check_status( "MSSQL rollback transaction", m_stmt, SQL_HANDLE_STMT, rc );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------

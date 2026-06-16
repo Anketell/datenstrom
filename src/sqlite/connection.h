@@ -21,7 +21,8 @@ namespace ds::sqlite
 class connection : public db::impl
 {
    const std::string m_path;
-   sqlite3         * m_db = nullptr;
+   sqlite3         * m_db        = nullptr;
+   int               m_txn_count = 0;
 
    std::string get_full_path( const std::string & name ) const;
 

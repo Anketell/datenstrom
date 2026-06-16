@@ -67,6 +67,8 @@ void connection::create( const std::string & name )
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
       throw_error( "MySQL create database", mysql_error( &m_mysql ) );
+
+   m_txn_count = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -78,6 +80,8 @@ void connection::use( const std::string & name )
    int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
    if ( rc )
       throw_error( "MySQL use database", mysql_error( &m_mysql ) );
+
+   m_txn_count = 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -134,16 +138,15 @@ void connection::begin_transaction( void )
 {
    static constexpr char operation[] = "MySQL begin transaction";
 
-   if ( m_transaction )
-      throw_error( operation, "nested transaction unsupported" );
+   if ( m_txn_count == 0 )
+   {
+      std::string sql = "BEGIN";
 
-   std::string sql = "BEGIN";
-
-   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
-   if ( rc )
-      throw_error( operation, mysql_error( &m_mysql ) );
-
-   m_transaction = true;
+      int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+      if ( rc )
+         throw_error( operation, mysql_error( &m_mysql ) );
+   }
+   m_txn_count++;;
 }
 
 //-----------------------------------------------------------------------------
@@ -151,17 +154,19 @@ void connection::begin_transaction( void )
 void connection::commit_transaction( void )
 {
    static constexpr char operation[] = "MySQL commit transaction";
-   
-   if ( !m_transaction )
-      throw_error( operation, "no transaction to commit" );
 
-   std::string sql = "COMMIT";
+   if ( m_txn_count < 2 )
+   {
+      if ( m_txn_count == 0 )
+         throw_error( operation, "No transaction to commit" );
 
-   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
-   if ( rc )
-      throw_error( operation, mysql_error( &m_mysql ) );
+      std::string sql = "COMMIT";
 
-   m_transaction = false;
+      int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+      if ( rc )
+         throw_error( operation, mysql_error( &m_mysql ) );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------
@@ -169,17 +174,19 @@ void connection::commit_transaction( void )
 void connection::rollback_transaction( void )
 {
    static constexpr char operation[] = "MySQL rollback transaction";
-   
-   if ( !m_transaction )
-      throw_error( operation, "no transaction to rollback" );
 
-   std::string sql = "ROLLBACK";
+   if ( m_txn_count < 2 )
+   {
+      if ( m_txn_count == 0 )
+         throw_error( operation, "No transaction to rollback" );
 
-   int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
-   if ( rc )
-      throw_error( operation, mysql_error( &m_mysql ) );
+      std::string sql = "ROLLBACK";
 
-   m_transaction = false;
+      int rc = mysql_real_query( &m_mysql, sql.c_str(), sql.length() );
+      if ( rc )
+         throw_error( operation, mysql_error( &m_mysql ) );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------

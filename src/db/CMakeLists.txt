@@ -12,7 +12,6 @@ set( SOURCE
    rowset.cpp
    simple_rowset.cpp
    transaction.cpp
-   transactional.cpp
    parameter.cpp
    sql_map.cpp
 )

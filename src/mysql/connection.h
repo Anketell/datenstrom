@@ -21,7 +21,7 @@ namespace ds::mysql
 class connection : public db::impl
 {
   MYSQL m_mysql;
-  bool  m_transaction = false;
+  int   m_txn_count = 0;
 
 public:
 

@@ -31,7 +31,7 @@ class connection : public db::impl
    std::string m_server;
    std::string m_port;
 
-   bool m_in_transaction = false;
+   int m_txn_count = 0;
 
    void detach( void );
    void use( void );

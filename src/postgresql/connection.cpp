@@ -41,7 +41,8 @@ void connection::detach( void )
    if ( m_conn )
    {
       PQfinish( m_conn );
-      m_conn = nullptr;
+      m_conn      = nullptr;
+      m_txn_count = 0;
    }
 }
 
@@ -175,20 +176,19 @@ void connection::begin_transaction( void )
 {
    static constexpr char operation[] = "PostgreSQL begin transaction";
 
-   if ( m_in_transaction )
-      throw_error( operation, "nested transactions not supported" );
-
-   PGresult * res = PQexec( m_conn, "BEGIN TRANSACTION" );
-
-   if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+   if ( m_txn_count == 0 )
    {
-      std::string message = PQerrorMessage( m_conn );
-      PQclear( res );
-      throw_error( operation, message.c_str() );
-   }
-   PQclear( res );
+      PGresult * res = PQexec( m_conn, "BEGIN TRANSACTION" );
 
-   m_in_transaction = true;
+      if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+      {
+         std::string message = PQerrorMessage( m_conn );
+         PQclear( res );
+         throw_error( operation, message.c_str() );
+      }
+      PQclear( res );
+   }
+   m_txn_count++;
 }
 
 //-----------------------------------------------------------------------------
@@ -197,20 +197,22 @@ void connection::commit_transaction( void )
 {
    static constexpr char operation[] = "PostgreSQL commit transaction";
 
-   if ( !m_in_transaction )
-      throw_error( operation, "no current transaction" );
-
-   PGresult * res = PQexec( m_conn, "COMMIT TRANSACTION" );
-
-   if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+   if ( m_txn_count < 2 )
    {
-      std::string message = PQerrorMessage( m_conn );
-      PQclear( res );
-      throw_error( operation, message.c_str() );
-   }
-   PQclear( res );
+      if ( m_txn_count == 0 )
+         throw_error( operation, "No transaction to commit" );
 
-   m_in_transaction = false;
+      PGresult * res = PQexec( m_conn, "COMMIT TRANSACTION" );
+
+      if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+      {
+         std::string message = PQerrorMessage( m_conn );
+         PQclear( res );
+         throw_error( operation, message.c_str() );
+      }
+      PQclear( res );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------
@@ -219,20 +221,22 @@ void connection::rollback_transaction( void )
 {
    static constexpr char operation[] = "PostgreSQL rollback transaction";
 
-   if ( !m_in_transaction )
-      throw_error( operation, "no current transaction" );
-
-   PGresult * res = PQexec( m_conn, "ROLLBACK TRANSACTION" );
-
-   if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+   if ( m_txn_count < 2 )
    {
-      std::string message = PQerrorMessage( m_conn );
-      PQclear( res );
-      throw_error( operation, message.c_str() );
-   }
-   PQclear( res );
+      if ( m_txn_count == 0 )
+         throw_error( operation, "No transaction to rollback" );
 
-   m_in_transaction = false;
+      PGresult * res = PQexec( m_conn, "ROLLBACK TRANSACTION" );
+
+      if ( PQresultStatus( res ) != PGRES_COMMAND_OK )
+      {
+         std::string message = PQerrorMessage( m_conn );
+         PQclear( res );
+         throw_error( operation, message.c_str() );
+      }
+      PQclear( res );
+   }
+   m_txn_count--;
 }
 
 //-----------------------------------------------------------------------------

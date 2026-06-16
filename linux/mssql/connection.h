@@ -42,7 +42,7 @@ class connection : public db::impl
    SQLHDBC  m_hdbc = SQL_NULL_HDBC;
    SQLHSTMT m_stmt = SQL_NULL_HSTMT;
 
-   int m_transactions = 0;
+   int m_txn_count = 0;
 
    std::string m_connection_string;
    std::string m_database;
@@ -66,16 +66,16 @@ public:
 
    static constexpr char TYPE[] = "mssql";
 
-   connection( const std::string & server, 
-               const std::string & instance, 
+   connection( const std::string & server,
+               const std::string & instance,
                const std::string & variant,
-               int                 port, 
+               int                 port,
                int                 timeout );
 
    connection( const std::string & user_id,
                const std::string & password,
-               const std::string & server, 
-               const std::string & instance, 
+               const std::string & server,
+               const std::string & instance,
                const std::string & variant,
                int                 port,
                int                 timeout );

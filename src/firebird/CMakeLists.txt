@@ -21,7 +21,6 @@ set( SOURCE
    transactional.cpp
    connection.cpp
    statement_enum.cpp
-   guard.cpp
    statement_base.cpp
    positional_statement.cpp
    named_statement.cpp
@@ -34,7 +33,6 @@ set( HEADERS
    transactional.h
    connection.h
    statement_enum.h
-   guard.h
    statement_base.h
    positional_statement.h
    named_statement.h

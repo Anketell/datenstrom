@@ -8,7 +8,6 @@
 #include <firebird/positional_statement.h>
 #include <firebird/rowset.h>
 #include <firebird/error.h>
-#include <firebird/guard.h>
 
 //-----------------------------------------------------------------------------
 

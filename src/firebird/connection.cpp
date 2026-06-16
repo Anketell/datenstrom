@@ -10,7 +10,6 @@
 #include <firebird/statement_enum.h>
 #include <firebird/types.h>
 #include <firebird/error.h>
-#include <firebird/guard.h>
 
 #include <db/transaction.h>
 
@@ -100,7 +99,7 @@ std::string connection::get_full_path( const std::string & name ) const
 
 void connection::detach( void )
 {
-   if (  m_transactional.db_handle )
+   if ( m_transactional.db_handle )
    {
       ISC_STATUS status[ status_vector_length ];
 
@@ -109,6 +108,8 @@ void connection::detach( void )
       check_status( "Firebird detach database", status );
 
       m_attached_db.erase();
+
+      m_transactional.m_txn_count = 0;
    }
 }
 
@@ -256,21 +257,20 @@ db::statement connection::operator()( const std::string     & query,
 
 void connection::execute_batch( const std::string & query )
 {
-   guard( m_transactional, [ & ]( void )
+   ds::db::transaction txn( m_transactional );
+
+   ISC_STATUS status[ status_vector_length ];
+
+   for ( auto & statement : statement_enum( query ) )
    {
-      ISC_STATUS status[ status_vector_length ];
+      isc_dsql_execute_immediate( status,
+                                    &m_transactional.db_handle,
+                                    &m_transactional.tr_handle,
+                                    statement.len, statement.from,
+                                    3, nullptr );
 
-      for ( auto & statement : statement_enum( query ) )
-      {
-         isc_dsql_execute_immediate( status,
-                                     &m_transactional.db_handle,
-                                     &m_transactional.tr_handle,
-                                     statement.len, statement.from,
-                                     3, nullptr );
-
-         check_status( "Firebird execute batch", status );
-      }
-   } );
+      check_status( "Firebird execute batch", status );
+   }
 }
 
 //-----------------------------------------------------------------------------
