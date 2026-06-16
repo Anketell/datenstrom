@@ -223,19 +223,6 @@ void connection::cleanup_connection( void )
 
 //-----------------------------------------------------------------------------
 
-void connection::guard( guarded_fn fn )
-{
-   if ( !m_txn_count )
-   {
-      db::transaction transaction( *this );
-      fn();
-   }
-   else
-      fn();
-}
-
-//-----------------------------------------------------------------------------
-
 void connection::create( const std::string & name )
 {
    std::string query = "CREATE DATABASE " + name;
@@ -324,14 +311,13 @@ db::statement connection::operator()( const std::string     & query,
 
 void connection::execute_batch( const std::string & query )
 {
-   guard( [ & ]()
+   ds::db::transaction txn( *this );
+
+   for ( auto & statement : statement_enum( query ) )
    {
-      for ( auto & statement : statement_enum( query ) )
-      {
-         RETCODE rc = SQLExecDirect( m_stmt, sql_char( statement.from ), sql_int( statement.len ) );
-         check_status( "MSSQL execute batch", m_stmt, SQL_HANDLE_STMT, rc );
-      }
-   } );
+      RETCODE rc = SQLExecDirect( m_stmt, sql_char( statement.from ), sql_int( statement.len ) );
+      check_status( "MSSQL execute batch", m_stmt, SQL_HANDLE_STMT, rc );
+   }
 }
 
 //-----------------------------------------------------------------------------

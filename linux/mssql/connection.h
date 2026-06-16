@@ -56,8 +56,6 @@ class connection : public db::impl
    void cleanup( void );
    void cleanup_connection( void );
 
-   void guard( guarded_fn fn );
-
    void use_unknown( const std::string & name );
    void use_server( const std::string & name );
    void use_azure( const std::string & name );
