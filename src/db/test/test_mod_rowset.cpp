@@ -210,7 +210,7 @@ TEST_P( RowSet, should_get_null_not_null )
 
       insert_test << data[ 1 ] << ds::endr;
 
-   ds::db::rowset result = test_db( "test.results" ).result();
+      ds::db::rowset result = test_db( "test.results" ).result();
 
       EXPECT_FALSE( result.get_null() );
       result >> o.m_i8;

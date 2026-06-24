@@ -45,6 +45,7 @@ set( TEST_MOD_SOURCE
    test_mod_transaction.cpp
    test_mod_savepoint.cpp
    test_mod_list.cpp
+   test_mod_stdserial.cpp
 )
 
 set( TEST_MOD_HEADERS
@@ -59,6 +60,7 @@ set( TEST_MOD_HEADERS
    test_mod_transaction.h
    test_mod_savepoint.h
    test_mod_list.h
+   test_mod_stdserial.h
 )
 
 add_library( test_db_module STATIC

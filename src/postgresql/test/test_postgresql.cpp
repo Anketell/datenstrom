@@ -14,6 +14,8 @@
 #include <db/test/test_mod_savepoint.h>
 #include <db/test/test_mod_list.h>
 #include <db/test/test_mod_config.h>
+#include <db/test/test_mod_stdserial.h>
+
 #include <test_utils/gtest.h>
 
 //-----------------------------------------------------------------------------
@@ -86,6 +88,13 @@ INSTANTIATE_NAMESPACE_TEST_SUITE_P( common,
 INSTANTIATE_NAMESPACE_TEST_SUITE_P( common,
                                     postgresql,
                                     SavePoint,
+                                    testing::Values( &test_config ) );
+
+//-----------------------------------------------------------------------------
+
+INSTANTIATE_NAMESPACE_TEST_SUITE_P( common, 
+                                    postgresql,
+                                    StdSerial,
                                     testing::Values( &test_config ) );
 
 //-----------------------------------------------------------------------------
