@@ -10,7 +10,7 @@ enable_testing()
 
 set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" )
 
-set( CMAKE_CXX_STANDARD 17 )
+set( CMAKE_CXX_STANDARD 20 )
 
 if ( WIN32 )
 
@@ -45,7 +45,7 @@ if ( UNIX )
       include("profile")
    endif(CMAKE_BUILD_TYPE STREQUAL "Profile")
 
-   add_compile_options( -std=c++17 )
+   add_compile_options( -std=c++20 )
 
    SET( TEMP "/tmp" )
 
