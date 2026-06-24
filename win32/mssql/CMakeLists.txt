@@ -44,4 +44,8 @@ target_link_libraries( ${TARGET}
 include( dll_funcs )
 db_module_def( TARGET ${TARGET} )
 
-add_subdirectory( test )
+if( DEFINED DS_MSSQL_TEST AND NOT DS_MSSQL_TEST STREQUAL "" )
+   add_subdirectory( test )
+else()
+   message( WARNING "DS_MSSQL_TEST is undefined - SQL Server test will not be built" )
+endif()

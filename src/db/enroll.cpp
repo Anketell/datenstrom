@@ -24,7 +24,7 @@ namespace ds::db
 
 void enroll_module( factory & factory, const std::string & path )
 {
-   module module( path );
+   ds::module module( path );
 
    if ( !module )
       return;
