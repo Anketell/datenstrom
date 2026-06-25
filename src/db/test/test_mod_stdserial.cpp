@@ -63,8 +63,7 @@ TEST_P( StdSerial, should_read_vector )
    }
 
    {
-      ds::db::statement results_test = test_db( "test.results" );
-      ds::db::rowset    result       = results_test.result();
+      ds::db::rowset result = test_db( "test.results" ).result();
 
       std::vector< test::Object > db_data_vec;
 
