@@ -138,6 +138,13 @@ void istream::read( void * data, size_t size )
 
 //-----------------------------------------------------------------------------
 
+bool istream::get_null( void )
+{
+   return m_sb->in_avail() == 0;
+}
+
+//-----------------------------------------------------------------------------
+
 void istream::filter( filter_t * filter )
 {
    m_filter = filter;
@@ -245,6 +252,12 @@ void ostream::write( const void * data, size_t size )
    size_t written = m_sb->sputn( reinterpret_cast< const char * >( data ), size );
    if ( written < size )
       throw stream_overrun();
+}
+
+//-----------------------------------------------------------------------------
+
+void ostream::put_null( void )
+{
 }
 
 //-----------------------------------------------------------------------------

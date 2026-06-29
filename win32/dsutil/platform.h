@@ -9,19 +9,13 @@
 //-----------------------------------------------------------------------------
 
 #include <windows.h>
-#include <sql.h>
-#include <string>
+#include <tchar.h>
+#include <sal.h>
 
 //-----------------------------------------------------------------------------
 
-namespace ds::mssql
-{
+#undef max
+#undef min
 
 //-----------------------------------------------------------------------------
 
-[[noreturn]] void throw_error( const std::string & operation, const char * error );
-void check_status( const char * operation, SQLHANDLE handle, SQLSMALLINT type, RETCODE rc );
-
-//-----------------------------------------------------------------------------
-
-}

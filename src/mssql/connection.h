@@ -9,6 +9,7 @@
 //-----------------------------------------------------------------------------
 
 #include <db/impl.h>
+#include <dsutil/platform.h>
 #include <sql.h>
 
 #include <functional>

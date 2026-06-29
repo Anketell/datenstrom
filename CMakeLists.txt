@@ -45,8 +45,6 @@ if ( UNIX )
       include("profile")
    endif(CMAKE_BUILD_TYPE STREQUAL "Profile")
 
-   add_compile_options( -std=c++20 )
-
    SET( TEMP "/tmp" )
 
    if(CMAKE_BUILD_TYPE STREQUAL "Release")

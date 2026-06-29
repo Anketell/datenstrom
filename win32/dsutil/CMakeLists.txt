@@ -20,6 +20,7 @@ set( HEADERS
    module.h
    string.h
    time.h
+   platform.h
 )
 
 add_library( ${TARGET} SHARED

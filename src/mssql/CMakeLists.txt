@@ -35,14 +35,29 @@ add_library( ${TARGET} MODULE
    ${HEADERS}
 )
 
+if ( UNIX )
+   set_target_properties( ${TARGET} PROPERTIES PREFIX "" )
+   set( ODBC_LIBRARY odbc )
+endif()
+
+if ( WIN32 )
+   set( ODBC_LIBRARY odbc32 )
+endif()
+
 target_link_libraries( ${TARGET}
    mssql_stmt_enum
    ds_db
-   odbc32
+   ${ODBC_LIBRARY}
 )
 
-include( dll_funcs )
-db_module_def( TARGET ${TARGET} )
+if ( UNIX )
+   target_compile_options( mssql_stmt_enum PRIVATE "-fPIC" )
+endif()
+
+if ( WIN32 )
+   include( dll_funcs )
+   db_module_def( TARGET ${TARGET} )
+endif()
 
 if( DEFINED DS_MSSQL_TEST AND NOT DS_MSSQL_TEST STREQUAL "" )
    add_subdirectory( test )

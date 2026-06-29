@@ -4,7 +4,7 @@ pushd $(dirname $0)/.. >/dev/null
 
 rm -rf ./release/image
 
-mkdir -p ./release/image/usr/include/datenstrom/{dsutil,ds,csv,db,bin}
+mkdir -p ./release/image/usr/include/datenstrom/{dsutil,ds,csv,db,bin,std}
 mkdir -p ./release/image/usr/lib64/datenstrom
 mkdir -p ./release/image/usr/share/datenstrom/module
 
@@ -37,6 +37,10 @@ cp ./src/db/transaction.h                            ./release/image/usr/include
 cp ./src/db/transactional.h                          ./release/image/usr/include/datenstrom/db
 
 cp ./src/bin/bin.h                                   ./release/image/usr/include/datenstrom/bin
+
+cp ./src/std/optional_serialise.h                    ./release/image/usr/include/datenstrom/std
+cp ./src/std/tuple_serialise.h                       ./release/image/usr/include/datenstrom/std
+cp ./src/std/vector_serialise.h                      ./release/image/usr/include/datenstrom/std
 
 cp ./release/linux/dsutil/libds_util.so              ./release/image/usr/lib64/datenstrom
 cp ./release/src/ds/libds.so                         ./release/image/usr/lib64/datenstrom
