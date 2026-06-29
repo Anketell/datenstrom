@@ -11,7 +11,7 @@ EXPORTS
    ??1Not_implemented@ds@@UEAA@XZ
    ??1istream@ds@@UEAA@XZ
    ??1ostream@ds@@UEAA@XZ
-   ??5@YAAEAVistream@ds@@AEAV01@P6AAEAV01@0@Z@Z
+   ??5ds@@YAAEAVistream@0@AEAV10@P6AAEAV10@0@Z@Z
    ??5istream@ds@@UEAAAEAV01@AEAC@Z
    ??5istream@ds@@UEAAAEAV01@AEAE@Z
    ??5istream@ds@@UEAAAEAV01@AEAF@Z
@@ -22,7 +22,7 @@ EXPORTS
    ??5istream@ds@@UEAAAEAV01@AEAV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??5istream@ds@@UEAAAEAV01@AEA_J@Z
    ??5istream@ds@@UEAAAEAV01@AEA_K@Z
-   ??6@YAAEAVostream@ds@@AEAV01@P6AAEAV01@0@Z@Z
+   ??6ds@@YAAEAVostream@0@AEAV10@P6AAEAV10@0@Z@Z
    ??6ostream@ds@@UEAAAEAV01@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ??6ostream@ds@@UEAAAEAV01@C@Z
    ??6ostream@ds@@UEAAAEAV01@E@Z
@@ -43,3 +43,8 @@ EXPORTS
    ?eof@istream@ds@@UEBA_NXZ
    ??0stream_underrun@ds@@QEAA@XZ
    ??0stream_overrun@ds@@QEAA@XZ
+   ?get_null@istream@ds@@UEAA_NXZ
+   ?put_null@ostream@ds@@UEAAXXZ
+   ?name@istream@ds@@UEAAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ?name@ostream@ds@@UEAAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
+   ??0null_value@ds@@QEAA@XZ

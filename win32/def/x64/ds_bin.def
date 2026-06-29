@@ -51,3 +51,5 @@ EXPORTS
    ?little_endian@bin@ds@@YAAEAVostream@2@AEAV32@@Z
    ?write@ostream@bin@ds@@UEAAXPEBX_K@Z
    ?read@istream@bin@ds@@UEAAXPEAX_K@Z
+   ?put_null@ostream@bin@ds@@UEAAXXZ
+   ?get_null@istream@bin@ds@@UEAA_NXZ

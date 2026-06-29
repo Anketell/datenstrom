@@ -11,8 +11,6 @@
 #include <sqlext.h>
 #include <cstring>
 
-#include <dsutil/platform.h>
-
 //-----------------------------------------------------------------------------
 
 namespace ds::mssql
@@ -327,7 +325,7 @@ void statement_base::set_parameter_null( int index )
                                   SQL_PARAM_INPUT,
                                   SQL_C_DEFAULT,
                                   desc.type,
-                                  0,
+                                  desc.size,
                                   0,
                                   nullptr,
                                   0,

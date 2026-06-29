@@ -89,4 +89,6 @@ EXPORTS
    ?lookup@context@db@ds@@QEAAPEBDAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?keys@context@db@ds@@QEAA?AV?$set@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@XZ
    ??0simple_rowset@db@ds@@QEAA@_K@Z
-
+   ?get_null@rowset@db@ds@@UEAA_NXZ
+   ?put_null@statement@db@ds@@UEAAXXZ
+   ?reset@statement@db@ds@@QEAAXXZ

@@ -240,23 +240,25 @@ TEST_P( Statement, should_reset_failed_statement )
    EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
    EXPECT_NO_THROW( test_db.execute_batch( "test.create_index" ) );
 
-   ds::db::statement insert_test = test_db( "test.insert" );
-
-   EXPECT_NO_THROW( insert_test << data[ 0 ] << ds::endr );
-   
-   for ( auto o : data )
    {
-      try
-      {
-         insert_test << o << ds::endr;
-      }
-      catch ( std::exception & e )
-      {
-         EXPECT_NO_THROW( insert_test.reset() );
-      }
-   }
+      ds::db::statement insert_test = test_db("test.insert");
 
-   EXPECT_EQ( static_cast< int >( test_db( "test.num_rows" ).result() ), 2 );
+      EXPECT_NO_THROW(insert_test << data[0] << ds::endr);
+
+      for (auto o : data)
+      {
+         try
+         {
+            insert_test << o << ds::endr;
+         }
+         catch (std::exception& e)
+         {
+            EXPECT_NO_THROW(insert_test.reset());
+         }
+      }
+
+      EXPECT_EQ(static_cast<int>(test_db("test.num_rows").result()), 2);
+   }
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 

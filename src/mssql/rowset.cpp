@@ -110,7 +110,7 @@ void rowset::get_text_column( int index, std::string & t )
 
    t.resize( count + 1 );
 
-   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, &count );
+   rc = SQLGetData( m_stmt->hstmt, index + 1, SQL_C_CHAR, t.data(), count + 1, nullptr );
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
    t.resize( std::max( 0LL, static_cast< long long >( count ) ) );
@@ -144,7 +144,7 @@ void rowset::get_datetime_column( int index, std::string & t )
 
    stmt_t::desc_t & desc = m_stmt->columns[ index ];
 
-   SQLLEN count = desc.size;;
+   SQLLEN count = std::max( static_cast< int >( desc.size ), 20 );
 
    t.resize( count + 1 );
 
