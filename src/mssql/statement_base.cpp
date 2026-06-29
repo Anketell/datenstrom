@@ -312,7 +312,7 @@ void statement_base::set_parameter( int index, const char * s )
 
 void statement_base::set_parameter_null( int index )
 {
-   static constexpr char operation[] = "MSSQL statement text parameter bind";
+   static constexpr char operation[] = "MSSQL statement null parameter bind";
 
    buffer & buffer = check_parameter( index );
 
