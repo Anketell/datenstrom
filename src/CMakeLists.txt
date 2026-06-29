@@ -34,6 +34,10 @@ if ( DS_DB )
       add_subdirectory( postgresql )
    endif()
 
+   if ( DS_MSSQL )
+      add_subdirectory( mssql )
+   endif()
+
  endif()
 
 add_subdirectory( dsutil )

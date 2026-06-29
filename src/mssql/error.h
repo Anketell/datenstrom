@@ -8,6 +8,7 @@
 
 //-----------------------------------------------------------------------------
 
+#include <dsutil/platform.h>
 #include <sql.h>
 #include <string>
 

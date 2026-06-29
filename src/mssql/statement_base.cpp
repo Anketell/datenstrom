@@ -9,9 +9,9 @@
 #include <mssql/error.h>
 #include <dsutil/time.h>
 #include <sqlext.h>
+#include <cstring>
 
-#undef min
-#undef max
+#include <dsutil/platform.h>
 
 //-----------------------------------------------------------------------------
 
@@ -131,7 +131,7 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
 
    SQLLEN size = std::min( t.length(), static_cast< size_t >( desc.size ) ) + 1;
 
-   buffer.resize( size + 1 );
+   buffer.resize( size );
 
    RETCODE rc = SQLBindParameter( m_stmt->hstmt,
                                   index + 1,
@@ -146,7 +146,7 @@ void statement_base::bind_text_parameter( int index, const std::string & t )
 
    check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 
-   strncpy_s( buffer.data< char >(), size, t.c_str(), size );
+   strncpy( buffer.data< char >(), t.c_str(), size );
 }
 
 //-----------------------------------------------------------------------------
@@ -201,38 +201,6 @@ void statement_base::bind_parameter( int index, const std::string & t )
          bind_text_parameter( index, t );
          break;
    }
-}
-
-//-----------------------------------------------------------------------------
-
-void statement_base::bind_time( int index, time_t t )
-{
-   std::string time;
-
-   struct tm tm;
-
-   time::gmtime( &t, &tm );
-
-   if ( t < 60 * 60 * 24 )
-   {
-      time.resize( 9 );
-      time::format_iso_8601_time( &tm, const_cast< char * >( time.c_str() ) );
-   }
-   else
-   {
-      if ( t % ( 60 * 60 * 24 ) == 0 )
-      {
-         time.resize( 11 );
-         time::format_iso_8601_date( &tm, const_cast< char * >( time.c_str() ) );
-      }
-      else
-      {
-         time.resize( 20 );
-         time::format_iso_8601( &tm, const_cast< char * >( time.c_str() ) );
-      }
-   }
-
-   set_parameter( index, time );
 }
 
 //-----------------------------------------------------------------------------
@@ -340,6 +308,32 @@ void statement_base::set_parameter( int index, const std::string & s )
 void statement_base::set_parameter( int index, const char * s )
 {
    bind_text_parameter( index, s );
+}
+
+//-----------------------------------------------------------------------------
+
+void statement_base::set_parameter_null( int index )
+{
+   static constexpr char operation[] = "MSSQL statement text parameter bind";
+
+   buffer & buffer = check_parameter( index );
+
+   stmt_t::desc_t & desc( m_parameters[ index ] );
+
+   desc.ind_len = SQL_NULL_DATA;
+
+   RETCODE rc = SQLBindParameter( m_stmt->hstmt,
+                                  index + 1,
+                                  SQL_PARAM_INPUT,
+                                  SQL_C_DEFAULT,
+                                  desc.type,
+                                  0,
+                                  0,
+                                  nullptr,
+                                  0,
+                                  &desc.ind_len );
+
+   check_status( operation, m_stmt->hstmt, SQL_HANDLE_STMT, rc );
 }
 
 //-----------------------------------------------------------------------------

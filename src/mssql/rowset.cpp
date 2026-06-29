@@ -7,6 +7,9 @@
 #include <mssql/rowset.h>
 #include <mssql/error.h>
 #include <sqlext.h>
+
+#include <dsutil/platform.h>
+
 #include <algorithm>
 
 //-----------------------------------------------------------------------------
