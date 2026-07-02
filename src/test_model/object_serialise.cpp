@@ -5,6 +5,7 @@
 //-----------------------------------------------------------------------------
 
 #include <test_model/object.h>
+#include <std/optional_serialise.h>
 #include <ds/ds.h>
 #include <iostream>
 
@@ -111,6 +112,46 @@ ds::ostream & operator << ( ds::ostream & out, const Object_alt & o )
               << o.m_unix_date
               << o.m_unix_time
               << o.m_unix_datetime;
+}
+
+//-----------------------------------------------------------------------------
+
+ds::istream & operator >> ( ds::istream & in, Object_opt & o )
+{
+   return in >> o.m_i8
+             >> o.m_i16
+             >> o.m_i32
+             >> o.m_i64
+             >> o.m_u8
+             >> o.m_u16
+             >> o.m_u32
+             >> o.m_u64
+             >> o.m_f
+             >> o.m_d
+             >> o.m_hello
+             >> o.m_date
+             >> o.m_time
+             >> o.m_datetime;  
+}
+
+//-----------------------------------------------------------------------------
+
+ds::ostream & operator << ( ds::ostream & out, const Object_opt & o )
+{
+   return out << o.m_i8
+              << o.m_i16
+              << o.m_i32
+              << o.m_i64
+              << o.m_u8
+              << o.m_u16
+              << o.m_u32
+              << o.m_u64
+              << o.m_f
+              << o.m_d
+              << o.m_hello
+              << o.m_date
+              << o.m_time
+              << o.m_datetime;
 }
 
 //-----------------------------------------------------------------------------

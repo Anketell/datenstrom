@@ -11,7 +11,6 @@
 #include <test_model/object_serialise.h>
 #include <std/vector_serialise.h>
 #include <std/tuple_serialise.h>
-#include <std/optional_serialise.h>
 #include <test_utils/gtest.h>
 #include <cmath>
 
@@ -74,10 +73,6 @@ TEST_P( StdSerial, should_read_vector )
 
    EXPECT_NO_THROW( test_db.drop( test_db_name ) );
 }
-
-//-----------------------------------------------------------------------------
-
-#if __cplusplus > 202000
 
 //-----------------------------------------------------------------------------
 
@@ -191,92 +186,6 @@ TEST_P( StdSerial, should_read_tuple )
 
 //-----------------------------------------------------------------------------
 
-#endif
-
-//-----------------------------------------------------------------------------
-
-struct Object_opt
-{
-   std::optional< int8_t      > m_i8;
-   std::optional< int16_t     > m_i16;
-   std::optional< int32_t     > m_i32;
-   std::optional< int64_t     > m_i64;
-   std::optional< uint8_t     > m_u8;
-   std::optional< uint16_t    > m_u16;
-   std::optional< uint32_t    > m_u32;
-   std::optional< uint64_t    > m_u64;
-   std::optional< double      > m_f;
-   std::optional< double      > m_d;
-   std::optional< std::string > m_hello;
-   std::optional< std::string > m_date;
-   std::optional< std::string > m_time;
-   std::optional< std::string > m_datetime;
-
-   bool operator==( const Object_opt & o ) const;
-};
-
-//-----------------------------------------------------------------------------
-
-bool Object_opt::operator==( const Object_opt & o ) const
-{
-   return m_i8        == o.m_i8    &&
-          m_i16       == o.m_i16   &&
-          m_i32       == o.m_i32   &&
-          m_i64       == o.m_i64   &&
-          m_u8        == o.m_u8    &&
-          m_u16       == o.m_u16   &&
-          m_u32       == o.m_u32   &&
-          m_u64       == o.m_u64   &&
-          m_f.has_value() ? o.m_f.has_value() ? fabs( m_f.value() - o.m_f.value() ) < 0.001 : false : true;
-          m_d         == o.m_d     &&
-          m_hello     == o.m_hello &&
-          m_date      == o.m_date  &&
-          m_time      == o.m_time  &&
-          m_datetime  == o.m_datetime;
-}
-
-//-----------------------------------------------------------------------------
-
-ds::istream & operator >> ( ds::istream & in, Object_opt & o )
-{
-   return in >> o.m_i8
-             >> o.m_i16
-             >> o.m_i32
-             >> o.m_i64
-             >> o.m_u8
-             >> o.m_u16
-             >> o.m_u32
-             >> o.m_u64
-             >> o.m_f
-             >> o.m_d
-             >> o.m_hello
-             >> o.m_date
-             >> o.m_time
-             >> o.m_datetime;  
-}
-
-//-----------------------------------------------------------------------------
-
-ds::ostream & operator << ( ds::ostream & out, const Object_opt & o )
-{
-   return out << o.m_i8
-              << o.m_i16
-              << o.m_i32
-              << o.m_i64
-              << o.m_u8
-              << o.m_u16
-              << o.m_u32
-              << o.m_u64
-              << o.m_f
-              << o.m_d
-              << o.m_hello
-              << o.m_date
-              << o.m_time
-              << o.m_datetime;
-}
-
-//-----------------------------------------------------------------------------
-
 TEST_P( StdSerial, should_insert_optional )
 {
    ds::db::context test_db( config->constr );
@@ -287,7 +196,7 @@ TEST_P( StdSerial, should_insert_optional )
 
    EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
-   Object_opt data_opt = 
+   test::Object_opt data_opt = 
    {
       data[ 0 ].m_i8,
       std::nullopt,
@@ -312,7 +221,7 @@ TEST_P( StdSerial, should_insert_optional )
    }
 
    {
-      Object_opt db_data_opt;
+      test::Object_opt db_data_opt;
 
       ds::db::rowset result = test_db( "test.results" ).result();
 
@@ -357,7 +266,7 @@ TEST_P( StdSerial, should_read_optional )
 
    EXPECT_NO_THROW( test_db.execute_batch( "test.create" ) );
 
-   Object_opt data_opt = 
+   test::Object_opt data_opt = 
    {
       data[ 0 ].m_i8,
       std::nullopt,
@@ -382,7 +291,7 @@ TEST_P( StdSerial, should_read_optional )
    }
 
    {
-      Object_opt db_data_opt;
+      test::Object_opt db_data_opt;
 
       ds::db::rowset result = test_db( "test.results" ).result();
 

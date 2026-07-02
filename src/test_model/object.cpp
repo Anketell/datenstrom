@@ -56,6 +56,26 @@ bool Object_alt::operator==( const Object_alt & o ) const
 
 //-----------------------------------------------------------------------------
 
+bool Object_opt::operator==( const Object_opt & o ) const
+{
+   return m_i8        == o.m_i8    &&
+          m_i16       == o.m_i16   &&
+          m_i32       == o.m_i32   &&
+          m_i64       == o.m_i64   &&
+          m_u8        == o.m_u8    &&
+          m_u16       == o.m_u16   &&
+          m_u32       == o.m_u32   &&
+          m_u64       == o.m_u64   &&
+          m_f.has_value() ? o.m_f.has_value() ? fabs( m_f.value() - o.m_f.value() ) < 0.001 : false : true;
+          m_d         == o.m_d     &&
+          m_hello     == o.m_hello &&
+          m_date      == o.m_date  &&
+          m_time      == o.m_time  &&
+          m_datetime  == o.m_datetime;
+}
+
+//-----------------------------------------------------------------------------
+
 }
 
 //-----------------------------------------------------------------------------

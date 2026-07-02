@@ -40,6 +40,11 @@ ds::ostream & operator << ( ds::ostream & out, const Object_alt & o );
 
 //-----------------------------------------------------------------------------
 
+ds::istream & operator >> ( ds::istream & in, Object_opt & o );
+ds::ostream & operator << ( ds::ostream & out, const Object_opt & o );
+
+//-----------------------------------------------------------------------------
+
 std::ostream & operator << ( std::ostream & out, const Object_alt & o );
 
 //-----------------------------------------------------------------------------
