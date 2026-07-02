@@ -24,10 +24,10 @@ namespace std
 template< typename... T >
 ds::istream & operator >> ( ds::istream & in, tuple< T... > & t )
 {
-   [ & ]< size_t... S >( index_sequence< S... > )
+   std::apply( [ & ]( auto &... args )
    {
-      ( ( in >> get< S >( t ) ), ... );
-   }( make_index_sequence< tuple_size_v< tuple< T... > > >{} );
+      ( ( in >> args ), ... );
+   }, t );
 
    return in;
 }
@@ -37,10 +37,10 @@ ds::istream & operator >> ( ds::istream & in, tuple< T... > & t )
 template< typename... T >
 ds::ostream & operator << ( ds::ostream & out, const tuple< T... > & t )
 {
-   [ & ]< size_t... S >( index_sequence< S... > )
+   std::apply( [ & ]( const auto &... args )
    {
-      ( ( out << get< S >( t ) ), ... );
-   }( make_index_sequence< tuple_size_v< tuple< T... > > >{} );
+      ( ( out << args ), ... );
+   }, t );
 
    return out;
 }
