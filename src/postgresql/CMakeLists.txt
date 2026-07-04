@@ -39,22 +39,26 @@ add_library( ${TARGET} MODULE
    ${HEADERS}
 )
 
-target_link_libraries( ${TARGET}
-   ds_db
-   pq
-)
-
 if ( WIN32 )
 
    target_link_libraries( ${TARGET}
+      ds_db
+      libpq
       ws2_32
    )
 
-#   target_link_options( ${TARGET} PRIVATE "/NODEFAULTLIB:msvcrtd.lib" )
    include( dll_funcs )
    db_module_def( TARGET ${TARGET} )
+
 else()
+
+   target_link_libraries( ${TARGET}
+      ds_db
+      pq
+   )
+
    set_target_properties( ${TARGET} PROPERTIES PREFIX "" )
+
 endif( WIN32 )
 
 if ( DEFINED DS_POSTGRESQL_TEST AND NOT DS_POSTGRESQL_TEST STREQUAL "" )
