@@ -62,6 +62,7 @@ if ( MSVC )
       "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
       "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
       "${CMAKE_BINARY_DIR}/src/postgresql/Debug/ds_postgresql_module.dll"
+      "${NUGET_OUTPUT_DIR}/libpq/native/bin/x64/libpq.dll"
    )
 
    foreach( dll ${DLL_LIST} )

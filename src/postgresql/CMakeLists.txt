@@ -8,6 +8,9 @@ if( WIN32 )
 
    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451 /wd6011 /wd6385 /wd4244 /wd4267" )
 
+   include_directories( "${NUGET_OUTPUT_DIR}/libpq/native/include" )
+   link_directories( "${NUGET_OUTPUT_DIR}/libpq/native/lib/x64" )
+
 endif( WIN32 )
 
 set( SOURCE
@@ -42,6 +45,12 @@ target_link_libraries( ${TARGET}
 )
 
 if ( WIN32 )
+
+   target_link_libraries( ${TARGET}
+      ws2_32
+   )
+
+#   target_link_options( ${TARGET} PRIVATE "/NODEFAULTLIB:msvcrtd.lib" )
    include( dll_funcs )
    db_module_def( TARGET ${TARGET} )
 else()

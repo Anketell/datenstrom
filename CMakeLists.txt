@@ -15,15 +15,15 @@ set( CMAKE_CXX_STANDARD 17 )
 if ( WIN32 )
 
    set( NUGET_REPO "nuget.org" )
-   set( NUGET_OUTPUT_DIR "${CMAKE_BINARY_DIR}/third-party" )
+   set( NUGET_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/build/third-party" )
 
    include( architecture )
    include( googletest )
    include( nuget )
 
-   set( NUGET_VER 1,2.0 )
+   set( NUGET_VER 1.2.0 )
 
-   nuget( NpgsqlBuilkCopy ${NUGET_VER} )
+#   nuget( NpgsqlBuilkCopy ${NUGET_VER} )
 
    add_compile_options( /Zc:__cplusplus )
    add_link_options( /Brepro )

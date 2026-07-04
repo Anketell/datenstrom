@@ -22,7 +22,7 @@ namespace ds::pg
 
 statement_base::statement_base( PGconn * conn )
 {
-   char buffer[ 9 ] = {};
+   char buffer[ 32 ] = {};
 
    m_stmt = std::make_shared< stmt_t >();
    m_stmt->conn = conn;
