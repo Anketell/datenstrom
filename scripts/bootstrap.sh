@@ -7,13 +7,7 @@ popd >/dev/null
 
 echo ${root}
 
-env=${root}/scripts/.env
-
-if [ -f ${env} ]; then
-   set -o allexport
-   . ${env}
-   set +o allexport
-fi
+. ${root}/scripts/import_env.sh
 
 #------------------------------------------------------------------------------
 

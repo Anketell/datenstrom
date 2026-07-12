@@ -23,12 +23,8 @@ if ( WIN32 )
 
    set( NUGET_VER 1.2.0 )
 
-#   nuget( NpgsqlBuilkCopy ${NUGET_VER} )
-
    add_compile_options( /Zc:__cplusplus )
    add_link_options( /Brepro )
-
-   include( runsettings )
 
    cmake_path( CONVERT "$ENV{TEMP}" TO_CMAKE_PATH_LIST TEMP )
 

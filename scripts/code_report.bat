@@ -85,7 +85,7 @@ opencppcoverage ^
 
 rd /s /q code_report
 
-pryda_code_report.exe ^
+lucid_code_report.exe ^
 -s test_ds.cov ^
 -p "Lucid Datenstrom v%VERSION%" ^
 -j .. ^

@@ -18,3 +18,7 @@ DS_POSTGRESQL_TEST="postgresql://pghost?username=tester&password=tester"
 DS_SQLITE_TEST="sqlite:////tmp"
 
 #------------------------------------------------------------------------------
+
+DS_REPO="http://dsrepohost/repoman/repos/public-rpm-x86_64"
+
+#------------------------------------------------------------------------------
