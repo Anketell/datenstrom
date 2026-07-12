@@ -97,8 +97,6 @@ public:
 
    virtual bool eof( void ) const;
 
-   virtual const std::string & name( void );
-
    template< typename T, std::enable_if_t< has_get_from< T >, bool > = true >
    operator T ( void )
    {
@@ -138,8 +136,6 @@ public:
    virtual void put_null( void );
 
    virtual void endr( void );
-
-   virtual const std::string & name( void );
 
    template< typename T > ostream & operator()( const T & t )
    {

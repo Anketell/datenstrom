@@ -117,13 +117,6 @@ void istream::endr( void )
 
 //-----------------------------------------------------------------------------
 
-const std::string & istream::name( void )
-{
-   throw Not_implemented();
-}
-
-//-----------------------------------------------------------------------------
-
 ostream::~ostream( void  )
 {
 }
@@ -222,13 +215,6 @@ void ostream::put_null( void )
 //-----------------------------------------------------------------------------
 
 void ostream::endr( void )
-{
-   throw Not_implemented();
-}
-
-//-----------------------------------------------------------------------------
-
-const std::string & ostream::name( void )
 {
    throw Not_implemented();
 }
