@@ -15,7 +15,7 @@ else
    echo
    echo Example:
    echo
-   cat ${root}/scripts/env_sh.sample
+   cat ${root}/scripts/env.sample
    exit 1
 fi
 

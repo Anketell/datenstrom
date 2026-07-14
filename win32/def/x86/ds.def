@@ -33,9 +33,13 @@ EXPORTS
    ??6ostream@ds@@UAEAAV01@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
    ?write@ostream@ds@@UAEXPBXI@Z
    ?endr@ostream@ds@@UAEXXZ
-   ??5@YAAAVistream@ds@@AAV01@P6AAAV01@0@Z@Z
-   ??6@YAAAVostream@ds@@AAV01@P6AAAV01@0@Z@Z
    ?endr@ds@@YAAAVistream@1@AAV21@@Z
    ?endr@ds@@YAAAVostream@1@AAV21@@Z
    ??0stream_underrun@ds@@QAE@XZ
    ??0stream_overrun@ds@@QAE@XZ
+   ?get_null@istream@ds@@UAE_NXZ
+   ?put_null@ostream@ds@@UAEXXZ
+   ??5ds@@YAAAVistream@0@AAV10@P6AAAV10@0@Z@Z
+   ??6ds@@YAAAVostream@0@AAV10@P6AAAV10@0@Z@Z
+   ??0null_value@ds@@QAE@XZ
+   

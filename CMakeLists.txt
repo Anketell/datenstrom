@@ -14,14 +14,10 @@ set( CMAKE_CXX_STANDARD 17 )
 
 if ( WIN32 )
 
-   set( NUGET_REPO "nuget.org" )
    set( NUGET_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/build/third-party" )
 
    include( architecture )
    include( googletest )
-   include( nuget )
-
-   set( NUGET_VER 1.2.0 )
 
    add_compile_options( /Zc:__cplusplus )
    add_link_options( /Brepro )

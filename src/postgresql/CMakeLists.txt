@@ -9,7 +9,7 @@ if( WIN32 )
    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26451 /wd6011 /wd6385 /wd4244 /wd4267" )
 
    include_directories( "${NUGET_OUTPUT_DIR}/libpq/native/include" )
-   link_directories( "${NUGET_OUTPUT_DIR}/libpq/native/lib/x64" )
+   link_directories( "${NUGET_OUTPUT_DIR}/libpq/native/lib/${DS_ARCH}" )
 
 endif( WIN32 )
 

@@ -45,6 +45,4 @@ EXPORTS
    ??0stream_overrun@ds@@QEAA@XZ
    ?get_null@istream@ds@@UEAA_NXZ
    ?put_null@ostream@ds@@UEAAXXZ
-   ?name@istream@ds@@UEAAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
-   ?name@ostream@ds@@UEAAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ
    ??0null_value@ds@@QEAA@XZ

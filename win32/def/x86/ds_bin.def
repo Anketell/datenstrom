@@ -33,3 +33,16 @@ EXPORTS
    ?glength@streamwrap@bin@ds@@QBE_JXZ
    ?gremaining@streamwrap@bin@ds@@QBE_JXZ
    ?write@ostream@bin@ds@@UAEXPBXI@Z
+   ??5istream@bin@ds@@UAEAAV02@AAC@Z
+   ??5istream@bin@ds@@UAEAAV02@AAF@Z
+   ??5istream@bin@ds@@UAEAAV02@AAH@Z
+   ??5istream@bin@ds@@UAEAAV02@AA_J@Z
+   ??5istream@bin@ds@@UAEAAV02@AAE@Z
+   ??5istream@bin@ds@@UAEAAV02@AAG@Z
+   ??5istream@bin@ds@@UAEAAV02@AAI@Z
+   ??5istream@bin@ds@@UAEAAV02@AA_K@Z
+   ??5istream@bin@ds@@UAEAAV02@AAN@Z
+   ?read@istream@bin@ds@@UAEXPAXI@Z
+   ?get_null@istream@bin@ds@@UAE_NXZ
+   ?put_null@ostream@bin@ds@@UAEXXZ
+   

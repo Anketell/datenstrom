@@ -6,18 +6,20 @@ if ( WIN32 )
 
     if ( "${DS_ARCH}" STREQUAL "x64" )
 
-        include_directories( "$ENV{PROGRAMFILES}/Firebird/Firebird_2_5/include" )
-        add_library( fbclient IMPORTED STATIC GLOBAL )
-        set_target_properties( fbclient
-            PROPERTIES "IMPORTED_LOCATION" "$ENV{PROGRAMFILES}/Firebird/Firebird_2_5/lib/fbclient_ms.lib"
-        )
+        file( GLOB FIREBIRD_DIR "$ENV{PROGRAMFILES}/Firebird/Firebird*" )
+
     elseif ( "${DS_ARCH}" STREQUAL "x86" )
 
-        include_directories( "$ENV{PROGRAMFILES} (x86)/Firebird/Firebird_2_5/include" )
-        add_library( fbclient IMPORTED STATIC GLOBAL )
-        set_target_properties( fbclient
-            PROPERTIES "IMPORTED_LOCATION" "$ENV{PROGRAMFILES} (x86)/Firebird/Firebird_2_5/lib/fbclient_ms.lib"
-        )
+        file( GLOB FIREBIRD_DIR "$ENV{PROGRAMFILES} (x86)/Firebird/Firebird*" )
+
     endif()
+
+    MESSAGE( STATUS "Firebird: ${FIREBIRD_DIR}")
+
+    include_directories( "${FIREBIRD_DIR}/include" )
+    add_library( fbclient IMPORTED STATIC GLOBAL )
+    set_target_properties( fbclient
+        PROPERTIES "IMPORTED_LOCATION" "${FIREBIRD_DIR}/lib/fbclient_ms.lib"
+    )
 
 endif ( WIN32 )

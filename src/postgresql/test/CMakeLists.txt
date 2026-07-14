@@ -57,13 +57,35 @@ if ( MSVC )
 
    target_link_options( ${TARGET} PRIVATE "/WHOLEARCHIVE:test_db_module" )
 
-   set( DLL_LIST
-      "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
-      "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
-      "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
-      "${CMAKE_BINARY_DIR}/src/postgresql/Debug/ds_postgresql_module.dll"
-      "${NUGET_OUTPUT_DIR}/libpq/native/bin/x64/libpq.dll"
-   )
+   if ( "${DS_ARCH}" STREQUAL "x64" )
+      set( DLL_LIST
+         "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
+         "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
+         "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
+         "${CMAKE_BINARY_DIR}/src/postgresql/Debug/ds_postgresql_module.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/legacy.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libcrypto-3-x64.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libecpg_compat.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libpgtypes.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libpq.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libssl-3-x64.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/lz4.dll"
+      )
+   else()
+      set( DLL_LIST
+         "${CMAKE_BINARY_DIR}/win32/dsutil/Debug/ds_util.dll"
+         "${CMAKE_BINARY_DIR}/src/ds/Debug/ds.dll"
+         "${CMAKE_BINARY_DIR}/src/db/Debug/ds_db.dll"
+         "${CMAKE_BINARY_DIR}/src/postgresql/Debug/ds_postgresql_module.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/legacy.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libcrypto-3.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libecpg_compat.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libpgtypes.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libpq.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/libssl-3.dll"
+         "${NUGET_OUTPUT_DIR}/libpq/native/bin/${DS_ARCH}/lz4.dll"
+      )
+   endif()
 
    foreach( dll ${DLL_LIST} )
       add_custom_command(TARGET ${TARGET} POST_BUILD

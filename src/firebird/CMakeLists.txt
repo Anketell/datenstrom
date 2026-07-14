@@ -46,23 +46,26 @@ add_library( ${TARGET} MODULE
    ${HEADERS}
 )
 
-if( DEFINED ENV{DS_FB_INC_PATH} )
-   target_include_directories( ${TARGET} PUBLIC $ENV{DS_FB_INC_PATH} )
-endif()
+include( firebird )
 
-if( DEFINED ENV{DS_FB_LIB_PATH} )
-   target_link_directories( ${TARGET} PUBLIC $ENV{DS_FB_LIB_PATH} )
-endif()
-
-if( DEFINED ENV{DS_FB_CLIENT_LIB} )
-   set( FB_CLIENT_LIB $ENV{DS_FB_CLIENT_LIB} )
-else()
-   set( FB_CLIENT_LIB fbclient)
-endif()
+# if( DEFINED ENV{DS_FB_INC_PATH} )
+#    target_include_directories( ${TARGET} PUBLIC $ENV{DS_FB_INC_PATH} )
+# endif()
+# 
+# if( DEFINED ENV{DS_FB_LIB_PATH} )
+#    target_link_directories( ${TARGET} PUBLIC $ENV{DS_FB_LIB_PATH} )
+# endif()
+# 
+# if( DEFINED ENV{DS_FB_CLIENT_LIB} )
+#    set( FB_CLIENT_LIB $ENV{DS_FB_CLIENT_LIB} )
+# else()
+#    set( FB_CLIENT_LIB fbclient)
+# endif()
 
 target_link_libraries( ${TARGET}
    ds_db
-   ${FB_CLIENT_LIB}
+#   ${FB_CLIENT_LIB}
+   fbclient
 )
 
 if ( WIN32 )

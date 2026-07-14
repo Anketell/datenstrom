@@ -24,17 +24,42 @@ if (UNIX)
     PATH_SUFFIXES mysql
   )
 
-elseif(MSVC)
+ELSEIF(MSVC)
 
-  FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
-    "$ENV{PROGRAMFILES}/MariaDB */include"
-  )
+  if ( "${DS_ARCH}" STREQUAL "x64" )
 
-  SET(MYSQL_NAMES mariadb )
-  FIND_LIBRARY(MYSQL_LIBRARY
-    NAMES ${MYSQL_NAMES}
-    PATHS "$ENV{PROGRAMFILES}/MariaDB */lib"
-  )
+    FILE( GLOB MARIADB_DIR "$ENV{PROGRAMFILES}/MariaDB*" )
+
+    FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
+      PATHS "${MARIADB_DIR}" "${MARIADB_DIR}/MariaDB/MariaDB Connector C"
+      PATH_SUFFIXES include/mysql
+    )
+
+    SET(MYSQL_NAMES libmariadb.lib )
+    FIND_LIBRARY(MYSQL_LIBRARY
+      NAMES ${MYSQL_NAMES}
+      PATHS  "${MARIADB_DIR}" "${MARIADB_DIR}/MariaDB/MariaDB Connector C"
+      PATH_SUFFIXES lib
+      NO_DEFAULT_PATH
+    )
+  ELSE()
+
+    FILE( GLOB MARIADB_DIR "$ENV{PROGRAMFILES} (x86)/MariaDB*" )
+
+    FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
+      PATHS "${MARIADB_DIR}" "${MARIADB_DIR}/MariaDB Connector C"
+      PATH_SUFFIXES include inlcude/mysql
+    )
+
+    SET(MYSQL_NAMES libmariadb.lib )
+    FIND_LIBRARY(MYSQL_LIBRARY
+      NAMES ${MYSQL_NAMES}
+      PATHS "${MARIADB_DIR}" "${MARIADB_DIR}/MariaDB Connector C"
+      PATH_SUFFIXES lib
+      NO_DEFAULT_PATH
+    )
+
+  endif()
 
 endif( UNIX)
 
