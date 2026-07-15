@@ -76,8 +76,6 @@ Write vendor-agnostic code with automatic translation layer support for multiple
 
 Features include consistent parameter parsing, ISO-8601 date/time uniformity, and scope-bound execution management via explicit RAII structures (`ds::db::transaction` and `ds::db::savepoint`).
 
----
-
 ### 5. Pluggable SQL Modules & Context Abstraction
 
 Datenstrom decouples application code from raw, vendor-specific SQL queries through pluggable SQL modules. Using ds::db::context, you can execute abstract named SQL queries that automatically resolve to the correct SQL variant matching your runtime connection type.
@@ -137,8 +135,6 @@ ds::db::statement insert = con("INSERT INTO jobs VALUES( :id, :type, :client )",
 } // End of scope – automatically commits the transaction safely
 
 ```
-
----
 
 ### SQL Modules
 
