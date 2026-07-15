@@ -78,6 +78,19 @@ Features include consistent parameter parsing, ISO-8601 date/time uniformity, an
 
 ---
 
+### 5. Pluggable SQL Modules & Context Abstraction
+
+Datenstrom decouples application code from raw, vendor-specific SQL queries through pluggable SQL modules. Using ds::db::context, you can execute abstract named SQL queries that automatically resolve to the correct SQL variant matching your runtime connection type.
+
+SQL Module Resolution Example
+
+| Logical Query Name | Target Database (Firebird Syntax) | Target Database (MSSQL Syntax) |
+|--------------------|-----------------------------------|--------------------------------|
+| job.first_5 | SELECT FIRST 5 job_id, job_type, job_client FROM jobs | SELECT job_id, job_type, job_client FROM jobs LIMIT 5 |
+| job.insert |INSERT INTO jobs . . . | INSERT INTO jobs . . . |
+
+---
+
 ## Usage Examples
 
 ### Custom Object Streaming (Field/Record Separation)
@@ -127,9 +140,33 @@ ds::db::statement insert = con("INSERT INTO jobs VALUES( :id, :type, :client )",
 
 ---
 
+### SQL Modules
+
+```cpp
+// connection_string specifiest the database type and location
+//
+// * firebird://localhost:3050/C:/tmp#pmdb
+// * mssql://127.0.0.1#pmdb
+// ...etc
+
+ds::db::context ctx(connection_string);
+ds::db::namelist_t params = { "id", "type", "client" };
+ds::db::statement insert = ctx("job.insert", params);
+
+{
+   ds::db::transaction txn(ctx);
+   for (const job_t & job : jobs) {
+      insert << job << ds::endr;
+   }
+}
+
+```
+
+---
+
 ## Multi-Engine Testing
 
-Integration testing is handled via standard **GoogleTest** suites. The database context allows running identical test cases across entirely different backends safely by parameterizing the runtime connections:
+Integration testing can be handled via standard **GoogleTest** suites. The database context allows running identical test cases across  different backends safely by parameterizing the runtime connections:
 
 ```cpp
 TEST_P(Job, should_provide_job_list) {
