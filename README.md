@@ -129,7 +129,7 @@ ds::db::statement insert = con("INSERT INTO jobs VALUES( :id, :type, :client )",
 
 ## Multi-Engine Testing
 
-Integration testing is handled via standard **GoogleTest** suites. The database context allows running identical sutest cases across entirely different backends safely by parameterizing the runtime connections:
+Integration testing is handled via standard **GoogleTest** suites. The database context allows running identical test cases across entirely different backends safely by parameterizing the runtime connections:
 
 ```cpp
 TEST_P(Job, should_provide_job_list) {
