@@ -139,11 +139,11 @@ ds::db::statement insert = con("INSERT INTO jobs VALUES( :id, :type, :client )",
 ### SQL Modules
 
 ```cpp
-// connection_string specifiest the database type and location
+// connection_string specifies the database type and location
 //
 // * firebird://localhost:3050/C:/tmp#pmdb
 // * mssql://127.0.0.1#pmdb
-// ...etc
+// etc...
 
 ds::db::context ctx(connection_string);
 ds::db::namelist_t params = { "id", "type", "client" };
