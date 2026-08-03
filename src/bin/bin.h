@@ -202,4 +202,22 @@ ds::ostream & little_endian( ds::ostream & out );
 
 //-----------------------------------------------------------------------------
 
+template< typename S, typename ... Data >
+streambuf_ptr make_sb_le( const Data & ... data )
+{
+   ostream::manip_t le = little_endian;
+   return make_sb< S >( le, data... );
+}
+
+//-----------------------------------------------------------------------------
+
+template< typename S, typename ... Data >
+streambuf_ptr make_sb_be( const Data & ... data )
+{
+   ostream::manip_t be = big_endian;
+   return make_sb< S >( be, data... );
+}
+
+//-----------------------------------------------------------------------------
+
 }

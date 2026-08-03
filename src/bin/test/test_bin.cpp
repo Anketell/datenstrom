@@ -998,13 +998,59 @@ NAMESPACE_TEST( bin, string_overload, should_read_write )
 
 NAMESPACE_TEST( bin, streamwrap, should_make_streambuf )
 {
-   ds::ostream::manip_t obe = ds::bin::big_endian;
-
    const double      od    = 34.57;
    const uint64_t    ou    = 123456789;
    const std::string otest = "The quick brown fox jumps over the lazy dog";
 
-   auto sb = ds::bin::make_sb< test_ostream >( obe, od, ou, otest );
+   auto sb = ds::bin::make_sb< test_ostream >( od, ou, otest );
+
+   EXPECT_EQ( sb->plength(), 63 );
+
+   test_istream in( sb.get() );
+
+   double      id    = in;
+   uint64_t    iu    = in;
+   std::string itest = in;
+
+   EXPECT_EQ( id,       od );
+   EXPECT_EQ( iu,       ou );
+   EXPECT_EQ( otest, itest );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( bin, streamwrap, should_make_le_streambuf )
+{
+   const double      od    = 34.57;
+   const uint64_t    ou    = 123456789;
+   const std::string otest = "The quick brown fox jumps over the lazy dog";
+
+   auto sb = ds::bin::make_sb_le< test_ostream >( od, ou, otest );
+
+   EXPECT_EQ( sb->plength(), 63 );
+
+   test_istream in( sb.get() );
+
+   in >> ds::bin::little_endian;
+
+   double      id    = in;
+   uint64_t    iu    = in;
+   std::string itest = in;
+
+   EXPECT_EQ( id,       od );
+   EXPECT_EQ( iu,       ou );
+   EXPECT_EQ( otest, itest );
+}
+
+//-----------------------------------------------------------------------------
+
+NAMESPACE_TEST( bin, streamwrap, should_make_be_streambuf )
+{
+   const double      od    = 34.57;
+   const uint64_t    ou    = 123456789;
+   const std::string otest = "The quick brown fox jumps over the lazy dog";
+
+   auto sb = ds::bin::make_sb_be< test_ostream >( od, ou, otest );
 
    EXPECT_EQ( sb->plength(), 63 );
 

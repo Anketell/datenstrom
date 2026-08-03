@@ -42,7 +42,8 @@ public:
 
    connection( const std::string & user_id,
                const std::string & password,
-               const std::string & server, int port );
+               const std::string & server, 
+               int                 port );
 
    virtual ~connection( void );
 
