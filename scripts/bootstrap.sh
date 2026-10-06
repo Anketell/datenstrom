@@ -7,6 +7,8 @@ popd >/dev/null
 
 echo ${root}
 
+DS_CXX_STANDARD=17
+
 . ${root}/scripts/import_env.sh
 
 #------------------------------------------------------------------------------
@@ -24,7 +26,8 @@ defines="
         -DDS_MYSQL_TEST=${DS_MYSQL_TEST} \
         -DDS_MSSQL_TEST=${DS_MSSQL_TEST} \
         -DDS_POSTGRESQL_TEST=${DS_POSTGRESQL_TEST} \
-        -DDS_SQLITE_TEST=${DS_SQLITE_TEST}
+        -DDS_SQLITE_TEST=${DS_SQLITE_TEST} \
+        -DCMAKE_CXX_STANDARD=${DS_CXX_STANDARD}
 "
 
 #------------------------------------------------------------------------------

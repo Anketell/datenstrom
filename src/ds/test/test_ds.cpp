@@ -67,6 +67,8 @@ NAMESPACE_TEST( ds, istream, should_detect_get_from )
    };
 
    static_assert( ds::has_istream_get_from< int8_t > );
+   static_assert( ds::has_istream_get_from< std::string > );
+   static_assert( !ds::has_istream_get_from< nullptr_t > );
    static_assert( !ds::has_istream_get_from< test::Object > );
    static_assert( !ds::has_global_get_from< int8_t > );
    static_assert( ds::has_global_get_from< test::Object > );

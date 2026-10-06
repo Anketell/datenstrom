@@ -56,6 +56,8 @@ constexpr bool has_istream_get_from = has_member_get_from< T, ds::istream >;
 template< typename T >
 constexpr bool has_get_from = has_global_get_from< T > || has_istream_get_from< T >;
 
+template<> bool inline has_get_from< nullptr_t > = false;
+
 //-----------------------------------------------------------------------------
 
 class Not_implemented : public std::runtime_error

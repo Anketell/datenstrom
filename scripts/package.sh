@@ -8,7 +8,7 @@ rm -rf ${root}/release/rpmbuild
 ${root}/scripts/make_image.sh
 
 export VERSION=$(<${root}/scripts/VERSION)
-export RELEASE=1.fc42
+export RELEASE=1.$(uname -r | sed 's/^.*\.\(.*\)\..*$/\1/')
 export FILES=$(find ${root}/release/image -type f | sed "s|.*/release/image||")
 
 mkdir -p ${root}/release/rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS}

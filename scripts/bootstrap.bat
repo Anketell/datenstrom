@@ -2,6 +2,8 @@
 
 pushd %~dp0\..
 
+set DS_CXX_STANDARD=17
+
 call scripts\import_env.bat 
 
 if %errorlevel% NEQ 0 exit /b %errorlevel%
@@ -20,7 +22,8 @@ set defines=-DDS_BIN=%DS_BIN% ^
         -DDS_MYSQL_TEST=%DS_MYSQL_TEST% ^
         -DDS_MSSQL_TEST=%DS_MSSQL_TEST% ^
         -DDS_POSTGRESQL_TEST=%DS_POSTGRESQL_TEST% ^
-        -DDS_SQLITE_TEST=%DS_SQLITE_TEST%
+        -DDS_SQLITE_TEST=%DS_SQLITE_TEST% ^
+        -DCMAKE_CXX_STANDARD=%DS_CXX_STANDARD%
 
 if NOT EXIST build\x64 mkdir build\x64
 
