@@ -3,7 +3,7 @@
 
 # Datenstrom
 
-`Datenstrom` (German for *data stream*) is a vendor-agnostic, multiplatform data encoding framework and RDBMS abstraction layer written in modern C++. It synergistically combines strongly typed streaming concepts with a unified interface to streamline database connectivity and structured data parsing.
+`Datenstrom` (German for *data stream*) is a vendor-agnostic, multiplatform data encoding framework and RDBMS abstraction layer written in C++. It synergistically combines strongly typed streaming concepts with a unified interface to streamline database connectivity and structured data parsing.
 
 > **Internal Note:** This project is a work in progress with evolving design concerns. Rough edges are actively being streamlined.
 
